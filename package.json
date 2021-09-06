@@ -25,9 +25,11 @@
 	"dependencies": {
 		"@lukeed/uuid": "^2.0.0",
 		"cookie": "^0.4.1",
+		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.0.4",
 		"svelte-forms-lib": "^1.10.6",
 		"svelte-notifications": "^0.9.91",
-		"svelte-simple-modal": "^1.0.2"
+		"svelte-simple-modal": "^1.0.2",
+		"validator": "^13.6.0"
 	}
 }

@@ -1,34 +1,25 @@
 <script>
-	import { getNotificationsContext } from 'svelte-notifications';
+	//import { getNotificationsContext } from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
-	const { addNotification } = getNotificationsContext();
 	import * as yup from 'yup';
+	//const { addNotification } = getNotificationsContext();
 	const formProps = {
-		initialValues: { email: '', password: '' },
+		initialValues: { email: '' },
 		validationSchema: yup.object().shape({
-			email: yup.string().email().required(),
-			password: yup
-				.string()
-				.required()
-				.min(8)
-				.matches(
-					/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-					'Must Contain at Least One Uppercase, Lowercase, Number, and Special Character'
-				)
+			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
-			fetch('http://localhost:8000/api/session', {
+			fetch('api/auth/signup.json', {
 				method: 'POST',
-				mode: 'cors',
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(values)
-			}).then((res) => {
-				if (res.status === 401) {
+			}); /*.then((res) => {
+				if (res.status === 409) {
 					addNotification({
-						text: 'Authentication Failed',
+						text: `Email Taken`,
 						position: 'bottom-center',
 						type: 'danger',
 						removeAfter: 4000
@@ -36,23 +27,17 @@
 				} else {
 					window.location.href = 'profile';
 				}
-			});
+			});*/
 		}
 	};
 </script>
 
-<div class="login-container">
+<div class="register-container">
 	<Form class="content" {...formProps}>
 		<div>
 			<label for="email">email</label>
 			<Field class="form-field" name="email" type="email" />
 			<ErrorMessage class="form-error" name="email" />
-		</div>
-
-		<div>
-			<label for="password">password</label>
-			<Field class="form-field" name="password" type="password" />
-			<ErrorMessage class="form-error" name="password" />
 		</div>
 
 		<flex-container>
@@ -138,7 +123,7 @@
 		margin-top: 0;
 		width: 100%;
 	}
-	.login-container {
+	.register-container {
 		width: 100%;
 	}
 </style>
