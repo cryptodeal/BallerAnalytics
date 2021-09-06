@@ -9,7 +9,7 @@
 			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
-			fetch('api/auth/signup.json', {
+			fetch('api/auth.json', {
 				method: 'POST',
 				credentials: 'include',
 				headers: {

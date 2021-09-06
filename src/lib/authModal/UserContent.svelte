@@ -1,10 +1,10 @@
 <script>
 	import { getContext } from 'svelte';
-	import Register from '$lib/authModal/Authenticate.svelte';
+	import Auth from '$lib/authModal/Auth.svelte';
 
 	const { open } = getContext('simple-modal');
 	const showUserModal = () => {
-		open(Register);
+		open(Auth);
 	};
 </script>
 

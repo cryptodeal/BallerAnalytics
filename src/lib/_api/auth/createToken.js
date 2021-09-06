@@ -1,28 +1,26 @@
 import crypto from 'crypto';
 import signToken from '$lib/_api/auth/signToken';
-//import { User } from '$lib/_db/models';
+import { User } from '$lib/_db/models';
 import * as cookie from 'cookie';
 
-const createToken = async (userId) => {
-	const tokenPayload = signToken(userId);
+const createToken = async (user) => {
+	const tokenPayload = signToken(user._id);
 
 	//Generate random refresh token
 	const refreshTokenPayload = crypto.randomBytes(32).toString('hex');
 
-	//const hashedRefreshToken = crypto.createHash('sha256').update(refreshTokenPayload).digest('hex');
+	const hashedRefreshToken = crypto.createHash('sha256').update(refreshTokenPayload).digest('hex');
 
-	//const refreshExp = new Date().setDate(new Date().getDate() + 7);
+	const refreshExp = new Date().setDate(new Date().getDate() + 7);
 
-	/* 
-    await User.findByIdAndUpdate(user._id, {
-      $push: {
-        refreshTokens: {
-          token: hashedRefreshToken,
-          expiration: refreshExp
-        },
-      },
-    });
-  */
+	await User.findByIdAndUpdate(user._id, {
+		$push: {
+			refreshTokens: {
+				token: hashedRefreshToken,
+				expiration: refreshExp
+			}
+		}
+	});
 
 	const accessToken = cookie.serialize('accessToken', tokenPayload, {
 		httpOnly: true,
