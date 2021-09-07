@@ -26,6 +26,7 @@ const createToken = async (user) => {
 		httpOnly: true,
 		sameSite: import.meta.env.VITE_NODE_ENV == 'production' ? 'none' : 'Lax',
 		secure: import.meta.env.VITE_NODE_ENV == 'production' ? true : false,
+		path: '/',
 		maxAge: 1800000
 	});
 
@@ -33,6 +34,7 @@ const createToken = async (user) => {
 		httpOnly: true,
 		sameSite: import.meta.env.VITE_NODE_ENV == 'production' ? 'none' : 'Lax',
 		secure: import.meta.env.VITE_NODE_ENV == 'production' ? true : false,
+		path: '/',
 		maxAge: 604800000
 	});
 
