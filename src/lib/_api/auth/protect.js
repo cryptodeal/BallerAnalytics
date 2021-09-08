@@ -4,6 +4,7 @@ import cookie from 'cookie';
 const protect = async (request) => {
 	const cookies = cookie.parse(request.headers.cookie || '');
 	let token;
+
 	if (cookies.accessToken) {
 		token = cookies.accessToken;
 	}

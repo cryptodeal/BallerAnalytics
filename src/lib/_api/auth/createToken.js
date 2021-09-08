@@ -4,7 +4,7 @@ import { User } from '$lib/_db/models';
 import * as cookie from 'cookie';
 
 const createToken = async (user) => {
-	const tokenPayload = signToken(user._id);
+	const tokenPayload = signToken(user);
 
 	//Generate random refresh token
 	const refreshTokenPayload = crypto.randomBytes(32).toString('hex');
@@ -27,7 +27,7 @@ const createToken = async (user) => {
 		sameSite: import.meta.env.VITE_NODE_ENV == 'production' ? 'none' : 'Lax',
 		secure: import.meta.env.VITE_NODE_ENV == 'production' ? true : false,
 		path: '/',
-		maxAge: 1800000
+		maxAge: 1800
 	});
 
 	const refreshToken = cookie.serialize('refreshToken', refreshTokenPayload, {
@@ -35,7 +35,7 @@ const createToken = async (user) => {
 		sameSite: import.meta.env.VITE_NODE_ENV == 'production' ? 'none' : 'Lax',
 		secure: import.meta.env.VITE_NODE_ENV == 'production' ? true : false,
 		path: '/',
-		maxAge: 604800000
+		maxAge: 604800
 	});
 
 	return { accessToken, refreshToken };
