@@ -2,6 +2,10 @@
 	import Hamburger from '$lib/nav/Hamburger.svelte';
 	import Modal from 'svelte-simple-modal';
 	import UserContent from '$lib/authModal/UserContent.svelte';
+	import { session } from '$app/stores';
+	const logout = async () => {
+		await fetch('/api/auth/logout.json');
+	};
 	function toggleNav() {
 		const navToggle = document.getElementsByClassName('toggle');
 		for (let i = 0; i < navToggle.length; i++) {
@@ -44,8 +48,12 @@
 	<div
 		class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
 	>
-		<Modal>
-			<UserContent />
-		</Modal>
+		{#if !$session.user}
+			<Modal>
+				<UserContent />
+			</Modal>
+		{:else}
+			<button class="w-full h-full" on:click={logout}>logout</button>
+		{/if}
 	</div>
 </nav>
