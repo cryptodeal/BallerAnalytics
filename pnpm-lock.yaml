@@ -11,14 +11,14 @@ specifiers:
   mdsvex: ^0.9.8
   mongoose: ^6.0.5
   nodemailer: ^6.6.3
-  prettier: ~2.2.1
+  prettier: ^2.3.2
   prettier-plugin-svelte: ^2.4.0
   svelte: ^3.42.4
   svelte-forms-lib: ^1.10.6
   svelte-notifications: ^0.9.91
   svelte-simple-modal: ^1.0.2
   validator: ^13.6.0
-  vite-plugin-windicss: ^1.4.1
+  vite-plugin-windicss: ^1.4.2
   windicss: ^3.1.7
   yup: ^0.32.9
 
@@ -39,10 +39,10 @@ devDependencies:
   eslint-config-prettier: 8.3.0_eslint@7.32.0
   eslint-plugin-svelte3: 3.2.0_eslint@7.32.0+svelte@3.42.4
   mdsvex: 0.9.8_svelte@3.42.4
-  prettier: 2.2.1
-  prettier-plugin-svelte: 2.4.0_prettier@2.2.1+svelte@3.42.4
+  prettier: 2.3.2
+  prettier-plugin-svelte: 2.4.0_prettier@2.3.2+svelte@3.42.4
   svelte: 3.42.4
-  vite-plugin-windicss: 1.4.1
+  vite-plugin-windicss: 1.4.2
   windicss: 3.1.7
   yup: 0.32.9
 
@@ -286,10 +286,10 @@ packages:
       '@types/webidl-conversions': 6.1.1
     dev: false
 
-  /@windicss/config/1.4.1:
+  /@windicss/config/1.4.2:
     resolution:
       {
-        integrity: sha512-4jWG8sajwfV1pa+igFTwEcJgcrqHqcuxRI96IXIt6SuET3vSkwjP8X+4rBfns7QcR+Thxy6K/kBL0xvZNrJsPQ==
+        integrity: sha512-wjvZH1m8Rb60zCxYQDiZmgpSsljirqBNWsKo5G7JbkHGuEgCQdC+27jtPWQoMyBJY2w76Ofa7+7jvMqgoAS+ag==
       }
     dependencies:
       debug: 4.3.2
@@ -302,14 +302,14 @@ packages:
       - typescript
     dev: true
 
-  /@windicss/plugin-utils/1.4.1:
+  /@windicss/plugin-utils/1.4.2:
     resolution:
       {
-        integrity: sha512-7gfGroXHH3iHxG6cUakvTjO9ZytxhxUsscc4P++p2Q0KGTh29NnlJci9AQpvO2h+b6+z8VqsDLv1/8ob6hd42g==
+        integrity: sha512-EVMclEc8lSp03ljQIviKGe9SjdJkxkhwL99H8fAVRKVDJXhTAlpRc8nqcnkf8agZ4eTY6BE3kEJaC9hDICLjBg==
       }
     dependencies:
       '@antfu/utils': 0.2.4
-      '@windicss/config': 1.4.1
+      '@windicss/config': 1.4.2
       debug: 4.3.2
       fast-glob: 3.2.7
       magic-string: 0.25.7
@@ -1843,7 +1843,7 @@ packages:
     engines: { node: '>= 0.8.0' }
     dev: true
 
-  /prettier-plugin-svelte/2.4.0_prettier@2.2.1+svelte@3.42.4:
+  /prettier-plugin-svelte/2.4.0_prettier@2.3.2+svelte@3.42.4:
     resolution:
       {
         integrity: sha512-JwJ9bOz4XHLQtiLnX4mTSSDUdhu12WH8sTwy/XTDCSyPlah6IcV7NWeYBZscPEcceu2YnW8Y9sJCP40Z2UH9GA==
@@ -1852,14 +1852,14 @@ packages:
       prettier: ^1.16.4 || ^2.0.0
       svelte: ^3.2.0
     dependencies:
-      prettier: 2.2.1
+      prettier: 2.3.2
       svelte: 3.42.4
     dev: true
 
-  /prettier/2.2.1:
+  /prettier/2.3.2:
     resolution:
       {
-        integrity: sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
+        integrity: sha512-lnJzDfJ66zkMy58OL5/NY5zp70S7Nz6KqcKkXYzn2tMVrNxvbqaBpg7H3qHaLxCJ5lNMsGuM8+ohS7cZrthdLQ==
       }
     engines: { node: '>=10.13.0' }
     hasBin: true
@@ -2431,15 +2431,15 @@ packages:
       unist-util-stringify-position: 2.0.3
     dev: true
 
-  /vite-plugin-windicss/1.4.1:
+  /vite-plugin-windicss/1.4.2:
     resolution:
       {
-        integrity: sha512-LLWipPvTexLSF0RRFhfNuPiCifKQsfLuyd3y7z27gSBtDPmHOOXwpfEWrAv9oUnMQzXfG93RJ1HVnjk1hUo77Q==
+        integrity: sha512-lyjyZ7q/5CiRppKH5RrSuchE7vz4N6LWT5cJOeTsh2bCFAEuBURmIJGOtLGL7uYfmXjNRZjQIS98BV0aQ7kFDw==
       }
     peerDependencies:
       vite: ^2.0.1
     dependencies:
-      '@windicss/plugin-utils': 1.4.1
+      '@windicss/plugin-utils': 1.4.2
       chalk: 4.1.2
       debug: 4.3.2
       windicss: 3.1.7
