@@ -3,9 +3,6 @@
 	import Modal from 'svelte-simple-modal';
 	import UserContent from '$lib/authModal/UserContent.svelte';
 	import { session } from '$app/stores';
-	const logout = async () => {
-		await fetch('/api/auth/logout.json');
-	};
 	function toggleNav() {
 		const navToggle = document.getElementsByClassName('toggle');
 		for (let i = 0; i < navToggle.length; i++) {
@@ -27,6 +24,19 @@
 			class="block md:(inline-block border-none) text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900"
 			>Home</a
 		>
+		<a
+			sveltekit:prefetch
+			href="/teams"
+			class="block md:(inline-block border-none) text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900"
+			>Teams</a
+		>
+		{#if $session.user}
+			<a
+				href="/profile"
+				class="block md:(inline-block border-none) text-blue-900 hover:text-blue-500 px-3 py-3 border-b-2 border-blue-900"
+				>Profile</a
+			>
+		{/if}
 		<!--
 		<a
 			href="#"
@@ -45,15 +55,18 @@
 		>
     -->
 	</div>
-	<div
-		class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
-	>
-		{#if !$session.user}
+	{#if !$session.user}
+		<div
+			class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
+		>
 			<Modal>
 				<UserContent />
 			</Modal>
-		{:else}
-			<button class="w-full h-full" on:click={logout}>logout</button>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<a
+			class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
+			href="/logout">logout</a
+		>
+	{/if}
 </nav>

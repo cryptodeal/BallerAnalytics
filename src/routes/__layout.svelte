@@ -6,5 +6,7 @@
 
 <Notifications>
 	<Nav />
-	<slot />
+	<body class="bg-gray-100">
+		<slot />
+	</body>
 </Notifications>

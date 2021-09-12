@@ -23,7 +23,7 @@ class Email {
 			to: this.to,
 			subject: 'Login Email Test',
 			text: `Login URL: ${this.url}`,
-			html: `<b>Login URL:</b> <a>${this.url}</a>`
+			html: `<b>Login URL:</b> <a href='${this.url}'>${this.url}</a>`
 		};
 
 		try {

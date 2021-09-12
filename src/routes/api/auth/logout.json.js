@@ -2,8 +2,8 @@ import logout from '$lib/_api/auth/logout';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get({ locals }) {
-	//console.log(locals)
+export async function del({ locals }) {
+	console.log(locals);
 	/// Log the user out and clear access/refresh token cookies
 	const { accessToken, refreshToken } = await logout(locals);
 

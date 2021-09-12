@@ -25,6 +25,7 @@
 
 <script>
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	export let token;
 	console.log(token);
 	let authPromise;
@@ -39,7 +40,8 @@
 		}
 	}
 	onMount(async () => {
-		authPromise = getAuthTokens();
+		await getAuthTokens();
+		goto('/profile');
 	});
 </script>
 
