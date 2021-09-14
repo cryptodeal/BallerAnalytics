@@ -1,12 +1,16 @@
 import sendAuthLink from '$lib/_api/auth/sendAuthLink';
+import uaParser from 'ua-parser-js';
+import dayjs from 'dayjs';
+
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function post({ body }) {
+export async function post({ headers, body }) {
 	//const { body } = request;
-	console.log(body);
+	const ua = uaParser(headers['user-agent']);
+	let time = dayjs().format('DD MMMM, YYYY HH:mm:ss Z UTC');
 
-	const result = await sendAuthLink(body.email);
+	const result = await sendAuthLink(body.email, ua, time);
 
 	if (result == true) {
 		return {

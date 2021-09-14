@@ -38,7 +38,7 @@ const createToken = async (user) => {
 		maxAge: 604800
 	});
 
-	return { accessToken, refreshToken };
+	return { accessToken, refreshToken, tokenPayload };
 };
 
 export default createToken;

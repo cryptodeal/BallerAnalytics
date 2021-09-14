@@ -1,5 +1,4 @@
 import cookie from 'cookie';
-//import { v4 as uuid } from '@lukeed/uuid';
 import initConnect from '$lib/_db/initConnect';
 import decodeToken from '$lib/_api/auth/decodeToken';
 //import protect from '$lib/_api/auth/protect';

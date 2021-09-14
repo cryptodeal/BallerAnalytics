@@ -1,9 +1,8 @@
 <script context="module">
 	export async function load({ session }) {
-		const { user } = session;
 		return {
 			props: {
-				user
+				user: session.user
 			}
 		};
 	}
@@ -125,7 +124,7 @@
 						<div class="grid grid-cols-2">
 							<div class="px-2 md:px-4 py-2 font-semibold">Email</div>
 							<div class="px-2 md:px-4 py-2">
-								<a class="text-blue-800" href="mailto:{user.email}">{user.email}</a>
+								<a class="text-blue-800" href="mailto:jimmydeal@gmail.com">jimmydeal@gmail.com</a>
 							</div>
 						</div>
 						<div class="grid grid-cols-2">

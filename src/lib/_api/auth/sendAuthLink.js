@@ -1,7 +1,7 @@
 import { User } from '$lib/_db/models';
 import Email from '$lib/_api/auth/email';
 
-const sendAuthLink = async (email) => {
+const sendAuthLink = async (email, ua, time) => {
 	// Get user from body.email
 	let user = await User.findOne({ email: email });
 
@@ -18,7 +18,7 @@ const sendAuthLink = async (email) => {
 	const authLink = `http://localhost:3000/api/auth/verify/${authToken}`;
 
 	try {
-		await new Email(user, authLink).sendMagicLink();
+		await new Email(user, authLink, ua.browser.name, ua.os.name, time).sendMagicLink();
 		return true;
 	} catch (err) {
 		console.log(err);

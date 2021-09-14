@@ -1,11 +1,13 @@
 import crypto from 'crypto';
 import { User } from '$lib/_db/models';
 import createToken from '$lib/_api/auth/createToken';
+import decodeToken from '$lib/_api/auth/decodeToken';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
-export async function get({ params }) {
-	const { authToken } = params;
+export async function get(request) {
+	//console.log(request);
+	const { authToken } = request.params;
 
 	const hashedToken = crypto.createHash('sha256').update(authToken).digest('hex');
 
@@ -28,7 +30,9 @@ export async function get({ params }) {
 	await user.save();
 
 	// Log the user in and send JWT
-	const { accessToken, refreshToken } = await createToken(user);
+	const { accessToken, refreshToken, tokenPayload } = await createToken(user);
+	const { payload } = await decodeToken(tokenPayload);
+	request.locals.user = payload;
 
 	if (accessToken && refreshToken) {
 		return {
