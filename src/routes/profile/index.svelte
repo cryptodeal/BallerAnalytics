@@ -9,9 +9,9 @@
 </script>
 
 <script>
-	export let user;
+	//export let user;
 	let edit = false;
-	console.log(user);
+	//console.log(user);
 </script>
 
 <div class="container mx-auto p-5">
@@ -60,7 +60,7 @@
 							src="https://logoeps.com/wp-content/uploads/2012/10/houston-rockets-logo-vector.png"
 							alt=""
 						/>
-						<a href="#" class="text-main-color">Houston Rockets</a>
+						<a href="/teams/rockets" class="text-main-color">Houston Rockets</a>
 					</div>
 				</div>
 			</div>

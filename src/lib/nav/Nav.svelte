@@ -3,7 +3,7 @@
 	import Modal from 'svelte-simple-modal';
 	import UserContent from '$lib/authModal/UserContent.svelte';
 	import { session } from '$app/stores';
-	$: console.log($session);
+	//$: console.log($session);
 	function toggleNav() {
 		const navToggle = document.getElementsByClassName('toggle');
 		for (let i = 0; i < navToggle.length; i++) {

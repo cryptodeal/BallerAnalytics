@@ -25,8 +25,8 @@
 </script>
 
 {#each teams as { infoCommon }}
-	<a sveltekit:prefetch href="/teams/{infoCommon.slug}">
-		<div class="container mx-auto my-4">
+	<div class="container mx-auto my-4">
+		<a sveltekit:prefetch href="/teams/{infoCommon.slug}">
 			<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
 				<div class="md:w-1/8 w-full">
 					<img
@@ -46,6 +46,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</a>
+		</a>
+	</div>
 {/each}

@@ -21,7 +21,7 @@
 
 <script>
 	export let teamData;
-	console.log(teamData.availableSeasons[teamData.availableSeasons.length - 1]);
+	console.log(teamData.seasons[teamData.seasons.length - 1].roster);
 </script>
 
 <div class="w-full m-0 p-0 bg-red-900">
@@ -32,3 +32,33 @@
 		</h1>
 	</div>
 </div>
+
+{#each teamData.seasons[teamData.seasons.length - 1].roster.players as { player, number, position }}
+	<div class="container mx-auto my-4">
+		<!--<a sveltekit:prefetch href="/teams/{infoCommon.slug}">-->
+		<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
+			<div class="md:w-1/8 w-full">
+				<img
+					class="rounded-lg shadow-lg md:max-h-30 antialiased"
+					src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{player._id}.png"
+					alt="{player.name.fullName} headshot"
+				/>
+			</div>
+			<div class="md:w-7/8 w-full px-3 flex flex-row flex-wrap">
+				<div
+					class="w-full text-center text-gray-700 font-semibold relative pt-3 md:(pt-0 text-right)"
+				>
+					<div class="text-2xl text-white leading-tight">{player.name.fullName}</div>
+					<div class="text-normal text-gray-300 hover:text-gray-400 cursor-pointer">
+						<span class="pb-1">Position: {position}</span>
+						{#if number !== null}
+							<br />
+							<span class="pb-1">Number: {number}</span>
+						{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--</a>-->
+	</div>
+{/each}

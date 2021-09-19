@@ -1,5 +1,13 @@
 <script context="module">
 	export async function load({ fetch }) {
-		await fetch('/api/auth/logout.json');
+		const url = `/api/auth/logout.json`;
+		const res = await fetch(url);
+		await res.json();
+		if (res) {
+			return {
+				redirect: '/',
+				status: 302
+			};
+		}
 	}
 </script>

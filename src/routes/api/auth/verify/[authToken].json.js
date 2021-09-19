@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { User } from '$lib/_db/models';
 import createToken from '$lib/_api/auth/createToken';
-import decodeToken from '$lib/_api/auth/decodeToken';
+//import decodeToken from '$lib/_api/auth/decodeToken';
 /**
  * @type {import('@sveltejs/kit').RequestHandler}
  */
@@ -30,9 +30,13 @@ export async function get(request) {
 	await user.save();
 
 	// Log the user in and send JWT
-	const { accessToken, refreshToken, tokenPayload } = await createToken(user);
-	const { payload } = await decodeToken(tokenPayload);
-	request.locals.user = payload;
+	const { accessToken, refreshToken } = await createToken(user);
+	//console.log(accessToken)
+	//console.log(refreshToken)
+	//const { payload } = decodeToken(tokenPayload);
+	//request.locals.user = payload;
+	//let cookie1 = `cookie1Test=testCookie1; Path=/; HttpOnly`
+	//let cookie2 = `cookie2Test=testCookie2; Path=/; HttpOnly`
 
 	if (accessToken && refreshToken) {
 		return {

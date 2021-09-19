@@ -4,7 +4,7 @@ import { User } from '$lib/_db/models';
 import * as cookie from 'cookie';
 
 const createToken = async (user) => {
-	const tokenPayload = signToken(user);
+	const tokenPayload = await signToken(user);
 
 	//Generate random refresh token
 	const refreshTokenPayload = crypto.randomBytes(32).toString('hex');
