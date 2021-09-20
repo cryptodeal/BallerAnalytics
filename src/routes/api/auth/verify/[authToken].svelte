@@ -3,12 +3,16 @@
 		const url = `/api/auth/verify/${page.params.authToken}.json`;
 
 		const res = await fetch(url);
-		await res.json();
 		if (res.ok) {
+      await res.json();
 			return {
-				props: {
+				/*
+        props: {
 					msg: res.msg
-				}
+        }
+        */
+        status: 302,
+        redirect: '/profile'
 			};
 		}
 	}

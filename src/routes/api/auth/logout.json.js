@@ -5,13 +5,15 @@ import logout from '$lib/_api/auth/logout';
 export async function get(request) {
 	const { locals } = request;
 	/// Log the user out and clear access/refresh token cookies
-	const { accessToken, refreshToken } = await logout(locals);
+	//const { accessToken, refreshToken } = await logout(locals);
+  const { accessToken } = await logout(locals);
 	request.locals = {};
 
-	if (accessToken && refreshToken) {
+	if (accessToken) {
 		return {
 			headers: {
-				'set-cookie': [accessToken, refreshToken]
+				//'set-cookie': [accessToken, refreshToken]
+        'set-cookie': accessToken
 			}
 		};
 	}

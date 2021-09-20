@@ -3,6 +3,7 @@
 	import Modal from 'svelte-simple-modal';
 	import UserContent from '$lib/authModal/UserContent.svelte';
 	import { session } from '$app/stores';
+  import {goto} from '$app/navigation'
 	//$: console.log($session);
 	function toggleNav() {
 		const navToggle = document.getElementsByClassName('toggle');
@@ -10,6 +11,18 @@
 			navToggle.item(i).classList.toggle('hidden');
 		}
 	}
+  async function logout(){
+    const url = `/api/auth/logout.json`;
+    fetch(url)
+    .then((res) => {
+      return res.json()
+    })
+    .then(() => {
+      session.set(null);
+      goto('/');
+    })
+
+  }
 </script>
 
 <nav class="flex flex-wrap items-center justify-between p-5 bg-blue-200">
@@ -65,9 +78,8 @@
 			</Modal>
 		</div>
 	{:else}
-		<a
+		<button
 			class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
-			href="/logout">logout</a
-		>
+			on:click={logout}>logout</button>
 	{/if}
 </nav>

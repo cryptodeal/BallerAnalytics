@@ -30,7 +30,7 @@
 			<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
 				<div class="md:w-1/8 w-full">
 					<img
-						class="rounded-lg shadow-lg md:max-h-30 antialiased"
+						class="rounded-lg shadow-lg mx-auto md:m-4 max-h-30 antialiased"
 						src="teams/{infoCommon.slug}.svg"
 						alt="{infoCommon.city} {infoCommon.name} logo"
 					/>
