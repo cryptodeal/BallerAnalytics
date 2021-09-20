@@ -1,10 +1,10 @@
 <script context="module">
 	export async function load({ fetch, session }) {
-    const url = `/profile.json?userId=${session.user.id}`
-    const res = await fetch(url)
-    const {userData} = await res.json()
+		const url = `/profile.json?userId=${session.user.id}`;
+		const res = await fetch(url);
+		const { userData } = await res.json();
 
-    console.log(userData)
+		console.log(userData);
 		return {
 			props: {
 				user: userData
@@ -55,26 +55,30 @@
 			</div>
 			<!-- Team card -->
 			<div class="bg-white p-3 hover:shadow my-4">
-        <div class='flex items-center'>
-          <div class="flex-1 items-center inline-flex space-x-3 font-semibold text-gray-900 text-xl leading-8">
-            <span>My Teams</span>
-          </div>
-          <button
-            class="bg-green-500 inline-flex hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
-            on:click={() => (edit = !edit)}
-          >
-            <svg
-              class="h-4 self-center"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-            <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/>
-            </svg>
-            <div class="ml-2">Add</div>
-          </button>
-        </div>
+				<div class="flex items-center">
+					<div
+						class="flex-1 items-center inline-flex space-x-3 font-semibold text-gray-900 text-xl leading-8"
+					>
+						<span>My Teams</span>
+					</div>
+					<button
+						class="bg-green-500 inline-flex hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+						on:click={() => (edit = !edit)}
+					>
+						<svg
+							class="h-4 self-center"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="currentColor"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"
+							/>
+						</svg>
+						<div class="ml-2">Add</div>
+					</button>
+				</div>
 				<div class="grid grid-cols-3">
 					<div class="text-center my-2">
 						<img

@@ -4,15 +4,15 @@
 
 		const res = await fetch(url);
 		if (res.ok) {
-      await res.json();
+			await res.json();
 			return {
 				/*
         props: {
 					msg: res.msg
         }
         */
-        status: 302,
-        redirect: '/profile'
+				status: 302,
+				redirect: '/profile'
 			};
 		}
 	}

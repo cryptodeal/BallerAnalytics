@@ -20,11 +20,11 @@
 </script>
 
 <script>
-  import Headshot from '$lib/img/Headshot.svelte'
+	import Headshot from '$lib/img/Headshot.svelte';
 	export let teamData;
-  //let selected
-  //$: selectedIndex = teamData.seasons.length - 1
-  //$: console.log(selectedIndex)
+	//let selected
+	//$: selectedIndex = teamData.seasons.length - 1
+	//$: console.log(selectedIndex)
 	console.log(teamData.seasons[teamData.seasons.length - 1].roster);
 </script>
 
@@ -52,10 +52,10 @@
 		<!--<a sveltekit:prefetch href="/teams/{infoCommon.slug}">-->
 		<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
 			<div class="md:w-1/8 w-full">
-        <Headshot
+				<Headshot
 					src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{player._id}.png"
 					alt="{player.name.fullName} headshot"
-        />
+				/>
 			</div>
 			<div class="md:w-7/8 w-full px-3 flex flex-row flex-wrap">
 				<div
