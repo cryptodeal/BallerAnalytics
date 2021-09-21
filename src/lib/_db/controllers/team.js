@@ -6,7 +6,14 @@ const getAllTeamsCommonInfo = () => {
 };
 
 const getTeamBySlug = (slug) => {
-	return Team.findOne({ 'infoCommon.slug': slug }).populate('seasons.roster.players.player').exec();
+	return Team.findOne({ 'infoCommon.slug': slug })
+		.exec()
+		.then((team) => {
+			return team.populate(`seasons.${team.seasons.length - 1}.roster.players.player`);
+		})
+		.catch((err) => {
+			console.trace(err);
+		});
 };
 
 export { getAllTeamsCommonInfo, getTeamBySlug };
