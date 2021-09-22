@@ -1,5 +1,11 @@
 <script context="module">
 	export async function load({ fetch, session }) {
+		if (!session.user) {
+			return {
+				redirect: '/',
+				status: 302
+			};
+		}
 		const url = `/profile.json?userId=${session.user.id}`;
 		const res = await fetch(url);
 		const { userData } = await res.json();

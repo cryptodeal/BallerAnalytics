@@ -16,4 +16,19 @@ const getTeamBySlug = (slug) => {
 		});
 };
 
-export { getAllTeamsCommonInfo, getTeamBySlug };
+const getTeamRoster = (teamId, seasonYear) => {
+	return Team.findOne(teamId)
+		.exec()
+		.then((team) => {
+			let seasonIndex;
+			for (let i = 0; i < team.seasons.length; i++) {
+				if (team.seasons[i].season == seasonYear) seasonIndex = i;
+			}
+			return team.populate(`seasons.${seasonIndex}.roster.players.player`);
+		})
+		.catch((err) => {
+			console.trace(err);
+		});
+};
+
+export { getAllTeamsCommonInfo, getTeamBySlug, getTeamRoster };
