@@ -29,6 +29,7 @@
 		"cookie": "^0.4.1",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.0.7",
+		"nba-color": "^1.4.1",
 		"nodemailer": "^6.6.3",
 		"svelte-forms-lib": "^1.10.7",
 		"svelte-notifications": "^0.9.91",

@@ -21,6 +21,7 @@
 
 <script>
 	import Headshot from '$lib/img/Headshot.svelte';
+	import { getMainColor } from 'nba-color';
 	export let teamData;
 	//let selected
 	//$: selectedIndex = teamData.seasons.length - 1
@@ -28,7 +29,10 @@
 	console.log(teamData.seasons[teamData.seasons.length - 1].roster);
 </script>
 
-<div class="w-full m-0 p-0 bg-red-900">
+<div
+	class="w-full m-0 p-0 "
+	style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+>
 	<div class="container max-w-4xl mx-auto text-center break-normal">
 		<h1 class="font-sans py-10 text-white font-bold text-3xl md:(text-5xl py-20)">
 			{teamData.infoCommon.city}
@@ -50,7 +54,7 @@
 {#each teamData.seasons[teamData.seasons.length - 1].roster.players as { player, number, position }}
 	<div class="container mx-auto my-4">
 		<!--<a sveltekit:prefetch href="/teams/{infoCommon.slug}">-->
-		<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
+		<div class="rounded-lg shadow-lg w-full bg-gray-600 flex flex-row flex-wrap p-3">
 			<div class="md:w-1/8 w-full">
 				<Headshot
 					src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{player._id}.png"

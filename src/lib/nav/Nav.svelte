@@ -56,7 +56,12 @@
 		>
     -->
 	</div>
-	{#if !$session.user}
+	{#if $session.user}
+		<a
+			class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
+			href="logout">logout</a
+		>
+	{:else}
 		<div
 			class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
 		>
@@ -64,10 +69,5 @@
 				<UserContent />
 			</Modal>
 		</div>
-	{:else}
-		<a
-			class="toggle hidden md:(flex w-auto rounded) w-full px-4 py-2 text-right bg-blue-900 hover:bg-blue-500 text-white"
-			href="logout">logout</a
-		>
 	{/if}
 </nav>

@@ -20,9 +20,9 @@
 </script>
 
 <script>
-	//export let user;
+	export let user;
 	let edit = false;
-	//console.log(user);
+	console.log(user);
 </script>
 
 <div class="container mx-auto p-5">
@@ -156,7 +156,7 @@
 						<div class="grid grid-cols-2">
 							<div class="px-2 md:px-4 py-2 font-semibold">Email</div>
 							<div class="px-2 md:px-4 py-2">
-								<a class="text-blue-800" href="mailto:jimmydeal@gmail.com">jimmydeal@gmail.com</a>
+								<a class="text-blue-800" href="mailto:{user.email}">{user.email}</a>
 							</div>
 						</div>
 						<div class="grid grid-cols-2">

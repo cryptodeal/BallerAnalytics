@@ -90,7 +90,7 @@ userSchema.methods.createAuthToken = function () {
 
 	this.authLoginToken = crypto.createHash('sha256').update(authToken).digest('hex');
 
-	this.authLoginExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+	this.authLoginExpires = Date.now() + 20 * 60 * 1000; // auth token remains valid for 20 minutes
 
 	return authToken;
 };
