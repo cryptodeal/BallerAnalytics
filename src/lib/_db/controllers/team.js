@@ -9,7 +9,11 @@ const getTeamBySlug = (slug) => {
 	return Team.findOne({ 'infoCommon.slug': slug })
 		.exec()
 		.then((team) => {
-			return team.populate(`seasons.${team.seasons.length - 1}.roster.players.player`);
+			return team.populate(
+				`seasons.${team.seasons.length - 1}.roster.players.player seasons.${
+					team.seasons.length - 1
+				}.roster.coaches.coach`
+			);
 		})
 		.catch((err) => {
 			console.trace(err);
@@ -25,7 +29,9 @@ const getTeamRoster = (slug, seasonYear) => {
 			for (let i = 0; i < team.seasons.length; i++) {
 				if (team.seasons[i].season == seasonYear) seasonIndex = i;
 			}
-			return team.populate(`seasons.${seasonIndex}.roster.players.player`);
+			return team.populate(
+				`seasons.${seasonIndex}.roster.players.player seasons.${seasonIndex}.roster.coaches.coach`
+			);
 		})
 		.then((teamData) => {
 			return teamData.seasons[seasonIndex];

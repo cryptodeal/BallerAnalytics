@@ -20,11 +20,13 @@
 </script>
 
 <script>
-	import Headshot from '$lib/img/Headshot.svelte';
+	import PlayersTable from '$lib/teams/roster/PlayersTable.svelte';
+	import CoachesTable from '$lib/teams/roster/CoachesTable.svelte';
 	import { getMainColor } from 'nba-color';
 	export let teamData;
 	let seasonYear = teamData.seasons[teamData.seasons.length - 1].season;
 	let seasonData = teamData.seasons[teamData.seasons.length - 1];
+	console.log(seasonData);
 
 	async function loadRosterData() {
 		let res = await fetch(
@@ -32,6 +34,7 @@
 		);
 		res = await res.json();
 		seasonData = res.seasonData;
+		console.log(seasonData);
 	}
 </script>
 
@@ -47,54 +50,34 @@
 	</div>
 </div>
 
-<!--
-<select bind:value={selected}>
-  {#each teamData.seasons as {season}, i}
-    <option value={season} on:change="{() => selectedIndex = i}">
-      {season}-{parseInt(season.substring(2,4))+1}
-    </option>
-  {/each}
-</select>
--->
-<div class="container mx-auto bg-gray-600 my-4">
-	<div class="flex flex-wrap justify-center">
+<div
+	class="container mx-auto my-4"
+	style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+>
+	<div class="flex flex-wrap">
 		<div>
-			<h2 class="text-white">Roster:</h2>
+			<h2 class="text-white text-lg mr-4">Season:</h2>
 		</div>
-		<div>
-			<select bind:value={seasonYear} on:blur={loadRosterData}>
-				{#each teamData.seasons as { season }, i}
-					<option value={season}>{season}</option>
-				{/each}
-			</select>
-		</div>
+		<select class="select" bind:value={seasonYear} on:blur={loadRosterData}>
+			{#each teamData.seasons as { season }, i}
+				<option value={season}>{season}</option>
+			{/each}
+		</select>
 	</div>
 </div>
-{#each seasonData.roster.players as { player, number, position }}
-	<div class="container mx-auto my-4">
-		<!--<a sveltekit:prefetch href="/teams/{infoCommon.slug}">-->
-		<div class="rounded-lg shadow-lg w-full bg-gray-600 flex flex-row flex-wrap p-3">
-			<div class="md:w-1/8 w-full">
-				<Headshot
-					src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{player._id}.png"
-					alt="{player.name.fullName} headshot"
-				/>
-			</div>
-			<div class="md:w-7/8 w-full px-3 flex flex-row flex-wrap">
-				<div
-					class="w-full text-center text-gray-700 font-semibold relative pt-3 md:(pt-0 text-right)"
-				>
-					<div class="text-2xl text-white leading-tight">{player.name.fullName}</div>
-					<div class="text-normal text-gray-300 hover:text-gray-400 cursor-pointer">
-						<span class="pb-1">Position: {position}</span>
-						{#if number !== null}
-							<br />
-							<span class="pb-1">Number: {number}</span>
-						{/if}
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--</a>-->
+<div class="container mx-auto my-4">
+	<div
+		class="flex flex-wrap my-4"
+		style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+	>
+		<h2 class="text-white text-lg">Team Roster</h2>
 	</div>
-{/each}
+	<PlayersTable players={seasonData.roster.players} />
+	<div
+		class="flex flex-wrap my-4"
+		style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+	>
+		<h2 class="text-white text-lg">Coaching Staff</h2>
+	</div>
+	<CoachesTable coaches={seasonData.roster.coaches} />
+</div>

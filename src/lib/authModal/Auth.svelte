@@ -1,33 +1,39 @@
 <script>
-	//import { getNotificationsContext } from 'svelte-notifications';
+	import { getNotificationsContext } from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	//const { addNotification } = getNotificationsContext();
+	const { addNotification } = getNotificationsContext();
 	const formProps = {
 		initialValues: { email: '' },
 		validationSchema: yup.object().shape({
 			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
-			fetch('api/auth.json', {
+			fetch('/api/auth.json', {
 				method: 'POST',
 				credentials: 'include',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(values)
-			}); /*.then((res) => {
-				if (res.status === 409) {
+			}).then((res) => {
+				console.log(res);
+				if (res.status === 200) {
 					addNotification({
-						text: `Email Taken`,
-						position: 'bottom-center',
-						type: 'danger',
+						text: `Success: Check Email for Auth Link`,
+						position: 'top-right',
+						type: 'success',
 						removeAfter: 4000
 					});
 				} else {
-					window.location.href = 'profile';
+					addNotification({
+						text: `Error: Login Error; Please Try Again`,
+						position: 'top-right',
+						type: 'danger',
+						removeAfter: 4000
+					});
 				}
-			});*/
+			});
 		}
 	};
 </script>

@@ -245,4 +245,22 @@ const playerSchema = new Schema({
 
 const Player = mongoose.models.Player || mongoose.model('Player', playerSchema);
 
-export { User, Team, Player };
+const coachSchema = new Schema({
+	_id: { type: Number, require: true },
+	//replaces firstName and lastName with name.first and name.last
+	name: {
+		first: { type: String, require: true, index: true },
+		last: { type: String, require: true, index: true },
+		full: { type: String, require: true, index: true }
+	},
+	seasons: [
+		{
+			season: { type: String, require: true, index: true },
+			team: { type: String, ref: 'Team', index: true }
+		}
+	]
+});
+
+const Coach = mongoose.models.Coach || mongoose.model('Coach', coachSchema);
+
+export { User, Team, Player, Coach };

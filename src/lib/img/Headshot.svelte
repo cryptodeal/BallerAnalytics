@@ -7,9 +7,4 @@
 	}
 </script>
 
-<img
-	on:error={handleError}
-	class="rounded-lg h-130px w-95px mx-auto w-md:(h-260px w-190px) shadow-lg antialiased"
-	{src}
-	{alt}
-/>
+<img on:error={handleError} class="w-56px" {src} {alt} />

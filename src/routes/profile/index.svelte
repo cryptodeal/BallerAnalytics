@@ -143,7 +143,12 @@
 						<div class="grid grid-cols-2">
 							{#if edit}
 								<label class="px-2 md:px-4 py-2 font-semibold" for="name">First Name</label>
-								<input class="px-2 md:px-4 py-2" type="text" id="name" name="name" />
+								<input
+									class="input[type='text'] px-2 md:px-4 py-2"
+									type="text"
+									id="name"
+									name="name"
+								/>
 							{:else}
 								<div class="px-2 md:px-4 py-2 font-semibold">First Name</div>
 								<div class="px-2 md:px-4 py-2">James</div>
