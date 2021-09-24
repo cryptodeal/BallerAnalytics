@@ -23,10 +23,16 @@
 	import Headshot from '$lib/img/Headshot.svelte';
 	import { getMainColor } from 'nba-color';
 	export let teamData;
-	//let selected
-	//$: selectedIndex = teamData.seasons.length - 1
-	//$: console.log(selectedIndex)
-	console.log(teamData.seasons[teamData.seasons.length - 1].roster);
+	let seasonYear = teamData.seasons[teamData.seasons.length - 1].season;
+	let seasonData = teamData.seasons[teamData.seasons.length - 1];
+
+	async function loadRosterData() {
+		let res = await fetch(
+			`/api/teams/${teamData.infoCommon.slug}/roster.json?season=${seasonYear}`
+		);
+		res = await res.json();
+		seasonData = res.seasonData;
+	}
 </script>
 
 <div
@@ -50,8 +56,21 @@
   {/each}
 </select>
 -->
-
-{#each teamData.seasons[teamData.seasons.length - 1].roster.players as { player, number, position }}
+<div class="container mx-auto bg-gray-600 my-4">
+	<div class="flex flex-wrap justify-center">
+		<div>
+			<h2 class="text-white">Roster:</h2>
+		</div>
+		<div>
+			<select bind:value={seasonYear} on:blur={loadRosterData}>
+				{#each teamData.seasons as { season }, i}
+					<option value={season}>{season}</option>
+				{/each}
+			</select>
+		</div>
+	</div>
+</div>
+{#each seasonData.roster.players as { player, number, position }}
 	<div class="container mx-auto my-4">
 		<!--<a sveltekit:prefetch href="/teams/{infoCommon.slug}">-->
 		<div class="rounded-lg shadow-lg w-full bg-gray-600 flex flex-row flex-wrap p-3">

@@ -16,15 +16,19 @@ const getTeamBySlug = (slug) => {
 		});
 };
 
-const getTeamRoster = (teamId, seasonYear) => {
-	return Team.findOne(teamId)
+const getTeamRoster = (slug, seasonYear) => {
+	let seasonIndex;
+	return Team.findOne({ 'infoCommon.slug': slug })
+		.select('seasons')
 		.exec()
 		.then((team) => {
-			let seasonIndex;
 			for (let i = 0; i < team.seasons.length; i++) {
 				if (team.seasons[i].season == seasonYear) seasonIndex = i;
 			}
 			return team.populate(`seasons.${seasonIndex}.roster.players.player`);
+		})
+		.then((teamData) => {
+			return teamData.seasons[seasonIndex];
 		})
 		.catch((err) => {
 			console.trace(err);

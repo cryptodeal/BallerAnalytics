@@ -20,7 +20,7 @@
 		"svelte": "^3.43.0",
 		"svelte-mail": "^0.1.1",
 		"ua-parser-js": "^0.7.28",
-		"vite-plugin-windicss": "^1.4.4",
+		"vite-plugin-windicss": "^1.4.5",
 		"windicss": "^3.1.7",
 		"yup": "^0.32.9"
 	},
@@ -30,7 +30,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^6.0.7",
 		"nba-color": "^1.4.1",
-		"nodemailer": "^6.6.3",
+		"nodemailer": "^6.6.5",
 		"svelte-forms-lib": "^1.10.7",
 		"svelte-notifications": "^0.9.91",
 		"svelte-simple-modal": "^1.0.3",
