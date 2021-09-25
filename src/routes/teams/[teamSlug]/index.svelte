@@ -23,10 +23,21 @@
 	import PlayersTable from '$lib/teams/roster/PlayersTable.svelte';
 	import CoachesTable from '$lib/teams/roster/CoachesTable.svelte';
 	import { getMainColor } from 'nba-color';
+	import { getAge } from '$lib/_utils/helpers';
 	export let teamData;
 	let seasonYear = teamData.seasons[teamData.seasons.length - 1].season;
 	let seasonData = teamData.seasons[teamData.seasons.length - 1];
-	console.log(seasonData);
+	$: seasonData.roster.players.forEach((player, i) => {
+		const heightSplit = player.player.height.split('-');
+		const heightInches = parseInt(heightSplit[0]) * 12 + parseInt(heightSplit[1]);
+		player.id = i;
+		player.age = getAge(player.player.birthdate);
+		player.height = player.player.height;
+		player.heightSortHelper = heightInches;
+		player.weight = player.player.weight;
+		player.fullName = player.player.name.fullName;
+		player.school = player.player.school;
+	});
 
 	async function loadRosterData() {
 		let res = await fetch(
@@ -34,7 +45,6 @@
 		);
 		res = await res.json();
 		seasonData = res.seasonData;
-		console.log(seasonData);
 	}
 </script>
 
@@ -58,7 +68,7 @@
 		<div>
 			<h2 class="text-white text-lg mr-4">Season:</h2>
 		</div>
-		<select class="select" bind:value={seasonYear} on:blur={loadRosterData}>
+		<select class="select" bind:value={seasonYear} on:change={loadRosterData}>
 			{#each teamData.seasons as { season }, i}
 				<option value={season}>{season}</option>
 			{/each}
@@ -72,7 +82,7 @@
 	>
 		<h2 class="text-white text-lg">Team Roster</h2>
 	</div>
-	<PlayersTable players={seasonData.roster.players} />
+	<PlayersTable players={seasonData.roster.players} season={seasonYear} />
 	<div
 		class="flex flex-wrap my-4"
 		style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"

@@ -1,4 +1,4 @@
-function getAge(dateString) {
+const getAge = (dateString) => {
 	let today = new Date();
 	let birthDate = new Date(dateString);
 	let age = today.getFullYear() - birthDate.getFullYear();
@@ -7,6 +7,19 @@ function getAge(dateString) {
 		age--;
 	}
 	return age;
-}
+};
 
-export { getAge };
+const flattenObject = (obj) => {
+	const flattened = {};
+
+	Object.keys(obj).forEach((key) => {
+		if (typeof obj[key] === 'object' && obj[key] !== null) {
+			Object.assign(flattened, flattenObject(obj[key]));
+		} else {
+			flattened[key] = obj[key];
+		}
+	});
+	return flattened;
+};
+
+export { getAge, flattenObject };
