@@ -21,14 +21,14 @@
 		"svelte-mail": "^0.1.1",
 		"ua-parser-js": "^0.7.28",
 		"vite-plugin-windicss": "^1.4.7",
-		"windicss": "^3.1.7",
+		"windicss": "^3.1.8",
 		"yup": "^0.32.9"
 	},
 	"type": "module",
 	"dependencies": {
 		"cookie": "^0.4.1",
 		"jsonwebtoken": "^8.5.1",
-		"mongoose": "^6.0.7",
+		"mongoose": "^6.0.8",
 		"nba-color": "^1.4.1",
 		"nodemailer": "^6.6.5",
 		"svelte-forms-lib": "^1.10.7",

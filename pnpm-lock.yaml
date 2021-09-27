@@ -9,7 +9,7 @@ specifiers:
   eslint-plugin-svelte3: ^3.2.1
   jsonwebtoken: ^8.5.1
   mdsvex: ^0.9.8
-  mongoose: ^6.0.7
+  mongoose: ^6.0.8
   nba-color: ^1.4.1
   nodemailer: ^6.6.5
   prettier: ^2.4.1
@@ -22,13 +22,13 @@ specifiers:
   ua-parser-js: ^0.7.28
   validator: ^13.6.0
   vite-plugin-windicss: ^1.4.7
-  windicss: ^3.1.7
+  windicss: ^3.1.8
   yup: ^0.32.9
 
 dependencies:
   cookie: 0.4.1
   jsonwebtoken: 8.5.1
-  mongoose: 6.0.7
+  mongoose: 6.0.8
   nba-color: 1.4.1
   nodemailer: 6.6.5
   svelte-forms-lib: 1.10.7
@@ -49,7 +49,7 @@ devDependencies:
   svelte-mail: 0.1.1
   ua-parser-js: 0.7.28
   vite-plugin-windicss: 1.4.7
-  windicss: 3.1.7
+  windicss: 3.1.8
   yup: 0.32.9
 
 packages:
@@ -282,8 +282,8 @@ packages:
     dependencies:
       debug: 4.3.2
       jiti: 1.12.3
-      tsup: 5.2.0
-      windicss: 3.1.7
+      tsup: 5.2.1
+      windicss: 3.1.8
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -302,7 +302,7 @@ packages:
       fast-glob: 3.2.7
       magic-string: 0.25.7
       micromatch: 4.0.4
-      windicss: 3.1.7
+      windicss: 3.1.8
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -625,7 +625,7 @@ packages:
       braces: 3.0.2
       glob-parent: 5.1.2
       is-binary-path: 2.1.0
-      is-glob: 4.0.1
+      is-glob: 4.0.2
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
@@ -1106,7 +1106,7 @@ packages:
       ignore: 4.0.6
       import-fresh: 3.3.0
       imurmurhash: 0.1.4
-      is-glob: 4.0.1
+      is-glob: 4.0.2
       js-yaml: 3.14.1
       json-stable-stringify-without-jsonify: 1.0.1
       levn: 0.4.1
@@ -1370,7 +1370,7 @@ packages:
       }
     engines: { node: '>= 6' }
     dependencies:
-      is-glob: 4.0.1
+      is-glob: 4.0.2
     dev: true
 
   /glob/7.1.6:
@@ -1623,10 +1623,10 @@ packages:
       binary-extensions: 2.2.0
     dev: true
 
-  /is-core-module/2.6.0:
+  /is-core-module/2.7.0:
     resolution:
       {
-        integrity: sha512-wShG8vs60jKfPWpF2KZRaAtvt3a20OAn7+IJ6hLPECpSABLcKtFKTTI4ZtH5QcBruBHlq+WsdHWyz0BCZW7svQ==
+        integrity: sha512-ByY+tjCciCr+9nLryBYcSD50EOGWt95c7tIsKTG1J2ixKKXPvF7Ej3AVd+UfDydAJom3biBGDBALaO79ktwgEQ==
       }
     dependencies:
       has: 1.0.3
@@ -1645,10 +1645,10 @@ packages:
     engines: { node: '>=8' }
     dev: true
 
-  /is-glob/4.0.1:
+  /is-glob/4.0.2:
     resolution:
       {
-        integrity: sha512-5G0tKtBTFImOqDnLB2hG6Bp2qcKEFduo4tZu9MT/H6NQv/ghhy30o55ufafxJ/LdH79LLs2Kfrn85TLKyA7BUg==
+        integrity: sha512-ZZTOjRcDjuAAAv2cTBQP/lL59ZTArx77+7UzHdWW/XB1mrfp7DEaVpKmZ0XIzx+M7AxfhKcqV+nMetUQmFifwg==
       }
     engines: { node: '>=0.10.0' }
     dependencies:
@@ -2107,10 +2107,10 @@ packages:
       saslprep: 1.0.3
     dev: false
 
-  /mongoose/6.0.7:
+  /mongoose/6.0.8:
     resolution:
       {
-        integrity: sha512-44STDcV6awu0zfo1Z3NyKPHZwfVrGU93/QgR0gYbt4bik/nEa7lI1RRGcq5oyGM0YE7l63i2j80v1OhvrlFvYw==
+        integrity: sha512-7XZ5TUoDtF8af7+mKfL58s8dN2BKmldQPTlmkb41PaRAleBVGeAck7Mj6JlIh9SOCi+64GT+afebiJaeyXe1Lw==
       }
     engines: { node: '>=12.0.0' }
     dependencies:
@@ -2188,17 +2188,17 @@ packages:
       }
     dev: true
 
-  /nanocolors/0.2.6:
+  /nanocolors/0.2.10:
     resolution:
       {
-        integrity: sha512-lP8hjPSXTQ7qpYl5hFPVTBXGdd7+Rn3oi8GqIPNZP63L09tewRzWYFxAy26B1BYOOYaPWgmVF/BFIhDAHihwUQ==
+        integrity: sha512-i+EDWGsJClQwR/bhLIG/CObZZwaYaS5qt+yjxZbfV+77QiNHNzE9nj4d9Ut1TGZ0R0eSwPcQWzReASzXuw/7oA==
       }
     dev: true
 
-  /nanoid/3.1.25:
+  /nanoid/3.1.28:
     resolution:
       {
-        integrity: sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
+        integrity: sha512-gSu9VZ2HtmoKYe/lmyPFES5nknFrHa+/DT9muUFWFMi6Jh9E1I7bkvlQ8xxf1Kos9pi9o8lBnIOkatMhKX/YUw==
       }
     engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
@@ -2396,8 +2396,8 @@ packages:
       }
     engines: { node: ^10 || ^12 || >=14 }
     dependencies:
-      nanocolors: 0.2.6
-      nanoid: 3.1.25
+      nanocolors: 0.2.10
+      nanoid: 3.1.28
       source-map-js: 0.6.2
     dev: true
 
@@ -2604,7 +2604,7 @@ packages:
         integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==
       }
     dependencies:
-      is-core-module: 2.6.0
+      is-core-module: 2.7.0
       path-parse: 1.0.7
     dev: true
 
@@ -3040,10 +3040,10 @@ packages:
       }
     dev: true
 
-  /tsup/5.2.0:
+  /tsup/5.2.1:
     resolution:
       {
-        integrity: sha512-Im6TcLyjP3wfid1OdIRJw+7E4E5WAKvXi1GSz4V0qxBDblG14dPlnoxZGNuvfk/6X3DlhxgTbWbnyR+JRruYPA==
+        integrity: sha512-eQmRfKoHIiTFg38Dh2MARCx3J0+P+wbwB5iSHcXTwsnVR9csGLpln5qqBjdgyAGV1VTbOmyU37veCi2eA+wuqA==
       }
     hasBin: true
     peerDependencies:
@@ -3189,7 +3189,7 @@ packages:
       '@windicss/plugin-utils': 1.4.7
       chalk: 4.1.2
       debug: 4.3.2
-      windicss: 3.1.7
+      windicss: 3.1.8
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -3270,10 +3270,10 @@ packages:
       isexe: 2.0.0
     dev: true
 
-  /windicss/3.1.7:
+  /windicss/3.1.8:
     resolution:
       {
-        integrity: sha512-Q/HQ9j+r2R0fdt85zAjccdo11kHWzQmpkuwIUQIO6PSypyDmBTfN14aAy4szLrpgo2woyuHM7Y+kir4IG4qnKQ==
+        integrity: sha512-G1UfnnSZ3s4MZnqqIL8DOQbL8rBArQKlodlby8OvP333TPaRouamuIuYyCt5kSNEJzFrkx168TSRIkqhDs9bOA==
       }
     engines: { node: '>= 12' }
     hasBin: true

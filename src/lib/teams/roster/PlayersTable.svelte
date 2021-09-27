@@ -60,7 +60,7 @@
 						>
 							<div class="inline-flex">
 								<div>Pos</div>
-								<div class="ml-1 w-4 h4">
+								<div class="ml-1 w-4 h-4">
 									{#if sortBy.col == 'position'}
 										{#if sortBy.ascending}
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -83,7 +83,7 @@
 						>
 							<div class="inline-flex">
 								<div>Age</div>
-								<div class="ml-1 w-4 h4">
+								<div class="ml-1 w-4 h-4">
 									{#if sortBy.col == 'age'}
 										{#if sortBy.ascending}
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -106,7 +106,7 @@
 						>
 							<div class="inline-flex">
 								<div>Ht</div>
-								<div class="ml-1 w-4 h4">
+								<div class="ml-1 w-4 h-4">
 									{#if sortBy.col == 'heightSortHelper'}
 										{#if sortBy.ascending}
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -129,7 +129,7 @@
 						>
 							<div class="inline-flex">
 								<div>Wt</div>
-								<div class="ml-1 w-4 h4">
+								<div class="ml-1 w-4 h-4">
 									{#if sortBy.col == 'weight'}
 										{#if sortBy.ascending}
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -152,7 +152,7 @@
 						>
 							<div class="inline-flex">
 								<div>College</div>
-								<div class="ml-1 w-4 h4">
+								<div class="ml-1 w-4 h-4">
 									{#if sortBy.col == 'school'}
 										{#if sortBy.ascending}
 											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
