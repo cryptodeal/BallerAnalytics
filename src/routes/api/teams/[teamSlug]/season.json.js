@@ -1,10 +1,10 @@
-import { getTeamRoster } from '$lib/_db/controllers/team';
+import { getTeamSeason } from '$lib/_db/controllers/team';
 
 export async function get({ params, query }) {
 	const { teamSlug } = params;
 	const seasonYear = query.get('season');
 
-	const seasonData = await getTeamRoster(teamSlug, seasonYear);
+	const seasonData = await getTeamSeason(teamSlug, seasonYear);
 
 	if (seasonData) {
 		return {

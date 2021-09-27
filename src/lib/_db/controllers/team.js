@@ -58,7 +58,7 @@ const getTeamIdFromSlug = (slug) => {
 		});
 };
 
-const getTeamRoster = (slug, seasonYear) => {
+const getTeamSeason = (slug, seasonYear) => {
 	let seasonIndex;
 	return Team.findOne({ 'infoCommon.slug': slug }, 'seasons')
 		.select('seasons')
@@ -110,4 +110,4 @@ const getTeamRoster = (slug, seasonYear) => {
 		});
 };
 
-export { getAllTeamsCommonInfo, getTeamBySlug, getTeamRoster, getTeamIdFromSlug };
+export { getAllTeamsCommonInfo, getTeamBySlug, getTeamSeason, getTeamIdFromSlug };

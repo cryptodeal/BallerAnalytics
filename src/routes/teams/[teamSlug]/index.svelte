@@ -4,11 +4,10 @@
 		const res = await fetch(url);
 
 		if (res.ok) {
-			const { teamData, schedule } = await res.json();
+			const { teamData } = await res.json();
 			return {
 				props: {
-					teamData,
-					schedule
+					teamData
 				}
 			};
 		}
@@ -28,11 +27,10 @@
 	import { getAge } from '$lib/_utils/helpers';
 	import { Tabs, TabList, TabPanel, Tab } from '$lib/_utils/tabs.js';
 	export let teamData;
-	export let schedule;
 	//console.log(schedule)
 	let seasonYear = teamData.seasons[teamData.seasons.length - 1].season;
 	let seasonData = teamData.seasons[teamData.seasons.length - 1];
-	$: console.log(seasonData);
+	//$: console.log(seasonData);
 	$: seasonData.roster.players.forEach((player, i) => {
 		const heightSplit = player.player.height.split('-');
 		const heightInches = parseInt(heightSplit[0]) * 12 + parseInt(heightSplit[1]);
@@ -44,21 +42,16 @@
 		player.fullName = player.player.name.fullName;
 		player.school = player.player.school;
 	});
-	$: preseasonSched = schedule.filter((game) => game.preseason);
 	//$: console.log(schedule)
-	$: regularSched = schedule.filter((game) => !game.preseason);
+	//$: regularSched = schedule.filter((game) => !game.preseason);
 
 	async function loadRosterData() {
 		let res = await fetch(
-			`/api/teams/${teamData.infoCommon.slug}/roster.json?season=${seasonYear}`
+			`/api/teams/${teamData.infoCommon.slug}/season.json?season=${seasonYear}`
 		);
-		let res2 = await fetch(
-			`/api/teams/${teamData.infoCommon.slug}/schedule.json?season=${seasonYear}`
-		);
+
 		res = await res.json();
-		res2 = await res2.json();
 		seasonData = res.seasonData;
-		schedule = res2.schedule;
 	}
 </script>
 
@@ -139,7 +132,7 @@
 					>
 						<h2 class="text-white text-lg">Preseason Schedule</h2>
 					</div>
-					<SchedTable schedule={preseasonSched} teamId={teamData._id} />
+					<SchedTable schedule={seasonData.games.preseason} teamId={teamData._id} />
 
 					<div
 						class="flex flex-wrap my-4"
@@ -147,7 +140,17 @@
 					>
 						<h2 class="text-white text-lg">Regular Season Schedule</h2>
 					</div>
-					<SchedTable schedule={regularSched} teamId={teamData._id} />
+					<SchedTable schedule={seasonData.games.regularSeason} teamId={teamData._id} />
+
+					{#if seasonData.games.postseason.length}
+						<div
+							class="flex flex-wrap my-4"
+							style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+						>
+							<h2 class="text-white text-lg">Postseason Schedule</h2>
+						</div>
+						<SchedTable schedule={seasonData.games.postseason} teamId={teamData._id} />
+					{/if}
 				</div>
 			</div>
 		</TabPanel>
