@@ -5,6 +5,27 @@
 	export let schedule;
 	$: console.log(schedule);
 	export let teamId;
+	let now = dayjs();
+
+	const getRecord = (index) => {
+		const record = {
+			wins: 0,
+			losses: 0
+		};
+		for (let i = 0; i < index + 1; i++) {
+			if (
+				(teamId == schedule[i].home.id._id &&
+					schedule[i].home.stats.points > schedule[i].visitor.stats.points) ||
+				(teamId == schedule[i].visitor.id._id &&
+					schedule[i].visitor.stats.points > schedule[i].home.stats.points)
+			) {
+				record.wins++;
+			} else {
+				record.losses++;
+			}
+		}
+		return record;
+	};
 </script>
 
 <div class="flex flex-col w-full">
@@ -30,10 +51,22 @@
 						>
 							Time
 						</th>
+						{#if dayjs(`${schedule[0].date}-${schedule[0].time}`, 'YYYYMMDD-HHmm').isBefore(now)}
+							<th
+								class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+							>
+								Result
+							</th>
+							<th
+								class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+							>
+								W-L
+							</th>
+						{/if}
 					</tr>
 				</thead>
 				<tbody>
-					{#each schedule as { home, visitor, date, time }}
+					{#each schedule as { home, visitor, date, time }, i}
 						<tr>
 							<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
 								<div class="text-sm font-bold leading-5 text-gray-500">
@@ -76,6 +109,37 @@
 									{dayjs(`${date}-${time}`, 'YYYYMMDD-HHmm').subtract(1, 'hour').format('h:mm A')} CT
 								</div>
 							</td>
+
+							{#if dayjs(`${date}-${time}`, 'YYYYMMDD-HHmm').isBefore(now)}
+								<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+									<div class="text-sm leading-5 text-gray-500">
+										{#if (teamId == home.id._id && home.stats.points > visitor.stats.points) || (teamId == visitor.id._id && visitor.stats.points > home.stats.points)}
+											<span class="text-green-400 font-bold mr-1">W</span>
+										{:else}
+											<span class="text-red-500 font-bold mr-1">L</span>
+										{/if}
+										<span
+											>{home.stats.points > visitor.stats.points
+												? `${home.stats.points}-${visitor.stats.points}`
+												: `${visitor.stats.points}-${home.stats.points}`}</span
+										>
+									</div>
+								</td>
+
+								<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+									<div class="text-sm leading-5 text-gray-500">
+										{`${getRecord(i).wins}-${getRecord(i).losses}`}
+									</div>
+								</td>
+							{:else if dayjs(`${schedule[0].date}-${schedule[0].time}`, 'YYYYMMDD-HHmm').isBefore(now)}
+								<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+									<div class="text-sm leading-5 text-gray-500">--</div>
+								</td>
+
+								<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+									<div class="text-sm leading-5 text-gray-500">--</div>
+								</td>
+							{/if}
 						</tr>
 					{/each}
 				</tbody>

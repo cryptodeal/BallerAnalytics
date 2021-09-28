@@ -7,7 +7,6 @@ import decodeToken from '$lib/_api/auth/decodeToken';
  * @type {import('@sveltejs/kit').RequestHandler}
  */
 export async function get(request) {
-	//console.log(request);
 	const { authToken } = request.params;
 
 	const hashedToken = crypto.createHash('sha256').update(authToken).digest('hex');

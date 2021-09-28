@@ -56,20 +56,28 @@
 </script>
 
 <div
-	class="w-full m-0 p-0 "
+	class="w-full m-0 p-0"
 	style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
 >
 	<div class="container max-w-4xl mx-auto text-center break-normal">
-		<h1 class="font-sans py-10 text-white font-bold text-3xl md:(text-5xl py-20)">
-			{teamData.infoCommon.city}
-			{teamData.infoCommon.name}
-		</h1>
+		<div class="flex flex-wrap justify-center align-center h-25 md:h-50">
+			<img
+				class="shadow-lg mx-4 h-full md:mr-4 antialiased"
+				src="/teams/{teamData.infoCommon.slug}.svg"
+				alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
+			/>
+			<div>
+				<h1 class="font-sans text-white py-10 font-bold text-3xl md:(text-5xl py-20)">
+					{teamData.infoCommon.city}
+					{teamData.infoCommon.name}
+				</h1>
+			</div>
+		</div>
 	</div>
 	<Tabs>
 		<TabList color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>
 			<Tab color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>Roster</Tab>
 			<Tab color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>Schedule</Tab>
-			<Tab color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>three</Tab>
 		</TabList>
 
 		<TabPanel>
@@ -153,10 +161,6 @@
 					{/if}
 				</div>
 			</div>
-		</TabPanel>
-
-		<TabPanel>
-			<h2>Third panel</h2>
 		</TabPanel>
 	</Tabs>
 </div>
