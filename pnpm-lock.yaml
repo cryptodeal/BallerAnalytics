@@ -37,7 +37,7 @@ dependencies:
   validator: 13.6.0
 
 devDependencies:
-  '@sveltejs/kit': 1.0.0-next.177_svelte@3.43.0
+  '@sveltejs/kit': 1.0.0-next.178_svelte@3.43.0
   dayjs: 1.10.7
   eslint: 7.32.0
   eslint-config-prettier: 8.3.0_eslint@7.32.0
@@ -183,10 +183,10 @@ packages:
       picomatch: 2.3.0
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.177_svelte@3.43.0:
+  /@sveltejs/kit/1.0.0-next.178_svelte@3.43.0:
     resolution:
       {
-        integrity: sha512-VPDeXAqAhBhpKaBpnaCYDQKrPg/B84LViA62GWGRnq0HUJ0sCex9fyWsdJCNHUes/pDEV9q8T6LgGU14XJ6qyQ==
+        integrity: sha512-Hai7bqZkn4JQMQwh8gUMJEbyBeRPIx1oQUhGZjHlH4yIqVf2Oz9Nf4FkGcQAa5eGF907qRhE/gghPpsZk6KkeQ==
       }
     engines: { node: ^12.20 || >=14.13 }
     hasBin: true

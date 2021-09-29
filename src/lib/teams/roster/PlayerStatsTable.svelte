@@ -4,7 +4,7 @@
 	export let season;
 	let sortBy = { col: 'fullName', ascending: true };
 	$: if (season) sortBy = { col: 'fullName', ascending: true };
-	$: if (season) players.sort((a, b) => a.fullName.localeCompare(b.fullName));
+	//$: console.log(players[0])
 
 	$: sort = (column) => {
 		if (sortBy.col == column) {
@@ -369,73 +369,71 @@
 							</td>
 
 							<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-								<div class="text-sm leading-5 text-gray-500">
-									{gamesPlayed ? gamesPlayed : '--'}
-								</div>
+								<div class="text-sm leading-5 text-gray-500">{gamesPlayed ? gamesPlayed : '0'}</div>
 							</td>
 
 							<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-								<div class="text-sm leading-5 text-gray-500">{minutes ? minutes : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{minutes ? minutes : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{pts ? pts : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{pts ? pts : '0'}</div>
 							</td>
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{oreb ? oreb : '--'}</div>
-							</td>
-
-							<td
-								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
-							>
-								<div class="text-sm leading-5 text-gray-500">{dreb ? dreb : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{oreb ? oreb : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{reb ? reb : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{dreb ? dreb : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{ast ? ast : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{reb ? reb : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{stl ? stl : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{ast ? ast : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{blk ? blk : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{stl ? stl : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{tov ? tov : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{blk ? blk : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
-								<div class="text-sm leading-5 text-gray-500">{pf ? pf : '--'}</div>
+								<div class="text-sm leading-5 text-gray-500">{tov ? tov : '0'}</div>
+							</td>
+
+							<td
+								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
+							>
+								<div class="text-sm leading-5 text-gray-500">{pf ? pf : '0'}</div>
 							</td>
 
 							<td
 								class="px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200"
 							>
 								<div class="text-sm leading-5 text-gray-500">
-									{astTovRatio ? astTovRatio.toFixed(2) : '--'}
+									{astTovRatio ? astTovRatio.toFixed(2) : '0'}
 								</div>
 							</td>
 						</tr>

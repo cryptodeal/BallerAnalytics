@@ -2,8 +2,8 @@
 	import Headshot from '$lib/img/Headshot.svelte';
 	export let players;
 	export let season;
-	let sortBy = { col: 'id', ascending: true };
-	$: if (season) sortBy = { col: 'id', ascending: true };
+	let sortBy = { col: 'fullName', ascending: true };
+	$: if (season) sortBy = { col: 'fullName', ascending: true };
 
 	$: sort = (column) => {
 		if (sortBy.col == column) {

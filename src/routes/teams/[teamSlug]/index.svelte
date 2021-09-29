@@ -31,6 +31,13 @@
 	//console.log(teamData);
 	let seasonYear = teamData.seasons[teamData.seasons.length - 1].season;
 	let seasonData = teamData.seasons[teamData.seasons.length - 1];
+	seasonData.roster.players.sort((a, b) =>
+		a.player.name.fullName > b.player.name.fullName
+			? 1
+			: b.player.name.fullName > a.player.name.fullName
+			? -1
+			: 0
+	);
 	//$: console.log(seasonData);
 	$: seasonData.roster.players.forEach((player, i) => {
 		const heightSplit = player.player.height.split('-');
@@ -42,18 +49,18 @@
 		player.weight = player.player.weight;
 		player.fullName = player.player.name.fullName;
 		player.school = player.player.school;
-		player.gamesPlayed = false;
-		player.minutes = false;
-		player.pts = false;
-		player.oreb = false;
-		player.dreb = false;
-		player.reb = false;
-		player.ast = false;
-		player.stl = false;
-		player.blk = false;
-		player.tov = false;
-		player.pf = false;
-		player.astTovRatio = false;
+		player.gamesPlayed = 0;
+		player.minutes = 0;
+		player.pts = 0;
+		player.oreb = 0;
+		player.dreb = 0;
+		player.reb = 0;
+		player.ast = 0;
+		player.stl = 0;
+		player.blk = 0;
+		player.tov = 0;
+		player.pf = 0;
+		player.astTovRatio = 0;
 		for (let j = 0; j < player.player.seasons.length; j++) {
 			if (
 				player.player.seasons[j].season === seasonYear.toString() &&
@@ -82,6 +89,13 @@
 
 		res = await res.json();
 		console.log(res.seasonData);
+		res.seasonData.roster.players = res.seasonData.roster.players.sort((a, b) =>
+			a.player.name.fullName > b.player.name.fullName
+				? 1
+				: b.player.name.fullName > a.player.name.fullName
+				? -1
+				: 0
+		);
 		seasonData = res.seasonData;
 	}
 </script>
@@ -90,19 +104,17 @@
 	class="w-full m-0 p-0"
 	style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
 >
-	<div class="container max-w-4xl mx-auto text-center break-normal">
-		<div class="flex flex-wrap justify-center align-center h-25 md:h-50">
-			<img
-				class="shadow-lg mx-4 h-full md:mr-4 antialiased"
-				src="/teams/{teamData.infoCommon.slug}.svg"
-				alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
-			/>
-			<div>
-				<h1 class="font-sans text-white py-10 font-bold text-3xl md:(text-5xl py-20)">
-					{teamData.infoCommon.city}
-					{teamData.infoCommon.name}
-				</h1>
-			</div>
+	<div class="flex flex-wrap justify-center align-center min-h-25 md:h-50">
+		<img
+			class="shadow-lg mx-4 h-25 md:(mr-4 h-full) antialiased"
+			src="/teams/{teamData.infoCommon.slug}.svg"
+			alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
+		/>
+		<div>
+			<h1 class="font-sans text-white py-5 font-bold text-3xl md:(text-5xl py-20)">
+				{teamData.infoCommon.city}
+				{teamData.infoCommon.name}
+			</h1>
 		</div>
 	</div>
 	<Tabs>
