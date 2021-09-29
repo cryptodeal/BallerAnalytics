@@ -13,7 +13,7 @@ const getTeamBySlug = (slug) => {
 			return team.populate([
 				{
 					path: `seasons.${team.seasons.length - 1}.roster.players.player`,
-					select: 'birthdate height weight name school'
+					select: 'birthdate height weight name school seasons'
 				},
 				{
 					path: `seasons.${team.seasons.length - 1}.roster.coaches.coach`,
@@ -45,6 +45,12 @@ const getTeamBySlug = (slug) => {
 				}
 			]);
 		})
+		.then((team) => {
+			team.seasons[team.seasons.length - 1].roster.players.map((player) => {
+				if (player.player.seasons) player.player.seasons.sort((a, b) => a.season - b.season);
+			});
+			return team;
+		})
 		.catch((err) => {
 			console.trace(err);
 		});
@@ -70,7 +76,7 @@ const getTeamSeason = (slug, seasonYear) => {
 			return team.populate([
 				{
 					path: `seasons.${seasonIndex}.roster.players.player`,
-					select: 'birthdate height weight name school'
+					select: 'birthdate height weight name school seasons'
 				},
 				{
 					path: `seasons.${seasonIndex}.roster.coaches.coach`,

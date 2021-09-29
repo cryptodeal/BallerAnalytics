@@ -22,4 +22,8 @@ const flattenObject = (obj) => {
 	return flattened;
 };
 
-export { getAge, flattenObject };
+const getAstTovRatio = (ast, tov) => {
+	return ast / tov;
+};
+
+export { getAge, flattenObject, getAstTovRatio };

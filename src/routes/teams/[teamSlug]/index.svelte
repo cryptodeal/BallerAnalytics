@@ -22,12 +22,13 @@
 <script>
 	import PlayersTable from '$lib/teams/roster/PlayersTable.svelte';
 	import CoachesTable from '$lib/teams/roster/CoachesTable.svelte';
+	import PlayerStatsTable from '$lib/teams/roster/PlayerStatsTable.svelte';
 	import SchedTable from '$lib/teams/schedule/SchedTable.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import { getAge } from '$lib/_utils/helpers';
+	import { getAge, getAstTovRatio } from '$lib/_utils/helpers';
 	import { Tabs, TabList, TabPanel, Tab } from '$lib/_utils/tabs.js';
 	export let teamData;
-	//console.log(schedule)
+	//console.log(teamData);
 	let seasonYear = teamData.seasons[teamData.seasons.length - 1].season;
 	let seasonData = teamData.seasons[teamData.seasons.length - 1];
 	//$: console.log(seasonData);
@@ -41,9 +42,38 @@
 		player.weight = player.player.weight;
 		player.fullName = player.player.name.fullName;
 		player.school = player.player.school;
+		player.gamesPlayed = false;
+		player.minutes = false;
+		player.pts = false;
+		player.oreb = false;
+		player.dreb = false;
+		player.reb = false;
+		player.ast = false;
+		player.stl = false;
+		player.blk = false;
+		player.tov = false;
+		player.pf = false;
+		player.astTovRatio = false;
+		for (let j = 0; j < player.player.seasons.length; j++) {
+			if (
+				player.player.seasons[j].season === seasonYear.toString() &&
+				player.player.seasons[j].stats
+			) {
+				player.gamesPlayed = player.player.seasons[j].stats.gamesPlayed.value;
+				player.minutes = player.player.seasons[j].stats.minutes.value;
+				player.pts = player.player.seasons[j].stats.pts.value;
+				player.oreb = player.player.seasons[j].stats.oreb.value;
+				player.dreb = player.player.seasons[j].stats.dreb.value;
+				player.reb = player.player.seasons[j].stats.reb.value;
+				player.ast = player.player.seasons[j].stats.ast.value;
+				player.stl = player.player.seasons[j].stats.stl.value;
+				player.blk = player.player.seasons[j].stats.blk.value;
+				player.tov = player.player.seasons[j].stats.tov.value;
+				player.pf = player.player.seasons[j].stats.pf.value;
+				player.astTovRatio = getAstTovRatio(player.ast, player.tov);
+			}
+		}
 	});
-	//$: console.log(schedule)
-	//$: regularSched = schedule.filter((game) => !game.preseason);
 
 	async function loadRosterData() {
 		let res = await fetch(
@@ -51,6 +81,7 @@
 		);
 
 		res = await res.json();
+		console.log(res.seasonData);
 		seasonData = res.seasonData;
 	}
 </script>
@@ -77,6 +108,7 @@
 	<Tabs>
 		<TabList color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>
 			<Tab color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>Roster</Tab>
+			<Tab color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>Stats</Tab>
 			<Tab color={getSecondaryColor(teamData.infoCommon.abbreviation).hex}>Schedule</Tab>
 		</TabList>
 
@@ -112,6 +144,35 @@
 						<h2 class="text-white text-lg">Coaching Staff</h2>
 					</div>
 					<CoachesTable coaches={seasonData.roster.coaches} />
+				</div>
+			</div>
+		</TabPanel>
+
+		<TabPanel>
+			<div class="bg-gray-100 pt-4">
+				<div
+					class="container mx-auto mb-4"
+					style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+				>
+					<div class="flex flex-wrap">
+						<div>
+							<h2 class="text-white text-lg mr-4">Season:</h2>
+						</div>
+						<select class="select" bind:value={seasonYear} on:change={loadRosterData}>
+							{#each teamData.seasons as { season }, i}
+								<option value={season}>{season}</option>
+							{/each}
+						</select>
+					</div>
+				</div>
+				<div class="container mx-auto my-4">
+					<div
+						class="flex flex-wrap my-4"
+						style="background-color:{getMainColor(teamData.infoCommon.abbreviation).hex}"
+					>
+						<h2 class="text-white text-lg">Player Stats - All Splits</h2>
+					</div>
+					<PlayerStatsTable players={seasonData.roster.players} season={seasonYear} />
 				</div>
 			</div>
 		</TabPanel>

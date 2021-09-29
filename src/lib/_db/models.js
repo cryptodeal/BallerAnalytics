@@ -243,7 +243,125 @@ const playerSchema = new Schema({
 	seasons: [
 		{
 			season: { type: String, require: true, index: true },
-			team: { type: String, ref: 'Team', index: true }
+			team: { type: String, ref: 'Team', index: true },
+			stats: {
+				gamesPlayed: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				wins: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				losses: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				winPct: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				minutes: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fgm: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fga: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fgPct: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fG3M: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fG3A: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fG3Pct: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				ftm: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				fta: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				ftPct: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				oreb: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				dreb: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				reb: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				ast: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				tov: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				stl: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				blk: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				blka: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				pf: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				pfd: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				pts: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				plusMinus: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				nbaFantasyPts: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				dD2: {
+					value: { type: Number },
+					rank: { type: Number }
+				},
+				tD3: {
+					value: { type: Number },
+					rank: { type: Number }
+				}
+			}
 		}
 	]
 });

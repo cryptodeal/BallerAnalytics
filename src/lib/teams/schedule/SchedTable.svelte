@@ -13,11 +13,16 @@
 			losses: 0
 		};
 		for (let i = 0; i < index + 1; i++) {
+			//Broken for teams that don't exist in database like Milan
+			//aka foreign teams. change conditional to first check home then separate if for visitor
 			if (
-				(teamId == schedule[i].home.id._id &&
-					schedule[i].home.stats.points > schedule[i].visitor.stats.points) ||
-				(teamId == schedule[i].visitor.id._id &&
-					schedule[i].visitor.stats.points > schedule[i].home.stats.points)
+				teamId == schedule[i].home.id._id &&
+				schedule[i].home.stats.points > schedule[i].visitor.stats.points
+			) {
+				record.wins++;
+			} else if (
+				teamId == schedule[i].visitor.id._id &&
+				schedule[i].visitor.stats.points > schedule[i].home.stats.points
 			) {
 				record.wins++;
 			} else {

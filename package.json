@@ -20,7 +20,7 @@
 		"svelte": "^3.43.0",
 		"svelte-mail": "^0.1.1",
 		"ua-parser-js": "^0.7.28",
-		"vite-plugin-windicss": "^1.4.7",
+		"vite-plugin-windicss": "^1.4.8",
 		"windicss": "^3.1.8",
 		"yup": "^0.32.9"
 	},
