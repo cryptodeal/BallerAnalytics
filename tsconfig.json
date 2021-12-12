@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "typeRoots": ["./global.d.ts", "./node_modules/@types"],
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
+
+    "allowJs": true,
+    "checkJs": false
+  },
+
+  "include": ["src/**/*"]
+}

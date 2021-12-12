@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "path": "packages"
+    },
+    {
+      "path": "web"
+    },
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    // ---------------------------------------------------------------------------------------------------------------------------------------------
+
+    "eslint.alwaysShowStatus": true,
+    "prettier.prettierPath": "_prettier-vscode-fix/node_modules/prettier",
+    "prettier.configPath": ".prettierrc.js",
+    "prettier.ignorePath": ".prettierignore"
+    // ----------------------------------------------------------------------------------------------------------------------------------------------
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "editorconfig.editorconfig",
+      "esbenp.prettier-vscode",
+      "svelte.svelte-vscode"
+    ],
+    "unwantedRecommendations": []
+  }
+}

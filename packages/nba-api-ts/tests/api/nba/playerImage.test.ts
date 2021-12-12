@@ -1,0 +1,38 @@
+import { suite } from 'uvu';
+import * as assert from 'uvu/assert';
+import { initConnect, endConnect } from '../../../src/db/connect';
+import { Player2 } from '../../../src/db/models';
+import { Player2Document } from '../../../src/db/interfaces/mongoose.gen';
+import { storePlayerImage } from '../../../src/api/nba/images';
+
+const PlayerImageTest = suite('playerImageTest');
+let playerWPic: Player2Document;
+let playerWPicRes: string[];
+
+PlayerImageTest.before(async () => {
+	await initConnect();
+});
+
+PlayerImageTest.after(async () => {
+	await endConnect();
+});
+
+PlayerImageTest('find playerWPic: instance of Player2', async () => {
+	/** Player2 is James Harden; Expect a headshot exists */
+	playerWPic = await Player2.findOne({ 'meta.helpers.nbaPlayerId': '201935' });
+	assert.instance(playerWPic, Player2);
+});
+
+PlayerImageTest('storePlayerImage: function', () => {
+	assert.type(storePlayerImage, 'function');
+});
+
+PlayerImageTest('test storing player image: string[]', async () => {
+	const data = await storePlayerImage(playerWPic);
+	if (Array.isArray(data)) {
+		playerWPicRes = data;
+		assert.instance(playerWPicRes, Array);
+	}
+});
+
+PlayerImageTest.run();
