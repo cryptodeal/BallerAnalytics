@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { Game2Document, Game2Model, Game2Schema } from '../interfaces/mongoose.gen';
 
-const Game2Schema: Game2Schema = new mongoose.Schema({
+const Game2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
 			nbaGameId: { type: String },
@@ -406,9 +405,9 @@ Game2Schema.query = {
 };
 
 Game2Schema.statics = {
-	findByUrl(url: string) {
+	findByUrl(url) {
 		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url }).exec();
 	}
 };
 
-export const Game2: Game2Model = mongoose.model<Game2Document, Game2Model>('Game2', Game2Schema);
+export const Game2 = mongoose.model('Game2', Game2Schema);

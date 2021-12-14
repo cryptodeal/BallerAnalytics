@@ -4,19 +4,17 @@ import { getSeasonGames, SeasonGameItem } from '../../../src/api/bballRef/season
 
 const SeasonGamesTest = suite('seasonGamesTest');
 let testGames: SeasonGameItem[];
-let testLeague: string;
-let testYear: number;
+const testLeague = 'NBA';
+const testYear = 2021;
 
 SeasonGamesTest('getSeasonGames should be function', () => {
 	assert.type(getSeasonGames, 'function');
 });
 
 SeasonGamesTest('get all seasonGames', async () => {
-	const { games, league, year } = await getSeasonGames('NBA', 2021);
+	const { games } = await getSeasonGames('NBA', 2021);
 	console.log(games[0]);
 	testGames = games;
-	testLeague = league;
-	testYear = year;
 });
 
 SeasonGamesTest('testLeague should be string', () => {

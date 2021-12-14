@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import * as slugger from 'mongoose-slugger-plugin';
-import { Player2Document, Player2Model, Player2Schema } from '../interfaces/mongoose.gen';
-mongoose.set('debug', true);
 
-const Player2Schema: Player2Schema = new mongoose.Schema({
+const Player2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
 			espnPlayerId: { type: Number },
@@ -160,7 +158,7 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 });
 
 Player2Schema.statics = {
-	findByPlayerUrl(playerUrl: string) {
+	findByPlayerUrl(playerUrl) {
 		return this.findOne({
 			'meta.helpers.bballRef.playerUrl': playerUrl
 		}).exec();
@@ -181,6 +179,4 @@ Player2Schema.plugin(
 	})
 );
 
-export const Player2: Player2Model = slugger.wrap(
-	mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema)
-);
+export const Player2 = slugger.wrap(mongoose.model('Player2', Player2Schema));

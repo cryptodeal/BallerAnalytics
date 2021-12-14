@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { LeagueDocument, LeagueModel, LeagueSchema } from '../interfaces/mongoose.gen';
 
-const LeagueSchema: LeagueSchema = new mongoose.Schema({
+const LeagueSchema = new mongoose.Schema({
 	name: { type: String, required: true, unique: true },
 	seasons: [
 		{
@@ -43,7 +42,4 @@ const LeagueSchema: LeagueSchema = new mongoose.Schema({
 	]
 });
 
-export const League: LeagueModel = mongoose.model<LeagueDocument, LeagueModel>(
-	'League',
-	LeagueSchema
-);
+export const League = mongoose.model('League', LeagueSchema);

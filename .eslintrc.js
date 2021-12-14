@@ -1,19 +1,24 @@
 module.exports = {
-	parser: '@typescript-eslint/parser', // Specifies the ESLint parser
-	parserOptions: {
-		ecmaVersion: 2020, // Allows for the parsing of modern ECMAScript features
-		sourceType: 'module', // Allows for the use of imports
-		ecmaFeatures: {
-			jsx: true // Allows for the parsing of JSX
-		}
-	},
-	ignorePatterns: ['dist', 'global.d.ts'],
-	extends: [
-		'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-		'plugin:prettier/recommended' // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
-	],
-	rules: {
-		// Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-		// e.g. "@typescript-eslint/explicit-function-return-type": "off",
-	}
+  root: true,
+  parser: "@typescript-eslint/parser",
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+  ],
+  plugins: ["svelte3", "@typescript-eslint"],
+  ignorePatterns: ["*.cjs", '*.js'],
+  overrides: [{ files: ["*.svelte"], processor: "svelte3/svelte3" }],
+  settings: {
+    "svelte3/typescript": () => require("typescript"),
+  },
+  parserOptions: {
+    sourceType: "module",
+    ecmaVersion: 2019,
+  },
+  env: {
+    browser: true,
+    es2017: true,
+    node: true,
+  },
 };

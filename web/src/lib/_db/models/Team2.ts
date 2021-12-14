@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { Team2Document, Team2Model, Team2Schema } from '../interfaces/mongoose.gen';
 
-const Team2Schema: Team2Schema = new mongoose.Schema({
+const Team2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
 			nbaTeamId: { type: String },
@@ -325,7 +324,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 });
 
 Team2Schema.statics = {
-	findByName(name: string) {
+	findByName(name) {
 		return this.findOne({
 			$or: [
 				{ 'infoCommon.name': name },
@@ -336,4 +335,4 @@ Team2Schema.statics = {
 	}
 };
 
-export const Team2: Team2Model = mongoose.model<Team2Document, Team2Model>('Team2', Team2Schema);
+export const Team2 = mongoose.model('Team2', Team2Schema);

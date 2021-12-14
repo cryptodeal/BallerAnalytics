@@ -113,7 +113,7 @@ const parseSeasons = ($: cheerio.Root) => {
 								.each(function (i, ptsDat) {
 									const textValue = $(ptsDat).text().trim();
 									const valueSplit = textValue.split('(');
-									const value = valueSplit[valueSplit.length - 1].replace(/[()\ \s-]+/g, '');
+									const value = valueSplit[valueSplit.length - 1].replace(/[() \s-]+/g, '');
 									$(ptsDat)
 										.find('a')
 										.each(function (i, ptsLink) {
@@ -136,7 +136,7 @@ const parseSeasons = ($: cheerio.Root) => {
 								.each(function (i, trbDat) {
 									const textValue = $(trbDat).text().trim();
 									const valueSplit = textValue.split('(');
-									const value = valueSplit[valueSplit.length - 1].replace(/[()\ \s-]+/g, '');
+									const value = valueSplit[valueSplit.length - 1].replace(/[() \s-]+/g, '');
 									$(trbDat)
 										.find('a')
 										.each(function (i, trbLink) {
@@ -159,7 +159,7 @@ const parseSeasons = ($: cheerio.Root) => {
 								.each(function (i, astDat) {
 									const textValue = $(astDat).text().trim();
 									const valueSplit = textValue.split('(');
-									const value = valueSplit[valueSplit.length - 1].replace(/[()\ \s-]+/g, '');
+									const value = valueSplit[valueSplit.length - 1].replace(/[() \s-]+/g, '');
 									$(astDat)
 										.find('a')
 										.each(function (i, astLink) {
@@ -182,7 +182,7 @@ const parseSeasons = ($: cheerio.Root) => {
 								.each(function (i, wsDat) {
 									const textValue = $(wsDat).text().trim();
 									const valueSplit = textValue.split('(');
-									const value = valueSplit[valueSplit.length - 1].replace(/[()\ \s-]+/g, '');
+									const value = valueSplit[valueSplit.length - 1].replace(/[() \s-]+/g, '');
 									$(wsDat)
 										.find('a')
 										.each(function (i, wsLink) {

@@ -11,18 +11,18 @@ interface ENV {
 	MONGO_PORT: number | undefined;
 	MONGO_HOST: string | undefined;
 	MONGO_DB: string | undefined;
-	S3_ACCESS_KEY: string | undefined;
-	S3_SECRET: string | undefined;
-	S3_BUCKET: string | undefined;
+	JWT_SECRET: string | undefined;
+	ZOHO_USER: string | undefined;
+	ZOHO_PASS: string | undefined;
 }
 
 interface Config {
 	MONGO_PORT: number;
 	MONGO_HOST: string;
 	MONGO_DB: string;
-	S3_ACCESS_KEY: string;
-	S3_SECRET: string;
-	S3_BUCKET: string;
+	JWT_SECRET: string;
+	ZOHO_USER: string;
+	ZOHO_PASS: string;
 }
 
 // Loading process.env as ENV interface
@@ -32,9 +32,9 @@ const getConfig = (): ENV => {
 		MONGO_PORT: process.env.MONGO_PORT ? Number(process.env.MONGO_PORT) : undefined,
 		MONGO_HOST: process.env.MONGO_HOST,
 		MONGO_DB: process.env.MONGO_DB,
-		S3_ACCESS_KEY: process.env.S3_ACCESS_KEY,
-		S3_SECRET: process.env.S3_SECRET,
-		S3_BUCKET: process.env.S3_BUCKET
+		JWT_SECRET: process.env.JWT_SECRET,
+		ZOHO_USER: process.env.ZOHO_USER,
+		ZOHO_PASS: process.env.ZOHO_PASS
 	};
 };
 

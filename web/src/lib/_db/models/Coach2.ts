@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { Coach2Document, Coach2Model, Coach2Schema } from '../interfaces/mongoose.gen';
 
-const Coach2Schema: Coach2Schema = new mongoose.Schema({
+const Coach2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
 			bballRef: {
@@ -36,12 +35,9 @@ const Coach2Schema: Coach2Schema = new mongoose.Schema({
 });
 
 Coach2Schema.statics = {
-	findByUrl(url: string) {
+	findByUrl(url) {
 		return this.findOne({ 'meta.helpers.bballRef.coachUrl': url }).exec();
 	}
 };
 
-export const Coach2: Coach2Model = mongoose.model<Coach2Document, Coach2Model>(
-	'Coach2',
-	Coach2Schema
-);
+export const Coach2 = mongoose.model('Coach2', Coach2Schema);

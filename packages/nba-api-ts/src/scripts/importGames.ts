@@ -1,5 +1,5 @@
 import { importAllGames } from '../db/controllers/Game2';
-import { initConnect, endConnect } from '../db/connect';
+import { initConnect, endConnect } from '../db';
 
 initConnect()
 	.then(async () => {

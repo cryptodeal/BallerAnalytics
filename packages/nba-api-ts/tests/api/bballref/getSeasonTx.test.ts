@@ -1,8 +1,7 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
-import { League } from '../../../src/db/models';
+import { League, initConnect, endConnect } from '../../../src/db';
 import { LeagueDocument } from '../../../src/db/interfaces/mongoose.gen';
-import { initConnect, endConnect } from '../../../src/db/connect';
 import { getSeasonTx, SeasonTxList } from '../../../src/api/bballRef/tx';
 
 const GetSeasonTxTest = suite('getSeasonTxTest');

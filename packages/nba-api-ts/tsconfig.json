@@ -1,14 +1,24 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
-  "typeRoots": ["./global.d.ts", "./node_modules/@types"],
   "compilerOptions": {
-    "rootDir": "./",
-    "outDir": "./dist",
-
-    "allowJs": true,
-    "checkJs": false
+    "declaration": true,
+    "importHelpers": true,
+    "target": "ESNext",
+    "module": "CommonJs",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "removeComments": false,
+    "noImplicitAny": false,
+    "lib": [
+        "es2016",
+        "dom",
+        "es5"
+    ]
   },
-
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["./node_modules", "./**/tests", "./**/*.test.*"]
 }
-

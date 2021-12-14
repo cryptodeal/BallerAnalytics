@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 declare namespace NodeJS {
 	interface ProcessEnv {
 		MONGO_PORT: string;
@@ -6,6 +8,7 @@ declare namespace NodeJS {
 	}
 }
 
-declare module nba {
-
+type CachedMongoose = {
+  conn: null | typeof mongoose;
+    promise: null | Promise<typeof mongoose>;
 }

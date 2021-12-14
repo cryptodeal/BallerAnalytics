@@ -1,4 +1,4 @@
-import { Game2, League, Team2, Player2, Official2 } from '../../models';
+import { Game2, League, Team2, Player2, Official2 } from '../../index';
 import { getBoxScore } from '../../../api/bballRef/games';
 import {
 	SeasonGameItem,

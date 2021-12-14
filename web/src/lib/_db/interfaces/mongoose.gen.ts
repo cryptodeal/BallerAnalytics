@@ -85,7 +85,7 @@ export type Coach2Queries = {};
 export type Coach2Methods = {};
 
 export type Coach2Statics = {
-	findByUrl: (this: Coach2Model, url: string) => any;
+	findByUrl: (this: Coach2Model, url: any) => any;
 };
 
 /**
@@ -614,7 +614,7 @@ export type Game2Queries = {
 export type Game2Methods = {};
 
 export type Game2Statics = {
-	findByUrl: (this: Game2Model, url: string) => any;
+	findByUrl: (this: Game2Model, url: any) => any;
 };
 
 /**
@@ -1565,7 +1565,7 @@ export type Player2Queries = {};
 export type Player2Methods = {};
 
 export type Player2Statics = {
-	findByPlayerUrl: (this: Player2Model, playerUrl: string) => any;
+	findByPlayerUrl: (this: Player2Model, playerUrl: any) => any;
 };
 
 /**
@@ -2149,7 +2149,7 @@ export type Team2Queries = {};
 export type Team2Methods = {};
 
 export type Team2Statics = {
-	findByName: (this: Team2Model, name: string) => any;
+	findByName: (this: Team2Model, name: any) => any;
 };
 
 /**
@@ -2522,107 +2522,111 @@ export type Team2Document = mongoose.Document<mongoose.Types.ObjectId, Team2Quer
 	};
 
 /**
- * Lean version of TxParticipantDocument
+ * Lean version of UserRefreshTokenDocument
  *
- * This has all Mongoose getters & functions removed. This type will be returned from `TxDocument.toObject()`.
+ * This has all Mongoose getters & functions removed. This type will be returned from `UserDocument.toObject()`.
  * ```
- * const txObject = tx.toObject();
+ * const userObject = user.toObject();
  * ```
  */
-export type TxParticipant = {
-	team: Team2['_id'] | Team2;
-	received: {
-		players: (Player2['_id'] | Player2)[];
-		coaches: (Coach2['_id'] | Coach2)[];
-		assets: string[];
-	};
-	spent: {
-		players: (Player2['_id'] | Player2)[];
-		coaches: (Coach2['_id'] | Coach2)[];
-		assets: string[];
-	};
+export type UserRefreshToken = {
+	token?: string;
+	expiration?: Date;
+	issued: Date;
 	_id: mongoose.Types.ObjectId;
 };
 
 /**
- * Lean version of TxDocument
+ * Lean version of UserDocument
  *
- * This has all Mongoose getters & functions removed. This type will be returned from `TxDocument.toObject()`. To avoid conflicts with model names, use the type alias `TxObject`.
+ * This has all Mongoose getters & functions removed. This type will be returned from `UserDocument.toObject()`. To avoid conflicts with model names, use the type alias `UserObject`.
  * ```
- * const txObject = tx.toObject();
+ * const userObject = user.toObject();
  * ```
  */
-export type Tx = {
-	date: Date;
-	season: number;
-	participants: TxParticipant[];
+export type User = {
+	email: string;
+	authLoginToken?: string;
+	authLoginExpires?: Date;
+	refreshTokens: UserRefreshToken[];
+	active?: boolean;
+	username?: string;
+	scope: string;
+	subscriptions: string[];
+	premiumUser: {
+		isPaid?: boolean;
+		subscriptionDate?: Date;
+		subscriptionEnd?: Date;
+	};
+	bio?: any;
+	name: {
+		first?: string;
+		last?: string;
+	};
+	image?: string;
 	_id: mongoose.Types.ObjectId;
+	updatedAt?: Date;
+	createdAt?: Date;
 };
 
 /**
- * Lean version of TxDocument (type alias of `Tx`)
+ * Lean version of UserDocument (type alias of `User`)
  *
  * Use this type alias to avoid conflicts with model names:
  * ```
- * import { Tx } from "../models"
- * import { TxObject } from "../interfaces/mongoose.gen.ts"
+ * import { User } from "../models"
+ * import { UserObject } from "../interfaces/mongoose.gen.ts"
  *
- * const txObject: TxObject = tx.toObject();
+ * const userObject: UserObject = user.toObject();
  * ```
  */
-export type TxObject = Tx;
+export type UserObject = User;
 
 /**
  * Mongoose Query types
  *
  * Pass this type to the Mongoose Model constructor:
  * ```
- * const Tx = mongoose.model<TxDocument, TxModel>("Tx", TxSchema);
+ * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
  * ```
  */
-export type TxQueries = {};
+export type UserQueries = {};
 
-export type TxMethods = {};
+export type UserMethods = {
+	createAuthToken: (this: UserDocument) => any;
+};
 
-export type TxStatics = {};
+export type UserStatics = {};
 
 /**
  * Mongoose Model type
  *
  * Pass this type to the Mongoose Model constructor:
  * ```
- * const Tx = mongoose.model<TxDocument, TxModel>("Tx", TxSchema);
+ * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
  * ```
  */
-export type TxModel = mongoose.Model<TxDocument, TxQueries> & TxStatics;
+export type UserModel = mongoose.Model<UserDocument, UserQueries> & UserStatics;
 
 /**
  * Mongoose Schema type
  *
- * Assign this type to new Tx schema instances:
+ * Assign this type to new User schema instances:
  * ```
- * const TxSchema: TxSchema = new mongoose.Schema({ ... })
+ * const UserSchema: UserSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type TxSchema = mongoose.Schema<TxDocument, TxModel>;
+export type UserSchema = mongoose.Schema<UserDocument, UserModel>;
 
 /**
  * Mongoose Subdocument type
  *
- * Type of `TxDocument["participants"]` element.
+ * Type of `UserDocument["refreshTokens"]` element.
  */
-export type TxParticipantDocument = mongoose.Types.Subdocument & {
-	team: Team2Document['_id'] | Team2Document;
-	received: {
-		players: mongoose.Types.Array<Player2Document['_id'] | Player2Document>;
-		coaches: mongoose.Types.Array<Coach2Document['_id'] | Coach2Document>;
-		assets: mongoose.Types.Array<string>;
-	};
-	spent: {
-		players: mongoose.Types.Array<Player2Document['_id'] | Player2Document>;
-		coaches: mongoose.Types.Array<Coach2Document['_id'] | Coach2Document>;
-		assets: mongoose.Types.Array<string>;
-	};
+export type UserRefreshTokenDocument = mongoose.Types.Subdocument & {
+	token?: string;
+	expiration?: Date;
+	issued: Date;
 	_id: mongoose.Types.ObjectId;
 };
 
@@ -2631,15 +2635,33 @@ export type TxParticipantDocument = mongoose.Types.Subdocument & {
  *
  * Pass this type to the Mongoose Model constructor:
  * ```
- * const Tx = mongoose.model<TxDocument, TxModel>("Tx", TxSchema);
+ * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
  * ```
  */
-export type TxDocument = mongoose.Document<mongoose.Types.ObjectId, TxQueries> &
-	TxMethods & {
-		date: Date;
-		season: number;
-		participants: mongoose.Types.DocumentArray<TxParticipantDocument>;
+export type UserDocument = mongoose.Document<mongoose.Types.ObjectId, UserQueries> &
+	UserMethods & {
+		email: string;
+		authLoginToken?: string;
+		authLoginExpires?: Date;
+		refreshTokens: mongoose.Types.DocumentArray<UserRefreshTokenDocument>;
+		active?: boolean;
+		username?: string;
+		scope: string;
+		subscriptions: mongoose.Types.Array<string>;
+		premiumUser: {
+			isPaid?: boolean;
+			subscriptionDate?: Date;
+			subscriptionEnd?: Date;
+		};
+		bio?: any;
+		name: {
+			first?: string;
+			last?: string;
+		};
+		image?: string;
 		_id: mongoose.Types.ObjectId;
+		updatedAt?: Date;
+		createdAt?: Date;
 	};
 
 /**
