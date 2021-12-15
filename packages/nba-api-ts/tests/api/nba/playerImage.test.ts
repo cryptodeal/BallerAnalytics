@@ -1,6 +1,6 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
-import { Player2, initConnect, endConnect } from '../../../src/db';
+import { Player2, initConnect, endConnect } from '../../../src';
 import { Player2Document } from '../../../src/db/interfaces/mongoose.gen';
 import { storePlayerImage } from '../../../src/api/nba/images';
 

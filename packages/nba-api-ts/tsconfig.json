@@ -1,24 +1,13 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
     "importHelpers": true,
     "target": "ESNext",
     "module": "CommonJs",
     "outDir": "dist",
     "rootDir": ".",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "removeComments": false,
-    "noImplicitAny": false,
-    "lib": [
-        "es2016",
-        "dom",
-        "es5"
-    ]
+    "composite": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["./node_modules", "./**/tests", "./**/*.test.*"]
+  "include": ["src/**/*", "config.ts"],
+  "exclude": ["./node_modules", "./**/tests", "./**/*.test.*", "dist"]
 }

@@ -1,4 +1,4 @@
-import { Player2, endConnect, initConnect } from '../db';
+import { Player2, endConnect, initConnect } from '../index';
 import { storePlayerImage } from '../api/nba/images';
 
 initConnect()

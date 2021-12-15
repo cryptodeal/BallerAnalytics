@@ -1,6 +1,6 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
-import { Game2, initConnect, endConnect } from '../../../src/db';
+import { Game2, initConnect, endConnect } from '../../../src';
 import { Game2Document } from '../../../src/db/interfaces/mongoose.gen';
 import { getBoxScore } from '../../../src/api/bballRef/games';
 import { BoxScore, BoxScorePlayer } from '../../../src/api/bballRef/games/utils';

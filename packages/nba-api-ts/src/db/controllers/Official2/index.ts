@@ -1,4 +1,4 @@
-import { Official2 } from '../../index';
+import { Official2 } from '../../../index';
 import { Official2Document, Game2Document } from '../../interfaces/mongoose.gen';
 import { ParsedOfficial } from '../../../api/bballRef/games/boxScore';
 import mongoose from 'mongoose';

@@ -1,4 +1,4 @@
-import { League, Team2, Player2 } from '../../index';
+import { League, Team2, Player2 } from '../../../index';
 import { BballRefSeason } from '../../../api/bballRef/seasons';
 import mongoose from 'mongoose';
 import { Player2Document, Team2Document } from '../../interfaces/mongoose.gen';

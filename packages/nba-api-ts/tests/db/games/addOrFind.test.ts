@@ -1,13 +1,11 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
-import { getSeasonGames, SeasonGameItem } from '../../../src/api/bballRef/seasons';
+import { getSeasonGames } from '../../../src/api/bballRef/seasons';
 import { addOrFindGame } from '../../../src/db/controllers/Game2';
-import { Game2, initConnect, endConnect } from '../../../src/db';
+import { Game2, initConnect, endConnect } from '../../../src';
 
 const AddOrFindGameTest = suite('addOrFindGameTest');
-let games: SeasonGameItem[];
 let game;
-let year: number;
 
 AddOrFindGameTest.before(async () => {
 	await initConnect();
