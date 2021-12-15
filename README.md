@@ -1,6 +1,6 @@
 # READ THIS FIRST!
 
-SvelteKit is still in beta. Expect bugs! Read more [here](https://svelte.dev/blog/sveltekit-beta), and track progress towards 1.0 [here](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0).
+BallerAnalytics.ai is still under development. Expect bugs!
 
 ## Documentation
 

@@ -4,4 +4,14 @@ export { Player2 } from './db/models/Player2';
 export { League } from './db/models/League';
 export { Official2 } from './db/models/Official2';
 export { Coach2 } from './db/models/Coach2';
+export { User } from './db/models/User';
+export type {
+	Game2Document,
+	Team2Document,
+	Player2Document,
+	LeagueDocument,
+	Official2Document,
+	Coach2Document,
+	UserDocument
+} from './db/interfaces/mongoose.gen';
 export { serverlessConnect, initConnect, endConnect } from './db/connect';

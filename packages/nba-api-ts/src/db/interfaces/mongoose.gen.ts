@@ -2643,6 +2643,149 @@ export type TxDocument = mongoose.Document<mongoose.Types.ObjectId, TxQueries> &
 	};
 
 /**
+ * Lean version of UserRefreshTokenDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `UserDocument.toObject()`.
+ * ```
+ * const userObject = user.toObject();
+ * ```
+ */
+export type UserRefreshToken = {
+	token?: string;
+	expiration?: Date;
+	issued?: Date;
+	_id: mongoose.Types.ObjectId;
+};
+
+/**
+ * Lean version of UserDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `UserDocument.toObject()`. To avoid conflicts with model names, use the type alias `UserObject`.
+ * ```
+ * const userObject = user.toObject();
+ * ```
+ */
+export type User = {
+	email: string;
+	authLoginToken?: string;
+	authLoginExpires?: Date;
+	refreshTokens: UserRefreshToken[];
+	active?: boolean;
+	username?: string;
+	scope: string;
+	subscriptions: string[];
+	premiumUser: {
+		isPaid?: boolean;
+		subscriptionDate?: Date;
+		subscriptionEnd?: Date;
+	};
+	bio?: any;
+	name: {
+		first?: string;
+		last?: string;
+	};
+	image?: string;
+	_id: mongoose.Types.ObjectId;
+	updatedAt?: Date;
+	createdAt?: Date;
+};
+
+/**
+ * Lean version of UserDocument (type alias of `User`)
+ *
+ * Use this type alias to avoid conflicts with model names:
+ * ```
+ * import { User } from "../models"
+ * import { UserObject } from "../interfaces/mongoose.gen.ts"
+ *
+ * const userObject: UserObject = user.toObject();
+ * ```
+ */
+export type UserObject = User;
+
+/**
+ * Mongoose Query types
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
+ * ```
+ */
+export type UserQueries = {};
+
+export type UserMethods = {
+	createAuthToken: (this: UserDocument) => any;
+};
+
+export type UserStatics = {};
+
+/**
+ * Mongoose Model type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
+ * ```
+ */
+export type UserModel = mongoose.Model<UserDocument, UserQueries> & UserStatics;
+
+/**
+ * Mongoose Schema type
+ *
+ * Assign this type to new User schema instances:
+ * ```
+ * const UserSchema: UserSchema = new mongoose.Schema({ ... })
+ * ```
+ */
+export type UserSchema = mongoose.Schema<UserDocument, UserModel>;
+
+/**
+ * Mongoose Subdocument type
+ *
+ * Type of `UserDocument["refreshTokens"]` element.
+ */
+export type UserRefreshTokenDocument = mongoose.Types.Subdocument & {
+	token?: string;
+	expiration?: Date;
+	issued?: Date;
+	_id: mongoose.Types.ObjectId;
+};
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
+ * ```
+ */
+export type UserDocument = mongoose.Document<mongoose.Types.ObjectId, UserQueries> &
+	UserMethods & {
+		email: string;
+		authLoginToken?: string;
+		authLoginExpires?: Date;
+		refreshTokens: mongoose.Types.DocumentArray<UserRefreshTokenDocument>;
+		active?: boolean;
+		username?: string;
+		scope: string;
+		subscriptions: mongoose.Types.Array<string>;
+		premiumUser: {
+			isPaid?: boolean;
+			subscriptionDate?: Date;
+			subscriptionEnd?: Date;
+		};
+		bio?: any;
+		name: {
+			first?: string;
+			last?: string;
+		};
+		image?: string;
+		_id: mongoose.Types.ObjectId;
+		updatedAt?: Date;
+		createdAt?: Date;
+	};
+
+/**
  * Check if a property on a document is populated:
  * ```
  * import { IsPopulated } from "../interfaces/mongoose.gen.ts"

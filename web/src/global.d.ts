@@ -12,14 +12,6 @@ declare namespace NodeJS {
 	}
 }
 
-declare global {
-	namespace NodeJS {
-		interface Global {
-			mongoose: any;
-		}
-	}
-}
-
 interface ImportMetaEnv {
 	readonly VITE_JWT_EXPIRY: string;
 	// more env variables...
