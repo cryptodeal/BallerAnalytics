@@ -40,6 +40,7 @@ export const get: RequestHandler = async (request) => {
 
 	if (accessToken) {
 		return {
+			status: 200,
 			headers: {
 				'set-cookie': [accessToken, refreshToken]
 			}
