@@ -22,6 +22,8 @@ const sendAuthLink = async (
 	await user.save({ validateBeforeSave: false });
 
 	const authLink = `http://${host}/api/auth/verify/${authToken}`;
+	if (!ua.browser.name) throw Error('Error: ua.browser.name is undefined');
+	if (!ua.os.name) throw Error('Error: ua.os.name is undefined');
 
 	try {
 		await new Email(user, authLink, ua.browser.name, ua.os.name, time).sendMagicLink();

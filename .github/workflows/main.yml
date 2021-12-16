@@ -1,0 +1,21 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on: push 
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install pnpm
+      run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
+    - name: Install modules
+      run: pnpm install
+    - name: Run prettier
+      run: pnpm format
+    - name: Run ESLint
+      run: pnpm lint

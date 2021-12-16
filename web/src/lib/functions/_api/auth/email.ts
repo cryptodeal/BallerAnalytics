@@ -19,7 +19,7 @@ class Email {
 	public fromName: string;
 	public _transporter: Transporter;
 
-	constructor(user: UserDocument, url: string, browser, os, time) {
+	constructor(user: UserDocument, url: string, browser: string, os: string, time: string) {
 		this.to = user.email;
 		this.url = url;
 		this.browser = browser;

@@ -9,7 +9,7 @@ interface JwtClaims {
 	username?: string;
 }
 
-const signToken = (user: UserDocument) => {
+const signToken = (user: UserDocument): string => {
 	const expiresIn = import.meta.env.VITE_JWT_EXPIRY;
 	if (typeof expiresIn !== 'string') {
 		throw Error('expiresIn must be a string!');

@@ -6,8 +6,11 @@
 	import { setContext, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 
+	/* eslint-disable  @typescript-eslint/no-explicit-any */
 	const tabs: any[] = [];
 	const panels: any[] = [];
+	/* eslint-enable  @typescript-eslint/no-explicit-any */
+
 	const selectedTab = writable(null);
 	const selectedPanel = writable(null);
 

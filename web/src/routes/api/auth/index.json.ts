@@ -2,14 +2,14 @@ import sendAuthLink from '$lib/functions/_api/auth/sendAuthLink';
 import uaParser from 'ua-parser-js';
 import dayjs from 'dayjs';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { Locals } from '$lib/types';
+import type { Locals, PostAuthBody } from '$lib/types';
 
-export const post: RequestHandler<Locals, FormData> = async ({ headers, body, host }) => {
-	console.log(body);
+export const post: RequestHandler<Locals, PostAuthBody> = async ({ headers, body, host }) => {
+	const { email } = body;
 	const ua = uaParser(headers['user-agent']);
 	const time: string = dayjs().format('DD MMMM, YYYY HH:mm:ss Z UTC');
 
-	const result = await sendAuthLink(body.email, ua, time, host);
+	const result = await sendAuthLink(email, ua, time, host);
 
 	if (result == true) {
 		return {

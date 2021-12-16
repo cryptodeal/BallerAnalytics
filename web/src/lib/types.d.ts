@@ -3,5 +3,14 @@
  * inside `global.d.ts` and removing `export` keyword
  */
 export interface Locals {
-	userid: string;
+	user?: {
+		id: string;
+		email: string;
+		scope: string;
+		username?: string;
+	};
+}
+
+export interface PostAuthBody {
+	email: string;
 }
