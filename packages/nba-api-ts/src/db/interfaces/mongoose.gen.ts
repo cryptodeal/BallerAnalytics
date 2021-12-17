@@ -1380,7 +1380,7 @@ export type Player2SeasonTeam = {
  * ```
  */
 export type Player2Season = {
-	year?: number;
+	year: number;
 	teams: Player2SeasonTeam[];
 	position?: string;
 	preseason: {
@@ -1606,7 +1606,7 @@ export type Player2SeasonTeamDocument = mongoose.Types.Subdocument & {
  * Type of `Player2Document["seasons"]` element.
  */
 export type Player2SeasonDocument = mongoose.Types.Subdocument & {
-	year?: number;
+	year: number;
 	teams: mongoose.Types.DocumentArray<Player2SeasonTeamDocument>;
 	position?: string;
 	preseason: {

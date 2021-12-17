@@ -12,6 +12,9 @@ export type {
 	LeagueDocument,
 	Official2Document,
 	Coach2Document,
-	UserDocument
+	UserDocument,
+	PopulatedDocument,
+	Team2SeasonDocument
 } from './db/interfaces/mongoose.gen';
+export { IsPopulated } from './db/interfaces/mongoose.gen';
 export { serverlessConnect, initConnect, endConnect } from './db/connect';

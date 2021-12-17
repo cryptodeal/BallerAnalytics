@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import * as slugger from 'mongoose-slugger-plugin';
 import { Player2Document, Player2Model, Player2Schema } from '../interfaces/mongoose.gen';
-mongoose.set('debug', true);
 
 const Player2Schema: Player2Schema = new mongoose.Schema({
 	meta: {
@@ -53,7 +52,7 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 	draftNumber: { type: String },
 	seasons: [
 		{
-			year: { type: Number },
+			year: { type: Number, required: true },
 			teams: [
 				{
 					id: { type: mongoose.Schema.Types.ObjectId, ref: 'Team2', index: true },

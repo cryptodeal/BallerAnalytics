@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm recursive run build",
-    "dev": "pnpm recursive run dev",
+    "build": "pnpm recursive run build --stream",
+    "dev": "pnpm recursive run dev --stream",
     "lint": "pnpm recursive run lint",
     "format": "pnpm recursive run format",
     "mtgen": "pnpm recursive run mtgen",

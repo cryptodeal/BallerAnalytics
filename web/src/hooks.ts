@@ -37,7 +37,7 @@ export const handle: Handle = async ({ request, resolve }) => {
 
 	const response = await resolve(request);
 
-	console.log(response.headers['set-cookie']);
+	//console.log(response.headers['set-cookie']);
 
 	return response;
 };

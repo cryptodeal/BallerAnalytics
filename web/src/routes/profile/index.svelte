@@ -11,7 +11,7 @@
 		const res = await fetch(url);
 		const { userData } = await res.json();
 
-		console.log(userData);
+		//console.log(userData);
 		return {
 			props: {
 				user: userData
@@ -23,7 +23,7 @@
 <script lang="ts">
 	export let user;
 	let edit = false;
-	console.log(user);
+	//console.log(user);
 </script>
 
 <div class="container mx-auto p-5">
