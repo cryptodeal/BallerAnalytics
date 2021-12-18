@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { serverlessConnect } from '@balleranalytics/nba-api-ts';
+import { serverlessConnect } from '$balleranalytics/nba-api-ts';
 import type { Handle, GetSession } from '@sveltejs/kit';
 import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
@@ -7,7 +7,7 @@ import protect from '$lib/functions/_api/auth/protect';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 
 export const handle: Handle = async ({ request, resolve }) => {
-	await serverlessConnect(`mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`);
+	await serverlessConnect(`${config.MONGO_URI}`);
 
 	const cookies = cookie.parse(request.headers.cookie || '');
 	console.log(cookies);

@@ -1,8 +1,9 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
+import path from 'path'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -17,7 +18,12 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: {
-			plugins: [WindiCSS()]
+			plugins: [WindiCSS()],
+      resolve: {
+        alias: {
+            $balleranalytics: path.resolve('../packages'),
+        }
+      }
 		}
 	}
 };

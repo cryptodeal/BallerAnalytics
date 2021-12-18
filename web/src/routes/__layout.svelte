@@ -1,6 +1,6 @@
 <script lang="ts">
 	import 'virtual:windi.css';
-	import '../app.css';
+	import './app.css';
 	import Nav from '$lib/ux/nav/Nav.svelte';
 	import Notifications from 'svelte-notifications';
 </script>

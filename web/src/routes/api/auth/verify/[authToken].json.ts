@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { User } from '@balleranalytics/nba-api-ts';
+import { User } from '$balleranalytics/nba-api-ts';
 import createToken from '$lib/functions/_api/auth/createToken';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import type { RequestHandler } from '@sveltejs/kit';

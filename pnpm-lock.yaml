@@ -61,7 +61,6 @@ importers:
       tsm: ^2.2.1
       typescript: ^4.5.4
       uvu: ^0.5.2
-      validator: ^13.7.0
     dependencies:
       '@aws-sdk/client-s3': 3.44.0
       '@types/cheerio': 0.22.30
@@ -77,7 +76,6 @@ importers:
       nba: 4.15.0
       sharp: 0.29.3
       typescript: 4.5.4
-      validator: 13.7.0
     devDependencies:
       '@tsconfig/node16': 1.0.2
       '@typescript-eslint/eslint-plugin': 5.7.0_a6f6159640504abdd3de077f8bcadb33
@@ -95,8 +93,8 @@ importers:
 
   web:
     specifiers:
-      '@balleranalytics/nba-api-ts': workspace:*
       '@sveltejs/adapter-auto': next
+      '@sveltejs/adapter-node': next
       '@sveltejs/kit': next
       '@types/cookie': ^0.4.1
       '@types/jsonwebtoken': ^8.5.6
@@ -135,11 +133,11 @@ importers:
       windicss: ^3.4.0
       yup: ^0.32.11
     dependencies:
-      '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       svelte-forms-lib: 2.0.0
       svelte-notifications: 0.9.92
     devDependencies:
       '@sveltejs/adapter-auto': 1.0.0-next.4
+      '@sveltejs/adapter-node': 1.0.0-next.56
       '@sveltejs/kit': 1.0.0-next.202_svelte@3.44.3
       '@types/cookie': 0.4.1
       '@types/jsonwebtoken': 8.5.6
@@ -1364,6 +1362,13 @@ packages:
       esbuild: 0.13.15
     dev: true
 
+  /@sveltejs/adapter-node/1.0.0-next.56:
+    resolution: {integrity: sha512-NY3CFUeczH/1g3rOtq9blHJ4Am99ZiUVVDibioD5GFctBH27TDVeZrpssGWngD0Ybkojpl8fXR7mTZZdOEx9qg==}
+    dependencies:
+      esbuild: 0.13.15
+      tiny-glob: 0.2.9
+    dev: true
+
   /@sveltejs/adapter-vercel/1.0.0-next.32:
     resolution: {integrity: sha512-ZcltaS5bAobGD5P0z7xJIjPHSlGpF7padMIkqTzJxwMEb/acGgdO5yzDS8XUEaSNgj+prpD2oG8+gm33ds8x0A==}
     dependencies:
@@ -1463,10 +1468,10 @@ packages:
 
   /@types/node/16.11.14:
     resolution: {integrity: sha512-mK6BKLpL0bG6v2CxHbm0ed6RcZrAtTHBTd/ZpnlVPVa3HkumsqLE4BC4u6TQ8D7pnrRbOU0am6epuALs+Ncnzw==}
-    dev: true
 
   /@types/node/17.0.0:
     resolution: {integrity: sha512-eMhwJXc931Ihh4tkU+Y7GiLzT/y/DBNpNtr4yU9O2w3SYBsr9NaOPhQlLKRmoWtI54uNwuo0IOUFQjVOTZYRvw==}
+    dev: false
 
   /@types/nodemailer/6.4.4:
     resolution: {integrity: sha512-Ksw4t7iliXeYGvIQcSIgWQ5BLuC/mljIEbjf615svhZL10PE9t+ei8O9gDaD3FPCasUJn9KTLwz2JFJyiiyuqw==}
@@ -1508,7 +1513,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.0
+      '@types/node': 16.11.14
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.13:
@@ -3400,6 +3405,10 @@ packages:
       type-fest: 0.20.2
     dev: true
 
+  /globalyzer/0.1.0:
+    resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
+    dev: true
+
   /globby/11.0.4:
     resolution: {integrity: sha512-9O4MVG9ioZJ08ffbcyVYyLOJLk5JQ688pJ4eMGLpdWLHq/Wr1D9BlriLQyL0E+jbkuePVZXYFj47QM/v093wHg==}
     engines: {node: '>=10'}
@@ -3410,6 +3419,10 @@ packages:
       ignore: 5.1.9
       merge2: 1.4.1
       slash: 3.0.0
+
+  /globrex/0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+    dev: true
 
   /graceful-fs/4.2.8:
     resolution: {integrity: sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==}
@@ -5414,6 +5427,13 @@ packages:
     resolution: {integrity: sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=}
     dev: true
 
+  /tiny-glob/0.2.9:
+    resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
+    dependencies:
+      globalyzer: 0.1.0
+      globrex: 0.1.2
+    dev: true
+
   /to-regex-range/5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
@@ -5614,11 +5634,6 @@ packages:
     resolution: {integrity: sha512-dyCZnv3aCey7yfTgIqdZanKl7xWAEEKCbgmR7SKqyK6QT/Z07ROactrgD1eA37C69ODRj7rNOjzKWVPh0EUjBA==}
     engines: {node: '>=6'}
     dev: true
-
-  /validator/13.7.0:
-    resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
-    engines: {node: '>= 0.10'}
-    dev: false
 
   /verror/1.10.0:
     resolution: {integrity: sha1-OhBcoXBTr1XW4nDB+CiGguGNpAA=}

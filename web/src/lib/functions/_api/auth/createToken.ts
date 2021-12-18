@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import signToken from '$lib/functions/_api/auth/signToken';
-import { User } from '@balleranalytics/nba-api-ts';
+import { User } from '$balleranalytics/nba-api-ts';
 import cookie from 'cookie';
-import type { UserDocument } from '@balleranalytics/nba-api-ts';
+import type { UserDocument } from '$balleranalytics/nba-api-ts';
 
 export type CreatedToken = {
 	accessToken: string;

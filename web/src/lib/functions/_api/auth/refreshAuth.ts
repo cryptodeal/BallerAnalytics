@@ -1,4 +1,4 @@
-import { User } from '@balleranalytics/nba-api-ts';
+import { User } from '$balleranalytics/nba-api-ts';
 import signToken from '$lib/functions/_api/auth/signToken';
 import cookie from 'cookie';
 import crypto from 'crypto';

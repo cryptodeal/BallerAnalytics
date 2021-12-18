@@ -1,5 +1,5 @@
-import { Team2, IsPopulated } from '@balleranalytics/nba-api-ts';
-import type { Team2Document } from '@balleranalytics/nba-api-ts';
+import { Team2, IsPopulated } from '$balleranalytics/nba-api-ts';
+import type { Team2Document } from '$balleranalytics/nba-api-ts';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } })

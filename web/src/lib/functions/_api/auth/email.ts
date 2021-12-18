@@ -2,7 +2,7 @@ import nodemailer, { Transporter } from 'nodemailer';
 import { renderMail } from 'svelte-mail';
 import config from '$lib/_config';
 import Mail from '$lib/ux/auth/Mail.svelte';
-import type { UserDocument } from '@balleranalytics/nba-api-ts';
+import type { UserDocument } from '$balleranalytics/nba-api-ts';
 
 interface SvelteSSRComponent {
 	// eslint-disable-next-line @typescript-eslint/ban-types

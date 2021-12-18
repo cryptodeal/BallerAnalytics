@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 import { UserDocument, UserModel, UserSchema } from '../interfaces/mongoose.gen';
 import crypto from 'crypto';
-import validator from 'validator';
+
+const validateEmail = (email: string) => {
+	return email.match(
+		/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+	);
+};
 
 const RefreshTokenSchema = new mongoose.Schema({
 	token: {
@@ -26,7 +31,7 @@ const UserSchema: UserSchema = new mongoose.Schema(
 			lowercase: true,
 			unique: true,
 			trim: true,
-			validate: [validator.isEmail, 'Invalid Email Address']
+			validate: [validateEmail, 'Invalid Email Address']
 		},
 		authLoginToken: {
 			type: String,
