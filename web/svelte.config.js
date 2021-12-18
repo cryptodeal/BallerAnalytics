@@ -1,9 +1,9 @@
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
-import path from 'path'
+import path from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -19,11 +19,11 @@ const config = {
 		target: '#svelte',
 		vite: {
 			plugins: [WindiCSS()],
-      resolve: {
-        alias: {
-            $balleranalytics: path.resolve('../packages'),
-        }
-      }
+			resolve: {
+				alias: {
+					$balleranalytics: path.resolve('../packages')
+				}
+			}
 		}
 	}
 };
