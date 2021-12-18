@@ -2,7 +2,20 @@ import { Team2, IsPopulated } from '@balleranalytics/nba-api-ts';
 import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
-	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } }).exec();
+	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } })
+		.select('infoCommon seasons')
+		.exec()
+		.then((teams: Team2Document[]) => {
+			return teams.sort((a, b) => {
+				if (a.infoCommon.name < b.infoCommon.name) {
+					return -1;
+				}
+				if (a.infoCommon.name > b.infoCommon.name) {
+					return 1;
+				}
+				return 0;
+			});
+		});
 };
 
 export const getTeamBySlug = async (slug: string): Promise<void | Team2Document> => {

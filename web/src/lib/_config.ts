@@ -8,18 +8,14 @@ dotenv.config();
 // as someone could skip these varibales or not setup a .env file at all
 
 interface ENV {
-	MONGO_PORT: number | undefined;
-	MONGO_HOST: string | undefined;
-	MONGO_DB: string | undefined;
+	MONGO_URI: string | undefined;
 	JWT_SECRET: string | undefined;
 	ZOHO_USER: string | undefined;
 	ZOHO_PASS: string | undefined;
 }
 
 interface Config {
-	MONGO_PORT: number;
-	MONGO_HOST: string;
-	MONGO_DB: string;
+	MONGO_URI: string;
 	JWT_SECRET: string;
 	ZOHO_USER: string;
 	ZOHO_PASS: string;
@@ -29,9 +25,7 @@ interface Config {
 
 const getConfig = (): ENV => {
 	return {
-		MONGO_PORT: process.env.MONGO_PORT ? Number(process.env.MONGO_PORT) : undefined,
-		MONGO_HOST: process.env.MONGO_HOST,
-		MONGO_DB: process.env.MONGO_DB,
+		MONGO_URI: process.env.MONGO_URI,
 		JWT_SECRET: process.env.JWT_SECRET,
 		ZOHO_USER: process.env.ZOHO_USER,
 		ZOHO_PASS: process.env.ZOHO_PASS

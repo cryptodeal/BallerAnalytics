@@ -6,9 +6,10 @@
   "scripts": {
     "build": "pnpm recursive run build --stream",
     "dev": "pnpm recursive run dev --stream",
-    "lint": "pnpm recursive run lint",
     "format": "pnpm recursive run format",
+    "lint": "pnpm recursive run lint",
     "mtgen": "pnpm recursive run mtgen",
+    "preview": "pnpm recursive run preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "husky": {
@@ -28,7 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "c8": "^7.10.0",
-    "eslint": "^8.4.1",
+    "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",

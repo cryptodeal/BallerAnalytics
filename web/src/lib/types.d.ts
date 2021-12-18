@@ -14,3 +14,8 @@ export interface Locals {
 export interface PostAuthBody {
 	email: string;
 }
+
+export interface TeamColor {
+	hex: string;
+	rgb: [number, number, number];
+}
