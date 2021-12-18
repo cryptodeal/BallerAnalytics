@@ -12,12 +12,9 @@
 	"exports": {
 		"./package.json": "./package.json",
 		".": {
-			"types": "./dist/src/index.d.ts",
-      "import": "./dist/src/index.js"
-		},
-    "./mongoose": {
-      "types": "./dist/src/db/interfaces/mongoose.gen.d.ts"
-    }
+      "import": "./dist/src/index.js",
+			"types": "./dist/src/index.d.ts"
+		}
 	},
 	"types": "./dist/src/index.d.ts",
 	"scripts": {
