@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { Team2Document } from '$balleranalytics/nba-api-ts';
+	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 	export const load: Load = async ({ fetch }) => {
 		const url = `/teams.json`;

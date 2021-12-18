@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import config from '../../config';
+import config from '../config';
 
 export const initConnect = () => {
 	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;

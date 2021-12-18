@@ -1,5 +1,4 @@
 {
-	"extends": "../tsconfig.json",
 	"compilerOptions": {
 		"moduleResolution": "node",
 		"module": "es2020",
@@ -21,13 +20,11 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
-		"allowJs": true,
-		"checkJs": true,
+		//"allowJs": true,
+		//"checkJs": true,
 		"paths": {
 			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"],
-			"$balleranalytics": ["../packages"],
-			"$balleranalytics/*": ["../packages/*"]
+			"$lib/*": ["src/lib/*"]
 		}
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]

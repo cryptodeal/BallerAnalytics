@@ -1,14 +1,9 @@
 import crypto from 'crypto';
 import signToken from '$lib/functions/_api/auth/signToken';
-import { User } from '$balleranalytics/nba-api-ts';
+import { User } from '@balleranalytics/nba-api-ts';
 import cookie from 'cookie';
-import type { UserDocument } from '$balleranalytics/nba-api-ts';
-
-export type CreatedToken = {
-	accessToken: string;
-	refreshToken: string;
-	tokenPayload: string;
-};
+import type { UserDocument } from '@balleranalytics/nba-api-ts';
+import type { CreatedToken } from '$lib/types';
 
 const createToken = async (user: UserDocument): Promise<CreatedToken> => {
 	const env = import.meta.env.VITE_NODE_ENV;

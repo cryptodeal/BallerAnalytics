@@ -1,13 +1,15 @@
 {
-	"extends": "../../tsconfig.json",
+  "extends": "@tsconfig/node14/tsconfig.json",
 	"compilerOptions": {
 		"importHelpers": true,
 		"target": "ESNext",
+    "moduleResolution": "Node",
 		"module": "CommonJs",
 		"outDir": "dist",
+    "noImplicitAny": false,
 		"rootDir": ".",
 		"composite": true
 	},
-	"include": ["src/**/*", "config.ts"],
+	"include": ["src/**/*"],
 	"exclude": ["./node_modules", "./**/tests", "./**/*.test.*", "dist", "dist/*"]
 }

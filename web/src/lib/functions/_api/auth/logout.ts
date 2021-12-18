@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { User } from '$balleranalytics/nba-api-ts';
+import { User } from '@balleranalytics/nba-api-ts';
 import type { Locals } from '$lib/types';
 
 interface IAuthLogout {

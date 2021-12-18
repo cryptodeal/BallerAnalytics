@@ -19,3 +19,9 @@ export interface TeamColor {
 	hex: string;
 	rgb: [number, number, number];
 }
+
+export interface CreatedToken {
+	accessToken: string;
+	refreshToken: string;
+	tokenPayload: string;
+}

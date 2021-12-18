@@ -1,4 +1,4 @@
-import type { UserDocument } from '$balleranalytics/nba-api-ts';
+import type { UserDocument } from '@balleranalytics/nba-api-ts';
 import jwt from 'jsonwebtoken';
 import config from '$lib/_config';
 

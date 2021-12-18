@@ -2,7 +2,7 @@ import fetch from 'cross-fetch';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import sharp from 'sharp';
 import { Player2Document } from '../../db/interfaces/mongoose.gen';
-import config from '../../../config';
+import config from '../../config';
 
 const fileBasePath = `players/headshots/`;
 

@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { serverlessConnect } from '$balleranalytics/nba-api-ts';
+import { serverlessConnect } from '@balleranalytics/nba-api-ts';
 import type { Handle, GetSession } from '@sveltejs/kit';
 import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';

@@ -1,4 +1,4 @@
-import { User } from '$balleranalytics/nba-api-ts';
+import { User } from '@balleranalytics/nba-api-ts';
 import Email from '$lib/functions/_api/auth/email';
 import type UAParser from 'ua-parser-js';
 

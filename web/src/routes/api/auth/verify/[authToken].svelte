@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
+
 	export const load: Load = async ({ page }) => {
 		const url = `/api/auth/verify/${page.params.authToken}.json`;
 
