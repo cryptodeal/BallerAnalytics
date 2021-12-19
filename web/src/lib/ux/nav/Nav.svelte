@@ -15,7 +15,7 @@
 <nav
 	class="sticky top-0 z-10 flex flex-wrap items-center justify-between text-black bg-white bg-opacity-20 backdrop-opacity-20 backdrop-filter backdrop-blur-lg border-b border-gray-20"
 >
-	<img src="http://acmelogos.com/images/logo-1.svg" alt="ACME" width="120" />
+	<img src="/logo.svg" alt="Baller Analytics Logo" width="120" />
 	<div class="flex md:hidden" on:click={toggleNav}>
 		<Hamburger />
 	</div>
