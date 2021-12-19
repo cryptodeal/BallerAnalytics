@@ -8,6 +8,4 @@
 	};
 </script>
 
-<div class="w-full h-full text-light-200 text-center cursor-pointer" on:click={showUserModal}>
-	login/register
-</div>
+<div class="h-full text-center cursor-pointer" on:click={showUserModal}>login/register</div>

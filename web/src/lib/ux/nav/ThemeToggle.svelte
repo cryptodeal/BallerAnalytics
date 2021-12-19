@@ -2,8 +2,8 @@
 	import darkMode from '$lib/data/stores/theme';
 </script>
 
-<div class="w-full m-auto h-auto dark:text-white">
-	<button class="rounded-lg" on:click={() => ($darkMode = !$darkMode)}>
+<div class="w-full m-auto h-auto text-dark-900 dark:text-light-200">
+	<button class="rounded-lg p-1" on:click={() => ($darkMode = !$darkMode)}>
 		{#if $darkMode}
 			<svg
 				class="w-8 h-8"

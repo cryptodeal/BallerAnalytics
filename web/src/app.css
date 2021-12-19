@@ -19,7 +19,7 @@ body.dark a {
 }
 
 button {
-	@apply bg-blue-600 text-white focus:outline-none;
+	@apply bg-blue-600 text-dark-900 dark:(text-light-200) hover:dark:(text-dark-900) backdrop-filter backdrop-blug-lg bg-opacity-60 hover:(bg-opacity-100 text-light-200) uppercase focus:outline-none;
 }
 
 h1,

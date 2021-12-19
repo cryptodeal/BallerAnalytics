@@ -14,25 +14,27 @@
 </script>
 
 <nav
-	class="absolute p-2 top-0 z-10 flex flex-wrap w-full items-center justify-between bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
+	class="absolute p-2 top-0 z-10 text-bold flex flex-wrap w-full justify-evenly items-center bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
 >
-	<img src="/logo.svg" alt="Baller Analytics Logo" class="flex w-4/5 my-1 md:w-1/5" />
-
-	<div class="flex m-auto my-1 right-0 md:hidden" on:click={toggleNav}>
+	<div class="flex justify-start md:(hidden w-1/3)" on:click={toggleNav}>
 		<Hamburger />
 	</div>
+	<div class="w-4/5 px-5 md:(flex justify-start w-1/3 px-2)">
+		<img src="/logo.svg" alt="Baller Analytics Logo" class="flex my-1 md:(h-10 w-auto)" />
+	</div>
+
 	<div
-		class="toggle hidden my-1 md:(flex w-auto m-auto border-none) w-full text-right text-bold border-t-2 border-blue-900"
+		class="toggle hidden font-medium my-1 md:(flex flex-row w-1/3 justify-center border-none) w-full text-right border-t-2 border-blue-900"
 	>
 		<a
 			href="/"
-			class="block my-1 md:(inline-block m-auto border-none) text-dark-900 dark:text-light-200 px-3 border-b-2 border-blue-900"
+			class="block my-1 w-full text-dark-900 dark:text-light-200 md:(inline-block w-auto border-none) px-3 border-b-2 border-blue-900"
 			>Home</a
 		>
 		<a
 			sveltekit:prefetch
 			href="/teams"
-			class="block my-1 md:(inline-block m-auto border-none) text-dark-900 dark:text-light-200 px-3 border-b-2 border-blue-900"
+			class="block my-1 w-full text-dark-900 dark:text-light-200 md:(inline-block w-auto border-none) px-3 border-b-2 border-blue-900"
 		>
 			Teams
 		</a>
@@ -40,25 +42,25 @@
 			<a
 				sveltekit:prefetch
 				href="/profile"
-				class="block my-1 md:(inline-block m-auto border-none) text-dark-900 dark:text-light-200 px-3 border-b-2 border-blue-900"
+				class="block my-1 text-dark-900 dark:text-light-200 text-right w-full md:(inline-block w-auto text-center m-auto border-none) px-3 border-b-2 border-blue-900"
 			>
 				Profile
 			</a>
 		{/if}
-		<ThemeToggle />
 	</div>
-	{#if $session.user}
-		<a
-			class="toggle my-1 hidden md:(flex w-auto rounded) text-dark-900 dark:text-light-200 w-full px-4 text-right bg-blue-900 hover:bg-blue-500"
-			href="/logout">logout</a
-		>
-	{:else}
-		<div
-			class="toggle my-1 hidden rounded-lg md:(flex mx-2 w-auto rounded) text-dark-900 dark:text-light-200 h-full px-4 w-1/2 mx-auto text-right bg-blue-500 hover:bg-blue-500"
-		>
-			<Modal>
-				<UserContent />
-			</Modal>
-		</div>
-	{/if}
+
+	<div
+		class="toggle hidden h-10 w-full flex inline-flex items-center text-dark-900 dark:text-light-200 md:(flex flex-row justify-end w-1/3)"
+	>
+		<ThemeToggle />
+		{#if $session.user}
+			<a class="rounded-lg font-medium p-2 md:(mx-2 w-auto)" href="/logout">logout</a>
+		{:else}
+			<button class="font-medium rounded-lg p-2 md:(mx-2 w-auto)">
+				<Modal>
+					<UserContent />
+				</Modal>
+			</button>
+		{/if}
+	</div>
 </nav>
