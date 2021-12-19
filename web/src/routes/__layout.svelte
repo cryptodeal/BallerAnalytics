@@ -1,8 +1,11 @@
 <script lang="ts">
 	import 'virtual:windi.css';
 	import '../app.css';
+	import { page } from '$app/stores';
 	import Notifications from 'svelte-notifications';
 	import Nav from '$lib/ux/nav/Nav.svelte';
+
+	$: segment = $page.path.split('/')[1];
 </script>
 
 <svelte:head>
@@ -24,12 +27,15 @@
 
 <div class="h-100vh w-100vw">
 	<Notifications>
-		<Nav />
-		<div class="w-full">
-			<!-- pt-15 works well w nav on md/large?? -->
+		<Nav {segment} />
+		<!--<div class="w-full">
+			 pt-15 works well w nav on md/large?? 
 			<div class="h-100vh overflow-scroll">
 				<slot />
 			</div>
-		</div></Notifications
-	>
+		</div>-->
+		<div class="h-full w-full overflow-scroll pb-2">
+			<slot />
+		</div>
+	</Notifications>
 </div>

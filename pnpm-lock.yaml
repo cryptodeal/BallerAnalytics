@@ -114,7 +114,7 @@ importers:
       svelte-mail: ^0.1.1
       svelte-notifications: ^0.9.92
       svelte-preprocess: ^4.10.1
-      svelte-simple-modal: ^1.1.1
+      svelte-simple-modal: ^1.1.2
       tslib: ^2.3.1
       typescript: ^4.5.4
       ua-parser-js: ^0.7.31
@@ -152,7 +152,7 @@ importers:
       svelte-check: 2.2.11_svelte@3.44.3
       svelte-mail: 0.1.1
       svelte-preprocess: 4.10.1_svelte@3.44.3+typescript@4.5.4
-      svelte-simple-modal: 1.1.1_svelte@3.44.3
+      svelte-simple-modal: 1.1.2_svelte@3.44.3
       tslib: 2.3.1
       typescript: 4.5.4
       ua-parser-js: 0.7.31
@@ -1417,7 +1417,7 @@ packages:
   /@types/cheerio/0.22.30:
     resolution: {integrity: sha512-t7ZVArWZlq3dFa9Yt33qFBQIK4CQd1Q3UJp0V+UhP6vgLWLM6Qug7vZuRSGXg45zXeB1Fm5X2vmBkEX58LV2Tw==}
     dependencies:
-      '@types/node': 17.0.0
+      '@types/node': 17.0.1
     dev: false
 
   /@types/cookie/0.4.1:
@@ -1454,8 +1454,8 @@ packages:
     resolution: {integrity: sha512-mK6BKLpL0bG6v2CxHbm0ed6RcZrAtTHBTd/ZpnlVPVa3HkumsqLE4BC4u6TQ8D7pnrRbOU0am6epuALs+Ncnzw==}
     dev: true
 
-  /@types/node/17.0.0:
-    resolution: {integrity: sha512-eMhwJXc931Ihh4tkU+Y7GiLzT/y/DBNpNtr4yU9O2w3SYBsr9NaOPhQlLKRmoWtI54uNwuo0IOUFQjVOTZYRvw==}
+  /@types/node/17.0.1:
+    resolution: {integrity: sha512-NXKvBVUzIbs6ylBwmOwHFkZS2EXCcjnqr8ZCRNaXBkHAf+3mn/rPcJxwrzuc6movh8fxQAsUUfYklJ/EG+hZqQ==}
     dev: false
 
   /@types/nodemailer/6.4.4:
@@ -1477,7 +1477,7 @@ packages:
   /@types/sharp/0.29.4:
     resolution: {integrity: sha512-asrPef2LYenr76zBzyy+Fw40yGzq/q/CY77mUP5n43DnuWjQoOB+8vxnzFcqccz+LF+A7mbnknGCfpVWSG82Bw==}
     dependencies:
-      '@types/node': 17.0.0
+      '@types/node': 17.0.1
     dev: false
 
   /@types/throttle-debounce/2.1.0:
@@ -1499,7 +1499,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.0
+      '@types/node': 17.0.1
       '@types/webidl-conversions': 6.1.1
     dev: false
 
@@ -5408,8 +5408,8 @@ packages:
       typescript: 4.5.4
     dev: true
 
-  /svelte-simple-modal/1.1.1_svelte@3.44.3:
-    resolution: {integrity: sha512-2u6bGk0TwZ/0oxIEX9d2shQZsqKGQwyJHHL4eiNL2e/wDA9k5zHc9F884Y0qmKa/Pg0D80t+5CrY3At3zmUDzA==}
+  /svelte-simple-modal/1.1.2_svelte@3.44.3:
+    resolution: {integrity: sha512-QY0zOIBqQCKq/p+qOzygQZ9UVR/oX8C+lzpLXSPp9dXq4SIhmh/gDbGOMhj9KFuSZUtEDffEc5xcuuRNUksvtA==}
     peerDependencies:
       svelte: ^3.31.2
     dependencies:

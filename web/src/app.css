@@ -3,11 +3,7 @@ html {
 }
 
 text {
-	@apply text-black;
-}
-
-body.dark text {
-	@apply text-light-200;
+	@apply text-dark-700 dark:text-light-200;
 }
 
 a {
@@ -53,4 +49,24 @@ h5 {
 
 h6 {
 	@apply text-base;
+}
+
+nav a::after {
+	content: '';
+	vertical-align: center;
+	clear: both;
+}
+
+nav a[aria-current] {
+	@apply inline-block;
+}
+
+nav a[aria-current]::after {
+	position: relative;
+	content: '';
+	width: 100%;
+	height: 2px;
+	background-color: #3b82f6;
+	display: block;
+	bottom: -2px;
 }

@@ -3,7 +3,7 @@
 </script>
 
 <button
-	class="bg-transparent text-dark-900 dark:text-light-200 cursor-pointer rounded-md block border-none focus:outline-none"
+	class="bg-transparent cursor-pointer text-dark-700 dark:text-light-200 hover:text-dark-900 hover:dark:text-gray-300 rounded-md block border-none focus:outline-none"
 	class:open
 	on:click={() => (open = !open)}
 >
