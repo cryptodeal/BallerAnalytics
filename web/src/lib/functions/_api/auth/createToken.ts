@@ -7,7 +7,11 @@ import type { CreatedToken } from '$lib/types';
 
 const createToken = async (user: UserDocument): Promise<CreatedToken> => {
 	const env = import.meta.env.VITE_NODE_ENV;
-	if (!env || (env !== 'development' && env !== 'production') || typeof env !== 'string') {
+	if (
+		!env ||
+		(env !== 'development' && env !== 'VercelDevelopment' && env !== 'production') ||
+		typeof env !== 'string'
+	) {
 		throw Error(`Error: invalid setting for VITE_NODE_ENV: ${env}`);
 	}
 	const tokenPayload = await signToken(user);

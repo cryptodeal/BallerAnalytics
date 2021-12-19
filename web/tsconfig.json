@@ -29,5 +29,6 @@
 			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"]
 		}
 	},
+	"exclude": ["svelte.config.js"],
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]
 }

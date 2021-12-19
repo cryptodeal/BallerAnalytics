@@ -12,6 +12,7 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"dependencies": {
+		"@balleranalytics/nba-api-ts": "workspace:*",
 		"svelte-forms-lib": "^2.0.0",
 		"svelte-notifications": "^0.9.92"
 	},

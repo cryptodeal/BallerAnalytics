@@ -4,6 +4,8 @@ import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
 import path from 'path';
+import dotenv from 'dotenv';
+dotenv.config();
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -19,13 +21,16 @@ const config = {
 		target: '#svelte',
 		vite: {
 			plugins: [WindiCSS()],
-			resolve: {
-				alias: {
-					'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
-				}
-			}
+			resolve: {}
 		}
 	}
 };
 
+if (process.env.VITE_NODE_ENV !== 'development') {
+	config.kit.vite.resolve = {
+		alias: {
+			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
+		}
+	};
+}
 export default config;

@@ -10,7 +10,11 @@ interface IAuthLogout {
 const logout = async (locals: Locals): Promise<IAuthLogout> => {
 	console.log(locals);
 	const env = import.meta.env.VITE_NODE_ENV;
-	if (!env || (env !== 'development' && env !== 'production') || typeof env !== 'string') {
+	if (
+		!env ||
+		(env !== 'development' && env !== 'VercelDevelopment' && env !== 'production') ||
+		typeof env !== 'string'
+	) {
 		throw Error(`Error: invalid setting for VITE_NODE_ENV: ${env}`);
 	}
 	if (!locals.user) throw Error('Failed to logout; no session set by server for user');
