@@ -51,11 +51,11 @@
 	<div class="w-full m-0 p-0 py-5 md:py-10">
 		<div class="flex flex-wrap justify-center opacity-100 items-center min-h-25 md:h-50">
 			<img
-				class="shadow-lg mx-10 h-30 md:(mx-20 h-full) antialiased"
+				class="bg-light-200 dark:bg-dark-50 backdrop-blur-small bg-opacity-20 mx-10 h-30 md:(mx-20 h-full) rounded-full"
 				src="/teams/{teamData.infoCommon.slug}.svg"
 				alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
 			/>
-			<h1 class="font-sans font-bold text-white text-3xl md:(text-5xl py-20)">
+			<h1 style="color:rgba({(color2[0], color2[1], color2[2], 1)});">
 				{teamData.infoCommon.name}
 			</h1>
 		</div>

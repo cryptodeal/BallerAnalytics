@@ -8,4 +8,4 @@
 	};
 </script>
 
-<a class="w-full h-full" href="#null" on:click={showUserModal}>login/register</a>
+<a class="w-full h-full text-light-200" href="#null" on:click={showUserModal}>login/register</a>

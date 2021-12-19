@@ -26,30 +26,28 @@
 	export let teams: Team2Document[];
 </script>
 
-<div class="h-full w-full">
-	{#each teams as { infoCommon }}
-		<div class="container mx-auto p-4">
-			<a sveltekit:prefetch href="/teams/{infoCommon.slug}">
-				<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
-					<div class="md:w-1/8 w-full">
-						<img
-							class="rounded-lg shadow-smmx-auto md:m-4 max-h-30 antialiased"
-							src="teams/{infoCommon.slug}.svg"
-							alt="{infoCommon.name} logo"
-						/>
-					</div>
-					<div class="md:w-7/8 w-full h-full px-3 flex flex-row flex-wrap">
-						<div
-							class="w-full text-center text-gray-700 font-semibold relative pt-3 md:(pt-0 text-right)"
-						>
-							<div class="text-2xl text-white leading-tight">{infoCommon.name}</div>
-							<div class="text-normal text-gray-300 hover:text-gray-400 cursor-pointer">
-								<span class="pb-1">{infoCommon.minYear} - {infoCommon.maxYear}</span>
-							</div>
+{#each teams as { infoCommon }}
+	<div class="container mx-auto my-2">
+		<a sveltekit:prefetch href="/teams/{infoCommon.slug}">
+			<div class="rounded-lg shadow-lg bg-gray-600 w-full flex flex-row flex-wrap p-3">
+				<div class="md:w-1/8 w-full">
+					<img
+						class="rounded-lg shadow-smmx-auto md:m-4 max-h-30 antialiased"
+						src="teams/{infoCommon.slug}.svg"
+						alt="{infoCommon.name} logo"
+					/>
+				</div>
+				<div class="md:w-7/8 w-full h-full px-3 flex flex-row flex-wrap">
+					<div
+						class="w-full text-center text-gray-700 font-semibold relative pt-3 md:(pt-0 text-right)"
+					>
+						<div class="text-2xl text-white leading-tight">{infoCommon.name}</div>
+						<div class="text-normal text-gray-300 hover:text-gray-400 cursor-pointer">
+							<span class="pb-1">{infoCommon.minYear} - {infoCommon.maxYear}</span>
 						</div>
 					</div>
 				</div>
-			</a>
-		</div>
-	{/each}
-</div>
+			</div>
+		</a>
+	</div>
+{/each}

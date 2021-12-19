@@ -1,8 +1,8 @@
 <script lang="ts">
 	import 'virtual:windi.css';
 	import '../app.css';
-	import Nav from '$lib/ux/nav/Nav.svelte';
 	import Notifications from 'svelte-notifications';
+	import Nav from '$lib/ux/nav/Nav.svelte';
 </script>
 
 <svelte:head>
@@ -25,8 +25,10 @@
 <div class="h-100vh w-100vw">
 	<Notifications>
 		<Nav />
-		<div class="h-100vh mx-2 overflow-auto">
-			<slot />
-		</div>
-	</Notifications>
+		<div class="w-full">
+			<div class="h-100vh mx-2 pt-15 pn-3 overflow-scroll">
+				<slot />
+			</div>
+		</div></Notifications
+	>
 </div>

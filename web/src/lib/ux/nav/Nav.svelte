@@ -14,38 +14,47 @@
 </script>
 
 <nav
-	class="sticky px-5 top-0 z-10 flex flex-wrap items-center justify-between bg-white bg-opacity-20 backdrop-opacity-20 backdrop-filter backdrop-blur-lg border-b border-gray-20"
+	class="absolute p-2 top-0 z-10 flex flex-wrap w-full items-center justify-between bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
 >
-	<img src="/logo.svg" alt="Baller Analytics Logo" width="200" />
-	<div class="flex md:hidden" on:click={toggleNav}>
+	<img src="/logo.svg" alt="Baller Analytics Logo" class="flex w-4/5 md:w-1/5" />
+
+	<div class="flex m-auto right-0 md:hidden" on:click={toggleNav}>
 		<Hamburger />
 	</div>
 	<div
-		class="toggle hidden md:(flex w-auto border-none) w-full text-right text-bold border-t-2 border-blue-900"
+		class="toggle hidden md:(flex w-auto m-auto border-none) w-full text-right text-bold border-t-2 border-blue-900"
 	>
-		<a href="/" class="block md:(inline-block border-none) px-3 border-b-2 border-blue-900">Home</a>
+		<a
+			href="/"
+			class="block md:(inline-block m-auto border-none) text-dark-900 dark:text-light-200 px-3 border-b-2 border-blue-900"
+			>Home</a
+		>
 		<a
 			sveltekit:prefetch
 			href="/teams"
-			class="block md:(inline-block border-none) px-3 border-b-2 border-blue-900">Teams</a
+			class="block md:(inline-block m-auto border-none) text-dark-900 dark:text-light-200 px-3 border-b-2 border-blue-900"
 		>
+			Teams
+		</a>
 		{#if $session.user}
 			<a
 				sveltekit:prefetch
 				href="/profile"
-				class="block md:(inline-block border-none) px-3 border-b-2 border-blue-900">Profile</a
+				class="block md:(inline-block m-auto border-none) text-dark-900 dark:text-light-200 px-3 border-b-2 border-blue-900"
 			>
+				Profile
+			</a>
 		{/if}
 		<ThemeToggle />
 	</div>
 	{#if $session.user}
 		<a
-			class="toggle hidden md:(flex w-auto rounded) w-full px-4 text-right bg-blue-900 hover:bg-blue-500"
+			class="toggle hidden md:(flex w-auto rounded) text-dark-900 dark:text-light-200 w-full px-4 text-right bg-blue-900 hover:bg-blue-500"
 			href="/logout">logout</a
 		>
 	{:else}
 		<div
-			class="toggle hidden rounded-lg md:(flex mx-2 w-auto rounded) h-full px-4 w-1/2 mx-auto text-right bg-blue-900 hover:bg-blue-500"
+			class="toggle hidden rounded-lg md:(flex mx-2 w-auto rounded) text-dark-900 dark:text-light-200 h-full px-4 w-1/2 mx-auto text-right bg-blue-500 hover:bg-blue-500"
 		>
 			<Modal>
 				<UserContent />

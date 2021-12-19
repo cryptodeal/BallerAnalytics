@@ -7,7 +7,7 @@ text {
 }
 
 body.dark text {
-	@apply text-white;
+	@apply text-light-200;
 }
 
 a {
@@ -15,7 +15,7 @@ a {
 }
 
 body.dark a {
-	@apply text-white;
+	@apply text-light-200;
 }
 
 button {
