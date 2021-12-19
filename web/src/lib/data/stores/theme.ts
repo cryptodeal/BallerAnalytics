@@ -1,25 +1,17 @@
 import { writable } from 'svelte/store';
 
-const createLocalStore = (key: string) => {
-	const { subscribe, set, update } = writable();
+const darkMode =
+	typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
 
-	return {
-		subscribe,
-		set,
-		update,
-		useLocalStorage: () => {
-			const json = localStorage.getItem(key);
-			if (json) {
-				set(json);
-			}
-			subscribe((current: string) => {
-				localStorage.setItem(key, current);
-			});
+const darkModeStore = writable(darkMode);
+if (typeof localStorage !== 'undefined') {
+	darkModeStore.subscribe((value) => {
+		localStorage.setItem('theme', value ? 'dark' : 'light');
+		if (value) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
 		}
-	};
-};
-
-// If localStorage has the key then it will be used
-// if not the default will be used. Format:
-// export const var = createLocalStore(key, default)
-export const theme = createLocalStore('theme');
+	});
+}
+export default darkModeStore;
