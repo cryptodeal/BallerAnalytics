@@ -16,10 +16,10 @@
 </script>
 
 <nav
-	class="absolute p-2 top-0 z-10 text-bold flex flex-wrap w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
+	class="absolute px-1 top-0 z-10 text-bold flex flex-wrap md:(flex inline-flex items-center) w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
 >
 	<div
-		class="flex justify-start text-dark-700 dark:text-light-200 md:(hidden w-1/3)"
+		class="flex justify-start text-dark-700 dark:text-light-200 md:(hidden)"
 		on:click={toggleNav}
 	>
 		<Hamburger />
@@ -28,7 +28,7 @@
 		<img
 			src="/logo.svg"
 			alt="Baller Analytics Logo"
-			class="flex my-1 antialiased md:(h-10 w-auto)"
+			class="flex my-1 antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
 		/>
 	</div>
 
