@@ -24,7 +24,7 @@
 	>
 		<Hamburger />
 	</div>
-	<div class="w-4/5 px-5 m-1 md:(flex justify-start w-1/3 px-2)">
+	<div class="w-4/5 px-5 p-1 md:(flex justify-start w-1/3 px-2)">
 		<img
 			src="/logo.svg"
 			alt="Baller Analytics Logo"
@@ -33,7 +33,7 @@
 	</div>
 
 	<div
-		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 justify-center border-none)"
+		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 gap-2 justify-center border-none)"
 	>
 		<a
 			href="/"
@@ -61,11 +61,11 @@
 	</div>
 
 	<div
-		class="toggle p-2 hidden w-full h-full flex inline-flex items-center justify-between text-dark-900 dark:text-light-200 md:(flex justify-end w-1/3)"
+		class="toggle p-2 hidden w-full h-full flex inline-flex items-center justify-between text-dark-900 dark:text-light-200 md:(flex flex-row justify-end w-1/3)"
 	>
 		<ThemeToggle />
 
-		<button class="font-medium p-1 uppercase rounded-lg md:w-auto">
+		<button class="font-medium p-2 uppercase rounded-lg md:(w-auto ml-2)">
 			{#if $session.user}
 				<a class="h-full w-full" href="/logout">logout</a>
 			{:else}

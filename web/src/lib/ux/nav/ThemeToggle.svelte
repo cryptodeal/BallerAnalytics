@@ -3,11 +3,11 @@
 </script>
 
 <button
-	class="rounded-lg text-dark-900 dark:text-light-200 p-1"
+	class="rounded-lg text-dark-900 p-1.5 dark:text-light-200"
 	on:click={() => ($darkMode = !$darkMode)}
 >
 	<svg
-		class="w-6 h-6"
+		class="w-6 h-6 md:(h-7 w-7)"
 		xmlns="http://www.w3.org/2000/svg"
 		fill="none"
 		viewBox="0 0 24 24"
