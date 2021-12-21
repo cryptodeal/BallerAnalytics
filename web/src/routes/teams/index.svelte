@@ -34,7 +34,7 @@
 				<div
 					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"
-					class="rounded-lg shadow-lg backdrop-filter backdrop-blur-xl bg-opacity-20 border-1 w-full flex flex-wrap p-3"
+					class="rounded-lg shadow-lg border-1 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
 					<div class="md:(w-1/8) w-full">
 						<img
@@ -43,15 +43,17 @@
 							alt="{infoCommon.name} logo"
 						/>
 					</div>
-					<div class="md:w-7/8 w-full h-full px-3 flex flex-row flex-wrap justify-end">
+					<div
+						class="md:(w-7/8 justify-end) w-full mx-auto px-3 flex inline-flex h-auto justify-center"
+					>
 						<div
-							class="w-auto rounded-lg text-black p-2 bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 text-center font-semibold relative pt-3 md:text-right"
+							class="rounded-lg my-auto text-black p-2 bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 text-center font-semibold pt-3 md:text-right"
 						>
 							<div class="text-2xl leading-tight">
 								{infoCommon.name}
 							</div>
 							<div class="text-normal cursor-pointer">
-								<span class="pb-1"
+								<span
 									>{seasons.reduce((prev, curr) => {
 										return prev.season < curr.season ? prev : curr;
 									}).season - 1} - {seasons.reduce((prev, curr) => {
