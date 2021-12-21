@@ -24,26 +24,26 @@
 	>
 		<Hamburger />
 	</div>
-	<div class="w-4/5 px-5 md:(flex justify-start w-1/3 px-2)">
+	<div class="w-4/5 px-5 m-1 md:(flex justify-start w-1/3 px-2)">
 		<img
 			src="/logo.svg"
 			alt="Baller Analytics Logo"
-			class="flex my-1 antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
+			class="flex my-1 antialiased bg-gray-300 backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
 		/>
 	</div>
 
 	<div
-		class="toggle hidden font-medium my-1 md:(flex flex-row w-1/3 justify-center border-none) w-full text-right border-t-2 border-blue-900"
+		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 justify-center border-none)"
 	>
 		<a
 			href="/"
-			class="flex justify-end mx-1 border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
 			aria-current={segment === '' ? 'page' : undefined}>home</a
 		>
 		<a
 			sveltekit:prefetch
 			href="/teams"
-			class="flex justify-end mx-1 border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
 			aria-current={segment === 'teams' ? 'page' : undefined}
 		>
 			teams
@@ -52,7 +52,7 @@
 			<a
 				sveltekit:prefetch
 				href="/profile"
-				class="flex mx-1 border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+				class="flex border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
 				aria-current={segment === 'profile' ? 'page' : undefined}
 			>
 				profile
@@ -61,13 +61,13 @@
 	</div>
 
 	<div
-		class="toggle hidden h-10 w-full flex inline-flex items-center justify-between text-dark-900 dark:text-light-200 md:(flex justify-end w-1/3)"
+		class="toggle p-2 hidden w-full h-full flex inline-flex items-center justify-between text-dark-900 dark:text-light-200 md:(flex justify-end w-1/3)"
 	>
 		<ThemeToggle />
 
-		<button class="font-medium uppercase rounded-lg p-2 md:(mx-2 w-auto)">
+		<button class="font-medium p-1 uppercase rounded-lg md:w-auto">
 			{#if $session.user}
-				<a href="/logout">logout</a>
+				<a class="h-full w-full" href="/logout">logout</a>
 			{:else}
 				<Modal>
 					<UserContent />

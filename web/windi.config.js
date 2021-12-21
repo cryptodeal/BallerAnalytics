@@ -9,7 +9,7 @@ export default defineConfig({
 	},
 	theme: {
 		extend: {
-			typography: {
+			/*typography: {
 				DEFAULT: {
 					css: {
 						color: '#27272a',
@@ -58,7 +58,7 @@ export default defineConfig({
 						}
 					}
 				}
-			}
+			}*/
 		},
 		boxShadow: {
 			animate:

@@ -48,8 +48,8 @@
   radial-gradient(circle at 10% 0%, rgba(187, 211, 204, 0.33), rgba(187, 211, 204, 0) 35%),
   radial-gradient(circle at 11% 100%, rgba(131, 165, 203, 0.3), rgba(131, 165, 203, 0) 30%);"
 >
-	<div class="pt-14">
-		<div class="w-full m-0 p-0 py-5 md:py-10">
+	<div class="appContent">
+		<div class="w-full m-0 p-0">
 			<div class="flex flex-wrap justify-center opacity-100 items-center min-h-25 md:h-50">
 				<img
 					class="bg-light-200 dark:bg-dark-50 backdrop-blur-small bg-opacity-20 mx-10 h-30 md:(mx-20 h-full) rounded-full"
