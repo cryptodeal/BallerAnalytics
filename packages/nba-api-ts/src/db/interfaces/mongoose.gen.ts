@@ -2111,6 +2111,7 @@ export type Team2 = {
 		name: string;
 		allNames: string[];
 		abbreviation: string;
+		nbaAbbreviation?: string;
 		nickname?: string;
 		conference?: string;
 		division?: string;
@@ -2509,6 +2510,7 @@ export type Team2Document = mongoose.Document<mongoose.Types.ObjectId, Team2Quer
 			name: string;
 			allNames: mongoose.Types.Array<string>;
 			abbreviation: string;
+			nbaAbbreviation?: string;
 			nickname?: string;
 			conference?: string;
 			division?: string;

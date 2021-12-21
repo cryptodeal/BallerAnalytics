@@ -18,6 +18,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 		name: { type: String, required: true },
 		allNames: [{ type: String, required: false, unique: true }],
 		abbreviation: { type: String, required: true },
+		nbaAbbreviation: { type: String },
 		nickname: { type: String, required: false },
 		//key: {type: String, required: false},
 		conference: { type: String },

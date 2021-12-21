@@ -3,7 +3,7 @@ import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } })
-		.select('infoCommon seasons')
+		.select('infoCommon seasons.season')
 		.exec()
 		.then((teams: Team2Document[]) => {
 			return teams.sort((a, b) => {

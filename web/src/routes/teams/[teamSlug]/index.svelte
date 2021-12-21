@@ -31,9 +31,9 @@
 	//import { getAge, getAstTovRatio } from '$lib/functions/helpers';
 	//import { Tabs, TabList, TabPanel, Tab } from '$lib/ux/tabs';
 	export let teamData;
-	const { rgb: color1 } = getMainColor(teamData.infoCommon.abbreviation) as unknown as TeamColor;
+	const { rgb: color1 } = getMainColor(teamData.infoCommon.nbaAbbreviation) as unknown as TeamColor;
 	const { rgb: color2 } = getSecondaryColor(
-		teamData.infoCommon.abbreviation
+		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 </script>
 
