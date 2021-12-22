@@ -34,7 +34,7 @@
 				<div
 					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"
-					class="rounded-lg shadow-lg border-1 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
+					class="rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
 					<div class="md:(w-1/8) w-full">
 						<img

@@ -49,7 +49,7 @@
 	<button on:click={open}>Open</button>
 </slot>
 {#if $isOpen}
-	<div class="modal" use:modalAction tabindex="0">
+	<div class="modal cursor-default" use:modalAction tabindex="0">
 		<div class="backdrop" on:click={close} />
 
 		<div class="content-wrapper bg-white dark:bg-dark-600">
@@ -94,7 +94,7 @@
 	}
 
 	div.backdrop {
-		background-color: rgba(0, 0, 0, 0.4);
+		background-color: rgba(0, 0, 0, 0.6);
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -103,9 +103,9 @@
 	div.content-wrapper {
 		z-index: 10;
 		max-width: 70vw;
-		border-radius: 0.3rem;
+		border-radius: 0.5rem;
 		overflow: hidden;
-		padding: 0.5rem;
+		padding: 1rem;
 		margin: 0.5rem;
 	}
 

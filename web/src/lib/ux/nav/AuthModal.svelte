@@ -41,12 +41,12 @@
 
 <Modal>
 	<div slot="trigger" let:open>
-		<div class="h-full w-full text-center cursor-pointer" on:click={open}>login / register</div>
+		<div class="h-full w-full text-center" on:click={open}>login / register</div>
 	</div>
 
 	<div slot="header" let:store={{ close }}>
 		<div class="flex justify-end">
-			<button class="bg-transparent" on:click={close}>
+			<button class="bg-transparent cursor-pointer" on:click={close}>
 				<svg
 					width="24"
 					height="24"
@@ -73,7 +73,7 @@
 				</div>
 
 				<flex-container>
-					<button class="m-1 p-2  rounded-lg" type="submit">submit</button>
+					<button class="m-1 p-2 rounded-lg cursor-pointer" type="submit">submit</button>
 				</flex-container>
 			</Form>
 		</div>
