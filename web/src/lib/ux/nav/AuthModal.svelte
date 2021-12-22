@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Modal from '$lib/ux/Modal.svelte';
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -38,19 +39,64 @@
 	};
 </script>
 
-<div class="register-container">
-	<Form class="content" {...formProps}>
-		<div>
-			<label for="email">email</label>
-			<Field class="form-field" name="email" type="email" />
-			<ErrorMessage class="form-error" name="email" />
+<Modal>
+	<div slot="trigger" let:open>
+		<div class="h-full w-full text-center cursor-pointer" on:click={open}>login / register</div>
+	</div>
+	<div slot="header" let:store={{ close }}>
+		<h1>Login or Register</h1>
+		<div class="">
+			<button on:click={close}
+				><svg
+					width="24"
+					height="24"
+					xmlns="http://www.w3.org/2000/svg"
+					fill-rule="evenodd"
+					clip-rule="evenodd"
+					><path
+						d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z"
+					/></svg
+				></button
+			>
 		</div>
+	</div>
+	<div slot="content">
+		<!-- Modal within a Modal -->
+		<!--
+    <Modal>
+      <div slot="trigger" let:open>
+        <button on:click={open}>Open Second Modal</button>
+      </div>
+      <div slot="header">
+        <h1>Second Modal</h1>
+      </div>
+      <div slot="content">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, magni earum ut ex
+          totam corporis unde incidunt deserunt, dolorem voluptatum libero quia. Maiores,
+          provident error vel veritatis itaque nemo commodi.
+        </p>
+      </div>
+    </Modal>
+    -->
 
-		<flex-container>
-			<button type="submit">submit</button>
-		</flex-container>
-	</Form>
-</div>
+		<div class="register-container">
+			<Form class="content" {...formProps}>
+				<div>
+					<label for="email">email</label>
+					<Field class="form-field" name="email" type="email" />
+					<ErrorMessage class="form-error" name="email" />
+				</div>
+
+				<flex-container>
+					<button type="submit">submit</button>
+				</flex-container>
+			</Form>
+		</div>
+	</div>
+
+	<div slot="footer" let:store={{ close }} />
+</Modal>
 
 <style>
 	:root {
@@ -74,36 +120,6 @@
 		font-size: 12px;
 		letter-spacing: 1.9px;
 		line-height: 2;
-	}
-
-	button {
-		color: #fff;
-		background-color: var(--primary);
-		border: none;
-		text-transform: uppercase;
-		letter-spacing: 1.8px;
-		outline: none;
-		border-radius: 4px;
-		display: block;
-		margin-top: 12px;
-		line-height: 1.8;
-		font-size: 12px;
-		padding: 10px 18px;
-		min-width: 120px;
-		transition: all 150ms ease;
-		cursor: pointer;
-	}
-
-	button:disabled {
-		background-color: var(--grey);
-	}
-
-	button:focus:not(:disabled) {
-		box-shadow: 0 0 0 4px var(--primary-light);
-	}
-
-	button:hover:not(:disabled) {
-		background-color: var(--primary-dark);
 	}
 
 	:global(.form-field) {

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Hamburger from '$lib/ux/nav/Hamburger.svelte';
-	import Modal from 'svelte-simple-modal';
-	import UserContent from '$lib/ux/auth/modal/Content.svelte';
+	import AuthModal from '$lib/ux/nav/AuthModal.svelte';
 	import { session } from '$app/stores';
 	import ThemeToggle from '$lib/ux/nav/ThemeToggle.svelte';
 
@@ -69,9 +68,7 @@
 			{#if $session.user}
 				<a class="h-full w-full" href="/logout">logout</a>
 			{:else}
-				<Modal>
-					<UserContent />
-				</Modal>
+				<AuthModal />
 			{/if}
 		</button>
 	</div>

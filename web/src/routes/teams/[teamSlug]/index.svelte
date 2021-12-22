@@ -49,14 +49,14 @@
   radial-gradient(circle at 11% 100%, rgba(131, 165, 203, 0.3), rgba(131, 165, 203, 0) 30%);"
 >
 	<div class="appContent">
-		<div class="w-full m-0 p-0">
+		<div class="w-full h-full p-2">
 			<div class="flex flex-wrap justify-center opacity-100 items-center min-h-25 md:h-50">
 				<img
-					class="bg-light-200 dark:bg-dark-50 backdrop-blur-small bg-opacity-20 mx-10 h-30 md:(mx-20 h-full) rounded-full"
+					class="bg-light-200 rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg h-30 w-auto mx-10 p-1 md:(mx-20 h-full w-auto)"
 					src="/teams/{teamData.infoCommon.slug}.svg"
 					alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
 				/>
-				<h1 style="color:rgba({(color2[0], color2[1], color2[2], 1)});">
+				<h1 style="color:rgba({color2[0]}, {color2[1]}, {color2[2]}, 1);">
 					{teamData.infoCommon.name}
 				</h1>
 			</div>
