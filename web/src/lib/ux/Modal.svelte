@@ -52,7 +52,7 @@
 	<div class="modal" use:modalAction tabindex="0">
 		<div class="backdrop" on:click={close} />
 
-		<div class="content-wrapper">
+		<div class="content-wrapper bg-white dark:bg-dark-600">
 			<slot name="header" {store}>
 				<!-- fallback -->
 				<div>
@@ -104,9 +104,9 @@
 		z-index: 10;
 		max-width: 70vw;
 		border-radius: 0.3rem;
-		background-color: white;
 		overflow: hidden;
-		padding: 2rem;
+		padding: 0.5rem;
+		margin: 0.5rem;
 	}
 
 	@media (max-width: 767px) {

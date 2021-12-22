@@ -43,53 +43,37 @@
 	<div slot="trigger" let:open>
 		<div class="h-full w-full text-center cursor-pointer" on:click={open}>login / register</div>
 	</div>
+
 	<div slot="header" let:store={{ close }}>
-		<h1>Login or Register</h1>
-		<div class="">
-			<button on:click={close}
-				><svg
+		<div class="flex justify-end">
+			<button class="bg-transparent" on:click={close}>
+				<svg
 					width="24"
 					height="24"
 					xmlns="http://www.w3.org/2000/svg"
 					fill-rule="evenodd"
 					clip-rule="evenodd"
-					><path
+					class="fill-current hover:fill-blue-600"
+				>
+					<path
 						d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z"
-					/></svg
-				></button
-			>
+					/>
+				</svg>
+			</button>
 		</div>
+		<h1 class="p-1">Login / Register</h1>
 	</div>
 	<div slot="content">
-		<!-- Modal within a Modal -->
-		<!--
-    <Modal>
-      <div slot="trigger" let:open>
-        <button on:click={open}>Open Second Modal</button>
-      </div>
-      <div slot="header">
-        <h1>Second Modal</h1>
-      </div>
-      <div slot="content">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, magni earum ut ex
-          totam corporis unde incidunt deserunt, dolorem voluptatum libero quia. Maiores,
-          provident error vel veritatis itaque nemo commodi.
-        </p>
-      </div>
-    </Modal>
-    -->
-
-		<div class="register-container">
+		<div class="register-container p-1">
 			<Form class="content" {...formProps}>
-				<div>
-					<label for="email">email</label>
+				<div class="m-1">
+					<label class="text-dark-600 dark:text-light-200" for="email">email</label>
 					<Field class="form-field" name="email" type="email" />
 					<ErrorMessage class="form-error" name="email" />
 				</div>
 
 				<flex-container>
-					<button type="submit">submit</button>
+					<button class="m-1 p-2  rounded-lg" type="submit">submit</button>
 				</flex-container>
 			</Form>
 		</div>
