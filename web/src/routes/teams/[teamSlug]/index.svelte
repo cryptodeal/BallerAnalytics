@@ -22,23 +22,21 @@
 </script>
 
 <script lang="ts">
-	//import PlayersTable from '$lib/teams/roster/PlayersTable.svelte';
-	//import CoachesTable from '$lib/teams/roster/CoachesTable.svelte';
-	//import PlayerStatsTable from '$lib/teams/roster/PlayerStatsTable.svelte';
-	//import SchedTable from '$lib/teams/schedule/SchedTable.svelte';
+	import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import type { TeamColor } from '$lib/types';
-	//import { getAge, getAstTovRatio } from '$lib/functions/helpers';
-	//import { Tabs, TabList, TabPanel, Tab } from '$lib/ux/tabs';
+	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
-	const { rgb: color1 } = getMainColor(teamData.infoCommon.nbaAbbreviation) as unknown as TeamColor;
-	const { rgb: color2 } = getSecondaryColor(
+	const { hex: primaryColor, rgb: color1 } = getMainColor(
+		teamData.infoCommon.nbaAbbreviation
+	) as unknown as TeamColor;
+	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 </script>
 
 <div
-	class="w-full h-full"
+	class="w-full h-full overflow-scroll"
 	style="color:#fcfcfc;background-color:rgba(8, 15, 53, 1);background-repeat:no-repeat;
   background-image:linear-gradient(180deg, rgba({color1[0]}, {color1[1]}, {color1[2]}, 0.9) 1%, rgba({color2[0]}, {color2[1]}, {color2[2]}, .8) 100%),
   linear-gradient(333deg, rgba(153, 207, 255, 0.2), rgba(180, 255, 217, 0.08)),
@@ -50,7 +48,9 @@
 >
 	<div class="appContent">
 		<div class="w-full h-full p-2">
-			<div class="flex flex-wrap justify-center opacity-100 items-center min-h-25 md:h-50">
+			<div
+				class="flex flex-wrap justify-center text-center opacity-100 items-center min-h-25 md:h-50"
+			>
 				<img
 					class="bg-light-200 rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg h-30 w-auto mx-10 p-1 md:(mx-20 h-full w-auto)"
 					src="/teams/{teamData.infoCommon.slug}.svg"
@@ -60,6 +60,40 @@
 					{teamData.infoCommon.name}
 				</h1>
 			</div>
+			<div class="p-2 md:(container mx-auto)">
+				<Tabs>
+					<TabList
+						{primaryColor}
+						{secondaryColor}
+						links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
+					/>
+
+					<!-- Schedule Data Tab -->
+					<TabPanel>
+						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Regular Season:</h2>
+						<ScheduleTable
+							schedule={teamData.seasons[teamData.seasons.length - 2].regularSeason.games}
+							teamId={teamData._id}
+						/>
+					</TabPanel>
+
+					<!-- Roster Data Tab -->
+					<TabPanel>
+						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Roster:</h2>
+					</TabPanel>
+
+					<!-- Stats Data Tab -->
+					<TabPanel>
+						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Stats:</h2>
+					</TabPanel>
+				</Tabs>
+			</div>
 		</div>
 	</div>
 </div>
+
+<style>
+	.tabPanelTitle {
+		@apply text-center m-4;
+	}
+</style>

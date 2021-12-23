@@ -16,5 +16,6 @@ export type {
 	PopulatedDocument,
 	Team2SeasonDocument
 } from './db/interfaces/mongoose.gen';
+export { Types } from 'mongoose';
 export { IsPopulated } from './db/interfaces/mongoose.gen';
 export { serverlessConnect, initConnect, endConnect } from './db/connect';

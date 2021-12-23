@@ -23,7 +23,7 @@ export const getTeamBySlug = async (slug: string): Promise<void | Team2Document>
 	if (team === null) throw Error('Error: could not find team with slug match');
 	team.seasons.sort((a, b) => a.season - b.season);
 
-	const i = team.seasons.length - 1;
+	const i = team.seasons.length - 2;
 	await team.populate([
 		{
 			path: `seasons.${i}.roster.players.player`,
