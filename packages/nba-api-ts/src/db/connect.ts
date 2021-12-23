@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../config';
+import { writeFile } from 'fs/promises';
+import { Buffer } from 'buffer';
 
 export const initConnect = () => {
 	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
@@ -18,6 +20,12 @@ export const endConnect = () => {
 
 let cached = global.mongoose;
 
+interface MONGO_OPTS {
+	useNewUrlParser?: boolean;
+	useUnifiedTopology?: boolean;
+	tlsCAFile?: string;
+}
+
 if (!cached) {
 	cached = global.mongoose = { conn: null, promise: null };
 }
@@ -28,7 +36,16 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 	}
 
 	if (!cached.promise) {
-		const opts = {};
+		const digitalOceanCert = 'ca-certificate.cer';
+		const opts: MONGO_OPTS = {};
+
+		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
+			const data = Buffer.from(config.MONGO_CLUSTER_CERT);
+			await writeFile(digitalOceanCert, data);
+			opts.useNewUrlParser = true;
+			opts.useUnifiedTopology = true;
+			opts.tlsCAFile = digitalOceanCert;
+		}
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
 			return mongoose;

@@ -4,6 +4,7 @@
 declare namespace NodeJS {
 	interface ProcessEnv {
 		MONGO_URI: string;
+		MONGO_CLUSTER_CERT: string;
 		JWT_SECRET: string;
 		ZOHO_USER: string;
 		ZOHO_PASS: string;
