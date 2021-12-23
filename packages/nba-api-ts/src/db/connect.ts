@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from '../config';
-import { writeFileSync } from 'fs';
+//import { writeFileSync } from 'fs';
 
 export const initConnect = () => {
 	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
@@ -50,10 +50,10 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 		};
 
 		// For testing purposes
-		/** if (config.VITE_NODE_ENV === 'development') { */
+		// if (config.VITE_NODE_ENV === 'development') {
 		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
-			const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
-			writeFileSync(digitalOceanCert, certFile);
+			//const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
+			//writeFileSync(digitalOceanCert, certFile);
 			opts.tlsCAFile = digitalOceanCert;
 		}
 

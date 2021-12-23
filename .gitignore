@@ -9,4 +9,3 @@ web/.env.*
 packages/*/.env
 packages/*/.env.*
 balleranalytics.code-workspace
-.ca-certificate.cer
