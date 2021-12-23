@@ -29,8 +29,8 @@ const config = {
 if (process.env.VITE_NODE_ENV !== 'development') {
 	config.kit.vite.resolve = {
 		alias: {
-			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src'),
-			'ca-certificate.cer': path.resolve('./ca-certificate.cer')
+			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
+			//'ca-certificate.cer': path.resolve('./ca-certificate.cer')
 		}
 	};
 }
