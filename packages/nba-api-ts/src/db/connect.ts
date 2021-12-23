@@ -54,8 +54,8 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
 			//const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
 			//writeFileSync(digitalOceanCert, certFile);
-			console.log(`${path.resolve()}/ca-certificate.cer`);
-			opts.tlsCAFile = `${path.resolve()}/ca-certificate.cer`;
+			//console.log(`${path.resolve()}/ca-certificate.cer`);
+			opts.tlsCAFile = `../../../../web/ca-certificate.cer`;
 		}
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
