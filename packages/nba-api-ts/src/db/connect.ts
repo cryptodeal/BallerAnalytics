@@ -40,16 +40,16 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 		const opts: MONGO_OPTS = {};
 
 		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
-			const data = Buffer.from(config.MONGO_CLUSTER_CERT);
-			await writeFile(digitalOceanCert, data);
-			opts.useNewUrlParser = true;
-			opts.useUnifiedTopology = true;
-			opts.tlsCAFile = digitalOceanCert;
+			await writeFile(digitalOceanCert, config.MONGO_CLUSTER_CERT);
+			const MONGO_URI = config.MONGO_URI + digitalOceanCert;
+			cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+				return mongoose;
+			});
+		} else {
+			cached.promise = mongoose.connect(config.MONGO_URI, opts).then((mongoose) => {
+				return mongoose;
+			});
 		}
-
-		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
-			return mongoose;
-		});
 	}
 	cached.conn = await cached.promise;
 	return cached.conn;
