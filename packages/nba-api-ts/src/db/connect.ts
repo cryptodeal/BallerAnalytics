@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import config from '../config';
-import { writeFile } from 'fs/promises';
-import { Buffer } from 'buffer';
+import { writeFileSync } from 'fs';
 
 export const initConnect = () => {
 	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
@@ -24,6 +23,13 @@ interface MONGO_OPTS {
 	useNewUrlParser?: boolean;
 	useUnifiedTopology?: boolean;
 	tlsCAFile?: string;
+	tlsCertificateKeyFile?: string;
+	sslValidate?: boolean;
+	tlsInsecure?: boolean;
+	tls?: boolean;
+	user?: string;
+	pass?: string;
+	dbName: string;
 }
 
 if (!cached) {
@@ -36,20 +42,24 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 	}
 
 	if (!cached.promise) {
-		const digitalOceanCert = 'ca-certificate.cer';
-		const opts: MONGO_OPTS = {};
+		const digitalOceanCert = './ca-certificate.cer';
+		const opts: MONGO_OPTS = {
+			dbName: config.MONGO_DB,
+			useNewUrlParser: true,
+			useUnifiedTopology: true
+		};
 
+		// For testing purposes
+		/** if (config.VITE_NODE_ENV === 'development') { */
 		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
-			await writeFile(digitalOceanCert, config.MONGO_CLUSTER_CERT);
-			const MONGO_URI = config.MONGO_URI + digitalOceanCert;
-			cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
-				return mongoose;
-			});
-		} else {
-			cached.promise = mongoose.connect(config.MONGO_URI, opts).then((mongoose) => {
-				return mongoose;
-			});
+			const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
+			writeFileSync(digitalOceanCert, certFile);
+			opts.tlsCAFile = digitalOceanCert;
 		}
+
+		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
+			return mongoose;
+		});
 	}
 	cached.conn = await cached.promise;
 	return cached.conn;
