@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import config from '../config';
 //import { writeFileSync } from 'fs';
 import path from 'path';
+//import { Buffer } from 'buffer';
 
 export const initConnect = () => {
 	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
@@ -26,10 +27,9 @@ interface MONGO_OPTS {
 	tlsCAFile?: string;
 	tlsCertificateKeyFile?: string;
 	sslValidate?: boolean;
+	ssl?: boolean;
 	tlsInsecure?: boolean;
-	tls?: boolean;
-	user?: string;
-	pass?: string;
+	sslCert?: string;
 	dbName: string;
 }
 
@@ -52,10 +52,10 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 		// For testing purposes
 		// if (config.VITE_NODE_ENV === 'development') {
 		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
-			//const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
+			//opts.sslCA = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
 			//writeFileSync(digitalOceanCert, certFile);
 			// console.log(`${cwd()}/ca-certificate.cer`);
-			opts.tlsCAFile = path.resolve('ca-certificate.cer');
+			opts.tlsCAFile = path.join(path.resolve(), 'ca-certificate.cer');
 		}
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
