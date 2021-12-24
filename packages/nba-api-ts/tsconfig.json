@@ -4,7 +4,7 @@
 		"importHelpers": true,
 		"target": "ESNext",
     "moduleResolution": "Node",
-		"module": "CommonJs",
+		"module": "EsNext",
 		"outDir": "dist",
     "noImplicitAny": false,
 		"rootDir": "src",
