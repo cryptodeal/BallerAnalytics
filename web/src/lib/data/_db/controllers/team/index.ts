@@ -22,7 +22,7 @@ export const getTeamBySlug = async (slug: string): Promise<void | Team2Document>
 	const team = await Team2.findOne({ 'infoCommon.slug': slug }, 'infoCommon seasons');
 	if (team === null) throw Error('Error: could not find team with slug match');
 	team.seasons.sort((a, b) => a.season - b.season);
-	console.log(team);
+	//console.log(team);
 
 	const i = team.seasons.length - 2;
 	return team.populate([
