@@ -25,7 +25,7 @@ export const getTeamBySlug = async (slug: string): Promise<void | Team2Document>
 	console.log(team);
 
 	const i = team.seasons.length - 2;
-	await team.populate([
+	return team.populate([
 		/*{
 			path: `seasons.${i}.roster.players.player`,
 			select: 'birthdate height weight name school seasons'
@@ -66,5 +66,5 @@ export const getTeamBySlug = async (slug: string): Promise<void | Team2Document>
 		}
 	});*/
 
-	return team;
+	//return team;
 };
