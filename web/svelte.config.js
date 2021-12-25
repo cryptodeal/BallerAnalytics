@@ -15,7 +15,15 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			esbuild(defaultOptions) {
+				return {
+					...defaultOptions,
+					plugins: [],
+					external: ['@napi-rs/pinyin-darwin-arm64']
+				};
+			}
+		}),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
@@ -33,4 +41,5 @@ if (process.env.VITE_NODE_ENV !== 'development') {
 		}
 	};
 }
+
 export default config;
