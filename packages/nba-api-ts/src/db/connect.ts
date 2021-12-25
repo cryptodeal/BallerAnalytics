@@ -51,7 +51,7 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 		if (config.VITE_NODE_ENV === 'VercelDevelopment' || config.VITE_NODE_ENV === 'development') {
 			const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
 			const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
-			writeFile(digitalOceanCert, certFile, (err) => {
+			await writeFile(digitalOceanCert, certFile, (err) => {
 				if (err) return console.log(err);
 			});
 			opts.tlsCAFile = digitalOceanCert;
