@@ -20,7 +20,7 @@ const config = {
 				return {
 					...defaultOptions,
 					plugins: [],
-					external: ['@napi-rs/pinyin-darwin-arm64']
+					external: ['@napi-rs/*']
 				};
 			}
 		}),
