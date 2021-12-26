@@ -7,7 +7,6 @@
 
 		if (res.ok) {
 			const { teamData } = await res.json();
-			console.log(teamData);
 			return {
 				props: {
 					teamData

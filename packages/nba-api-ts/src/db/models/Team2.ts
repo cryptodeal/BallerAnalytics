@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Team2Document, Team2Model, Team2Schema } from '../interfaces/mongoose.gen';
+import { Team2Document, Team2Model, Team2Queries, Team2Schema } from '../interfaces/mongoose.gen';
 
 const Team2Schema: Team2Schema = new mongoose.Schema({
 	meta: {
@@ -337,4 +337,76 @@ Team2Schema.statics = {
 	}
 };
 
-export const Team2: Team2Model = mongoose.model<Team2Document, Team2Model>('Team2', Team2Schema);
+Team2Schema.query = {
+	populateSeason(season: number) {
+		return this.populate([
+			/*{
+				path: `seasons.roster.players.player`,
+				select: {
+					props: { $elemMatch: { season: season } },
+					birthdate: 1,
+					height: 1,
+					weight: 1,
+					name: 1,
+					school: 1,
+					seasons: 1
+				}
+			},
+			{
+				path: `seasons.roster.coaches.coach`,
+				select: {
+					props: { $elemMatch: { season: season } },
+					name: 1
+				}
+			},
+			{
+				path: `seasons.preseason.games`,
+				select: {
+					props: { $elemMatch: { season: season } },
+					home: 1,
+					visitor: 1,
+					date: 1,
+					time: 1,
+					populate: {
+						path: 'home.team visitor.team',
+						select: 'infoCommon'
+					}
+				}
+			},*/
+			{
+				path: `seasons.regularSeason.games`,
+				select: {
+					props: { $elemMatch: { season: season } },
+					home: 1,
+					visitor: 1,
+					date: 1,
+					time: 1,
+					populate: {
+						path: 'home.team visitor.team',
+						select: 'infoCommon'
+					}
+				}
+			}
+			/* ,
+			{
+				path: `seasons.postseason.games`,
+				select: {
+					props: { $elemMatch: { season: season } },
+					home: 1,
+					visitor: 1,
+					date: 1,
+					time: 1,
+					populate: {
+						path: 'home.team visitor.team',
+						select: 'infoCommon'
+					}
+				}
+			} */
+		]);
+	}
+};
+
+export const Team2: Team2Model = mongoose.model<Team2Document, Team2Model, Team2Queries>(
+	'Team2',
+	Team2Schema
+);

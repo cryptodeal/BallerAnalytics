@@ -2145,7 +2145,11 @@ export type Team2Object = Team2;
  * const Team2 = mongoose.model<Team2Document, Team2Model>("Team2", Team2Schema);
  * ```
  */
-export type Team2Queries = {};
+export type Team2Queries = {
+	populateSeason: (
+		season: number
+	) => mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
+};
 
 export type Team2Methods = {};
 
