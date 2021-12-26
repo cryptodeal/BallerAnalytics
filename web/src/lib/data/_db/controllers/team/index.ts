@@ -31,13 +31,15 @@ export const getTeamBySlug = (slug: string): Promise<void | Team2Document> => {
 				return a.season - b.season;
 			});
 			const i = team.seasons.length - 1;
-			return team.populate({
-				path: `seasons.${i}.regularSeason.games`,
-				select: 'home visitor date time',
-				populate: {
-					path: 'home.team visitor.team',
-					select: 'infoCommon'
+			return team.populate([
+				{
+					path: `seasons.${i}.regularSeason.games`,
+					select: 'home visitor date time',
+					populate: {
+						path: 'home.team visitor.team',
+						select: 'infoCommon'
+					}
 				}
-			});
+			]);
 		});
 };
