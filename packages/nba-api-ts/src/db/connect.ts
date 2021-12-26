@@ -42,21 +42,10 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 	}
 
 	if (!cached.promise) {
-		// const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
-		// const certFile = Buffer.from(config.MONGO_CLUSTER_CERT, 'base64');
-
 		const opts: MONGO_OPTS = {
 			dbName: config.MONGO_DB,
-			useNewUrlParser: true,
-			useUnifiedTopology: true
+			useNewUrlParser: true
 		};
-
-		/*
-    if (config.VITE_NODE_ENV === 'VercelDevelopment' || config.VITE_NODE_ENV === 'development') {
-		  writeFileSync(digitalOceanCert, certFile);
-		  opts.tlsCAFile = digitalOceanCert;
-		}
-    */
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
 			return mongoose;
