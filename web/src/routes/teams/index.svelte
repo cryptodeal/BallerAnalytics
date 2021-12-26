@@ -3,7 +3,7 @@
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 	export const load: Load = async ({ fetch }) => {
-		const url = `/teams.json`;
+		const url = `teams.json`;
 		const res = await fetch(url);
 
 		if (res.ok) {
@@ -30,7 +30,7 @@
 <div class="appContent">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
-			<a sveltekit:prefetch href="/teams/{infoCommon.slug}">
+			<a sveltekit:prefetch href="teams/{infoCommon.slug}?seasonIdx={seasons.length - 2}">
 				<div
 					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"

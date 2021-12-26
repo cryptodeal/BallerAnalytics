@@ -338,71 +338,15 @@ Team2Schema.statics = {
 };
 
 Team2Schema.query = {
-	populateSeason(season: number) {
-		return this.populate([
-			/*{
-				path: `seasons.roster.players.player`,
-				select: {
-					props: { $elemMatch: { season: season } },
-					birthdate: 1,
-					height: 1,
-					weight: 1,
-					name: 1,
-					school: 1,
-					seasons: 1
-				}
-			},
-			{
-				path: `seasons.roster.coaches.coach`,
-				select: {
-					props: { $elemMatch: { season: season } },
-					name: 1
-				}
-			},
-			{
-				path: `seasons.preseason.games`,
-				select: {
-					props: { $elemMatch: { season: season } },
-					home: 1,
-					visitor: 1,
-					date: 1,
-					time: 1,
-					populate: {
-						path: 'home.team visitor.team',
-						select: 'infoCommon'
-					}
-				}
-			},*/
-			{
-				path: `seasons.regularSeason.games`,
-				select: {
-					props: { $elemMatch: { season: season } },
-					home: 1,
-					visitor: 1,
-					date: 1,
-					time: 1,
-					populate: {
-						path: 'home.team visitor.team',
-						select: 'infoCommon'
-					}
-				}
+	getSeasonBySlug(slug: string, seasonIndex: number) {
+		return this.where({ 'infoCommon.slug': slug }).populate({
+			path: `seasons.${seasonIndex}.regularSeason.games`,
+			select: 'home visitor date time season_meta',
+			populate: {
+				path: 'home.team visitor.team',
+				select: 'infoCommon'
 			}
-			/* ,
-			{
-				path: `seasons.postseason.games`,
-				select: {
-					props: { $elemMatch: { season: season } },
-					home: 1,
-					visitor: 1,
-					date: 1,
-					time: 1,
-					populate: {
-						path: 'home.team visitor.team',
-						select: 'infoCommon'
-					}
-				}
-			} */
-		]);
+		});
 	}
 };
 

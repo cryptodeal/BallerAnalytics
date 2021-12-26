@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { GameScheduleItem, TeamRecord } from '$lib/types';
-	import type { Types } from '@balleranalytics/nba-api-ts';
+	import type { mongoose } from '@balleranalytics/nba-api-ts';
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc';
 	import timezone from 'dayjs/plugin/timezone';
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
-	export let teamId: Types.ObjectId;
+	export let teamId: mongoose.Types.ObjectId;
 	export let schedule: GameScheduleItem[];
 
 	const getRecord = (index: number): TeamRecord => {

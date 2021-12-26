@@ -2,12 +2,12 @@ import { Team2 } from '@balleranalytics/nba-api-ts';
 import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
-	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } })
+	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } }, {})
 		.select('infoCommon seasons.season')
 		.lean()
 		.exec()
 		.then((teams: Team2Document[]) => {
-			return teams.sort((a, b) => {
+			teams.sort((a, b) => {
 				if (a.infoCommon.name < b.infoCommon.name) {
 					return -1;
 				}
@@ -16,30 +16,15 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 				}
 				return 0;
 			});
+			teams.map((t) => {
+				t.seasons.sort((a, b) => a.season - b.season);
+			});
+			return teams;
 		});
 };
 
-export const getTeamBySlug = (slug: string): Promise<void | Team2Document> => {
-	return Team2.findOne(
-		{ 'infoCommon.slug': slug },
-		'infoCommon seasons.season seasons.regularSeason.games'
-	)
-		.exec()
-		.then((team) => {
-			if (!team) throw Error('Team not found!');
-			team.seasons.sort((a, b) => {
-				return a.season - b.season;
-			});
-			const i = team.seasons.length - 2;
-			return team.populate([
-				{
-					path: `seasons.${i}.regularSeason.games`,
-					select: 'home visitor date time',
-					populate: {
-						path: 'home.team visitor.team',
-						select: 'infoCommon'
-					}
-				}
-			]);
-		});
+export const getTeamBySlug = async (slug: string, seasonIdx: number): Promise<Team2Document> => {
+	const teamData = await Team2.findOne().getSeasonBySlug(slug, seasonIdx);
+	if (!teamData) throw Error(`Team not found`);
+	return teamData;
 };

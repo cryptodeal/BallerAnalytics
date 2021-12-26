@@ -2146,8 +2146,9 @@ export type Team2Object = Team2;
  * ```
  */
 export type Team2Queries = {
-	populateSeason: (
-		season: number
+	getSeasonBySlug: (
+		slug: string,
+		seasonIndex: number
 	) => mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
 };
 

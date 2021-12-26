@@ -2,7 +2,9 @@
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ fetch, page }) => {
-		const url = `/teams/${page.params.teamSlug}.json`;
+		const url = page.query.has('seasonIdx')
+			? `/teams/${page.params.teamSlug}.json?seasonIdx=${page.query.get('seasonIdx')}`
+			: `/teams/${page.params.teamSlug}.json`;
 		const res = await fetch(url);
 
 		if (res.ok) {

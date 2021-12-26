@@ -17,5 +17,5 @@ export type {
 	Team2SeasonDocument
 } from './db/interfaces/mongoose.gen';
 export { default as mongoose } from 'mongoose';
-export { IsPopulated } from './db/interfaces/mongoose.gen';
+export * from './db/interfaces/mongoose.gen';
 export { serverlessConnect, initConnect, endConnect } from './db/connect';
