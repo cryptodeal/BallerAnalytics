@@ -30,7 +30,7 @@ export const getTeamBySlug = (slug: string): Promise<void | Team2Document> => {
 			team.seasons.sort((a, b) => {
 				return a.season - b.season;
 			});
-			const i = team.seasons.length - 1;
+			const i = team.seasons.length - 2;
 			return team.populate([
 				{
 					path: `seasons.${i}.regularSeason.games`,

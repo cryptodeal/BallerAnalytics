@@ -73,7 +73,7 @@
 					<TabPanel>
 						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Regular Season:</h2>
 						<ScheduleTable
-							schedule={teamData.seasons[teamData.seasons.length - 1].regularSeason.games}
+							schedule={teamData.seasons[teamData.seasons.length - 2].regularSeason.games}
 							teamId={teamData._id}
 						/>
 					</TabPanel>
