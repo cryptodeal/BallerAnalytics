@@ -30,7 +30,20 @@
 <div class="appContent">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
-			<a sveltekit:prefetch href="teams/{infoCommon.slug}?seasonIdx={seasons.length - 2}">
+			<a
+				sveltekit:prefetch
+				href="teams/{infoCommon.slug}?seasonIdx={seasons.findIndex(
+					(s) =>
+						s.season ==
+						Math.max.apply(
+							Math,
+							seasons.map((s) => {
+								return s.season;
+							})
+						) -
+							1
+				)}"
+			>
 				<div
 					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"

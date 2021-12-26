@@ -16,15 +16,12 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 				}
 				return 0;
 			});
-			teams.map((t) => {
-				t.seasons.sort((a, b) => a.season - b.season);
-			});
 			return teams;
 		});
 };
 
 export const getTeamBySlug = async (slug: string, seasonIdx: number): Promise<Team2Document> => {
-	const teamData = await Team2.findOne().getSeasonBySlug(slug, seasonIdx);
+	const teamData = await Team2.findOne().getSeasonBySlug(slug, seasonIdx).lean();
 	if (!teamData) throw Error(`Team not found`);
 	return teamData;
 };

@@ -2,24 +2,25 @@
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ fetch, page }) => {
-		const url = page.query.has('seasonIdx')
-			? `/teams/${page.params.teamSlug}.json?seasonIdx=${page.query.get('seasonIdx')}`
-			: `/teams/${page.params.teamSlug}.json`;
-		const res = await fetch(url);
+		if (page.query.has('seasonIdx')) {
+			const url = `/teams/${page.params.teamSlug}.json?seasonIdx=${page.query.get('seasonIdx')}`;
+			const res = await fetch(url);
 
-		if (res.ok) {
-			const { teamData } = await res.json();
+			if (res.ok) {
+				const { teamData } = await res.json();
+				return {
+					props: {
+						teamData,
+						seasonIdx: page.query.get('seasonIdx')
+					}
+				};
+			}
+
 			return {
-				props: {
-					teamData
-				}
+				status: res.status,
+				error: new Error(`Could not load ${url}`)
 			};
 		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`)
-		};
 	};
 </script>
 
@@ -29,7 +30,8 @@
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
-	console.log(teamData);
+	export let seasonIdx;
+	//console.log(teamData);
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
@@ -75,7 +77,7 @@
 					<TabPanel>
 						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Regular Season:</h2>
 						<ScheduleTable
-							schedule={teamData.seasons[teamData.seasons.length - 2].regularSeason.games}
+							schedule={teamData.seasons[seasonIdx].regularSeason.games}
 							teamId={teamData._id}
 						/>
 					</TabPanel>
