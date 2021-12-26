@@ -22,11 +22,12 @@
 </script>
 
 <script lang="ts">
-	import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
+	// import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
+	console.log(teamData);
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
@@ -71,10 +72,10 @@
 					<!-- Schedule Data Tab -->
 					<TabPanel>
 						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Regular Season:</h2>
-						<ScheduleTable
+						<!--<ScheduleTable
 							schedule={teamData.seasons[teamData.seasons.length - 2].regularSeason.games}
 							teamId={teamData._id}
-						/>
+						/>-->
 					</TabPanel>
 
 					<!-- Roster Data Tab -->
