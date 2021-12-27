@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../config';
-// import { tmpdir } from 'os';
-// import { writeFileSync } from 'fs';
+import { tmpdir } from 'os';
+import { writeFileSync } from 'fs';
 
 export const initConnect = () => {
 	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
@@ -37,6 +37,7 @@ if (!cached) {
 }
 
 async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> {
+	const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
 	if (cached.conn) {
 		return cached.conn;
 	}
@@ -46,6 +47,11 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 			dbName: config.MONGO_DB,
 			useNewUrlParser: true
 		};
+
+		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
+			writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
+			opts.tlsCAFile = digitalOceanCert;
+		}
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
 			return mongoose;

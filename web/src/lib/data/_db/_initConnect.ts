@@ -1,4 +1,6 @@
 import { mongoose } from '@balleranalytics/nba-api-ts';
+import { tmpdir } from 'os';
+import { writeFileSync } from 'fs';
 import config from '$lib/_config';
 
 let cached = global.mongoose;
@@ -20,6 +22,7 @@ if (!cached) {
 }
 
 export async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> {
+	const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
 	if (cached.conn) {
 		return cached.conn;
 	}
@@ -29,6 +32,11 @@ export async function serverlessConnect(mongooseURI: string): Promise<typeof mon
 			dbName: config.MONGO_DB,
 			useNewUrlParser: true
 		};
+
+		if (import.meta.env.VITE_NODE_ENV === 'VercelDevelopment') {
+			writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
+			opts.tlsCAFile = digitalOceanCert;
+		}
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
 			return mongoose;

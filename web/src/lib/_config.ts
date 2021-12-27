@@ -11,6 +11,7 @@ interface ENV {
 	MONGO_URI: string | undefined;
 	MONGO_DB: string | undefined;
 	MONGO_CLUSTER_CERT: string | undefined;
+	MONGO_DIGITALOCEAN_URI: string | undefined;
 	JWT_SECRET: string | undefined;
 	ZOHO_USER: string | undefined;
 	ZOHO_PASS: string | undefined;
@@ -20,6 +21,7 @@ interface Config {
 	MONGO_URI: string;
 	MONGO_DB: string;
 	MONGO_CLUSTER_CERT: string;
+	MONGO_DIGITALOCEAN_URI: string;
 	JWT_SECRET: string;
 	ZOHO_USER: string;
 	ZOHO_PASS: string;
@@ -32,6 +34,7 @@ const getConfig = (): ENV => {
 		MONGO_URI: process.env.MONGO_URI,
 		MONGO_DB: process.env.MONGO_DB,
 		MONGO_CLUSTER_CERT: process.env.MONGO_CLUSTER_CERT,
+		MONGO_DIGITALOCEAN_URI: process.env.MONGO_DIGITALOCEAN_URI,
 		JWT_SECRET: process.env.JWT_SECRET,
 		ZOHO_USER: process.env.ZOHO_USER,
 		ZOHO_PASS: process.env.ZOHO_PASS
