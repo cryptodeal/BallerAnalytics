@@ -20,8 +20,6 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 		});
 };
 
-export const getTeamBySlug = async (slug: string, seasonIdx: number): Promise<Team2Document> => {
-	const teamData = await Team2.findOne().getSeasonBySlug(slug, seasonIdx).lean();
-	if (!teamData) throw Error(`Team not found`);
-	return teamData;
+export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<null | Team2Document> => {
+	return Team2.findOne().getSeasonBySlug(slug, seasonIdx).lean().exec();
 };
