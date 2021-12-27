@@ -31,7 +31,7 @@
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
 	export let seasonIdx;
-	//console.log(teamData);
+	console.log(teamData);
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;

@@ -21,5 +21,5 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 };
 
 export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<null | Team2Document> => {
-	return Team2.findOne().getSeasonBySlug(slug, seasonIdx).lean().exec();
+	return Team2.findOne().getSeasonBySlug(slug, seasonIdx).exec();
 };

@@ -339,14 +339,18 @@ Team2Schema.statics = {
 
 Team2Schema.query = {
 	getSeasonBySlug(slug: string, seasonIndex: number) {
-		return this.where({ 'infoCommon.slug': slug }).populate({
-			path: `seasons.${seasonIndex}.regularSeason.games`,
-			select: 'home visitor date time season_meta',
-			populate: {
-				path: 'home.team visitor.team',
-				select: 'infoCommon'
-			}
-		});
+		return this.where({ 'infoCommon.slug': slug })
+			.select(`infoCommon seasons.season seasons.regularSeason`)
+			.populate({
+				path: `seasons.${seasonIndex}.regularSeason.games`,
+				select:
+					'home.team home.stats.totals.points visitor.team visitor.stats.totals.points date time',
+				populate: {
+					path: 'home.team visitor.team',
+					select: 'infoCommon.name infoCommon.slug'
+				}
+			})
+			.lean();
 	}
 };
 
