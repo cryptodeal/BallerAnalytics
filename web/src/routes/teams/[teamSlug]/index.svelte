@@ -75,7 +75,9 @@
 
 					<!-- Schedule Data Tab -->
 					<TabPanel>
-						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Regular Season:</h2>
+						<h2 class="tabPanelTitle" style="color:{secondaryColor};">
+							{teamData.seasons[seasonIdx].season} Regular Season:
+						</h2>
 						<ScheduleTable
 							schedule={teamData.seasons[seasonIdx].regularSeason.games}
 							teamId={teamData._id}
