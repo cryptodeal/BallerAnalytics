@@ -33,10 +33,8 @@ export async function serverlessConnect(mongooseURI: string): Promise<typeof mon
 			useNewUrlParser: true
 		};
 
-		if (import.meta.env.VITE_NODE_ENV === 'VercelDevelopment') {
-			writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
-			opts.tlsCAFile = digitalOceanCert;
-		}
+		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
+		opts.tlsCAFile = digitalOceanCert;
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
 			return mongoose;

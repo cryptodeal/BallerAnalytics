@@ -7,7 +7,7 @@ import protect from '$lib/functions/_api/auth/protect';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 
 export const handle: Handle = async ({ request, resolve }) => {
-	await serverlessConnect(`${config.MONGO_DIGITALOCEAN_URI}`);
+	await serverlessConnect(`${config.MONGO_URI}`);
 
 	const cookies = cookie.parse(request.headers.cookie || '');
 	console.log(cookies);
