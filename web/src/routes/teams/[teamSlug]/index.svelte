@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
+	import type { SeasonList } from '$lib/types';
 
 	export const load: Load = async ({ fetch, page }) => {
 		if (page.query.has('seasonIdx')) {
@@ -8,10 +9,19 @@
 
 			if (res.ok) {
 				const { teamData } = await res.json();
+				const seasonIdx = page.query.get('seasonIdx');
+				const seasons: SeasonList[] = [];
+				teamData.seasons.map((s) => {
+					const { season } = s;
+					seasons.push({ season });
+				});
+				seasons.sort((a, b) => a.season - b.season);
 				return {
 					props: {
 						teamData,
-						seasonIdx: page.query.get('seasonIdx')
+						seasonIdx,
+						seasonYear: teamData.seasons[seasonIdx].season,
+						seasons
 					}
 				};
 			}
@@ -27,16 +37,28 @@
 <script lang="ts">
 	import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
+	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
-	export let seasonIdx;
+	export let seasonIdx: number;
+	export let seasonYear: number;
+	export let seasons: SeasonList[];
+
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
+
+	async function loadRosterData() {
+		const seasonIndex = teamData.seasons.findIndex((s) => s.season === seasonYear);
+		const res = await fetch(`/teams/${teamData.infoCommon.slug}.json?seasonIdx=${seasonIndex}`);
+		const { teamData: data }: { teamData: Team2Document } = await res.json();
+		teamData = data;
+		seasonIdx = seasonIndex;
+	}
 </script>
 
 <div
@@ -65,6 +87,16 @@
 				</h1>
 			</div>
 			<div class="p-2 md:(container mx-auto)">
+				<div class="flex inline-flex items-center text-black">
+					<div>
+						<h2 class="text-white text-lg mr-4">Season:</h2>
+					</div>
+					<select class="select" bind:value={seasonYear} on:change={loadRosterData}>
+						{#each seasons as { season }}
+							<option value={season}>{season}</option>
+						{/each}
+					</select>
+				</div>
 				<Tabs>
 					<TabList
 						{primaryColor}

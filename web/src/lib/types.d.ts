@@ -51,3 +51,7 @@ export interface TeamRecord {
 	wins: number;
 	losses: number;
 }
+
+export interface SeasonList {
+	season: number;
+}
