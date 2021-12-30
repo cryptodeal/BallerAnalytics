@@ -2,14 +2,16 @@
 	import type { Load } from '@sveltejs/kit';
 	import type { SeasonList } from '$lib/types';
 
-	export const load: Load = async ({ fetch, page }) => {
-		if (page.query.has('seasonIdx')) {
-			const url = `/teams/${page.params.teamSlug}.json?seasonIdx=${page.query.get('seasonIdx')}`;
-			const res = await fetch(url);
+	export const load: Load = async ({ fetch, params, url }) => {
+		if (url.searchParams.has('seasonIdx')) {
+			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
+				'seasonIdx'
+			)}`;
+			const res = await fetch(apiUrl);
 
 			if (res.ok) {
 				const { teamData } = await res.json();
-				const seasonIdx = page.query.get('seasonIdx');
+				const seasonIdx = url.searchParams.get('seasonIdx');
 				const seasons: SeasonList[] = [];
 				teamData.seasons.map((s) => {
 					const { season } = s;
@@ -41,6 +43,7 @@
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
+	console.log(teamData);
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];

@@ -1,8 +1,8 @@
 import { findUserById } from '$lib/data/_db/controllers/user';
 import type { RequestHandler } from '@sveltejs/kit';
 
-export const get: RequestHandler = async ({ query }) => {
-	const userId = query.get('userId');
+export const get: RequestHandler = async ({ url }) => {
+	const userId = url.searchParams.get('userId');
 	console.log(userId);
 	if (!userId) throw Error('userId is required');
 
