@@ -10,6 +10,9 @@
     "lint": "pnpm recursive run lint",
     "mtgen": "pnpm recursive run mtgen",
     "preview": "pnpm recursive run preview",
+    "data:import:boxscores": "pnpm recursive run data:import:boxscores",
+    "data:cleanup:Game2:clearReferences": "pnpm recursive run data:cleanup:Game2:clearReferences",
+    "data:cleanup:Game2:fixTeamPeriodStats": "pnpm recursive run data:cleanup:Game2:fixTeamPeriodStats",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "husky": {

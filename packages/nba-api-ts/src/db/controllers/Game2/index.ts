@@ -16,9 +16,6 @@ export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
 	const boxScore = await getBoxScore(populatedGame);
 	if (boxScore) {
-		while (game.officials.length > 0) {
-			game.officials.pop();
-		}
 		if (boxScore.arena) game.arena = boxScore.arena;
 		if (boxScore.city) game.city = boxScore.city;
 		if (boxScore.state) game.state = boxScore.state;
@@ -161,6 +158,7 @@ export const importBoxScore = async (game: Game2Document) => {
 							personalFouls,
 							points
 						};
+						game.home.stats.periods.slice(0);
 						game.home.stats.periods.addToSet(periodStats);
 					});
 				}
@@ -297,6 +295,7 @@ export const importBoxScore = async (game: Game2Document) => {
 							personalFouls,
 							points
 						};
+						game.visitor.stats.periods.slice(0);
 						game.visitor.stats.periods.addToSet(periodStats);
 					});
 				}
@@ -390,6 +389,7 @@ export const importAllGames = () => {
 			]);
 		})
 		.then(async (leagues) => {
+			let importedCount = 0;
 			for (const league of leagues) {
 				const { name } = league;
 				for (let i = 0; i < league.seasons.length; i++) {
@@ -398,20 +398,20 @@ export const importAllGames = () => {
 					const yesterday = new Date();
 					//yesterday.setDate(yesterday.getDate() - 1);
 					const playoffGames = await getPlayoffGames(name, year);
-					const regularSeasonGames = games.filter((g) => !playoffGames.includes(g));
+					const regularSeasonGames = games.filter(
+						(g) => playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
+					);
 
 					for (const regularSeasonGame of regularSeasonGames) {
+						importedCount++;
+						console.log(importedCount);
 						const count = await Game2.countDocuments({
 							'meta.helpers.bballRef.boxScoreUrl': regularSeasonGame.boxScoreUrl
 						});
 						if (count == 0) {
 							const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
 							//replace with: if (game.date < yesterday && !game.meta.helpers.bballRef.missingData)
-							if (
-								game.date < yesterday &&
-								!game.meta.helpers.bballRef.missingData &&
-								!game.home.leaders.points.statValue
-							) {
+							if (game.date < yesterday && !game.meta.helpers.bballRef.missingData) {
 								await importBoxScore(game).then(async (g) => {
 									if (g) {
 										await addGameRefs(g, 'regular');
@@ -437,17 +437,15 @@ export const importAllGames = () => {
 					}
 
 					for (const playoffGame of playoffGames) {
+						importedCount++;
+						console.log(importedCount);
 						const count = await Game2.countDocuments({
 							'meta.helpers.bballRef.boxScoreUrl': playoffGame.boxScoreUrl
 						});
 						if (count == 0) {
 							const game: Game2Document = await addOrFindGame(playoffGame, year, name);
 							//replace with: if (game.date < yesterday && !game.meta.helpers.bballRef.missingData)
-							if (
-								game.date < yesterday &&
-								!game.meta.helpers.bballRef.missingData &&
-								!game.home.leaders.points.statValue
-							) {
+							if (game.date < yesterday && !game.meta.helpers.bballRef.missingData) {
 								await importBoxScore(game).then(async (g) => {
 									if (g) {
 										await addGameRefs(g, 'post');
@@ -470,7 +468,7 @@ export const importAllGames = () => {
 							await addGameRefs(game, 'post');
 							/** Add game._id to regular season games for league */
 							const seasonIndex = league.seasons.findIndex((s) => s.year == year);
-							league.seasons[seasonIndex].games.regularSeason.addToSet(game._id);
+							league.seasons[seasonIndex].games.postSeason.addToSet(game._id);
 							await league.save();
 							game.postseason = true;
 							await game.save();

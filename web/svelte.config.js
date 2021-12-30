@@ -3,7 +3,7 @@ import preprocess from 'svelte-preprocess';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
-import path from 'path';
+//import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -34,6 +34,7 @@ const config = {
 	}
 };
 
+/*
 if (process.env.VITE_NODE_ENV !== 'development') {
 	config.kit.vite.resolve = {
 		alias: {
@@ -41,5 +42,6 @@ if (process.env.VITE_NODE_ENV !== 'development') {
 		}
 	};
 }
+*/
 
 export default config;

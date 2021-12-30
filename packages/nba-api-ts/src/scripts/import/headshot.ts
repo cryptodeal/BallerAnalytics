@@ -1,5 +1,5 @@
-import { Player2, endConnect, initConnect } from '../index';
-import { storePlayerImage } from '../api/nba/images';
+import { Player2, endConnect, initConnect } from '../../index';
+import { storePlayerImage } from '../../api/nba/images';
 
 initConnect()
 	.then(async () => {
