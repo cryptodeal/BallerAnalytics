@@ -3,7 +3,7 @@ import preprocess from 'svelte-preprocess';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
-//import path from 'path';
+import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -34,14 +34,12 @@ const config = {
 	}
 };
 
-/*
-if (process.env.VITE_NODE_ENV !== 'development') {
+if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve = {
 		alias: {
 			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
 		}
 	};
 }
-*/
 
 export default config;
