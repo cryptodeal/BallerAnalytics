@@ -1,8 +1,8 @@
 <script lang="ts">
 	type LinkInfo = { title: string };
 	export let links: LinkInfo[];
-	export let primaryColor: string;
-	export let secondaryColor: string;
+	export let primaryColor: number[];
+	export let secondaryColor: number[];
 	import Tab from '$lib/ux/tabs/Tab.svelte';
 </script>
 
@@ -10,7 +10,10 @@
 
 <!-- {JSON.stringify($navigating, null, '  ')} -->
 
-<ul class="flex m-1 border-b" style="border-bottom-color:{secondaryColor}">
+<ul
+	class="flex m-1 border-b"
+	style="border-bottom-color:rgb({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]})"
+>
 	{#each links as link}
 		<Tab {primaryColor} {secondaryColor}>
 			{link.title}

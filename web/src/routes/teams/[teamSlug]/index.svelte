@@ -45,9 +45,7 @@
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
 
-	const { hex: primaryColor, rgb: color1 } = getMainColor(
-		teamData.infoCommon.nbaAbbreviation
-	) as unknown as TeamColor;
+	const { rgb: color1 } = getMainColor(teamData.infoCommon.nbaAbbreviation) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
@@ -62,9 +60,9 @@
 </script>
 
 <div
-	class="w-full h-full overflow-scroll"
+	class="w-full h-full overflow-scroll bg-opacity-10"
 	style="color:#fcfcfc;background-color:rgba(8, 15, 53, 1);background-repeat:no-repeat;
-  background-image:linear-gradient(180deg, rgba({color1[0]}, {color1[1]}, {color1[2]}, 0.9) 1%, rgba({color2[0]}, {color2[1]}, {color2[2]}, .8) 100%),
+  background:linear-gradient(180deg, rgba({color1[0]}, {color1[1]}, {color1[2]}, 0.9) 1%, rgba({color2[0]}, {color2[1]}, {color2[2]}, .02) 100%),
   linear-gradient(333deg, rgba(153, 207, 255, 0.2), rgba(180, 255, 217, 0.08)),
   radial-gradient(circle at 77% 89%, rgba(125, 163, 169, 0.8), rgba(125, 163, 169, 0) 50%),
   radial-gradient(circle at 15% 95%, rgba(125, 163, 169, 0.8), rgba(125, 163, 169, 0) 43%),
@@ -99,8 +97,8 @@
 				</div>
 				<Tabs>
 					<TabList
-						{primaryColor}
-						{secondaryColor}
+						primaryColor={color1}
+						secondaryColor={color2}
 						links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
 					/>
 

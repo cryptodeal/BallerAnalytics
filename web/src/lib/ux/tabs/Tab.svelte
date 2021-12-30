@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { TABS } from './Tabs.svelte';
-	export let primaryColor: string;
-	export let secondaryColor: string;
+	export let primaryColor: number[];
+	export let secondaryColor: number[];
 	export let active = false;
 
 	const tab = {};
@@ -14,8 +14,8 @@
 {#if active}
 	<li class="-mb-px mr-1">
 		<span
-			class="inline-block uppercase border-l border-t border-r rounded-t py-2 px-4 font-semibold"
-			style="color:{secondaryColor};border-color:{secondaryColor};background-color:{primaryColor};"
+			class="inline-block uppercase border-l backdrop-filter backdrop-blur-lg border-t border-r rounded-t py-2 px-4 font-semibold"
+			style="color:rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1);border-color:rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1);background-color:rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3);"
 			on:click={() => selectTab(tab)}
 		>
 			<slot />
@@ -24,8 +24,8 @@
 {:else}
 	<li class="-mb-px mr-1">
 		<button
-			class="inline-block uppercase py-2 px-4 font-semibold"
-			style="color:{secondaryColor};border-color:{secondaryColor};background-color:{primaryColor};"
+			class="inline-block uppercase py-2 px-4 backdrop-filter backdrop-blur-lg font-semibold"
+			style="color:rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1);border-color:rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1);background-color:rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3);"
 			on:click={() => selectTab(tab)}
 		>
 			<slot />

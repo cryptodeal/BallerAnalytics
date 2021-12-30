@@ -2,6 +2,10 @@ html {
 	@apply overflow-hidden bg-white dark:bg-black;
 }
 
+body {
+	@apply bg-white dark:bg-black;
+}
+
 text {
 	@apply text-dark-700 dark:text-light-200;
 }
