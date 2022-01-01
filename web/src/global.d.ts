@@ -1,5 +1,5 @@
 /// <reference types="@sveltejs/kit" />
-/// <reference types="vite/client" />
+/// <reference types="unplugin-icons/types/svelte" />
 
 declare namespace NodeJS {
 	interface ProcessEnv {

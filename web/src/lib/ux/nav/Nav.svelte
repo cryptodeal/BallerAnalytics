@@ -32,7 +32,7 @@
 	</div>
 
 	<div
-		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 gap-2 justify-center border-none)"
+		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 gap-4 justify-center border-none)"
 	>
 		<a
 			href="/"

@@ -3,6 +3,7 @@
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
+	import IconX from '~icons/fluent/dismiss-24-regular';
 	const { addNotification } = getNotificationsContext();
 	const formProps = {
 		initialValues: { email: '' },
@@ -47,18 +48,7 @@
 	<div slot="header" let:store={{ close }}>
 		<div class="flex justify-end">
 			<button class="bg-transparent cursor-pointer" on:click={close}>
-				<svg
-					width="24"
-					height="24"
-					xmlns="http://www.w3.org/2000/svg"
-					fill-rule="evenodd"
-					clip-rule="evenodd"
-					class="fill-current hover:fill-blue-600"
-				>
-					<path
-						d="M12 11.293l10.293-10.293.707.707-10.293 10.293 10.293 10.293-.707.707-10.293-10.293-10.293 10.293-.707-.707 10.293-10.293-10.293-10.293.707-.707 10.293 10.293z"
-					/>
-				</svg>
+				<IconX class="stroke-current hover:stroke-blue-500" />
 			</button>
 		</div>
 		<h1 class="p-1">Login / Register</h1>

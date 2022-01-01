@@ -4,7 +4,8 @@ import dayjs from 'dayjs';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { Locals, PostAuthBody } from '$lib/types';
 
-export const post: RequestHandler<Locals, PostAuthBody> = async ({ headers, body, host }) => {
+export const post: RequestHandler<Locals, PostAuthBody> = async ({ headers, body }) => {
+	const { host } = headers;
 	const { email } = body;
 	const ua = uaParser(headers['user-agent']);
 	const time: string = dayjs().format('DD MMMM, YYYY HH:mm:ss Z UTC');

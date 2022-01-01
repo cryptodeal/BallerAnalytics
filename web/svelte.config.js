@@ -3,6 +3,7 @@ import preprocess from 'svelte-preprocess';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
+import Icons from 'unplugin-icons/vite';
 import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -15,21 +16,26 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter({
-			esbuild(defaultOptions) {
-				return {
-					...defaultOptions,
-					plugins: [],
-					external: ['@napi-rs/*']
-				};
-			}
-		}),
+		adapter: adapter(),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: {
-			plugins: [WindiCSS()],
-			resolve: {}
+			plugins: [
+				WindiCSS(),
+				Icons({
+					compiler: 'svelte'
+				})
+			],
+			resolve: {},
+			build: {
+				rollupOptions: {
+					external: ['@napi-rs/*']
+				}
+			},
+			optimizeDeps: {
+				exclude: ['sharp']
+			}
 		}
 	}
 };

@@ -6,16 +6,12 @@ body {
 	@apply bg-white dark:bg-black;
 }
 
-text {
+p {
 	@apply text-dark-700 dark:text-light-200;
 }
 
 a {
-	@apply text-black;
-}
-
-body.dark a {
-	@apply text-light-200;
+	@apply text-black dark:text-light-200;
 }
 
 button {
