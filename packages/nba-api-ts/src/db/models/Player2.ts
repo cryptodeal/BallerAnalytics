@@ -180,6 +180,6 @@ Player2Schema.plugin(
 	})
 );
 
-export const Player2: Player2Model = slugger.wrap(
-	mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema)
-);
+let Player2: Player2Model = mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema);
+Player2 = slugger.wrap(Player2);
+export { Player2 };

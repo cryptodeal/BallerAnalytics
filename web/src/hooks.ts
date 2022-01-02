@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { serverlessConnect } from '$lib/data/_db/_initConnect';
+import { serverlessConnect } from '@balleranalytics/nba-api-ts';
 import type { Handle, GetSession } from '@sveltejs/kit';
 import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
@@ -7,17 +7,16 @@ import protect from '$lib/functions/_api/auth/protect';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 
 export const handle: Handle = async ({ request, resolve }) => {
-	await serverlessConnect(`${config.MONGO_URI}`);
-
+	await serverlessConnect(config.MONGO_URI);
 	const cookies = cookie.parse(request.headers.cookie || '');
-	console.log(cookies);
+	let refreshedAccessToken: string;
 
-	if (cookies && !cookies.accessToken && cookies.refreshToken) {
-		request.headers['set-cookie'] = await refreshAuth(cookies);
+	if (!cookies.accessToken && cookies.refreshToken) {
+		refreshedAccessToken = await refreshAuth(cookies);
 	}
 
 	//if request has accessToken JWT, set claims as request.locals.user
-	if (cookies.accessToken) {
+	if (cookies.accessToken || refreshedAccessToken) {
 		const decoded = decodeToken(cookies.accessToken);
 		if (decoded) {
 			const { payload } = decoded;
@@ -31,13 +30,11 @@ export const handle: Handle = async ({ request, resolve }) => {
       request.method = request.query.get('_method').toUpperCase();
     }
   */
-
-	const isAuth = await protect(request);
-	console.log(isAuth);
+	console.log(cookies);
+	if (cookies.accessToken) await protect(cookies.accessToken);
 
 	const response = await resolve(request);
-
-	//console.log(response.headers['set-cookie']);
+	if (refreshedAccessToken) response.headers['set-cookie'] = refreshedAccessToken;
 
 	return response;
 };

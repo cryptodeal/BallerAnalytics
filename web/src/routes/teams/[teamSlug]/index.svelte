@@ -43,7 +43,6 @@
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
 	export let teamData;
-	console.log(teamData);
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];

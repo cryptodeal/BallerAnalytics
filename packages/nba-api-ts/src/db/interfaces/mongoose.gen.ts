@@ -1565,7 +1565,7 @@ export type Player2Queries = {};
 export type Player2Methods = {};
 
 export type Player2Statics = {
-	findByPlayerUrl: (this: Player2Model, playerUrl: string) => any;
+	findByPlayerUrl: (this: Player2Model, ...args: any[]) => any;
 };
 
 /**
@@ -2680,7 +2680,10 @@ export type User = {
 	active?: boolean;
 	username?: string;
 	scope: string;
-	subscriptions: string[];
+	subscriptions: {
+		teams: (Team2['_id'] | Team2)[];
+		players: (Player2['_id'] | Player2)[];
+	};
 	premiumUser: {
 		isPaid?: boolean;
 		subscriptionDate?: Date;
@@ -2691,6 +2694,7 @@ export type User = {
 		first?: string;
 		last?: string;
 	};
+	birthdate?: Date;
 	image?: string;
 	_id: mongoose.Types.ObjectId;
 	updatedAt?: Date;
@@ -2775,7 +2779,10 @@ export type UserDocument = mongoose.Document<mongoose.Types.ObjectId, UserQuerie
 		active?: boolean;
 		username?: string;
 		scope: string;
-		subscriptions: mongoose.Types.Array<string>;
+		subscriptions: {
+			teams: mongoose.Types.Array<Team2Document['_id'] | Team2Document>;
+			players: mongoose.Types.Array<Player2Document['_id'] | Player2Document>;
+		};
 		premiumUser: {
 			isPaid?: boolean;
 			subscriptionDate?: Date;
@@ -2786,6 +2793,7 @@ export type UserDocument = mongoose.Document<mongoose.Types.ObjectId, UserQuerie
 			first?: string;
 			last?: string;
 		};
+		birthdate?: Date;
 		image?: string;
 		_id: mongoose.Types.ObjectId;
 		updatedAt?: Date;

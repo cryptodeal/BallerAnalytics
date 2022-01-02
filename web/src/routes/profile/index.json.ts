@@ -1,5 +1,7 @@
 import { findUserById } from '$lib/data/_db/controllers/user';
 import type { RequestHandler } from '@sveltejs/kit';
+import type { Locals } from '$lib/types';
+import type { UserObject } from '@balleranalytics/nba-api-ts';
 
 export const get: RequestHandler = async ({ url }) => {
 	const userId = url.searchParams.get('userId');
@@ -19,5 +21,20 @@ export const get: RequestHandler = async ({ url }) => {
 
 	return {
 		status: 500
+	};
+};
+
+export const post: RequestHandler<Locals, UserObject> = async ({ locals, body }) => {
+	console.log(locals);
+	console.log(body);
+	const user = true;
+	if (user) {
+		return {
+			status: 200
+		};
+	}
+
+	return {
+		status: 503
 	};
 };

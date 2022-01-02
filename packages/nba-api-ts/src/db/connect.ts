@@ -36,7 +36,7 @@ if (!cached) {
 	cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> {
+export async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> {
 	const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
 	if (cached.conn) {
 		return cached.conn;
@@ -48,10 +48,8 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 			useNewUrlParser: true
 		};
 
-		if (config.VITE_NODE_ENV === 'VercelDevelopment') {
-			writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
-			opts.tlsCAFile = digitalOceanCert;
-		}
+		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
+		opts.tlsCAFile = digitalOceanCert;
 
 		cached.promise = mongoose.connect(mongooseURI, opts).then((mongoose) => {
 			return mongoose;
@@ -60,5 +58,3 @@ async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> 
 	cached.conn = await cached.promise;
 	return cached.conn;
 }
-
-export { serverlessConnect };

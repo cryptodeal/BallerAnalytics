@@ -1,10 +1,9 @@
 <script lang="ts">
 	import Modal from '$lib/ux/Modal.svelte';
-	import { getNotificationsContext } from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import IconX from '~icons/fluent/dismiss-24-regular';
-	const { addNotification } = getNotificationsContext();
+
 	const formProps = {
 		initialValues: { email: '' },
 		validationSchema: yup.object().shape({
@@ -18,23 +17,6 @@
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(values)
-			}).then((res) => {
-				console.log(res);
-				if (res.status === 200) {
-					addNotification({
-						text: `Success: Check Email for Auth Link`,
-						position: 'top-right',
-						type: 'success',
-						removeAfter: 4000
-					});
-				} else {
-					addNotification({
-						text: `Error: Login Error; Please Try Again`,
-						position: 'top-right',
-						type: 'danger',
-						removeAfter: 4000
-					});
-				}
 			});
 		}
 	};
@@ -63,7 +45,7 @@
 				</div>
 
 				<flex-container>
-					<button class="cursor-pointer" type="submit">submit</button>
+					<button class="m-1 cursor-pointer" type="submit">submit</button>
 				</flex-container>
 			</Form>
 		</div>

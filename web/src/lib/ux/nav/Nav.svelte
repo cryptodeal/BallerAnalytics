@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Hamburger from '$lib/ux/nav/Hamburger.svelte';
-	import AuthModal from '$lib/ux/nav/AuthModal.svelte';
 	import { session } from '$app/stores';
 	import ThemeToggle from '$lib/ux/nav/ThemeToggle.svelte';
+	import AuthButton from '$lib/ux/nav/AuthButton.svelte';
 
 	export let segment: string;
 
@@ -60,16 +60,9 @@
 	</div>
 
 	<div
-		class="toggle p-2 hidden w-full h-full flex inline-flex items-center justify-between text-dark-900 dark:text-light-200 md:(flex flex-row justify-end w-1/3)"
+		class="toggle p-2 hidden w-full h-full flex inline-flex items-center justify-between md:(flex flex-row justify-end w-1/3)"
 	>
 		<ThemeToggle />
-
-		<button class="font-medium p-2 uppercase rounded-lg md:(w-auto ml-2)">
-			{#if $session.user}
-				<a class="h-full w-full" href="/logout">logout</a>
-			{:else}
-				<AuthModal />
-			{/if}
-		</button>
+		<AuthButton />
 	</div>
 </nav>

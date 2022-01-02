@@ -111,9 +111,9 @@
 										<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
 											<div class="text-sm leading-5">
 												{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points)}
-													<span class="text-green-500 font-bold mr-1">W</span>
+													<span class="text-green-700 font-bold mr-1">W</span>
 												{:else}
-													<span class="text-red-600 font-bold mr-1">L</span>
+													<span class="text-red-700 font-bold mr-1">L</span>
 												{/if}
 												<span
 													>{home.stats.totals.points > visitor.stats.totals.points
@@ -141,9 +141,9 @@
 									<td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
 										<div class="text-sm leading-5">
 											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points)}
-												<span class="text-green-500 font-bold mr-1">W</span>
+												<span class="text-green-700 font-bold mr-1">W</span>
 											{:else}
-												<span class="text-red-600 font-bold mr-1">L</span>
+												<span class="text-red-700 font-bold mr-1">L</span>
 											{/if}
 											<span
 												>{home.stats.totals.points > visitor.stats.totals.points

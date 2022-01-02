@@ -34,3 +34,11 @@ export const base64ToBlob = (base64Data: string): Blob => {
 	// Return BLOB image after conversion
 	return new Blob([uInt8Array], { type: fileType });
 };
+
+export const camelize = (str: string): string => {
+	return str
+		.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+			return index === 0 ? word.toLowerCase() : word.toUpperCase();
+		})
+		.replace(/\s+/g, '');
+};

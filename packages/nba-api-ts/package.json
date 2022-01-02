@@ -45,8 +45,7 @@
 		"mongoose": "^6.1.4",
 		"mongoose-slugger-plugin": "^3.0.3",
 		"mongoose-tsgen": "^8.4.7",
-		"nba": "^4.15.0",
-		"sharp": "^0.29.3"
+		"nba": "^4.15.0"
 	},
 	"devDependencies": {
 		"@tsconfig/node14": "^1.0.1",

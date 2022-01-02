@@ -1,20 +1,10 @@
-import cookie from 'cookie';
-//import jwt from 'jsonwebtoken'
-import type { ServerRequest } from '@sveltejs/kit/types/hooks';
-
+import config from '$lib/_config';
+import jwt from 'jsonwebtoken';
 /** TODO: Return false if no auth; else return user scope (permissions) as string */
-const protect = async (request: ServerRequest): Promise<boolean> => {
-	const cookies = cookie.parse(request.headers.cookie || '');
-	let token: undefined | string;
-
-	if (cookies.accessToken) {
-		token = cookies.accessToken;
-	}
-	if (!token) {
-		return false;
-	}
-
-	//TODO: verify JWT && check scope of user
-	return true;
+const protect = (accessToken: string): void => {
+	return jwt.verify(accessToken, config.JWT_SECRET, function (err, decoded) {
+		if (err) throw new Error(`Error: ${err}`);
+		console.log(decoded);
+	});
 };
 export default protect;

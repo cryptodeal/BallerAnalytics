@@ -60,12 +60,10 @@ const UserSchema: UserSchema = new mongoose.Schema(
 			default: 'admin'
 		},
 		//password: { type: String, required: true },
-		subscriptions: [
-			{
-				type: String,
-				required: false
-			}
-		],
+		subscriptions: {
+			teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team2', many: true }],
+			players: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Player2', many: true }]
+		},
 		premiumUser: {
 			isPaid: {
 				type: Boolean,
@@ -80,6 +78,7 @@ const UserSchema: UserSchema = new mongoose.Schema(
 			first: { type: String, trim: true },
 			last: { type: String, trim: true }
 		},
+		birthdate: { type: Date },
 		//TODO: Add User Image
 		image: { type: String, required: false }
 	},
