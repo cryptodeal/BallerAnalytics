@@ -21,9 +21,6 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: {
-			ssr: {
-				external: ['mongoose-slugger-plugin']
-			},
 			plugins: [
 				WindiCSS(),
 				Icons({
@@ -35,13 +32,10 @@ const config = {
 	}
 };
 
-if (
-	process.env.VITE_NODE_ENV === 'VercelDevelopment' ||
-	process.env.VITE_NODE_ENV === 'development'
-) {
+if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve = {
 		alias: {
-			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
+			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts')
 		}
 	};
 }

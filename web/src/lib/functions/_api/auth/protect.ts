@@ -1,10 +1,16 @@
 import config from '$lib/_config';
+import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
-/** TODO: Return false if no auth; else return user scope (permissions) as string */
-const protect = (accessToken: string): void => {
-	return jwt.verify(accessToken, config.JWT_SECRET, function (err, decoded) {
-		if (err) throw new Error(`Error: ${err}`);
-		console.log(decoded);
-	});
+import type { RequestHeaders } from '@sveltejs/kit/types/helper';
+import type { JwtPayload } from 'jsonwebtoken';
+
+const protect = (headers: RequestHeaders): JwtPayload | string => {
+	const cookies = cookie.parse(headers.cookie || '');
+	const { accessToken } = cookies;
+	if (accessToken) {
+		return jwt.verify(accessToken, config.JWT_SECRET);
+	}
+	throw new Error(`Error: no accessToken cookie found; unable to authenticate request`);
 };
+
 export default protect;

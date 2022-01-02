@@ -145,3 +145,17 @@ nav a[aria-current]::after {
 .circle.active {
 	border-color: #3498db;
 }
+
+.invalid,
+.bar {
+	border: 1px solid red;
+}
+
+.valid,
+.foo {
+	border: 1px solid green;
+}
+
+.dirty {
+	border: 1px dashed black;
+}

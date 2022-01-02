@@ -19,7 +19,6 @@
 				},
 				body: JSON.stringify(values)
 			}).then((res) => {
-				console.log(res);
 				if (res.status === 200) {
 					addNotification({
 						text: `Success: Check Email for Auth Link`,

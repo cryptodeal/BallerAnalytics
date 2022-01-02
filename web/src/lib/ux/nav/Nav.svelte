@@ -51,7 +51,7 @@
 			<a
 				sveltekit:prefetch
 				href="/profile"
-				class="flex border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+				class="flex border-b-2 border-blue-900 my-1 uppercase text-dark-900 justify-end w-full md:(w-auto text-center border-none) dark:text-light-200"
 				aria-current={segment === 'profile' ? 'page' : undefined}
 			>
 				profile

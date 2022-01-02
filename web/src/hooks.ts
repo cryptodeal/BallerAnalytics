@@ -3,7 +3,6 @@ import { serverlessConnect } from '@balleranalytics/nba-api-ts';
 import type { Handle, GetSession } from '@sveltejs/kit';
 import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
-import protect from '$lib/functions/_api/auth/protect';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 
 export const handle: Handle = async ({ request, resolve }) => {
@@ -30,8 +29,6 @@ export const handle: Handle = async ({ request, resolve }) => {
       request.method = request.query.get('_method').toUpperCase();
     }
   */
-	console.log(cookies);
-	if (cookies.accessToken) await protect(cookies.accessToken);
 
 	const response = await resolve(request);
 	if (refreshedAccessToken) response.headers['set-cookie'] = refreshedAccessToken;

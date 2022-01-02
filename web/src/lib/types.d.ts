@@ -1,5 +1,5 @@
 import type { Writable } from 'svelte/store';
-import type { Team2Document, Game2Document } from '@balleranalytics/nba-api-ts';
+import type { Team2Document, Game2Document, mongoose } from '@balleranalytics/nba-api-ts';
 /**
  * Can be made globally available by placing this
  * inside `global.d.ts` and removing `export` keyword
@@ -11,6 +11,14 @@ export interface Locals {
 		scope: string;
 		username?: string;
 	};
+}
+
+export interface JWTPayload {
+	email: string;
+	scope: string;
+	id: string;
+	iat: number;
+	exp: number;
 }
 
 export interface PostAuthBody {
@@ -54,4 +62,17 @@ export interface TeamRecord {
 
 export interface SeasonList {
 	season: number;
+}
+
+export interface NewUserFormData {
+	userId: mongoose.Types.ObjectId;
+	name: {
+		first: string;
+		last: string;
+	};
+	birthdate: Date;
+	subscriptions: {
+		teams: mongoose.Types.Array<ObjectId | Team2Document>;
+		players: mongoose.Types.Array<ObjectId | Player2Document>;
+	};
 }

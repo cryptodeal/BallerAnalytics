@@ -1,15 +1,13 @@
-import { findUserById } from '$lib/data/_db/controllers/user';
+import { findUserById, addNewUserFormData } from '$lib/data/_db/controllers/user';
+import protect from '$lib/functions/_api/auth/protect';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { Locals } from '$lib/types';
-import type { UserObject } from '@balleranalytics/nba-api-ts';
+import type { Locals, NewUserFormData, JWTPayload } from '$lib/types';
 
 export const get: RequestHandler = async ({ url }) => {
 	const userId = url.searchParams.get('userId');
-	console.log(userId);
 	if (!userId) throw Error('userId is required');
 
 	const userData = await findUserById(userId);
-	console.log(userData);
 
 	if (userData) {
 		return {
@@ -24,10 +22,12 @@ export const get: RequestHandler = async ({ url }) => {
 	};
 };
 
-export const post: RequestHandler<Locals, UserObject> = async ({ locals, body }) => {
-	console.log(locals);
-	console.log(body);
-	const user = true;
+export const post: RequestHandler<Locals, NewUserFormData> = async ({ headers, body }) => {
+	const userAuth = (await protect(headers)) as JWTPayload;
+	if (!userAuth) {
+		throw new Error(`Error: unable to authenticate request`);
+	}
+	const user = await addNewUserFormData(userAuth.id, body);
 	if (user) {
 		return {
 			status: 200

@@ -21,7 +21,9 @@
 </script>
 
 <script lang="ts">
+	import dayjs from 'dayjs';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
+	//import { mongoose } from '@balleranalytics/nba-api-ts';
 	import IconCirclePlus from '~icons/fluent/add-circle-24-regular';
 	import IconEdit from '~icons/fluent/document-edit-24-regular';
 	import IconPerson from '~icons/fluent/person-24-regular';
@@ -30,7 +32,15 @@
 	import MultiStepForm from '$lib/ux/forms/MultiStepForm.svelte';
 	export let user: UserDocument;
 	let edit = false;
-	//console.log(user);
+	console.log(user);
+
+	$: now = user.birthdate ? new Date(user.birthdate) : new Date();
+	$: month = '' + (now.getMonth() + 1);
+	$: day = '' + (now.getDate() + 1);
+	$: year = now.getFullYear();
+	$: if (month.length < 2) month = '0' + month;
+	$: if (day.length < 2) day = '0' + day;
+	$: dateString = [year, month, day].join('-');
 </script>
 
 {#if !user.name?.first || !user.name?.last || !user.birthdate}
@@ -50,12 +60,14 @@
                   alt="">
             -->
 						</div>
-						<h1 class="font-bold text-xl leading-8 my-1">Jane Doe</h1>
-						<h3 class="text-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
-						<p class="text-sm text-gray-700 leading-6 dark:text-gray-300">
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi
-							dolorum sequi illum qui unde aspernatur non deserunt
-						</p>
+						<h1 class="font-bold text-xl leading-8 my-1">{user.name.first} {user.name.last}</h1>
+						<!--
+              <h3 class="text-lg text-semibold leading-6">Owner at Her Company Inc.</h3>
+              <p class="text-sm text-gray-700 leading-6 dark:text-gray-300">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, eligendi
+                dolorum sequi illum qui unde aspernatur non deserunt
+              </p>
+            -->
 						<ul class="glassmorphicBg hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
 							<li class="flex items-center py-3">
 								<span class="font-semibold">Status</span>
@@ -65,7 +77,7 @@
 							</li>
 							<li class="flex items-center py-3">
 								<span class="font-semibold">Member since</span>
-								<span class="ml-auto">Nov 07, 2016</span>
+								<span class="ml-auto">{dayjs(user.createdAt).format('MMM DD, YYYY')}</span>
 							</li>
 						</ul>
 					</div>
@@ -88,13 +100,33 @@
 						</div>
 						<div class="grid grid-cols-3">
 							<div class="text-center my-2">
-								<img
-									class="h-16 w-16 rounded-full mx-auto"
-									src="https://logoeps.com/wp-content/uploads/2012/10/houston-rockets-logo-vector.png"
-									alt=""
-								/>
-								<a href="/teams/rockets" class="text-gray-700 dark:text-gray-300">Houston Rockets</a
-								>
+								{#each user.subscriptions.teams as team}
+									<!--
+									{#if team instanceof mongoose.Document && team.infoCommon}
+										<a
+											sveltekit:prefetch
+											href="teams/{team.infoCommon.slug}?seasonIdx={team.seasons.findIndex(
+												(s) =>
+													s.season ==
+													Math.max.apply(
+														Math,
+														team.seasons.map((s) => {
+															return s.season;
+														})
+													) -
+														1
+											)}"
+										>
+											<img
+												class="h-16 w-16 rounded-full mx-auto"
+												src="teams/{team.infoCommon.slug}.svg"
+												alt="{team.infoCommon.name} logo"
+											/>
+											{team.infoCommon.name}
+										</a>
+									{/if}
+                  -->
+								{/each}
 							</div>
 						</div>
 					</div>
@@ -184,21 +216,17 @@
 										>
 										<input
 											class="px-2 text-sm md:px-4"
-											type="text"
+											type="date"
 											id="birthday"
 											name="birthday"
-											bind:value={user.email}
+											bind:value={dateString}
 										/>
 									{:else}
-										<div class="text-blue-600 px-2 my-2 font-semibold md:px-4 ">Email</div>
+										<div class="text-blue-600 px-2 my-2 font-semibold md:px-4 ">Birthday</div>
 										<div class="px-2 my-2 text-gray-700 dark:text-gray-300 md:px-4">
-											{user.birthdate}
+											{dayjs(dateString).format('MMM DD, YYYY')}
 										</div>
 									{/if}
-									<div class="text-blue-600 px-2 my-2 font-semibold md:px-4 ">Birthday</div>
-									<div class="px-2 my-2 text-gray-700 md:px-4 dark:text-gray-300">
-										{user.birthdate}
-									</div>
 								</div>
 							</div>
 						</div>
