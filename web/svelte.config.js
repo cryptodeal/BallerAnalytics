@@ -30,7 +30,7 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-		vite: () => ({
+		vite: {
 			plugins: [
 				WindiCSS(),
 				Icons({
@@ -42,7 +42,7 @@ const config = {
 			],
 
 			resolve: {}
-		})
+		}
 	}
 };
 
