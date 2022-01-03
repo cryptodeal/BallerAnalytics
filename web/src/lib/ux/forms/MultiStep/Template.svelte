@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Form from '$lib/ux/forms/Form.svelte';
 	import { form, field } from '../../../../../node_modules/svelte-forms';
 	import { min, required } from '../../../../../node_modules/svelte-forms/validators';
 	import { checkAge } from '$lib/functions/helpers';
+	import Form from '$lib/ux/forms/MultiStep/Form.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import type { SvelteComponent } from 'svelte';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
