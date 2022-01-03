@@ -3,8 +3,8 @@ import protect from '$lib/functions/_api/auth/protect';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { Locals, NewUserFormData, JWTPayload } from '$lib/types';
 
-export const get: RequestHandler = async ({ url }) => {
-	const userId = url.searchParams.get('userId');
+export const get: RequestHandler = async ({ query }) => {
+	const userId = query.get('userId');
 	if (!userId) throw Error('userId is required');
 
 	const userData = await findUserById(userId);

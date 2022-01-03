@@ -5,7 +5,7 @@
 	import Notifications from 'svelte-notifications';
 	import Nav from '$lib/ux/nav/Nav.svelte';
 
-	$: segment = $page.url.pathname.split('/')[1];
+	$: segment = $page.path.split('/')[1];
 </script>
 
 <svelte:head>

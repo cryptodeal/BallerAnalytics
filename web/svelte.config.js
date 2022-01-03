@@ -4,8 +4,8 @@ import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
 import Icons from 'unplugin-icons/vite';
-import path from 'path';
 import dotenv from 'dotenv';
+import path from 'path';
 dotenv.config();
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -16,7 +16,15 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			esbuild(defaultOptions) {
+				return {
+					...defaultOptions,
+					plugins: [],
+					external: ['@napi-rs/*', 'mongoose', 'mongoose-slugger-plugin']
+				};
+			}
+		}),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
@@ -35,7 +43,7 @@ const config = {
 if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve = {
 		alias: {
-			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts')
+			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
 		}
 	};
 }
