@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 export { Game2 } from './db/models/Game2';
 export { Team2 } from './db/models/Team2';
 export { Player2 } from './db/models/Player2';
