@@ -22,7 +22,7 @@ const config = {
 				return {
 					...defaultOptions,
 					plugins: [],
-					external: ['limax']
+					external: ['@napi-rs/*']
 				};
 			}
 		}),
