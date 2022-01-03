@@ -21,7 +21,7 @@ const config = {
 				return {
 					...defaultOptions,
 					plugins: [],
-					external: ['@napi-rs/*', 'svelte-forms']
+					external: ['@napi-rs/*']
 				};
 			}
 		}),

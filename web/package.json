@@ -12,7 +12,7 @@
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
 	},
 	"dependencies": {
-    "svelte-forms": "^2.0.7",
+		"svelte-forms": "^2.0.7",
 		"svelte-forms-lib": "^2.0.0",
 		"svelte-notifications": "^0.9.93"
 	},
