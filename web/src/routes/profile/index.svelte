@@ -32,15 +32,8 @@
 	import MultiStepForm from '$lib/ux/forms/MultiStepForm.svelte';
 	export let user: UserDocument;
 	let edit = false;
-	console.log(user);
-
-	$: now = user.birthdate ? new Date(user.birthdate) : new Date();
-	$: month = '' + (now.getMonth() + 1);
-	$: day = '' + (now.getDate() + 1);
-	$: year = now.getFullYear();
-	$: if (month.length < 2) month = '0' + month;
-	$: if (day.length < 2) day = '0' + day;
-	$: dateString = [year, month, day].join('-');
+	let dateString = dayjs(user.birthdate).format('YYYY-MM-DD');
+	$: user.birthdate = new Date(dateString);
 </script>
 
 {#if !user.name?.first || !user.name?.last || !user.birthdate}

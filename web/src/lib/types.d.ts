@@ -13,6 +13,11 @@ export interface Locals {
 	};
 }
 
+export interface ValidatedFormData {
+	valid: boolean;
+	errors: string[];
+}
+
 export interface JWTPayload {
 	email: string;
 	scope: string;

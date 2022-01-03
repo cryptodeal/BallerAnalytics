@@ -11,19 +11,19 @@
 			<IconPerson class="h-6 w-6" />
 		</button>
 		<div class="absolute right-4 mt-1 z-10 hidden group-hover:(block)">
-			<div class="px-2 mt-3 glassmorphicBg pt-2 shadow-lg rounded-xl">
+			<div class="px-2 mt-3 glassmorphicMenu pt-2 shadow-lg rounded-xl">
 				<div class="flex flex-col py-4 px-2 w-200px max-w-200px">
 					<div class="pb-4 block w-full m-0">
 						<a href="/profile" class="w-full m-0">
 							<button
-								class="w-full inline-flex items-center rounded-md bg-transparent hover:(bg-dark-900 !text-white)"
+								class="w-full inline-flex items-center rounded-md bg-transparent hover:(bg-gray-500 !text-white) hover:dark:(bg-dark-900 !text-white)"
 							>
 								profile
 							</button>
 						</a>
 						<a href="/logout" class="w-full m-0">
 							<button
-								class="w-full inline-flex items-center bg-transparent hover:(bg-dark-900 !text-white)"
+								class="w-full inline-flex items-center bg-transparent hover:(bg-gray-500 !text-white) hover:dark:(bg-dark-900 !text-white)"
 							>
 								logout
 							</button>

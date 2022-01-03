@@ -10,6 +10,7 @@
 	export let birthdate;
 	export let teamSubs;
 	export let playerSubs;
+	export let minAge = 18;
 	const { addNotification } = getNotificationsContext();
 
 	const handleSubmit = (): Promise<void> => {
@@ -55,8 +56,26 @@
 <form class="glassmorphicBg rounded-lg py-10 px-5 text-center max-w-full" on:submit={handleSubmit}>
 	{#if active_step == 'Info'}
 		<InputField label={'First Name'} bind:value={$firstName.value} />
+		{#if $myForm.hasError('firstName.required')}
+			<div class="text-red-600 text-sm">First name is required</div>
+		{/if}
+		{#if $myForm.hasError('firstName.min')}
+			<div class="text-red-600 text-sm">First name must be at least 2 characters</div>
+		{/if}
 		<InputField label={'Last Name'} bind:value={$lastName.value} />
+		{#if $myForm.hasError('lastName.required')}
+			<div class="text-red-600 text-sm">Last name is required</div>
+		{/if}
+		{#if $myForm.hasError('lastName.min')}
+			<div class="text-red-600 text-sm">Last name must be at least 2 characters</div>
+		{/if}
 		<InputField type="date" label={'Birthdate'} bind:value={$birthdate.value} />
+		{#if $myForm.hasError('birthdate.required')}
+			<div class="text-red-600 text-sm">Must be {minAge}+ to register</div>
+		{/if}
+		{#if $myForm.hasError('birthdate.min_age')}
+			<div class="text-red-600 text-sm">Must be {minAge}+ to register</div>
+		{/if}
 	{:else if active_step == 'Subscriptions'}
 		<InputField label={'Team Subscriptions'} type="select" bind:value={$teamSubs.value} />
 		<InputField label={'Player Subscriptions'} type="select" bind:value={$playerSubs.value} />

@@ -1,3 +1,5 @@
+import type { ValidatedFormData, NewUserFormData } from '$lib/types';
+
 export const getAge = (dateString: string): number => {
 	const today = new Date();
 	const birthDate = new Date(dateString);
@@ -41,4 +43,70 @@ export const camelize = (str: string): string => {
 			return index === 0 ? word.toLowerCase() : word.toUpperCase();
 		})
 		.replace(/\s+/g, '');
+};
+
+const requiredString = (str: string): boolean => {
+	if (str && str.length > 2) return true;
+	return false;
+};
+
+interface ValidatedBirthdate {
+	valid: boolean;
+	errors: string[];
+}
+const checkBirthdate = (date: Date): ValidatedBirthdate => {
+	const result: ValidatedBirthdate = {
+		valid: true,
+		errors: []
+	};
+	if (!date) {
+		result.valid = false;
+		result.errors.push(`Birthdate is required`);
+	}
+
+	const age = getAge(date.toString());
+	console.log(age);
+	if (age < 18) {
+		result.valid = false;
+		result.errors.push(`You must be 18 years or older to register an account`);
+	}
+	return result;
+};
+
+interface ValidateCheckAge {
+	valid: boolean;
+	name: string;
+}
+export const checkAge = (minAge: number) => {
+	return (value: Date): ValidateCheckAge => {
+		const age = getAge(value.toString());
+		return { valid: age >= minAge, name: `min_age` };
+	};
+};
+
+export const validateNewUserForm = (formData: NewUserFormData): ValidatedFormData => {
+	const result: ValidatedFormData = {
+		valid: true,
+		errors: []
+	};
+
+	//validate first name
+	if (requiredString(formData.name.first)) {
+		result.valid = false;
+		result.errors.push('First name is required!');
+	}
+
+	//validate last name
+	if (requiredString(formData.name.last)) {
+		result.valid = false;
+		result.errors.push('Last name is required!');
+	}
+
+	//validate birthdate
+	const { valid, errors } = checkBirthdate(formData.birthdate);
+	if (!valid) {
+		result.valid = false;
+		result.errors = result.errors.concat(errors);
+	}
+	return result;
 };

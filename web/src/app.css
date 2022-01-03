@@ -80,7 +80,7 @@ nav a[aria-current]::after {
 }
 
 .glassmorphicMenu {
-	@apply bg-white backdrop-filter backdrop-blur-xl bg-opacity-40 md:(backdrop-filter backdrop-blur-lg bg-opacity-20);
+	@apply bg-white backdrop-filter backdrop-blur-lg bg-opacity-80 dark:(bg-gray-500 backdrop-filter backdrop-blur-lg bg-opacity-80);
 }
 
 .progress-container {
