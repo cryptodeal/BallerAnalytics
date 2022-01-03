@@ -15,6 +15,10 @@ export const getAstTovRatio = (ast: number, tov: number): number => {
 	return ast / tov;
 };
 
+export const capitalizeFirstLetter = (str: string): string => {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export const base64ToBlob = (base64Data: string): Blob => {
 	// Split into two parts
 	const parts = base64Data.split(';base64,');

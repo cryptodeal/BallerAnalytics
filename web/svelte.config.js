@@ -6,6 +6,7 @@ import WindiCSS from 'vite-plugin-windicss';
 import Icons from 'unplugin-icons/vite';
 import dotenv from 'dotenv';
 import path from 'path';
+import svelteSVG from 'vite-plugin-svelte-svg';
 dotenv.config();
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -21,22 +22,27 @@ const config = {
 				return {
 					...defaultOptions,
 					plugins: [],
-					external: ['@napi-rs/*']
+					external: ['limax']
 				};
 			}
 		}),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
-		vite: {
+		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+		vite: () => ({
 			plugins: [
 				WindiCSS(),
 				Icons({
 					compiler: 'svelte'
+				}),
+				svelteSVG({
+					svgoConfig: {} // See https://github.com/svg/svgo#configuration
 				})
 			],
+
 			resolve: {}
-		}
+		})
 	}
 };
 
