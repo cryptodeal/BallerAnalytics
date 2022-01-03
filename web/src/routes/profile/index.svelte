@@ -29,7 +29,7 @@
 	import IconPerson from '~icons/fluent/person-24-regular';
 	import IconClipboard from '~icons/fluent/clipboard-text-ltr-24-regular';
 	import IconGradHat from '~icons/fluent/hat-graduation-24-regular';
-	import MultiStepForm from '$lib/ux/forms/MultiStepForm.svelte';
+	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
 	export let user: UserDocument;
 	let edit = false;
 	let dateString = dayjs(user.birthdate).format('YYYY-MM-DD');
