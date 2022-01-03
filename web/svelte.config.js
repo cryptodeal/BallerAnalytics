@@ -21,7 +21,7 @@ const config = {
 				return {
 					...defaultOptions,
 					plugins: [],
-					external: ['@napi-rs/*', 'mongoose', 'mongoose-slugger-plugin']
+					external: ['@napi-rs/*', 'svelte-forms']
 				};
 			}
 		}),
