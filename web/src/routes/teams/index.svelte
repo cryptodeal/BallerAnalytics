@@ -32,7 +32,7 @@
 		<div class="container mx-auto my-4">
 			<a
 				sveltekit:prefetch
-				href="teams/assets/logo-{infoCommon.slug}?seasonIdx={seasons.findIndex(
+				href="teams/{infoCommon.slug}?seasonIdx={seasons.findIndex(
 					(s) =>
 						s.season ==
 						Math.max.apply(
@@ -52,7 +52,7 @@
 					<div class="md:(w-1/8) w-full">
 						<img
 							class="rounded-lg shadow-sm mx-auto h-30 antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 md:m-4"
-							src="teams/{infoCommon.slug}.svg"
+							src="/teams/assets/logo-{infoCommon.slug}.svg"
 							alt="{infoCommon.name} logo"
 						/>
 					</div>
