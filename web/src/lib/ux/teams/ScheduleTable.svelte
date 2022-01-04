@@ -78,29 +78,22 @@
 								</td>
 								<!-- Display Opposing Team -->
 								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
-									{#if teamId == home.team._id}
-										<div class="flex inline-flex items-center whitespace-nowrap">
+									<div class="flex inline-flex items-center whitespace-nowrap">
+										{#if teamId == home.team._id}
 											<div class="text-sm leading-5 mr-2">
 												vs {capitalizeFirstLetter(home.team.infoCommon.slug)}
 											</div>
-											<img
-												class="antialiased w-12 h-12"
-												src="/teams/{visitor.team.infoCommon.slug}.svg"
-												alt="{visitor.team.infoCommon.slug} logo"
-											/>
-										</div>
-									{:else}
-										<div class="flex inline-flex items-center whitespace-nowrap">
+										{:else}
 											<div class="text-sm leading-5 mr-2">
 												@ {capitalizeFirstLetter(home.team.infoCommon.slug)}
 											</div>
-											<img
-												class="antialiased w-12 h-12"
-												src="/teams/{home.team.infoCommon.slug}.svg"
-												alt="{home.team.infoCommon.name} logo"
-											/>
-										</div>
-									{/if}
+										{/if}
+										<img
+											class="antialiased w-12 h-12"
+											src="/teams/assets/min-{visitor.team.infoCommon.slug}.svg"
+											alt="{visitor.team.infoCommon.slug} logo"
+										/>
+									</div>
 								</td>
 								{#if time}
 									{#if dayjs(date)
