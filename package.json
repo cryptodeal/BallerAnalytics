@@ -13,7 +13,8 @@
     "data:import:boxscores": "pnpm recursive run data:import:boxscores",
     "data:cleanup:Game2:clearReferences": "pnpm recursive run data:cleanup:Game2:clearReferences",
     "data:cleanup:Game2:fixTeamPeriodStats": "pnpm recursive run data:cleanup:Game2:fixTeamPeriodStats",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "pnpm recursive run test --stream",
+    "test:coverage": "pnpm recursive run test:coverage --stream"
   },
   "husky": {
     "hooks": {

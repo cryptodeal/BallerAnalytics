@@ -1,12 +1,6 @@
 import { loadPlayerPage } from '../fetchers';
 import { findByAlpha2 } from 'iso-3166-1-ts';
 
-interface BirthLocale {
-	city: string;
-	country: string;
-	state?: string;
-}
-
 interface PlayerName {
 	display: string;
 	pronunciation?: string;

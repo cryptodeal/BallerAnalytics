@@ -33,7 +33,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 			season: { type: Number, required: true },
 			infoCommon: {
 				name: { type: String },
-				abbreviation: { type: String },
+				abbreviation: { type: String, required: true },
 				city: { type: String },
 				slug: { type: String },
 				code: { type: String }
@@ -41,16 +41,22 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 			roster: {
 				coaches: [
 					{
-						coach: { type: String, ref: 'Coach2', index: true, many: true },
+						coach: { type: mongoose.Schema.Types.ObjectId, ref: 'Coach2', index: true, many: true },
 						coachType: { type: String, required: true },
 						isAssistant: { type: Boolean, required: true }
 					}
 				],
 				players: [
 					{
-						player: { type: String, ref: 'Player2', index: true, many: true },
+						player: {
+							type: mongoose.Schema.Types.ObjectId,
+							ref: 'Player2',
+							index: true,
+							many: true
+						},
 						number: { type: String, required: true },
-						position: { type: String, required: true }
+						position: { type: String, required: true },
+						twoWay: { type: Boolean, required: true, default: false }
 					}
 				]
 			},

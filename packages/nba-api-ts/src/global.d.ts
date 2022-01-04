@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 declare namespace NodeJS {
 	interface ProcessEnv {
 		MONGO_PORT: string;
@@ -10,7 +8,8 @@ declare namespace NodeJS {
 	}
 }
 
-type CachedMongoose = {
-	conn: null | typeof mongoose;
-	promise: null | Promise<typeof mongoose>;
-};
+interface BirthLocale {
+  city: string;
+  country: string;
+  state?: string;
+}

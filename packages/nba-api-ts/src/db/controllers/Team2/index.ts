@@ -1,4 +1,6 @@
-import { Game2Document, Team2Document } from '../../interfaces/mongoose.gen';
+import { Game2Document, Team2Document, Player2Document } from '../../interfaces/mongoose.gen';
+import { getTeamRoster } from '../../../api/bballRef/teams';
+import { Player2 } from '../../models/Player2';
 import mongoose from 'mongoose';
 
 interface Team2Season {
@@ -57,6 +59,41 @@ export const addGameToTeam = async (
 		}
 		default: {
 			throw Error(`Invalid season stage "${seasonStage}"`);
+		}
+	}
+	return team.save();
+};
+
+export const importTeamRoster = async (team: Team2Document, year?: number) => {
+	if (year) {
+		const i = team.seasons.findIndex((s) => s.season == year);
+		if (i == -1) {
+			throw Error(`No season found for year ${year}`);
+		}
+		const rosterData = await getTeamRoster(team.seasons[i].infoCommon.abbreviation, year);
+		for (let i = 0; i < rosterData.length; i++) {
+			const player: Player2Document = await Player2.findByPlayerUrl(rosterData[i].playerUrl);
+			team.seasons[i].roster.players.addToSet({
+				player: player._id,
+				number: rosterData[i].number,
+				position: rosterData[i].position,
+				twoWay: rosterData[i].twoWay
+			});
+		}
+		return team.save();
+	}
+
+	for (let i = 0; i < team.seasons.length; i++) {
+		const { season } = team.seasons[i];
+		const rosterData = await getTeamRoster(team.seasons[i].infoCommon.abbreviation, season);
+		for (let j = 0; j < rosterData.length; j++) {
+			const player: Player2Document = await Player2.findByPlayerUrl(rosterData[j].playerUrl);
+			team.seasons[i].roster.players.addToSet({
+				player: player._id,
+				number: rosterData[j].number,
+				position: rosterData[j].position,
+				twoWay: rosterData[j].twoWay
+			});
 		}
 	}
 	return team.save();

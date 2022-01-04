@@ -1793,6 +1793,7 @@ export type Team2SeasonRosterPlayer = {
 	player?: Player2['_id'] | Player2;
 	number: string;
 	position: string;
+	twoWay: boolean;
 	_id: mongoose.Types.ObjectId;
 };
 
@@ -1808,7 +1809,7 @@ export type Team2Season = {
 	season: number;
 	infoCommon: {
 		name?: string;
-		abbreviation?: string;
+		abbreviation: string;
 		city?: string;
 		slug?: string;
 		code?: string;
@@ -2199,6 +2200,7 @@ export type Team2SeasonRosterPlayerDocument = mongoose.Types.Subdocument & {
 	player?: Player2Document['_id'] | Player2Document;
 	number: string;
 	position: string;
+	twoWay: boolean;
 	_id: mongoose.Types.ObjectId;
 };
 
@@ -2211,7 +2213,7 @@ export type Team2SeasonDocument = mongoose.Types.Subdocument & {
 	season: number;
 	infoCommon: {
 		name?: string;
-		abbreviation?: string;
+		abbreviation: string;
 		city?: string;
 		slug?: string;
 		code?: string;

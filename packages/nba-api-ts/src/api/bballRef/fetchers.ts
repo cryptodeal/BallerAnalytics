@@ -106,3 +106,10 @@ export const loadTx = (league: string, year: number): Promise<cheerio.Root> => {
 		return cheerio.load(body);
 	});
 };
+
+export const loadPlayerRoster = (teamAbbrev: string, year: number): Promise<cheerio.Root> => {
+	return fetch(`${baseUrl}/teams/${teamAbbrev}/${year}.html`).then(async (result) => {
+		const body = await result.text();
+		return cheerio.load(body);
+	});
+};
