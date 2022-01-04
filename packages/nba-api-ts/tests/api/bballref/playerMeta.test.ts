@@ -1,7 +1,7 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
 import { Player2, initConnect, endConnect } from '../../../src';
-import { Player2Document } from '../../../src/db/interfaces/mongoose.gen';
+import { Player2Document } from '../../../src';
 import { getPlayerData, PlayerMetaData } from '../../../src/api/bballRef/player';
 
 const PlayerMetaTest = suite('playerMetaTest');

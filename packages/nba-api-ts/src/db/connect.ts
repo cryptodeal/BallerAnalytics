@@ -2,10 +2,28 @@ import mongoose from 'mongoose';
 import config from '../config';
 import { tmpdir } from 'os';
 import { writeFileSync } from 'fs';
+interface MONGO_OPTS {
+	useNewUrlParser?: boolean;
+	useUnifiedTopology?: boolean;
+	tlsCAFile?: string;
+	tlsCertificateKeyFile?: string;
+	sslValidate?: boolean;
+	ssl?: boolean;
+	tlsInsecure?: boolean;
+	sslCert?: string;
+	dbName: string;
+}
+
+const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
+const opts: MONGO_OPTS = {
+	dbName: config.MONGO_DB,
+	useNewUrlParser: true
+};
 
 export const initConnect = () => {
-	const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
-	return mongoose.connect(mongooseURI, {}).then((mongoose) => {
+	writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
+	opts.tlsCAFile = digitalOceanCert;
+	return mongoose.connect(config.MONGO_URI, opts).then((mongoose) => {
 		console.log(`🟢  Mongoose connected`, mongoose.connection.host);
 		return mongoose;
 	});
@@ -20,34 +38,16 @@ export const endConnect = () => {
 
 let cached = global.mongoose;
 
-interface MONGO_OPTS {
-	useNewUrlParser?: boolean;
-	useUnifiedTopology?: boolean;
-	tlsCAFile?: string;
-	tlsCertificateKeyFile?: string;
-	sslValidate?: boolean;
-	ssl?: boolean;
-	tlsInsecure?: boolean;
-	sslCert?: string;
-	dbName: string;
-}
-
 if (!cached) {
 	cached = global.mongoose = { conn: null, promise: null };
 }
 
 export async function serverlessConnect(mongooseURI: string): Promise<typeof mongoose> {
-	const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
 	if (cached.conn) {
 		return cached.conn;
 	}
 
 	if (!cached.promise) {
-		const opts: MONGO_OPTS = {
-			dbName: config.MONGO_DB,
-			useNewUrlParser: true
-		};
-
 		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
 		opts.tlsCAFile = digitalOceanCert;
 

@@ -54,7 +54,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 							index: true,
 							many: true
 						},
-						number: { type: String, required: true },
+						number: { type: String },
 						position: { type: String, required: true },
 						twoWay: { type: Boolean, required: true, default: false }
 					}

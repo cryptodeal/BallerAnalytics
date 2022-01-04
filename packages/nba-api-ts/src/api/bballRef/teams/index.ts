@@ -34,7 +34,6 @@ const findTeamRoster = ($: cheerio.Root): BBRefTeamRosterItem[] => {
 		const date = parseInt(birthDateStr.substring(6, 8));
 		const birthCountryStr = $(row).find('.f-i').first().text().trim();
 		const birthCountry = findByAlpha2(birthCountryStr)?.name;
-		if (!birthCountry) throw new Error(`Error: no birthCountry found for ${playerUrl}`);
 		const exp = $(row).find('[data-stat=years_experience]').first().text().trim();
 		const college = $(row).find('[data-stat=college]').first().text().trim();
 

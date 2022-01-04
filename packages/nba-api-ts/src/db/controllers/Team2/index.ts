@@ -1,10 +1,12 @@
-import { Game2Document, Team2Document, Player2Document } from '../../interfaces/mongoose.gen';
+import type { Game2Document, Team2Document } from '../../../index';
+import { Player2, Team2 } from '../../../index';
 import { getTeamRoster } from '../../../api/bballRef/teams';
-import { Player2 } from '../../models/Player2';
+import { getPlayerData } from '../../../api/bballRef/player';
 import mongoose from 'mongoose';
 
 interface Team2Season {
 	year: number;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	roster: any;
 	preseason: {
 		games: mongoose.Types.ObjectId[];
@@ -72,7 +74,30 @@ export const importTeamRoster = async (team: Team2Document, year?: number) => {
 		}
 		const rosterData = await getTeamRoster(team.seasons[i].infoCommon.abbreviation, year);
 		for (let i = 0; i < rosterData.length; i++) {
-			const player: Player2Document = await Player2.findByPlayerUrl(rosterData[i].playerUrl);
+			let player = await Player2.findByPlayerUrl(rosterData[i].playerUrl);
+			if (!player) {
+				const { height, weight, birthDate, birthPlace, position, shoots, name, college, socials } =
+					await getPlayerData(rosterData[i].playerUrl);
+				player = new Player2({});
+				if (height.feet) {
+					player.height = {
+						feet: height.feet
+					};
+				}
+				if (height.inches) player.height.inches = height.inches;
+				if (weight) player.weight = weight;
+				if (birthDate) player.birthDate = birthDate;
+				if (birthPlace) player.birthPlace = birthPlace;
+				if (name.pronunciation) player.name.pronunciation = name.pronunciation;
+				if (name.display) player.name.display = name.display;
+				if (position) player.position = position;
+				if (shoots) player.shoots = shoots;
+				if (name?.display) player.name.display = name.display;
+				if (college) player.college = college;
+				if (socials?.twitter) player.socials.twitter = socials.twitter;
+				if (socials?.instagram) player.socials.instagram = socials.instagram;
+				player = await player.save();
+			}
 			team.seasons[i].roster.players.addToSet({
 				player: player._id,
 				number: rosterData[i].number,
@@ -83,18 +108,11 @@ export const importTeamRoster = async (team: Team2Document, year?: number) => {
 		return team.save();
 	}
 
-	for (let i = 0; i < team.seasons.length; i++) {
-		const { season } = team.seasons[i];
-		const rosterData = await getTeamRoster(team.seasons[i].infoCommon.abbreviation, season);
-		for (let j = 0; j < rosterData.length; j++) {
-			const player: Player2Document = await Player2.findByPlayerUrl(rosterData[j].playerUrl);
-			team.seasons[i].roster.players.addToSet({
-				player: player._id,
-				number: rosterData[j].number,
-				position: rosterData[j].position,
-				twoWay: rosterData[j].twoWay
-			});
-		}
-	}
 	return team.save();
+};
+
+export const importTeamRosters = async () => {
+	for (const team of await Team2.find()) {
+		await importTeamRoster(team);
+	}
 };

@@ -1,4 +1,5 @@
 import { Game2, League, Team2, Player2, Official2 } from '../../../index';
+import type { Game2Document } from '../../../index';
 import { getBoxScore } from '../../../api/bballRef/games';
 import {
 	SeasonGameItem,
@@ -10,7 +11,6 @@ import { addGameToPlayer } from '../Player2';
 import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
-import { Game2Document } from '../../interfaces/mongoose.gen';
 
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');

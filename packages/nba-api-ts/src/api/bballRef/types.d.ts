@@ -9,7 +9,7 @@ export interface BBRefTeamRosterItem {
 	};
 	weight: number;
 	birthDate: Date;
-	birthCountry: string;
+	birthCountry?: string;
 	exp: string;
 	college: string;
 }

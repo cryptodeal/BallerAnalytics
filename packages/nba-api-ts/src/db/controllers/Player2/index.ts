@@ -1,5 +1,5 @@
 import { Player2 } from '../../../index';
-import { Game2Document, Player2Document } from '../../interfaces/mongoose.gen';
+import type { Game2Document, Player2Document } from '../../../index';
 import { BoxScorePlayer } from '../../../api/bballRef/games/utils';
 import { getPlayerData } from '../../../api/bballRef/player';
 import mongoose from 'mongoose';

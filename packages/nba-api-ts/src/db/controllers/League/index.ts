@@ -1,7 +1,7 @@
 import { League, Team2, Player2 } from '../../../index';
+import type { Player2Document, Team2Document } from '../../../index';
 import { BballRefSeason } from '../../../api/bballRef/seasons';
 import mongoose from 'mongoose';
-import { Player2Document, Team2Document } from '../../interfaces/mongoose.gen';
 
 interface Season {
 	year: number;

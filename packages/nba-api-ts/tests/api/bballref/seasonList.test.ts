@@ -1,6 +1,7 @@
 import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
-import { getSeasons, BballRefSeason } from '../../../src/api/bballRef/seasons';
+import { getSeasons } from '../../../src/api/bballRef/seasons';
+import type { BballRefSeason } from '../../../src/api/bballRef/seasons';
 
 const SeasonListTest = suite('seasonListTest');
 let seasonData: BballRefSeason[];

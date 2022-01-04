@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Coach2Document, Coach2Model, Coach2Schema } from '../interfaces/mongoose.gen';
+import { Coach2Document, Coach2Model, Coach2Schema } from '../../index';
 
 const Coach2Schema: Coach2Schema = new mongoose.Schema({
 	meta: {

@@ -11,6 +11,7 @@
     "node_modules/**",
     "*.d.ts",
     "*.js",
+    "src/scripts/**/*",
     "src/index.ts",
     "**/*.d.ts",
     "**/*.test.ts"

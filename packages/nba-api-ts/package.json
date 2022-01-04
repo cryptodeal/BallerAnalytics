@@ -25,6 +25,7 @@
 		"mtgen": "mtgen --output ./src/db/interfaces ./src/db/models",
 		"preview": "tsc -p tsconfig.build.json",
 		"data:import:boxscores": "tsc -p tsconfig.build.json && node --experimental-specifier-resolution=node dist/scripts/import/boxscores",
+    "data:import:teamRosters": "tsc -p tsconfig.build.json && node --experimental-specifier-resolution=node dist/scripts/import/teamRosters",
 		"data:cleanup:Game2:clearReferences": "tsc -p tsconfig.build.json && node --experimental-specifier-resolution=node dist/scripts/cleanup/Game2/clearReferences",
 		"data:cleanup:Game2:fixTeamPeriodStats": "tsc -p tsconfig.build.json && node --experimental-specifier-resolution=node dist/scripts/cleanup/Game2/fixTeamPeriodStats",
 		"start": "tsc -p tsconfig.build.json",
