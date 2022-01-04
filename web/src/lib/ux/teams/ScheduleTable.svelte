@@ -81,18 +81,23 @@
 									<div class="flex inline-flex items-center whitespace-nowrap">
 										{#if teamId == home.team._id}
 											<div class="text-sm leading-5 mr-2">
-												vs {capitalizeFirstLetter(home.team.infoCommon.slug)}
+												vs {capitalizeFirstLetter(visitor.team.infoCommon.slug)}
 											</div>
+											<img
+												class="antialiased w-12 h-12"
+												src="/teams/assets/min-{visitor.team.infoCommon.slug}.svg"
+												alt="{visitor.team.infoCommon.slug} logo"
+											/>
 										{:else}
 											<div class="text-sm leading-5 mr-2">
 												@ {capitalizeFirstLetter(home.team.infoCommon.slug)}
 											</div>
+											<img
+												class="antialiased w-12 h-12"
+												src="/teams/assets/min-{home.team.infoCommon.slug}.svg"
+												alt="{visitor.team.infoCommon.slug} logo"
+											/>
 										{/if}
-										<img
-											class="antialiased w-12 h-12"
-											src="/teams/assets/min-{visitor.team.infoCommon.slug}.svg"
-											alt="{visitor.team.infoCommon.slug} logo"
-										/>
 									</div>
 								</td>
 								{#if time}
