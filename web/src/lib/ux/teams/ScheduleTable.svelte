@@ -95,7 +95,7 @@
 											<img
 												class="antialiased w-12 h-12"
 												src="/teams/assets/min-{home.team.infoCommon.slug}.svg"
-												alt="{visitor.team.infoCommon.slug} logo"
+												alt="{home.team.infoCommon.slug} logo"
 											/>
 										{/if}
 									</div>
