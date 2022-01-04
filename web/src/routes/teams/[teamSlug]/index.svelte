@@ -77,7 +77,7 @@
 			>
 				<img
 					class="bg-light-200 rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg h-30 w-auto mx-10 p-1 md:(mx-20 h-full w-auto)"
-					src="/teams/{teamData.infoCommon.slug}.svg"
+					src="/teams/assets/min-{teamData.infoCommon.slug}.svg"
 					alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
 				/>
 				<h1 style="color:rgba({color2[0]}, {color2[1]}, {color2[2]}, 1);">

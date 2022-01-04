@@ -32,7 +32,7 @@
 		<div class="container mx-auto my-4">
 			<a
 				sveltekit:prefetch
-				href="teams/{infoCommon.slug}?seasonIdx={seasons.findIndex(
+				href="teams/assets/logo-{infoCommon.slug}?seasonIdx={seasons.findIndex(
 					(s) =>
 						s.season ==
 						Math.max.apply(
