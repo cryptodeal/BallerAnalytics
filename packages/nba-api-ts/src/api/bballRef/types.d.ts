@@ -8,7 +8,7 @@ export interface BBRefTeamRosterItem {
 		inches: number;
 	};
 	weight: number;
-	birthDate: Date;
+	birthDate?: Date;
 	birthCountry?: string;
 	exp: string;
 	college: string;

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Team2Document, Team2Model, Team2Queries, Team2Schema } from '../interfaces/mongoose.gen';
+mongoose.set('debug', true);
 
 const Team2Schema: Team2Schema = new mongoose.Schema({
 	meta: {
@@ -41,7 +42,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 			roster: {
 				coaches: [
 					{
-						coach: { type: mongoose.Schema.Types.ObjectId, ref: 'Coach2', index: true, many: true },
+						coach: { type: mongoose.Schema.Types.ObjectId, ref: 'Coach2', index: true },
 						coachType: { type: String, required: true },
 						isAssistant: { type: Boolean, required: true }
 					}
@@ -51,8 +52,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 						player: {
 							type: mongoose.Schema.Types.ObjectId,
 							ref: 'Player2',
-							index: true,
-							many: true
+							index: true
 						},
 						number: { type: String },
 						position: { type: String, required: true },
@@ -344,19 +344,20 @@ Team2Schema.statics = {
 };
 
 Team2Schema.query = {
-	getSeasonBySlug(slug: string, seasonIndex: number) {
-		return this.where({ 'infoCommon.slug': slug })
-			.select(`infoCommon seasons.season seasons.regularSeason`)
-			.populate({
-				path: `seasons.${seasonIndex}.regularSeason.games`,
-				select:
-					'home.team home.stats.totals.points visitor.team visitor.stats.totals.points date time',
-				populate: {
-					path: 'home.team visitor.team',
-					select: 'infoCommon.name infoCommon.slug'
-				}
-			})
-			.lean();
+	populateSznGames(seasonIndex: number) {
+		return this.populate({
+			path: `seasons.${seasonIndex}.regularSeason.games`,
+			select:
+				'home.team home.stats.totals.points visitor.team visitor.stats.totals.points date time',
+			populate: {
+				path: 'home.team visitor.team',
+				select: 'infoCommon.name infoCommon.slug'
+			}
+		});
+	},
+
+	populateSznPlayers(seasonIndex: number) {
+		return this.populate(`seasons.${seasonIndex}.roster.players.player`, 'name');
 	}
 };
 

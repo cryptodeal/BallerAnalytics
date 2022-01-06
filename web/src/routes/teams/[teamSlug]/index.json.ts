@@ -7,6 +7,7 @@ export const get: RequestHandler = async ({ params, query }) => {
 	const seasonIdx = parseInt(query.get('seasonIdx'));
 
 	const teamData = await getTeamBySlug(teamSlug, seasonIdx);
+	console.log(teamData);
 
 	if (teamData) {
 		return {

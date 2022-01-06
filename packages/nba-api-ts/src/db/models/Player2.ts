@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 import * as slugger from 'mongoose-slugger-plugin';
-import { Player2Document, Player2Model, Player2Schema } from '../interfaces/mongoose.gen';
+import {
+	Player2Document,
+	Player2Model,
+	Player2Schema,
+	Player2Object
+} from '../interfaces/mongoose.gen';
 
 const Player2Schema: Player2Schema = new mongoose.Schema({
 	meta: {
@@ -163,6 +168,17 @@ Player2Schema.statics = {
 		return this.findOne({
 			'meta.helpers.bballRef.playerUrl': playerUrl
 		}).exec();
+	},
+
+	async getPlayers(playerUids: Player2Document['_id'][]): Promise<Player2Object[]> {
+		return await this.aggregate([
+			{ $match: { _id: { $in: playerUids } } },
+			{
+				$project: {
+					name: 1
+				}
+			}
+		]);
 	}
 };
 

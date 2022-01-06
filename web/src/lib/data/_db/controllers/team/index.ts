@@ -21,5 +21,9 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 };
 
 export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<null | Team2Document> => {
-	return Team2.findOne().getSeasonBySlug(slug, seasonIdx).exec();
+	return Team2.findOne({ 'infoCommon.slug': slug })
+		.select(`infoCommon seasons.season seasons.regularSeason seasons.roster`)
+		.populateSznPlayers(seasonIdx)
+		.populateSznGames(seasonIdx)
+		.exec();
 };

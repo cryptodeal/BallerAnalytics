@@ -13,17 +13,21 @@ interface MONGO_OPTS {
 	sslCert?: string;
 	dbName: string;
 }
-
+const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
 const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
 const opts: MONGO_OPTS = {
 	dbName: config.MONGO_DB,
 	useNewUrlParser: true
 };
 
-export const initConnect = () => {
-	writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
-	opts.tlsCAFile = digitalOceanCert;
-	return mongoose.connect(config.MONGO_URI, opts).then((mongoose) => {
+export const initConnect = (prod?: boolean) => {
+	if (prod) {
+		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
+		opts.tlsCAFile = digitalOceanCert;
+	}
+	const usedURI = prod ? config.MONGO_URI : mongooseURI;
+	const usedOptions = prod ? opts : {};
+	return mongoose.connect(usedURI, usedOptions).then((mongoose) => {
 		console.log(`🟢  Mongoose connected`, mongoose.connection.host);
 		return mongoose;
 	});

@@ -1,7 +1,7 @@
 import { initConnect, endConnect } from '../../index';
 import { importTeamRosters } from '../../db/controllers/Team2';
 
-initConnect()
+initConnect(true)
 	.then(async () => {
 		await importTeamRosters();
 	})

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Game2Document, Game2Model, Game2Schema } from '../interfaces/mongoose.gen';
+import { Game2Document, Game2Model, Game2Schema, Game2Object } from '../interfaces/mongoose.gen';
 
 const Game2Schema: Game2Schema = new mongoose.Schema({
 	meta: {
@@ -408,6 +408,22 @@ Game2Schema.query = {
 Game2Schema.statics = {
 	findByUrl(url: string) {
 		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url }).exec();
+	},
+
+	async getGames(gameUids: Game2Document['_id'][]): Promise<Game2Object[]> {
+		return await this.aggregate([
+			{ $match: { _id: { $in: gameUids } } },
+			{
+				$project: {
+					'home.team': 1,
+					'home.stats.totals.points': 1,
+					'visitor.team': 1,
+					'visitor.stats.totals.points': 1,
+					date: 1,
+					time: 1
+				}
+			}
+		]);
 	}
 };
 

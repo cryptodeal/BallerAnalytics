@@ -27,11 +27,6 @@ const findTeamRoster = ($: cheerio.Root): BBRefTeamRosterItem[] => {
 		const [feet, inches] = $(row).find('[data-stat=height]').first().text().trim().split('-');
 		const weight = $(row).find('[data-stat=weight]').first().text().trim();
 		const birthDateStr = $(row).find('[data-stat=birth_date]').first().attr('csk')?.trim();
-		if (!birthDateStr || birthDateStr === '')
-			throw new Error(`Error: no birthDate found for ${playerUrl}`);
-		const year = parseInt(birthDateStr.substring(0, 4));
-		const month = parseInt(birthDateStr.substring(4, 6)) - 1;
-		const date = parseInt(birthDateStr.substring(6, 8));
 		const birthCountryStr = $(row).find('.f-i').first().text().trim();
 		const birthCountry = findByAlpha2(birthCountryStr)?.name;
 		const exp = $(row).find('[data-stat=years_experience]').first().text().trim();
@@ -46,12 +41,17 @@ const findTeamRoster = ($: cheerio.Root): BBRefTeamRosterItem[] => {
 				inches: parseInt(inches)
 			},
 			weight: parseInt(weight),
-			birthDate: new Date(year, month, date),
 			birthCountry,
 			exp,
 			college,
 			twoWay
 		};
+		if (birthDateStr && birthDateStr !== '') {
+			const year = parseInt(birthDateStr.substring(0, 4));
+			const month = parseInt(birthDateStr.substring(4, 6)) - 1;
+			const date = parseInt(birthDateStr.substring(6, 8));
+			playerItem.birthDate = new Date(year, month, date);
+		}
 		rosterData.push(playerItem);
 	});
 	return rosterData;

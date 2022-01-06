@@ -615,6 +615,7 @@ export type Game2Methods = {};
 
 export type Game2Statics = {
 	findByUrl: (this: Game2Model, url: string) => any;
+	getGames: (this: Game2Model, gameUids: Game2Document['_id'][]) => Promise<Game2Object[]>;
 };
 
 /**
@@ -1566,6 +1567,7 @@ export type Player2Methods = {};
 
 export type Player2Statics = {
 	findByPlayerUrl: (this: Player2Model, ...args: any[]) => any;
+	getPlayers: (this: Player2Model, ...args: any[]) => any;
 };
 
 /**
@@ -2147,8 +2149,10 @@ export type Team2Object = Team2;
  * ```
  */
 export type Team2Queries = {
-	getSeasonBySlug: (
-		slug: string,
+	populateSznGames: (
+		seasonIndex: number
+	) => mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
+	populateSznPlayers: (
 		seasonIndex: number
 	) => mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
 };
