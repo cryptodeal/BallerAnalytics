@@ -57,7 +57,7 @@
 								Result
 							</th>
 							<th
-								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left whitespace-nowrap uppercase border-b border-gray-200 md:px-4 xl:px-6"
 							>
 								W-L
 							</th>
@@ -80,23 +80,33 @@
 								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
 									<div class="flex inline-flex items-center whitespace-nowrap">
 										{#if teamId == home.team._id}
-											<div class="text-sm leading-5 mr-2">
-												vs {capitalizeFirstLetter(visitor.team.infoCommon.slug)}
+											<div class="text-sm leading-5 mr-2">vs</div>
+											<div class="flex flex-col w-auto justify-center">
+												<img
+													class="antialiased mx-auto"
+													height="48px"
+													width="48px"
+													src="/teams/assets/min-{visitor.team.infoCommon.slug}.svg"
+													alt="{visitor.team.infoCommon.slug} logo"
+												/>
+												<div class="text-sm text-center leading-5">
+													{capitalizeFirstLetter(visitor.team.infoCommon.slug)}
+												</div>
 											</div>
-											<img
-												class="antialiased w-12 h-12"
-												src="/teams/assets/min-{visitor.team.infoCommon.slug}.svg"
-												alt="{visitor.team.infoCommon.slug} logo"
-											/>
 										{:else}
-											<div class="text-sm leading-5 mr-2">
-												@ {capitalizeFirstLetter(home.team.infoCommon.slug)}
+											<div class="text-sm leading-5 mr-2">@</div>
+											<div class="flex flex-col w-auto justify-center">
+												<img
+													class="antialiased mx-auto"
+													height="48px"
+													width="48px"
+													src="/teams/assets/min-{home.team.infoCommon.slug}.svg"
+													alt="{home.team.infoCommon.slug} logo"
+												/>
+												<div class="text-sm text-center leading-5">
+													{capitalizeFirstLetter(home.team.infoCommon.slug)}
+												</div>
 											</div>
-											<img
-												class="antialiased w-12 h-12"
-												src="/teams/assets/min-{home.team.infoCommon.slug}.svg"
-												alt="{home.team.infoCommon.slug} logo"
-											/>
 										{/if}
 									</div>
 								</td>

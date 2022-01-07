@@ -44,7 +44,7 @@
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
-	$: console.log(teamData.seasons);
+	//$: console.log(teamData.seasons);
 
 	const { rgb: color1 } = getMainColor(teamData.infoCommon.nbaAbbreviation) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
@@ -108,17 +108,29 @@
 						<h2 class="tabPanelTitle" style="color:{secondaryColor};">
 							{teamData.seasons[seasonIdx].season} Regular Season:
 						</h2>
-						<ScheduleTable
-							schedule={teamData.seasons[seasonIdx].regularSeason.games}
-							teamId={teamData._id}
-						/>
+						<div class="my-4">
+							<ScheduleTable
+								schedule={teamData.seasons[seasonIdx].regularSeason.games}
+								teamId={teamData._id}
+							/>
+						</div>
+
+						<h2 class="tabPanelTitle" style="color:{secondaryColor};">
+							{teamData.seasons[seasonIdx].season} Postseason:
+						</h2>
+						<div class="my-4">
+							<ScheduleTable
+								schedule={teamData.seasons[seasonIdx].postseason.games}
+								teamId={teamData._id}
+							/>
+						</div>
 					</TabPanel>
 
 					<!-- Roster Data Tab -->
 					<TabPanel>
 						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Roster:</h2>
-						{#each teamData.seasons[seasonIdx].roster.players as { name }}
-							<h2>{name}</h2>
+						{#each teamData.seasons[seasonIdx].roster.players as { player }}
+							<h2>{player.name.full}</h2>
 						{/each}
 					</TabPanel>
 

@@ -55,7 +55,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 							index: true
 						},
 						number: { type: String },
-						position: { type: String, required: true },
+						position: { type: String },
 						twoWay: { type: Boolean, required: true, default: false }
 					}
 				]
@@ -346,7 +346,7 @@ Team2Schema.statics = {
 Team2Schema.query = {
 	populateSznGames(seasonIndex: number) {
 		return this.populate({
-			path: `seasons.${seasonIndex}.regularSeason.games`,
+			path: `seasons.${seasonIndex}.regularSeason.games seasons.${seasonIndex}.postseason.games`,
 			select:
 				'home.team home.stats.totals.points visitor.team visitor.stats.totals.points date time',
 			populate: {

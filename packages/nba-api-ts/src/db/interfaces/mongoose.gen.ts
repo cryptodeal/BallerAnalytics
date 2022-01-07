@@ -1794,7 +1794,7 @@ export type Team2SeasonRosterCoache = {
 export type Team2SeasonRosterPlayer = {
 	player?: Player2['_id'] | Player2;
 	number?: string;
-	position: string;
+	position?: string;
 	twoWay: boolean;
 	_id: mongoose.Types.ObjectId;
 };
@@ -2203,7 +2203,7 @@ export type Team2SeasonRosterCoacheDocument = mongoose.Types.Subdocument & {
 export type Team2SeasonRosterPlayerDocument = mongoose.Types.Subdocument & {
 	player?: Player2Document['_id'] | Player2Document;
 	number?: string;
-	position: string;
+	position?: string;
 	twoWay: boolean;
 	_id: mongoose.Types.ObjectId;
 };

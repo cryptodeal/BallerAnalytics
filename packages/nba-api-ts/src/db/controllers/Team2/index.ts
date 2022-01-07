@@ -67,11 +67,12 @@ export const addGameToTeam = async (
 };
 
 export const importTeamRoster = async (team: Team2Document, year: number) => {
-	const i = team.seasons.findIndex((s) => s.season == year);
-	if (i == -1) {
+	const j = team.seasons.findIndex((s) => s.season == year);
+	if (j == -1 || j == undefined) {
 		throw Error(`No season found for year ${year}`);
 	}
-	const rosterData = await getTeamRoster(team.seasons[i].infoCommon.abbreviation, year);
+
+	const rosterData = await getTeamRoster(team.seasons[j].infoCommon.abbreviation, year);
 	for (let i = 0; i < rosterData.length; i++) {
 		let player = await Player2.findByPlayerUrl(rosterData[i].playerUrl);
 		if (!player) {
@@ -107,7 +108,8 @@ export const importTeamRoster = async (team: Team2Document, year: number) => {
 			if (socials?.instagram) player.socials.instagram = socials.instagram;
 			player = await player.save();
 		}
-		team.seasons[i].roster.players.addToSet({
+
+		team.seasons[j].roster.players.addToSet({
 			player: player._id,
 			number: rosterData[i].number,
 			position: rosterData[i].position,

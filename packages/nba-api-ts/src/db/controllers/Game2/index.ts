@@ -399,7 +399,7 @@ export const importAllGames = () => {
 					//yesterday.setDate(yesterday.getDate() - 1);
 					const playoffGames = await getPlayoffGames(name, year);
 					const regularSeasonGames = games.filter(
-						(g) => playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) !== -1
+						(g) => !playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl)
 					);
 
 					for (const regularSeasonGame of regularSeasonGames) {
