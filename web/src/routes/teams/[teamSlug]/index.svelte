@@ -46,7 +46,9 @@
 	export let seasons: SeasonList[];
 	//$: console.log(teamData.seasons);
 
-	const { rgb: color1 } = getMainColor(teamData.infoCommon.nbaAbbreviation) as unknown as TeamColor;
+	const { hex: primaryColor, rgb: color1 } = getMainColor(
+		teamData.infoCommon.nbaAbbreviation
+	) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
@@ -100,6 +102,7 @@
 					<TabList
 						primaryColor={color1}
 						secondaryColor={color2}
+						color1={primaryColor}
 						links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
 					/>
 
