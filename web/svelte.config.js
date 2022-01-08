@@ -40,8 +40,16 @@ const config = {
 					svgoConfig: {} // See https://github.com/svg/svgo#configuration
 				})
 			],
+			optimizeDeps: {
+				exclude: ['@napi-rs/*']
+			},
+			ssr: {
+				external: ['@napi-rs/*']
+			},
 
-			resolve: {}
+			resolve: {
+				dedupe: ['mongoose']
+			}
 		}
 	}
 };

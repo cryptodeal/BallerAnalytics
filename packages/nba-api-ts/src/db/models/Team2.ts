@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { Team2Document, Team2Model, Team2Queries, Team2Schema } from '../interfaces/mongoose.gen';
-mongoose.set('debug', true);
 
 const Team2Schema: Team2Schema = new mongoose.Schema({
 	meta: {
@@ -357,7 +356,10 @@ Team2Schema.query = {
 	},
 
 	populateSznPlayers(seasonIndex: number) {
-		return this.populate(`seasons.${seasonIndex}.roster.players.player`, 'name');
+		return this.populate(
+			`seasons.${seasonIndex}.roster.players.player`,
+			'name birthDate meta.images.headshot height weight college'
+		);
 	}
 };
 

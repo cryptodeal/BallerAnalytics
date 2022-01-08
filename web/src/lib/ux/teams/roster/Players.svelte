@@ -1,0 +1,139 @@
+<script lang="ts">
+	import Headshot from '$lib/ux/img/Headshot.svelte';
+	import { getAge } from '$lib/functions/helpers';
+	import type { PlayerRosterItem } from '$lib/types';
+	export let roster: PlayerRosterItem[];
+	$: console.log(roster[0]);
+</script>
+
+<div class="my-2 bg-white backdrop-filter backdrop-blur-lg bg-opacity-40 text-black md:(mx-auto)">
+	<div class="flex flex-col w-full">
+		<div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+			<div
+				class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
+			>
+				<table class="min-w-full">
+					<thead>
+						<tr>
+							<th
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
+							>
+								Name
+								<div class="text-xs">(* Denotes 2 Way player)</div>
+							</th>
+
+							<th
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
+							>
+								Pos
+							</th>
+
+							<th
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200  md:px-4 xl:px-6"
+							>
+								Age
+							</th>
+
+							<th
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left whitespace-nowrap uppercase border-b border-gray-200 md:px-4 xl:px-6"
+							>
+								Ht
+							</th>
+
+							<th
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left whitespace-nowrap uppercase border-b border-gray-200 md:px-4 xl:px-6"
+							>
+								Wt
+							</th>
+
+							<th
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left whitespace-nowrap uppercase border-b border-gray-200 md:px-4 xl:px-6"
+							>
+								College
+							</th>
+						</tr>
+					</thead>
+					<tbody class="text-black">
+						{#each roster as { player, number, position, twoWay }, i}
+							<tr>
+								<!-- Display Player Name -->
+
+								<td
+									class="px-2 py-4 h-full whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6"
+								>
+									<div class="flex inline-flex items-center">
+										<div class="flex-shrink-0 w-10 h-10">
+											{#if player}
+												<Headshot
+													src="https://dttbvdi5lj1g6.cloudfront.net/{player.meta.images.headshot
+														.avif[0]}"
+													alt="{player.name.full} headshot"
+												/>
+											{/if}
+										</div>
+
+										<div class="ml-4">
+											<div class="text-sm font-medium leading-5 text-gray-900">
+												{#if player}
+													{player.name.full}
+												{/if}
+											</div>
+											{#if number}
+												<div class="text-xs font-small leading-5 text-gray-500">{number}</div>
+											{/if}
+										</div>
+									</div>
+								</td>
+
+								<!-- Display Player Position (POS) -->
+								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+									<div class="text-sm font-bold leading-5">
+										{#if position}
+											{position}
+										{/if}
+									</div>
+								</td>
+
+								<!-- Display Player Age -->
+								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+									<div class="text-sm font-bold leading-5">
+										{#if player}
+											{getAge(new Date(player.birthDate).toString())}
+										{/if}
+									</div>
+								</td>
+
+								<!-- Display Player Height -->
+								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+									<div class="text-sm font-bold leading-5">
+										{#if player.height.feet && player.height.inches}
+											{player.height.feet}-{player.height.inches}
+										{/if}
+									</div>
+								</td>
+
+								<!-- Display Player Weight -->
+								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+									<div class="text-sm font-bold leading-5">
+										{#if player.weight}
+											{player.weight}
+										{/if}
+									</div>
+								</td>
+
+								<!-- Display Player College -->
+								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+									<div class="text-sm font-bold leading-5">
+										{#if player.college}
+											{player.college}
+										{/if}
+									</div>
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

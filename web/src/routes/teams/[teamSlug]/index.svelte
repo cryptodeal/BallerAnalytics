@@ -36,6 +36,7 @@
 
 <script lang="ts">
 	import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
+	import PlayerRosterTable from '$lib/ux/teams/roster/Players.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
@@ -132,9 +133,7 @@
 					<!-- Roster Data Tab -->
 					<TabPanel>
 						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Roster:</h2>
-						{#each teamData.seasons[seasonIdx].roster.players as { player }}
-							<h2>{player.name.full}</h2>
-						{/each}
+						<PlayerRosterTable roster={teamData.seasons[seasonIdx].roster.players} />
 					</TabPanel>
 
 					<!-- Stats Data Tab -->

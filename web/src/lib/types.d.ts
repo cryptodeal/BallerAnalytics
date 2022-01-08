@@ -1,5 +1,6 @@
 import type { Writable } from 'svelte/store';
-import type { Team2Document, Game2Document, mongoose } from '@balleranalytics/nba-api-ts';
+import mongoose from 'mongoose';
+import type { Team2Document, Game2Document, Player2Document } from '@balleranalytics/nba-api-ts';
 /**
  * Can be made globally available by placing this
  * inside `global.d.ts` and removing `export` keyword
@@ -51,6 +52,14 @@ export interface GameScheduleItem {
 	visitor: GameScheduleTeam;
 	date: Date;
 	time: string;
+}
+
+export interface PlayerRosterItem {
+	player?: Player2Document;
+	number?: string;
+	position?: string;
+	twoWay: boolean;
+	_id: mongoose.Types.ObjectId;
 }
 
 export type BooleanStore = {
