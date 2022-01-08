@@ -18,7 +18,7 @@
 								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
 							>
 								Name
-								<div class="text-xs">(* Denotes 2 Way player)</div>
+								<div class="text-xs">(* denotes player on 2-Way contract)</div>
 							</th>
 
 							<th
@@ -75,6 +75,9 @@
 											<div class="text-sm font-medium leading-5 text-gray-900">
 												{#if player}
 													{player.name.full}
+													{#if twoWay}
+														<span class="text-xs">*</span>
+													{/if}
 												{/if}
 											</div>
 											{#if number}
