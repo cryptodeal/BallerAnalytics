@@ -12,6 +12,7 @@
     "preview": "pnpm recursive run preview",
     "data:import:boxscores": "pnpm recursive run data:import:boxscores",
     "data:import:teamRosters": "pnpm recursive run data:import:teamRosters",
+    "data:import:playerData": "pnpm recursive run data:import:playerData",
     "data:cleanup:Game2:clearReferences": "pnpm recursive run data:cleanup:Game2:clearReferences",
     "data:cleanup:Game2:fixTeamPeriodStats": "pnpm recursive run data:cleanup:Game2:fixTeamPeriodStats",
     "test": "pnpm recursive run test --stream",

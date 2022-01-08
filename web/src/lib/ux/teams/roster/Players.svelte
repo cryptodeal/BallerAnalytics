@@ -3,7 +3,6 @@
 	import { getAge } from '$lib/functions/helpers';
 	import type { PlayerRosterItem } from '$lib/types';
 	export let roster: PlayerRosterItem[];
-	$: console.log(roster[0]);
 </script>
 
 <div class="my-2 bg-white backdrop-filter backdrop-blur-lg bg-opacity-40 text-black md:(mx-auto)">
@@ -106,8 +105,12 @@
 								<!-- Display Player Height -->
 								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 									<div class="text-sm font-bold leading-5">
-										{#if player.height.feet && player.height.inches}
-											{player.height.feet}-{player.height.inches}
+										{#if player.height.feet}
+											{player.height.feet}-{#if player.height.inches}
+												{player.height.inches}
+											{:else}
+												0
+											{/if}
 										{/if}
 									</div>
 								</td>

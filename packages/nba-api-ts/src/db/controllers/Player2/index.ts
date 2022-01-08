@@ -24,7 +24,7 @@ export const addOrFindPlayer = async (playerData: BoxScorePlayer) => {
 		return new Player2(player)
 			.save()
 			.then((player) => {
-				return player.save();
+				return addPlayerBasicData(player);
 			})
 			.catch((err) => {
 				console.log(playerData);
@@ -40,6 +40,7 @@ export const addPlayerBasicData = (player: Player2Document) => {
 	return getPlayerData(playerUrl).then((data) => {
 		const { height, weight, birthDate, birthPlace, position, shoots, name, college, socials } =
 			data;
+		console.log(height);
 		if (height.feet) {
 			player.height = {
 				feet: height.feet

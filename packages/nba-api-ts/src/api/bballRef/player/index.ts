@@ -1,5 +1,6 @@
 import { loadPlayerPage } from '../fetchers';
 import { findByAlpha2 } from 'iso-3166-1-ts';
+import type { PlayerCareerStatSeason } from '../types';
 
 interface PlayerName {
 	display: string;
@@ -123,7 +124,54 @@ const findPlayerMeta = ($: cheerio.Root) => {
 	return playerMeta;
 };
 
+const findPlayerCareerStats = ($: cheerio.Root) => {
+	const careerStats: PlayerCareerStatSeason[] = [];
+	$('#per_game')
+		.find('tbody > tr')
+		.each(function (i, row) {
+			const seasonStats: PlayerCareerStatSeason = {
+				season: parseInt($(row).find('[data-stat=season]').text().trim().split('-')[0]) + 1,
+				age: parseInt($(row).find('[data-stat=age]').text().trim()),
+				teamAbbrev: $(row).find('[data-stat=team_id]').text().trim(),
+				league: $(row).find('[data-stat=lg_id]').text().trim(),
+				position: $(row).find('[data-stat=pos]').text().trim(),
+				games: parseInt($(row).find('[data-stat=g]').text().trim()),
+				gamesStarted: parseInt($(row).find('[data-stat=gs]').text().trim()),
+				minPerGame: parseFloat($(row).find('[data-stat=mp_per_g]').text().trim()),
+				fgPerGame: parseFloat($(row).find('[data-stat=fg_per_g]').text().trim()),
+				fgaPerGame: parseFloat($(row).find('[data-stat=fga_per_g]').text().trim()),
+				fgPct: parseFloat($(row).find('[data-stat=fg_pct]').text().trim()),
+				fg3PerGame: parseFloat($(row).find('[data-stat=fg3_per_g]').text().trim()),
+				fg3aPerGame: parseFloat($(row).find('[data-stat=fg3a_per_g]').text().trim()),
+				fg3Pct: parseFloat($(row).find('[data-stat=fg3_pct]').text().trim()),
+				fg2PerGame: parseFloat($(row).find('[data-stat=fg2_per_g]').text().trim()),
+				fg2aPerGame: parseFloat($(row).find('[data-stat=fg2a_per_g]').text().trim()),
+				fg2Pct: parseFloat($(row).find('[data-stat=fg2_pct]').text().trim()),
+				efgPct: parseFloat($(row).find('[data-stat=efg_pct]').text().trim()),
+				ftPerGame: parseFloat($(row).find('[data-stat=ft_per_g]').text().trim()),
+				ftaPerGame: parseFloat($(row).find('[data-stat=fta_per_g]').text().trim()),
+				ftPct: parseFloat($(row).find('[data-stat=ft_pct]').text().trim()),
+				orbPerGame: parseFloat($(row).find('[data-stat=orb_per_g]').text().trim()),
+				drbPerGame: parseFloat($(row).find('[data-stat=drb_per_g]').text().trim()),
+				trbPerGame: parseFloat($(row).find('[data-stat=trb_per_g]').text().trim()),
+				astPerGame: parseFloat($(row).find('[data-stat=ast_per_g]').text().trim()),
+				stlPerGame: parseFloat($(row).find('[data-stat=stl_per_g]').text().trim()),
+				blkPerGame: parseFloat($(row).find('[data-stat=blk_per_g]').text().trim()),
+				tovPerGame: parseFloat($(row).find('[data-stat=tov_per_g]').text().trim()),
+				pfPerGame: parseFloat($(row).find('[data-stat=pf_per_g]').text().trim()),
+				ptsPerGame: parseFloat($(row).find('[data-stat=pts_per_g]').text().trim())
+			};
+			careerStats.push(seasonStats);
+		});
+	return careerStats;
+};
+
 export const getPlayerData = async (playerUrl: string) => {
 	const $ = await loadPlayerPage(playerUrl);
 	return findPlayerMeta($);
+};
+
+export const getPlayerCareerStats = async (playerUrl: string) => {
+	const $ = await loadPlayerPage(playerUrl);
+	return findPlayerCareerStats($);
 };
