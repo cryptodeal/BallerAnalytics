@@ -16,7 +16,9 @@ jobs:
             cd dataImport
             rm -rf BallerAnalytics
             git clone git@github.com:cryptodeal/BallerAnalytics.git
+            cp .env ./BallerAnalytics
+            cp .env ./BallerAnalytics/web
             cp .env ./BallerAnalytics/packages/nba-api-ts
-            cd BallerAnalytics/packages/nba-api-ts
-            pnpm i
+            cd BallerAnalytics
+            pnpm install
             pnpm test
