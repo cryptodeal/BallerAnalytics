@@ -1,7 +1,5 @@
 name: Build & Deploy
-on:
-  push:
-    branches: [TempVercelFix]
+on: push 
 
 jobs:
   deploy:
