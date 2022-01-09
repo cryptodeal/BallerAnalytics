@@ -21,9 +21,10 @@ const opts: MONGO_OPTS = {
 };
 
 export const initConnect = (prod?: boolean) => {
-	if (prod) {
+	if (config.VITE_NODE_ENV === 'production') {
 		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
 		opts.tlsCAFile = digitalOceanCert;
+		prod = true;
 	}
 	const usedURI = prod ? config.MONGO_URI : mongooseURI;
 	const usedOptions = prod ? opts : {};

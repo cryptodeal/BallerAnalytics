@@ -1,5 +1,6 @@
-import { Team2 } from '@balleranalytics/nba-api-ts';
+import { Game2Document, Team2 } from '@balleranalytics/nba-api-ts';
 import type { Team2Document } from '@balleranalytics/nba-api-ts';
+import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } }, {})
@@ -20,7 +21,7 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 		});
 };
 
-export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<null | Team2Document> => {
+export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<Team2Document> => {
 	return Team2.findOne({ 'infoCommon.slug': slug })
 		.select(
 			`infoCommon seasons.season seasons.regularSeason seasons.postseason seasons.roster.players`
@@ -28,5 +29,12 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<null | T
 		.populateSznPlayers(seasonIdx)
 		.populateSznGames(seasonIdx)
 		.lean()
-		.exec();
+		.exec()
+		.then((team) => {
+			if (!team) throw new Error(`Team with slug ${slug} not found`);
+			team.seasons[seasonIdx].regularSeason.games.sort((a: Game2Document, b: Game2Document) =>
+				dayjs(a.date).isBefore(b.date) ? -1 : 1
+			);
+			return team;
+		});
 };

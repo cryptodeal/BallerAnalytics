@@ -3,13 +3,12 @@ import * as assert from 'uvu/assert';
 import { getSeasonGames } from '../../../src/api/bballRef/seasons';
 import { addOrFindGame } from '../../../src/db/controllers/Game2';
 import { Game2, initConnect, endConnect } from '../../../src';
-import config from '../../../src/config';
 
 const AddOrFindGameTest = suite('addOrFindGameTest');
 let game;
 
 AddOrFindGameTest.before(async () => {
-	await initConnect(config.VITE_NODE_ENV === 'production' ? true : false);
+	await initConnect();
 });
 
 AddOrFindGameTest.after(async () => {

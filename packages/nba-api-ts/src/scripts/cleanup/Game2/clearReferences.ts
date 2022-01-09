@@ -38,7 +38,7 @@ const clearGameRef = async () => {
 	}
 };
 
-initConnect(true)
+initConnect()
 	.then(async () => {
 		return clearGameRef();
 	})

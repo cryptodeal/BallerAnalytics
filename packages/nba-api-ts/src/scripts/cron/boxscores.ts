@@ -1,7 +1,7 @@
 import { importLatestGames } from '../../db/controllers/Game2';
 import { initConnect, endConnect } from '../../index';
 
-initConnect(true)
+initConnect()
 	.then(async () => {
 		await importLatestGames();
 	})

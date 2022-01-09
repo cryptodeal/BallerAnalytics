@@ -33,11 +33,13 @@ importers:
       '@aws-sdk/client-s3': ^3.45.0
       '@tsconfig/node14': ^1.0.1
       '@types/cheerio': ^0.22.30
+      '@types/cron': ^1.7.3
       '@types/sharp': ^0.29.5
       '@typescript-eslint/eslint-plugin': ^5.8.1
       '@typescript-eslint/parser': ^5.8.1
       c8: ^7.11.0
       cheerio: ^1.0.0-rc.10
+      cron: 1.8.2
       cross-fetch: ^3.1.4
       dayjs: ^1.10.7
       dotenv: ^10.0.0
@@ -57,9 +59,8 @@ importers:
       uvu: ^0.5.2
     dependencies:
       '@aws-sdk/client-s3': 3.45.0
-      '@types/cheerio': 0.22.30
-      '@types/sharp': 0.29.5
       cheerio: 1.0.0-rc.10
+      cron: 1.8.2
       cross-fetch: 3.1.4
       dayjs: 1.10.7
       dotenv: 10.0.0
@@ -71,6 +72,9 @@ importers:
       sharp: 0.29.3
     devDependencies:
       '@tsconfig/node14': 1.0.1
+      '@types/cheerio': 0.22.30
+      '@types/cron': 1.7.3
+      '@types/sharp': 0.29.5
       '@typescript-eslint/eslint-plugin': 5.8.1_13039593e64cd539d0b4c5c2da390958
       '@typescript-eslint/parser': 5.8.1_eslint@8.6.0+typescript@4.5.4
       c8: 7.11.0
@@ -1464,10 +1468,17 @@ packages:
     resolution: {integrity: sha512-t7ZVArWZlq3dFa9Yt33qFBQIK4CQd1Q3UJp0V+UhP6vgLWLM6Qug7vZuRSGXg45zXeB1Fm5X2vmBkEX58LV2Tw==}
     dependencies:
       '@types/node': 17.0.6
-    dev: false
+    dev: true
 
   /@types/cookie/0.4.1:
     resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
+    dev: true
+
+  /@types/cron/1.7.3:
+    resolution: {integrity: sha512-iPmUXyIJG1Js+ldPYhOQcYU3kCAQ2FWrSkm1FJPoii2eYSn6wEW6onPukNTT0bfiflexNSRPl6KWmAIqS+36YA==}
+    dependencies:
+      '@types/node': 17.0.6
+      moment: 2.29.1
     dev: true
 
   /@types/istanbul-lib-coverage/2.0.4:
@@ -1523,7 +1534,7 @@ packages:
     resolution: {integrity: sha512-3TC+S3H5RwnJmLYMHrcdfNjz/CaApKmujjY9b6PU/pE6n0qfooi99YqXGWoW8frU9EWYj/XTI35Pzxa+ThAZ5Q==}
     dependencies:
       '@types/node': 17.0.6
-    dev: false
+    dev: true
 
   /@types/throttle-debounce/2.1.0:
     resolution: {integrity: sha512-5eQEtSCoESnh2FsiLTxE121IiE60hnMqcb435fShf4bpLRjEu1Eoekht23y6zXS9Ts3l+Szu3TARnTsA0GkOkQ==}
@@ -2354,6 +2365,12 @@ packages:
 
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+    dev: false
+
+  /cron/1.8.2:
+    resolution: {integrity: sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==}
+    dependencies:
+      moment-timezone: 0.5.34
     dev: false
 
   /cross-fetch/3.1.4:
@@ -4436,6 +4453,15 @@ packages:
     dependencies:
       import-meta-resolve: 1.1.1
     dev: true
+
+  /moment-timezone/0.5.34:
+    resolution: {integrity: sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg==}
+    dependencies:
+      moment: 2.29.1
+    dev: false
+
+  /moment/2.29.1:
+    resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
   /mongodb-connection-string-url/2.4.1:
     resolution: {integrity: sha512-d5Kd2bVsKcSA7YI/yo57fSTtMwRQdFkvc5IZwod1RRxJtECeWPPSo7zqcUGJELifRA//Igs4spVtYAmvFCatug==}
