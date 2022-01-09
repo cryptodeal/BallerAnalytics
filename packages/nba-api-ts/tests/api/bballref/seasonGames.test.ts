@@ -12,7 +12,7 @@ SeasonGamesTest('getSeasonGames should be function', () => {
 });
 
 SeasonGamesTest('get all seasonGames', async () => {
-	const { games } = await getSeasonGames('NBA', 2021);
+	const games = await getSeasonGames('NBA', 2021);
 	console.log(games[0]);
 	testGames = games;
 });

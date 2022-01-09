@@ -22,7 +22,7 @@ AddOrFindGameTest('test function exec', () => {
 AddOrFindGameTest('fetch list of games in 2020-21 NBA season', async () => {
 	const league = 'NBA';
 	const year = 2021;
-	const { games } = await getSeasonGames('NBA', 2021);
+	const games = await getSeasonGames('NBA', 2021);
 	game = await addOrFindGame(games[0], year, league);
 	assert.ok(game);
 });
