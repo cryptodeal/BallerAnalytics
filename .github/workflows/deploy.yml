@@ -13,7 +13,6 @@ jobs:
         key: ${{ secrets.DATA_IMPORT_SSH_KEY }}
         username: ${{ secrets.DATA_IMPORT_SSH_USERNAME }}
         script: |
-            cd dataImport
             rm -rf BallerAnalytics
             git clone -b TempVercelFix git@github.com:cryptodeal/BallerAnalytics.git
             cp .env ./BallerAnalytics
