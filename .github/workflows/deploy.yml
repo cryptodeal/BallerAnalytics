@@ -13,12 +13,10 @@ jobs:
         key: ${{ secrets.DATA_IMPORT_SSH_KEY }}
         username: ${{ secrets.DATA_IMPORT_SSH_USERNAME }}
         script: |
-            npm i pnpm -g
-            rm -rf dataImport
-            mkdir dataImport
             cd dataImport
+            rm -rf BallerAnalytics
             git clone git@github.com:cryptodeal/BallerAnalytics.git
+            cp .env ./BallerAnalytics/packages/nba-api-ts
             cd BallerAnalytics/packages/nba-api-ts
             pnpm i
-            
-
+            pnpm test
