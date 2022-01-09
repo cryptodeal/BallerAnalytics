@@ -1,4 +1,5 @@
 import { suite } from 'uvu';
+import config from '../../../src/config';
 import * as assert from 'uvu/assert';
 import { Game2, initConnect, endConnect } from '../../../src';
 import type { Game2Document } from '../../../src';
@@ -10,7 +11,7 @@ let game: Game2Document;
 let boxScore: void | BoxScore;
 
 BoxScoreTest.before(async () => {
-	await initConnect();
+	await initConnect(config.VITE_NODE_ENV === 'production' ? true : false);
 });
 
 BoxScoreTest.after(async () => {

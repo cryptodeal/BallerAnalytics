@@ -2,6 +2,7 @@ import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
 import { Player2, initConnect, endConnect } from '../../../src';
 import { Player2Document } from '../../../src';
+import config from '../../../src/config';
 import { getPlayerData, PlayerMetaData } from '../../../src/api/bballRef/player';
 
 const PlayerMetaTest = suite('playerMetaTest');
@@ -9,7 +10,7 @@ let player: Player2Document;
 let playerData: PlayerMetaData;
 
 PlayerMetaTest.before(async () => {
-	await initConnect();
+	await initConnect(config.VITE_NODE_ENV === 'production' ? true : false);
 });
 
 PlayerMetaTest.after(async () => {

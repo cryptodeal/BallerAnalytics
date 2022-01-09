@@ -2,6 +2,7 @@ import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
 import { importBoxScore } from '../../../src/db/controllers/Game2';
 import { Game2, initConnect, endConnect } from '../../../src';
+import config from '../../../src/config';
 import { Game2Document } from '../../../src/db/interfaces/mongoose.gen';
 
 const ImportBoxScoresTest = suite('importBoxScoresTest', {});
@@ -9,7 +10,7 @@ let game: Game2Document;
 let result: Game2Document;
 
 ImportBoxScoresTest.before(async () => {
-	await initConnect();
+	await initConnect(config.VITE_NODE_ENV === 'production' ? true : false);
 });
 
 ImportBoxScoresTest.after(async () => {
