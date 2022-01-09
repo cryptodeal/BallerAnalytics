@@ -114,7 +114,10 @@
 									{#if dayjs(date)
 										.utc()
 										.tz('America/New_York')
-										.isBefore(dayjs().utc().tz('America/New_York'))}
+										.isBefore(dayjs()
+												.utc()
+												.tz('America/New_York')
+												.subtract(2, 'day')) && home.stats.totals?.points && visitor.stats.totals?.points}
 										<td class="px-2 py-4 border-b border-gray-200 md:px-4 xl:px-6">
 											<div
 												class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
@@ -152,7 +155,7 @@
 											<div class="text-sm leading-5">--</div>
 										</td>
 									{/if}
-								{:else if dayjs(date).isBefore(dayjs())}
+								{:else if dayjs(date).isBefore(dayjs()) && home.stats.totals?.points && visitor.stats.totals?.points}
 									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 										<div class="text-sm leading-5">
 											<div class="flex inline-flex items-center">

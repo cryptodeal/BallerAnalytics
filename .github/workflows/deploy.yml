@@ -1,0 +1,25 @@
+name: Build & Deploy
+on:
+  push:
+    branches: [TempVercelFix]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Data Import Cron jobs
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.DATA_IMPORT_SSH_HOST}}
+          key: ${{secrets.DATA_IMPORT_SSH_KEY}}
+          username: ${{secrets.DATA_IMPORT_SSH_USERNAME}}
+
+          script: |
+            mkdir dataImport
+            cd dataImport
+            git clone git@github.com:cryptodeal/BallerAnalytics.git
+            cd BallerAnalytics/packages/nba-api-ts
+            pnpm install
+            pnpm data:import:teamRosters
+            
+

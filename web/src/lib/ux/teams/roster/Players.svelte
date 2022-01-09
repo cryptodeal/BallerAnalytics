@@ -15,7 +15,7 @@
 					<thead>
 						<tr>
 							<th
-								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
+								class="px-2 py-3 text-base font-medium leading-4 whitespace-pre tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
 							>
 								Name
 								<div class="text-xs">(* denotes player on 2-Way contract)</div>
@@ -57,21 +57,19 @@
 							<tr>
 								<!-- Display Player Name -->
 
-								<td
-									class="px-2 py-4 h-full whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6"
-								>
-									<div class="flex inline-flex items-center">
-										<div class="flex-shrink-0 w-10 h-10">
+								<td class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 xl:px-6">
+									<div class="flex w-full inline-flex items-center">
+										<div class="flex-shrink-0 w-auto">
 											{#if player}
 												<Headshot
 													src="https://dttbvdi5lj1g6.cloudfront.net/{player.meta.images.headshot
-														.avif[0]}"
+														.avif[2]}"
 													alt="{player.name.full} headshot"
 												/>
 											{/if}
 										</div>
 
-										<div class="ml-4">
+										<div class="ml-2 w-auto">
 											<div class="text-sm font-medium leading-5 text-gray-900">
 												{#if player}
 													{player.name.full}
@@ -81,14 +79,16 @@
 												{/if}
 											</div>
 											{#if number}
-												<div class="text-xs font-small leading-5 text-gray-500">{number}</div>
+												<div class="text-xs font-small leading-5 text-gray-700">{number}</div>
 											{/if}
 										</div>
 									</div>
 								</td>
 
 								<!-- Display Player Position (POS) -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+								<td
+									class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6"
+								>
 									<div class="text-sm font-bold leading-5">
 										{#if position}
 											{position}
@@ -97,7 +97,7 @@
 								</td>
 
 								<!-- Display Player Age -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+								<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 									<div class="text-sm font-bold leading-5">
 										{#if player}
 											{getAge(new Date(player.birthDate).toString())}
@@ -106,7 +106,7 @@
 								</td>
 
 								<!-- Display Player Height -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+								<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 									<div class="text-sm font-bold leading-5">
 										{#if player.height.feet}
 											{player.height.feet}-{#if player.height.inches}
@@ -119,7 +119,7 @@
 								</td>
 
 								<!-- Display Player Weight -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+								<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 									<div class="text-sm font-bold leading-5">
 										{#if player.weight}
 											{player.weight}
@@ -128,7 +128,7 @@
 								</td>
 
 								<!-- Display Player College -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+								<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 									<div class="text-sm font-bold leading-5">
 										{#if player.college}
 											{player.college}

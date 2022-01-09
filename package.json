@@ -10,6 +10,7 @@
     "lint": "pnpm recursive run lint",
     "mtgen": "pnpm recursive run mtgen",
     "preview": "pnpm recursive run preview",
+    "data:cron:boxscores": "pnpm recursive run data:cron:boxscores",
     "data:import:boxscores": "pnpm recursive run data:import:boxscores",
     "data:import:teamRosters": "pnpm recursive run data:import:teamRosters",
     "data:import:playerData": "pnpm recursive run data:import:playerData",

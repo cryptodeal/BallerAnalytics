@@ -394,7 +394,7 @@ export const importAllGames = () => {
 				const { name } = league;
 				for (let i = 0; i < league.seasons.length; i++) {
 					const { year } = league.seasons[i];
-					const { games } = await getSeasonGames(name, year);
+					const games = await getSeasonGames(name, year);
 					const yesterday = new Date();
 					//yesterday.setDate(yesterday.getDate() - 1);
 					const playoffGames = await getPlayoffGames(name, year);
@@ -405,29 +405,27 @@ export const importAllGames = () => {
 					for (const regularSeasonGame of regularSeasonGames) {
 						importedCount++;
 						console.log(importedCount);
-						const count = await Game2.countDocuments({
-							'meta.helpers.bballRef.boxScoreUrl': regularSeasonGame.boxScoreUrl
-						});
-						if (count == 0) {
-							const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
-							//replace with: if (game.date < yesterday && !game.meta.helpers.bballRef.missingData)
-							if (game.date < yesterday && !game.meta.helpers.bballRef.missingData) {
-								await importBoxScore(game).then(async (g) => {
-									if (g) {
-										await addGameRefs(g, 'regular');
-										/** Add game._id to regular season games for league */
-										const seasonIndex = league.seasons.findIndex((s) => s.year == year);
-										league.seasons[seasonIndex].games.regularSeason.addToSet(g._id);
-										await league.save();
-									} else {
-										throw Error(
-											`No resulting boxScore; something is fucked with: "${regularSeasonGame.boxScoreUrl}"`
-										);
-									}
-								});
-							}
+						const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
+						if (
+							game.date < yesterday &&
+							!game.meta.helpers.bballRef.missingData &&
+							(!game.home.score || !game.visitor.score)
+						) {
+							await importBoxScore(game).then(async (g) => {
+								if (g) {
+									await addGameRefs(g, 'regular');
+									/** Add game._id to regular season games for league */
+									const seasonIndex = league.seasons.findIndex((s) => s.year == year);
+									league.seasons[seasonIndex].games.regularSeason.addToSet(g._id);
+									await league.save();
+								} else {
+									throw Error(
+										`No resulting boxScore; something is fucked with: "${regularSeasonGame.boxScoreUrl}"`
+									);
+								}
+							});
 						} else {
-							const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
+							/** Add game._id to regularSeason games for team, players, officials, coaches */
 							await addGameRefs(game, 'regular');
 							/** Add game._id to regular season games for league */
 							const seasonIndex = league.seasons.findIndex((s) => s.year == year);
@@ -439,41 +437,125 @@ export const importAllGames = () => {
 					for (const playoffGame of playoffGames) {
 						importedCount++;
 						console.log(importedCount);
-						const count = await Game2.countDocuments({
-							'meta.helpers.bballRef.boxScoreUrl': playoffGame.boxScoreUrl
-						});
-						if (count == 0) {
-							const game: Game2Document = await addOrFindGame(playoffGame, year, name);
-							//replace with: if (game.date < yesterday && !game.meta.helpers.bballRef.missingData)
-							if (game.date < yesterday && !game.meta.helpers.bballRef.missingData) {
-								await importBoxScore(game).then(async (g) => {
-									if (g) {
-										await addGameRefs(g, 'post');
-										/** Add game._id to regular season games for league */
-										const seasonIndex = league.seasons.findIndex((s) => s.year == year);
-										league.seasons[seasonIndex].games.postSeason.addToSet(g._id);
-										await league.save();
+						const game: Game2Document = await addOrFindGame(playoffGame, year, name);
+						if (
+							game.date < yesterday &&
+							!game.meta.helpers.bballRef.missingData &&
+							(!game.home.score || !game.visitor.score)
+						) {
+							await importBoxScore(game).then(async (g) => {
+								if (g) {
+									await addGameRefs(g, 'post');
+									/** Add game._id to regular season games for league */
+									const seasonIndex = league.seasons.findIndex((s) => s.year == year);
+									league.seasons[seasonIndex].games.postSeason.addToSet(g._id);
+									await league.save();
 
-										g.postseason = true;
-										await g.save();
-									} else {
-										throw Error(
-											`No resulting boxScore; something is fucked with "${playoffGame.boxScoreUrl}"`
-										);
-									}
-								});
-							}
+									g.postseason = true;
+									await g.save();
+								} else {
+									throw Error(
+										`No resulting boxScore; something is fucked with "${playoffGame.boxScoreUrl}"`
+									);
+								}
+							});
 						} else {
-							const game: Game2Document = await addOrFindGame(playoffGame, year, name);
+							/** Add game._id to postseason games for team, players, officials, coaches */
 							await addGameRefs(game, 'post');
-							/** Add game._id to regular season games for league */
+							/** Add game._id to regular postSeason games for league */
 							const seasonIndex = league.seasons.findIndex((s) => s.year == year);
 							league.seasons[seasonIndex].games.postSeason.addToSet(game._id);
 							await league.save();
-							game.postseason = true;
-							await game.save();
 						}
 					}
+				}
+			}
+		});
+};
+
+export const importLatestGames = () => {
+	return getSeasons()
+		.then((seasonList) => {
+			const nbaSeasons = seasonList.filter((s) => s.leagueStr === 'NBA');
+			return addOrUpdateSeasons('NBA', nbaSeasons);
+		})
+		.then(async (league) => {
+			let importedCount = 0;
+			const { name } = league;
+			const i = league.seasons.findIndex((s) => s.year == 2022);
+			const { year } = league.seasons[i];
+			const games = await getSeasonGames(name, year);
+			const yesterday = new Date();
+			const playoffGames = await getPlayoffGames(name, year);
+			const regularSeasonGames = games.filter(
+				(g) => playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
+			);
+			for (const regularSeasonGame of regularSeasonGames) {
+				importedCount++;
+				console.log(importedCount);
+				const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
+				if (
+					game.date < yesterday &&
+					!game.meta.helpers.bballRef.missingData &&
+					(!game.home.score || !game.visitor.score)
+				) {
+					await importBoxScore(game).then(async (g) => {
+						if (g) {
+							/** Add game._id to regularSeason games for team, players, officials, coaches */
+							await addGameRefs(g, 'regular');
+							/** Add game._id to regular season games for league */
+							const seasonIndex = league.seasons.findIndex((s) => s.year == year);
+							league.seasons[seasonIndex].games.regularSeason.addToSet(g._id);
+							await league.save();
+						} else {
+							throw Error(
+								`No resulting boxScore; something is fucked with: "${regularSeasonGame.boxScoreUrl}"`
+							);
+						}
+					});
+				} else {
+					/** Add game._id to regularSeason games for team, players, officials, coaches */
+					await addGameRefs(game, 'regular');
+					/** Add game._id to regular season games for league */
+					const seasonIndex = league.seasons.findIndex((s) => s.year == year);
+					league.seasons[seasonIndex].games.regularSeason.addToSet(game._id);
+					await league.save();
+				}
+			}
+
+			for (const playoffGame of playoffGames) {
+				importedCount++;
+				console.log(importedCount);
+				const game: Game2Document = await addOrFindGame(playoffGame, year, name);
+				if (
+					game.date < yesterday &&
+					!game.meta.helpers.bballRef.missingData &&
+					(!game.home.score || !game.visitor.score)
+				) {
+					await importBoxScore(game).then(async (g) => {
+						if (g) {
+							/** Add game._id to postseason games for team, players, officials, coaches */
+							await addGameRefs(g, 'post');
+							/** Add game._id to regular postSeason games for league */
+							const seasonIndex = league.seasons.findIndex((s) => s.year == year);
+							league.seasons[seasonIndex].games.postSeason.addToSet(g._id);
+							await league.save();
+
+							g.postseason = true;
+							await g.save();
+						} else {
+							throw Error(
+								`No resulting boxScore; something is fucked with "${playoffGame.boxScoreUrl}"`
+							);
+						}
+					});
+				} else {
+					/** Add game._id to postseason games for team, players, officials, coaches */
+					await addGameRefs(game, 'post');
+					/** Add game._id to regular postSeason games for league */
+					const seasonIndex = league.seasons.findIndex((s) => s.year == year);
+					league.seasons[seasonIndex].games.postSeason.addToSet(game._id);
+					await league.save();
 				}
 			}
 		});

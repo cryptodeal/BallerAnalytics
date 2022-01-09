@@ -40,7 +40,6 @@ export const addPlayerBasicData = (player: Player2Document) => {
 	return getPlayerData(playerUrl).then((data) => {
 		const { height, weight, birthDate, birthPlace, position, shoots, name, college, socials } =
 			data;
-		console.log(height);
 		if (height.feet) {
 			player.height = {
 				feet: height.feet

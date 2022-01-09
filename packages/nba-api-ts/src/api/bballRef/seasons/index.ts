@@ -344,7 +344,6 @@ const parseSeasonGames = ($: cheerio.Root) => {
 									  game.home.abbreviation
 									: dayjs(game.date).format('YYYYMMDD') + '0' + game.home.abbreviation;
 							}
-
 							tableData.push(game);
 						}
 					});
@@ -372,9 +371,7 @@ export const getSeasonGames = async (league: string, year: number) => {
 		});
 	});
 
-	return {
-		games
-	};
+	return games;
 };
 
 export const getPlayoffGames = async (league: string, year: number) => {
