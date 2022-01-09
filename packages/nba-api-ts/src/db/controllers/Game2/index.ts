@@ -501,7 +501,6 @@ export const importLatestGames = () => {
 				) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
-							/** Add game._id to regularSeason games for team, players, officials, coaches */
 							await addGameRefs(g, 'regular');
 							/** Add game._id to regular season games for league */
 							const seasonIndex = league.seasons.findIndex((s) => s.year == year);
