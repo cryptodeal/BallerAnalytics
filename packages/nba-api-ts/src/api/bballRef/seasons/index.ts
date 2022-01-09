@@ -230,7 +230,7 @@ const parseSeasonMonths = ($: cheerio.Root) => {
 export type SeasonGameItem = {
 	date: Dayjs;
 	time: boolean;
-	boxScoreUrl?: string;
+	boxScoreUrl: string;
 	home: {
 		name: string;
 		abbreviation?: string;
@@ -256,14 +256,86 @@ const parseSeasonGames = ($: cheerio.Root) => {
 					.find('tr')
 					.each(function (j, row) {
 						if ($(row).attr('class') !== 'thead') {
+							let date = dayjs($(row).find('[data-stat=date_game]').text().trim());
+							let isTime = false;
+							const abbreviations = {
+								home: '',
+								visitor: ''
+							};
+							/** if start time listed, manipulate date and set game.time = true */
+							$(row)
+								.find('[data-stat=game_start_time]')
+								.each(function (i, t) {
+									const time = $(t).text().trim();
+									if (time !== '') {
+										isTime = true;
+										const halfOfDay = time.slice(-1);
+										let hours = parseInt(time.split(':')[0]);
+										const minutes = parseInt(time.split(':')[1].slice(0, -1));
+										if (halfOfDay === 'p' && hours !== 12) {
+											hours += 12;
+										}
+										const dateTime = date.set('hour', hours).set('minute', minutes);
+										date = dateTime;
+									}
+								});
+							/** set visitor team abbreviation */
+							const visitorHref = $(row)
+								.find('[data-stat=visitor_team_name]')
+								.find('a')
+								.attr('href')
+								?.split('/');
+							if (visitorHref) {
+								abbreviations.visitor = visitorHref[visitorHref.length - 2];
+							}
+
+							/** set home team abbreviation */
+							const homeHref = $(row)
+								.find('[data-stat=home_team_name]')
+								.find('a')
+								.attr('href')
+								?.split('/');
+							if (homeHref) {
+								abbreviations.home = homeHref[homeHref.length - 2];
+							}
+
+							/** Set boxscore url for SeasonGameItem */
+							let boxScoreUrl: string | string[] | undefined = $(row)
+								.find('[data-stat=box_score_text]')
+								.find('a')
+								.attr('href')
+								?.split('/');
+
+							/* If boxscore url is undefined, use csk attr of td game_date in tr */
+							if (boxScoreUrl && boxScoreUrl.length > 1) {
+								boxScoreUrl = boxScoreUrl[boxScoreUrl.length - 1].split('.')[0];
+							} else {
+								boxScoreUrl = $(row).find('[data-stat=date_game]').first().attr('csk')?.trim();
+								if (!boxScoreUrl) {
+									boxScoreUrl = isTime
+										? dayjs(date).tz('America/New_York').format('YYYYMMDD') +
+										  '0' +
+										  abbreviations.home
+										: dayjs(date).format('YYYYMMDD') + '0' + abbreviations.home;
+								}
+							}
+							if (!boxScoreUrl)
+								throw new Error(
+									`No boxscore url found for ${abbreviations.visitor} @ ${
+										abbreviations.home
+									} on ${date.format('YYYY-MM-DD')}`
+								);
 							const game: SeasonGameItem = {
-								date: dayjs($(row).find('[data-stat=date_game]').text().trim()),
-								time: false,
+								date,
+								boxScoreUrl,
+								time: isTime,
 								home: {
-									name: $(row).find('[data-stat=home_team_name]').text().trim()
+									name: $(row).find('[data-stat=home_team_name]').text().trim(),
+									abbreviation: abbreviations.home
 								},
 								visitor: {
-									name: $(row).find('[data-stat=visitor_team_name]').text().trim()
+									name: $(row).find('[data-stat=visitor_team_name]').text().trim(),
+									abbreviation: abbreviations.visitor
 								}
 							};
 
@@ -279,26 +351,6 @@ const parseSeasonGames = ($: cheerio.Root) => {
 								game.home.score = parseInt(homeScore);
 							}
 
-							/** set visitor team abbreviation */
-							const visitorHref = $(row)
-								.find('[data-stat=visitor_team_name]')
-								.find('a')
-								.attr('href')
-								?.split('/');
-							if (visitorHref) {
-								game.visitor.abbreviation = visitorHref[visitorHref.length - 2];
-							}
-
-							/** set home team abbreviation */
-							const homeHref = $(row)
-								.find('[data-stat=home_team_name]')
-								.find('a')
-								.attr('href')
-								?.split('/');
-							if (homeHref) {
-								game.home.abbreviation = homeHref[homeHref.length - 2];
-							}
-
 							/** if exists, set overtime count */
 							const otCount = $(row).find('[data-stat=overtimes]').text().trim();
 							if (otCount !== '') game.otCount = otCount;
@@ -311,39 +363,6 @@ const parseSeasonGames = ($: cheerio.Root) => {
 							const remarks = $(row).find('[data-stat=game_remarks]').text().trim();
 							if (remarks !== '') game.notes = remarks;
 
-							/** if start time listed, manipulate date and set game.time = true */
-							$(row)
-								.find('[data-stat=game_start_time]')
-								.each(function (i, t) {
-									const time = $(t).text().trim();
-									if (time !== '') {
-										game.time = true;
-										const halfOfDay = time.slice(-1);
-										let hours = parseInt(time.split(':')[0]);
-										const minutes = parseInt(time.split(':')[1].slice(0, -1));
-										if (halfOfDay === 'p' && hours !== 12) {
-											hours += 12;
-										}
-										const dateTime = game.date.set('hour', hours).set('minute', minutes);
-										game.date = dateTime;
-									}
-								});
-							/** Set boxscore url for SeasonGameItem */
-							const boxScoreUrl = $(row)
-								.find('[data-stat=box_score_text]')
-								.find('a')
-								.attr('href')
-								?.split('/');
-
-							if (boxScoreUrl) {
-								game.boxScoreUrl = boxScoreUrl[boxScoreUrl.length - 1].split('.')[0];
-							} else {
-								game.boxScoreUrl = game.time
-									? dayjs(game.date).tz('America/New_York').format('YYYYMMDD') +
-									  '0' +
-									  game.home.abbreviation
-									: dayjs(game.date).format('YYYYMMDD') + '0' + game.home.abbreviation;
-							}
 							tableData.push(game);
 						}
 					});

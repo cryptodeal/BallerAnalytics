@@ -332,48 +332,45 @@ const addGameRefs = async (game: Game2Document, seasonStage: string) => {
 	}
 };
 
-export const addOrFindGame = async (game: SeasonGameItem, year: number, league: string) => {
-	if (game.boxScoreUrl) {
-		const result = await Game2.findByUrl(game.boxScoreUrl);
-		if (result) return result;
-	}
-	const result = await Game2.findOne({
-		'home.score': game.home.score,
-		'visitor.score': game.visitor.score,
-		'meta.helpers.bballRef.year': year,
-		date: new Date(game.date.toISOString())
-	});
+export const addOrFindGame = async (
+	game: SeasonGameItem,
+	year: number,
+	league: string
+): Promise<Game2Document> => {
+	const result: null | Game2Document = await Game2.findByUrl(game.boxScoreUrl);
 	if (result) return result;
-
 	const homeTeam = await Team2.findByName(game.home.name);
 	const visitorTeam = await Team2.findByName(game.visitor.name);
 	const leagueDoc = await League.findOne({ name: league });
-	if (leagueDoc?._id && homeTeam._id && visitorTeam._id) {
-		const gameDoc = new Game2({
-			meta: {
-				helpers: {
-					bballRef: {
-						year: year,
-						boxScoreUrl: game.boxScoreUrl
-					}
-				},
-				displaySeason: `${year - 1}-${year.toString().slice(-2)}`,
-				league: leagueDoc._id
+	if (!leagueDoc?._id) throw new Error('League not found');
+	if (!homeTeam._id) throw new Error('Home team not found');
+	if (!visitorTeam._id) throw new Error('Visitor team not found');
+	const gameDoc = new Game2({
+		meta: {
+			helpers: {
+				bballRef: {
+					year: year,
+					boxScoreUrl: game.boxScoreUrl
+				}
 			},
-			date: new Date(game.date.toISOString()),
-			time: game.time,
-			home: {
-				team: homeTeam._id
-			},
-			visitor: {
-				team: visitorTeam._id
-			}
-		});
+			displaySeason: `${year - 1}-${year.toString().slice(-2)}`,
+			league: leagueDoc._id
+		},
+		date: game.date.toISOString(),
+		time: game.time,
+		home: {
+			team: homeTeam._id
+		},
+		visitor: {
+			team: visitorTeam._id
+		}
+	});
 
-		if (game.home.score) gameDoc.home.score = game.home.score;
-		if (game.visitor.score) gameDoc.visitor.score = game.visitor.score;
-		return gameDoc.save();
-	}
+	if (game.home.score) gameDoc.home.score = game.home.score;
+	if (game.visitor.score) gameDoc.visitor.score = game.visitor.score;
+	return gameDoc.save().then((game: Game2Document) => {
+		return game;
+	});
 };
 
 export const importAllGames = () => {
@@ -409,7 +406,7 @@ export const importAllGames = () => {
 						if (
 							game.date < yesterday &&
 							!game.meta.helpers.bballRef.missingData &&
-							(!game.home.score || !game.visitor.score)
+							(!game.home.stats.totals.points || !game.visitor.stats.totals.points)
 						) {
 							await importBoxScore(game).then(async (g) => {
 								if (g) {
@@ -441,7 +438,7 @@ export const importAllGames = () => {
 						if (
 							game.date < yesterday &&
 							!game.meta.helpers.bballRef.missingData &&
-							(!game.home.score || !game.visitor.score)
+							(!game.home.stats.totals.points || !game.visitor.stats.totals.points)
 						) {
 							await importBoxScore(game).then(async (g) => {
 								if (g) {
@@ -490,6 +487,7 @@ export const importLatestGames = () => {
 			const regularSeasonGames = games.filter(
 				(g) => playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
 			);
+			console.log(regularSeasonGames.length);
 			for (const regularSeasonGame of regularSeasonGames) {
 				importedCount++;
 				console.log(importedCount);
@@ -497,7 +495,7 @@ export const importLatestGames = () => {
 				if (
 					game.date < yesterday &&
 					!game.meta.helpers.bballRef.missingData &&
-					(!game.home.score || !game.visitor.score)
+					(!game.home.stats.totals.points || !game.visitor.stats.totals.points)
 				) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
@@ -529,7 +527,7 @@ export const importLatestGames = () => {
 				if (
 					game.date < yesterday &&
 					!game.meta.helpers.bballRef.missingData &&
-					(!game.home.score || !game.visitor.score)
+					(!game.home.stats.totals.points || !game.visitor.stats.totals.points)
 				) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {

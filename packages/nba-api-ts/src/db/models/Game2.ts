@@ -407,7 +407,7 @@ Game2Schema.query = {
 
 Game2Schema.statics = {
 	findByUrl(url: string) {
-		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url }).exec();
+		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url });
 	},
 
 	async getGames(gameUids: Game2Document['_id'][]): Promise<Game2Object[]> {
