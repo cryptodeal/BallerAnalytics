@@ -70,7 +70,7 @@
 								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
 									<div class="text-sm font-bold leading-5">
 										{#if time}
-											{dayjs(date).utc().tz('America/New_York').format('ddd, MMM D @ h:mm A')}
+											{dayjs(date).format('ddd, MMM D @ h:mm A')}
 										{:else}
 											{dayjs(date).format('ddd, MMM D')}
 										{/if}
@@ -110,65 +110,20 @@
 										{/if}
 									</div>
 								</td>
-								{#if time}
-									{#if dayjs(date)
-										.utc()
-										.tz('America/New_York')
-										.isBefore(dayjs()
-												.utc()
-												.tz('America/New_York')
-												.subtract(2, 'day')) && home.stats.totals?.points && visitor.stats.totals?.points}
-										<td class="px-2 py-4 border-b border-gray-200 md:px-4 xl:px-6">
-											<div
-												class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
-											>
-												{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points)}
-													<div class="text-green-700 font-bold mr-0.5">W</div>
-												{:else}
-													<div class="text-red-700 font-bold mr-0.5">L</div>
-												{/if}
-												<div>
-													{home.stats.totals.points > visitor.stats.totals.points
-														? `${home.stats.totals.points}-${visitor.stats.totals.points}`
-														: `${visitor.stats.totals.points}-${home.stats.totals.points}`}
-												</div>
-											</div>
-										</td>
-
-										<td
-											class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6"
+								{#if home.stats.totals?.points && visitor.stats.totals?.points}
+									<td class="px-2 py-4 border-b border-gray-200 md:px-4 xl:px-6">
+										<div
+											class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
 										>
-											<div class="text-sm leading-5">
-												{`${getRecord(i).wins}-${getRecord(i).losses}`}
-											</div>
-										</td>
-									{:else}
-										<td
-											class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6"
-										>
-											<div class="text-sm leading-5">--</div>
-										</td>
-
-										<td
-											class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6"
-										>
-											<div class="text-sm leading-5">--</div>
-										</td>
-									{/if}
-								{:else if dayjs(date).isBefore(dayjs()) && home.stats.totals?.points && visitor.stats.totals?.points}
-									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
-										<div class="text-sm leading-5">
-											<div class="flex inline-flex items-center">
-												{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points)}
-													<div class="text-green-700 font-bold">W</div>
-												{:else}
-													<div class="text-red-700 font-bold">L</div>
-												{/if}
-												<div>
-													{home.stats.totals.points > visitor.stats.totals.points
-														? `${home.stats.totals.points}-${visitor.stats.totals.points}`
-														: `${visitor.stats.totals.points}-${home.stats.totals.points}`}
-												</div>
+											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points)}
+												<div class="text-green-700 font-bold mr-0.5">W</div>
+											{:else}
+												<div class="text-red-700 font-bold mr-0.5">L</div>
+											{/if}
+											<div>
+												{home.stats.totals.points > visitor.stats.totals.points
+													? `${home.stats.totals.points}-${visitor.stats.totals.points}`
+													: `${visitor.stats.totals.points}-${home.stats.totals.points}`}
 											</div>
 										</div>
 									</td>
