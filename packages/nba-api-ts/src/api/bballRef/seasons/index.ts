@@ -231,6 +231,7 @@ export type SeasonGameItem = {
 	date: Dayjs;
 	time: boolean;
 	boxScoreUrl: string;
+	isBoxscore: boolean;
 	home: {
 		name: string;
 		abbreviation?: string;
@@ -258,6 +259,7 @@ const parseSeasonGames = ($: cheerio.Root) => {
 						if ($(row).attr('class') !== 'thead') {
 							let date = dayjs($(row).find('[data-stat=date_game]').text().trim());
 							let isTime = false;
+							let isBoxscore = false;
 							const abbreviations = {
 								home: '',
 								visitor: ''
@@ -309,6 +311,7 @@ const parseSeasonGames = ($: cheerio.Root) => {
 							/* If boxscore url is undefined, use csk attr of td game_date in tr */
 							if (boxScoreUrl && boxScoreUrl.length > 1) {
 								boxScoreUrl = boxScoreUrl[boxScoreUrl.length - 1].split('.')[0];
+								isBoxscore = true;
 							} else {
 								boxScoreUrl = $(row).find('[data-stat=date_game]').first().attr('csk')?.trim();
 								if (!boxScoreUrl) {
@@ -328,6 +331,7 @@ const parseSeasonGames = ($: cheerio.Root) => {
 							const game: SeasonGameItem = {
 								date,
 								boxScoreUrl,
+								isBoxscore,
 								time: isTime,
 								home: {
 									name: $(row).find('[data-stat=home_team_name]').text().trim(),

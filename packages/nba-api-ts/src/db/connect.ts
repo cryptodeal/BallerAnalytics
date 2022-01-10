@@ -21,7 +21,7 @@ const opts: MONGO_OPTS = {
 };
 
 export const initConnect = (prod?: boolean) => {
-	if (config.VITE_NODE_ENV === 'production') {
+	if (config.VITE_NODE_ENV === 'production' || prod === true) {
 		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
 		opts.tlsCAFile = digitalOceanCert;
 		prod = true;
