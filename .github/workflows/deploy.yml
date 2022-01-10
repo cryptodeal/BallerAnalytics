@@ -21,3 +21,4 @@ jobs:
             cd BallerAnalytics
             pnpm install
             pnpm build
+            pnpm data:cron

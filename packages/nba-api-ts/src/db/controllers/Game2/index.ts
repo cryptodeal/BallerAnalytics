@@ -1,4 +1,4 @@
-import { Game2, League, Team2, Player2, Official2 } from '../../../index';
+import { Game2, League, Team2, Player2, Official2, initConnect, endConnect } from '../../../index';
 import type { Game2Document } from '../../../index';
 import { getBoxScore } from '../../../api/bballRef/games';
 import {
@@ -11,6 +11,7 @@ import { addGameToPlayer } from '../Player2';
 import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
+import dayjs from 'dayjs';
 
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
@@ -486,9 +487,14 @@ export const importLatestGames = () => {
 			const i = league.seasons.findIndex((s) => s.year == 2022);
 			const { year } = league.seasons[i];
 			const games = await getSeasonGames(name, year);
-			const playoffGames = await getPlayoffGames(name, year);
+			const playoffGames = (await getPlayoffGames(name, year)).filter(
+				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
+			);
 			const regularSeasonGames = games.filter(
-				(g) => playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
+				(g) =>
+					g.date.isBefore(dayjs()) &&
+					g.date.isAfter(dayjs().subtract(7, 'day')) &&
+					playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
 			);
 			console.log(regularSeasonGames.length);
 			for (const regularSeasonGame of regularSeasonGames) {
@@ -568,4 +574,13 @@ export const importLatestGames = () => {
 				}
 			}
 		});
+};
+
+export const importGamesLastWeek = () => {
+	initConnect(true)
+		.then(async () => {
+			await importLatestGames();
+		})
+		.then(endConnect)
+		.then(() => console.log('Completed!'));
 };
