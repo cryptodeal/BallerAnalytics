@@ -6,6 +6,7 @@ const gameWeekCronStr = combine(everyHour(), atMinute(30)).toString();
 class DataImportScripts {
 	cronJob: CronJob;
 	constructor() {
+		console.log(gameWeekCronStr);
 		this.cronJob = new CronJob(gameWeekCronStr, async () => {
 			try {
 				await this.importWeekGames();
