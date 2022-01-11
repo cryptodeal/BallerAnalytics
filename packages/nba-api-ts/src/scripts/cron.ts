@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import { importGamesLastWeek } from '../db/controllers/Game2';
+import { importGamesLastWeek } from '../db/controllers/Game2/index';
 
 class DataImportScripts {
 	cronJob: CronJob;
