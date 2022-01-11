@@ -20,5 +20,6 @@ jobs:
             cp .env ./BallerAnalytics/packages/nba-api-ts
             cd BallerAnalytics
             pnpm install
+            cd packages/nba-api-ts
             pnpm build
             pnpm data:cron

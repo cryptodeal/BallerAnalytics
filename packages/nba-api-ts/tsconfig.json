@@ -9,7 +9,6 @@
     "noImplicitAny": false,
 		"rootDir": "src",
 		"composite": true,
-    "experimentalDecorators": true
 	},
 	"include": ["src/**/*", "src/global.d.ts"],
 	"exclude": ["./node_modules", "dist"]
