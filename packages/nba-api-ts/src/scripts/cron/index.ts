@@ -1,13 +1,10 @@
 import { CronJob } from 'cron';
 import { importGamesLastWeek } from '../../db/controllers/Game2';
-import { atMinute, combine, everyHour } from 'node-cron-expression';
-const gameWeekCronStr = combine(everyHour(), atMinute(30)).toString();
 
 class DataImportScripts {
 	cronJob: CronJob;
 	constructor() {
-		console.log(gameWeekCronStr);
-		this.cronJob = new CronJob(gameWeekCronStr, async () => {
+		this.cronJob = new CronJob('30 * * * *', async () => {
 			try {
 				await this.importWeekGames();
 			} catch (e) {
