@@ -24,7 +24,6 @@
 		"lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
 		"mtgen": "mtgen --output ./src/db/interfaces ./src/db/models",
 		"preview": "tsc -p tsconfig.build.json",
-    "data:cron": "node --experimental-specifier-resolution=node dist/scripts/cron",
 		"data:import:boxscores": "node --experimental-specifier-resolution=node dist/scripts/import/boxscores",
     "data:import:playerData": "node --experimental-specifier-resolution=node dist/scripts/import/playerData",
     "data:import:teamRosters": "node --experimental-specifier-resolution=node dist/scripts/import/teamRosters",

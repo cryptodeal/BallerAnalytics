@@ -13,6 +13,7 @@ jobs:
         key: ${{ secrets.DATA_IMPORT_SSH_KEY }}
         username: ${{ secrets.DATA_IMPORT_SSH_USERNAME }}
         script: |
+            pnpm pm2 stop packages/nba-api-ts/dist/scripts/cron.js
             rm -rf BallerAnalytics
             git clone -b TempVercelFix git@github.com:cryptodeal/BallerAnalytics.git
             cp .env ./BallerAnalytics
@@ -21,4 +22,4 @@ jobs:
             cd BallerAnalytics
             pnpm install
             pnpm build
-            pnpm data:cron
+            pnpm pm2 start packages/nba-api-ts/dist/scripts/cron.js
