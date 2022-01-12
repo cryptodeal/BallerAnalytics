@@ -30,6 +30,33 @@
 				status: res.status,
 				error: new Error(`Could not load ${apiUrl}`)
 			};
+		} else {
+			const apiUrl = `/teams/${page.params.teamSlug}.json`;
+			const res = await fetch(apiUrl);
+
+			if (res.ok) {
+				const { teamData } = await res.json();
+				const seasonIdx = 0;
+				const seasons: SeasonList[] = [];
+				teamData.seasons.map((s) => {
+					const { season } = s;
+					seasons.push({ season });
+				});
+				seasons.sort((a, b) => a.season - b.season);
+				return {
+					props: {
+						teamData,
+						seasonIdx,
+						seasonYear: teamData.seasons[seasonIdx].season,
+						seasons
+					}
+				};
+			}
+
+			return {
+				status: res.status,
+				error: new Error(`Could not load ${apiUrl}`)
+			};
 		}
 	};
 </script>
@@ -45,7 +72,7 @@
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
-	//$: console.log(teamData.seasons);
+	$: console.log(teamData.seasons);
 
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
@@ -89,10 +116,8 @@
 				</h1>
 			</div>
 			<div class="p-2 md:(container mx-auto)">
-				<div class="flex inline-flex items-center text-black">
-					<div>
-						<h2 class="text-white text-lg mr-4">Season:</h2>
-					</div>
+				<div class="flex inline-flex items-center px-4 py-2 text-black">
+					<h2 class="text-white text-lg mr-4">Season:</h2>
 					<select class="select" bind:value={seasonYear} on:change={loadRosterData}>
 						{#each seasons as { season }}
 							<option value={season}>{season}</option>
@@ -109,25 +134,32 @@
 
 					<!-- Schedule Data Tab -->
 					<TabPanel>
-						<h2 class="tabPanelTitle" style="color:{secondaryColor};">
-							{teamData.seasons[seasonIdx].season} Regular Season:
-						</h2>
-						<div class="my-4">
-							<ScheduleTable
-								schedule={teamData.seasons[seasonIdx].regularSeason.games}
-								teamId={teamData._id}
-							/>
-						</div>
-
-						<h2 class="tabPanelTitle" style="color:{secondaryColor};">
-							{teamData.seasons[seasonIdx].season} Postseason:
-						</h2>
-						<div class="my-4">
-							<ScheduleTable
-								schedule={teamData.seasons[seasonIdx].postseason.games}
-								teamId={teamData._id}
-							/>
-						</div>
+						{#if teamData.seasons[seasonIdx].regularSeason.games.length > 0}
+							<h2 class="tabPanelTitle" style="color:{secondaryColor};">
+								{teamData.seasons[seasonIdx].season} Regular Season:
+							</h2>
+							<div class="my-4">
+								<ScheduleTable
+									schedule={teamData.seasons[seasonIdx].regularSeason.games}
+									teamId={teamData._id}
+								/>
+							</div>
+						{:else}
+							<h2 class="tabPanelTitle" style="color:{secondaryColor};">
+								No games played in {teamData.seasons[seasonIdx].season}
+							</h2>
+						{/if}
+						{#if teamData.seasons[seasonIdx].postseason.games.length > 0}
+							<h2 class="tabPanelTitle" style="color:{secondaryColor};">
+								{teamData.seasons[seasonIdx].season} Postseason:
+							</h2>
+							<div class="my-4">
+								<ScheduleTable
+									schedule={teamData.seasons[seasonIdx].postseason.games}
+									teamId={teamData._id}
+								/>
+							</div>
+						{/if}
 					</TabPanel>
 
 					<!-- Roster Data Tab -->

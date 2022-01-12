@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Team2Document, Team2Model, Team2Queries, Team2Schema } from '../interfaces/mongoose.gen';
+import { Team2Document, Team2Model, Team2Schema } from '../interfaces/mongoose.gen';
 
 const Team2Schema: Team2Schema = new mongoose.Schema({
 	meta: {
@@ -363,7 +363,4 @@ Team2Schema.query = {
 	}
 };
 
-export const Team2: Team2Model = mongoose.model<Team2Document, Team2Model, Team2Queries>(
-	'Team2',
-	Team2Schema
-);
+export const Team2: Team2Model = mongoose.model<Team2Document, Team2Model>('Team2', Team2Schema);

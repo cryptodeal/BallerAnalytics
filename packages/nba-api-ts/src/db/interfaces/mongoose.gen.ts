@@ -73,12 +73,16 @@ export type Coach2 = {
 export type Coach2Object = Coach2;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const Coach2 = mongoose.model<Coach2Document, Coach2Model>("Coach2", Coach2Schema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type Coach2Query = mongoose.Query<any, Coach2Document, Coach2Queries> & Coach2Queries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `Coach2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Coach2Queries = {};
 
@@ -96,7 +100,8 @@ export type Coach2Statics = {
  * const Coach2 = mongoose.model<Coach2Document, Coach2Model>("Coach2", Coach2Schema);
  * ```
  */
-export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries> & Coach2Statics;
+export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries, Coach2Methods> &
+	Coach2Statics;
 
 /**
  * Mongoose Schema type
@@ -106,7 +111,12 @@ export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries> & Coach2
  * const Coach2Schema: Coach2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Coach2Schema = mongoose.Schema<Coach2Document, Coach2Model>;
+export type Coach2Schema = mongoose.Schema<
+	Coach2Document,
+	Coach2Model,
+	Coach2Methods,
+	Coach2Queries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -600,15 +610,19 @@ export type Game2 = {
 export type Game2Object = Game2;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const Game2 = mongoose.model<Game2Document, Game2Model>("Game2", Game2Schema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type Game2Query = mongoose.Query<any, Game2Document, Game2Queries> & Game2Queries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `Game2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Game2Queries = {
-	populatePlayers: () => mongoose.Query<any, Game2Document, Game2Queries> & Game2Queries;
+	populatePlayers: (this: Game2Query) => Game2Query;
 };
 
 export type Game2Methods = {};
@@ -626,7 +640,7 @@ export type Game2Statics = {
  * const Game2 = mongoose.model<Game2Document, Game2Model>("Game2", Game2Schema);
  * ```
  */
-export type Game2Model = mongoose.Model<Game2Document, Game2Queries> & Game2Statics;
+export type Game2Model = mongoose.Model<Game2Document, Game2Queries, Game2Methods> & Game2Statics;
 
 /**
  * Mongoose Schema type
@@ -636,7 +650,7 @@ export type Game2Model = mongoose.Model<Game2Document, Game2Queries> & Game2Stat
  * const Game2Schema: Game2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Game2Schema = mongoose.Schema<Game2Document, Game2Model>;
+export type Game2Schema = mongoose.Schema<Game2Document, Game2Model, Game2Methods, Game2Queries>;
 
 /**
  * Mongoose Subdocument type
@@ -1120,12 +1134,16 @@ export type League = {
 export type LeagueObject = League;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const League = mongoose.model<LeagueDocument, LeagueModel>("League", LeagueSchema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type LeagueQuery = mongoose.Query<any, LeagueDocument, LeagueQueries> & LeagueQueries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `LeagueSchema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type LeagueQueries = {};
 
@@ -1141,7 +1159,8 @@ export type LeagueStatics = {};
  * const League = mongoose.model<LeagueDocument, LeagueModel>("League", LeagueSchema);
  * ```
  */
-export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries> & LeagueStatics;
+export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries, LeagueMethods> &
+	LeagueStatics;
 
 /**
  * Mongoose Schema type
@@ -1151,7 +1170,12 @@ export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries> & League
  * const LeagueSchema: LeagueSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type LeagueSchema = mongoose.Schema<LeagueDocument, LeagueModel>;
+export type LeagueSchema = mongoose.Schema<
+	LeagueDocument,
+	LeagueModel,
+	LeagueMethods,
+	LeagueQueries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -1220,7 +1244,7 @@ export type LeagueDocument = mongoose.Document<mongoose.Types.ObjectId, LeagueQu
  * ```
  */
 export type Official2Season = {
-	year?: number;
+	year: number;
 	preseason: {
 		exists: boolean;
 		games: (Game2['_id'] | Game2)[];
@@ -1274,12 +1298,17 @@ export type Official2 = {
 export type Official2Object = Official2;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const Official2 = mongoose.model<Official2Document, Official2Model>("Official2", Official2Schema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type Official2Query = mongoose.Query<any, Official2Document, Official2Queries> &
+	Official2Queries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `Official2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Official2Queries = {};
 
@@ -1298,7 +1327,8 @@ export type Official2Statics = {
  * const Official2 = mongoose.model<Official2Document, Official2Model>("Official2", Official2Schema);
  * ```
  */
-export type Official2Model = mongoose.Model<Official2Document, Official2Queries> & Official2Statics;
+export type Official2Model = mongoose.Model<Official2Document, Official2Queries, Official2Methods> &
+	Official2Statics;
 
 /**
  * Mongoose Schema type
@@ -1308,7 +1338,12 @@ export type Official2Model = mongoose.Model<Official2Document, Official2Queries>
  * const Official2Schema: Official2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Official2Schema = mongoose.Schema<Official2Document, Official2Model>;
+export type Official2Schema = mongoose.Schema<
+	Official2Document,
+	Official2Model,
+	Official2Methods,
+	Official2Queries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -1316,7 +1351,7 @@ export type Official2Schema = mongoose.Schema<Official2Document, Official2Model>
  * Type of `Official2Document["seasons"]` element.
  */
 export type Official2SeasonDocument = mongoose.Types.Subdocument & {
-	year?: number;
+	year: number;
 	preseason: {
 		exists: boolean;
 		games: mongoose.Types.Array<Game2Document['_id'] | Game2Document>;
@@ -1554,12 +1589,16 @@ export type Player2 = {
 export type Player2Object = Player2;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const Player2 = mongoose.model<Player2Document, Player2Model>("Player2", Player2Schema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type Player2Query = mongoose.Query<any, Player2Document, Player2Queries> & Player2Queries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `Player2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Player2Queries = {};
 
@@ -1578,7 +1617,8 @@ export type Player2Statics = {
  * const Player2 = mongoose.model<Player2Document, Player2Model>("Player2", Player2Schema);
  * ```
  */
-export type Player2Model = mongoose.Model<Player2Document, Player2Queries> & Player2Statics;
+export type Player2Model = mongoose.Model<Player2Document, Player2Queries, Player2Methods> &
+	Player2Statics;
 
 /**
  * Mongoose Schema type
@@ -1588,7 +1628,12 @@ export type Player2Model = mongoose.Model<Player2Document, Player2Queries> & Pla
  * const Player2Schema: Player2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Player2Schema = mongoose.Schema<Player2Document, Player2Model>;
+export type Player2Schema = mongoose.Schema<
+	Player2Document,
+	Player2Model,
+	Player2Methods,
+	Player2Queries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -2141,20 +2186,20 @@ export type Team2 = {
 export type Team2Object = Team2;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const Team2 = mongoose.model<Team2Document, Team2Model>("Team2", Team2Schema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type Team2Query = mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `Team2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Team2Queries = {
-	populateSznGames: (
-		seasonIndex: number
-	) => mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
-	populateSznPlayers: (
-		seasonIndex: number
-	) => mongoose.Query<any, Team2Document, Team2Queries> & Team2Queries;
+	populateSznGames: (this: Team2Query, seasonIndex: number) => Team2Query;
+	populateSznPlayers: (this: Team2Query, seasonIndex: number) => Team2Query;
 };
 
 export type Team2Methods = {};
@@ -2171,7 +2216,7 @@ export type Team2Statics = {
  * const Team2 = mongoose.model<Team2Document, Team2Model>("Team2", Team2Schema);
  * ```
  */
-export type Team2Model = mongoose.Model<Team2Document, Team2Queries> & Team2Statics;
+export type Team2Model = mongoose.Model<Team2Document, Team2Queries, Team2Methods> & Team2Statics;
 
 /**
  * Mongoose Schema type
@@ -2181,7 +2226,7 @@ export type Team2Model = mongoose.Model<Team2Document, Team2Queries> & Team2Stat
  * const Team2Schema: Team2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Team2Schema = mongoose.Schema<Team2Document, Team2Model>;
+export type Team2Schema = mongoose.Schema<Team2Document, Team2Model, Team2Methods, Team2Queries>;
 
 /**
  * Mongoose Subdocument type
@@ -2586,12 +2631,16 @@ export type Tx = {
 export type TxObject = Tx;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const Tx = mongoose.model<TxDocument, TxModel>("Tx", TxSchema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type TxQuery = mongoose.Query<any, TxDocument, TxQueries> & TxQueries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `TxSchema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type TxQueries = {};
 
@@ -2607,7 +2656,7 @@ export type TxStatics = {};
  * const Tx = mongoose.model<TxDocument, TxModel>("Tx", TxSchema);
  * ```
  */
-export type TxModel = mongoose.Model<TxDocument, TxQueries> & TxStatics;
+export type TxModel = mongoose.Model<TxDocument, TxQueries, TxMethods> & TxStatics;
 
 /**
  * Mongoose Schema type
@@ -2617,7 +2666,7 @@ export type TxModel = mongoose.Model<TxDocument, TxQueries> & TxStatics;
  * const TxSchema: TxSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type TxSchema = mongoose.Schema<TxDocument, TxModel>;
+export type TxSchema = mongoose.Schema<TxDocument, TxModel, TxMethods, TxQueries>;
 
 /**
  * Mongoose Subdocument type
@@ -2721,12 +2770,16 @@ export type User = {
 export type UserObject = User;
 
 /**
- * Mongoose Query types
+ * Mongoose Query type
  *
- * Pass this type to the Mongoose Model constructor:
- * ```
- * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
- * ```
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type UserQuery = mongoose.Query<any, UserDocument, UserQueries> & UserQueries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `UserSchema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type UserQueries = {};
 
@@ -2744,7 +2797,7 @@ export type UserStatics = {};
  * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
  * ```
  */
-export type UserModel = mongoose.Model<UserDocument, UserQueries> & UserStatics;
+export type UserModel = mongoose.Model<UserDocument, UserQueries, UserMethods> & UserStatics;
 
 /**
  * Mongoose Schema type
@@ -2754,7 +2807,7 @@ export type UserModel = mongoose.Model<UserDocument, UserQueries> & UserStatics;
  * const UserSchema: UserSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type UserSchema = mongoose.Schema<UserDocument, UserModel>;
+export type UserSchema = mongoose.Schema<UserDocument, UserModel, UserMethods, UserQueries>;
 
 /**
  * Mongoose Subdocument type

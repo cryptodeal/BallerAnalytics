@@ -1,5 +1,5 @@
-import { Game2Document, Team2 } from '@balleranalytics/nba-api-ts';
-import type { Team2Document } from '@balleranalytics/nba-api-ts';
+import { Team2 } from '@balleranalytics/nba-api-ts';
+import type { Team2Document, Game2Document } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
@@ -17,15 +17,19 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 				}
 				return 0;
 			});
+			teams.map((t) => t.seasons.sort((a, b) => b.season - a.season));
 			return teams;
 		});
 };
 
 export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<Team2Document> => {
-	return Team2.findOne({ 'infoCommon.slug': slug })
-		.select(
-			`infoCommon seasons.season seasons.regularSeason seasons.postseason seasons.roster.players`
-		)
+	return Team2.findOne({ 'infoCommon.slug': slug }, [
+		'infoCommon',
+		'seasons.season',
+		'seasons.regularSeason',
+		'seasons.postseason',
+		'seasons.roster.players'
+	])
 		.populateSznPlayers(seasonIdx)
 		.populateSznGames(seasonIdx)
 		.lean()

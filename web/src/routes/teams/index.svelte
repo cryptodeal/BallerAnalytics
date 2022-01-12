@@ -25,25 +25,13 @@
 <script lang="ts">
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	export let teams: Team2Document[];
+	$: console.log(teams[0]);
 </script>
 
 <div class="appContent">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
-			<a
-				sveltekit:prefetch
-				href="teams/{infoCommon.slug}?seasonIdx={seasons.findIndex(
-					(s) =>
-						s.season ==
-						Math.max.apply(
-							Math,
-							seasons.map((s) => {
-								return s.season;
-							})
-						) -
-							1
-				)}"
-			>
+			<a sveltekit:prefetch href="teams/{infoCommon.slug}">
 				<div
 					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"

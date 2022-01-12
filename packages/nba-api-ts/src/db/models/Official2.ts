@@ -15,7 +15,7 @@ const Official2Schema: Official2Schema = new mongoose.Schema({
 	},
 	seasons: [
 		{
-			year: { type: Number },
+			year: { type: Number, required: true },
 			preseason: {
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }]
