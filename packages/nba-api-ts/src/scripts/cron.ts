@@ -8,6 +8,7 @@ class DataImportScripts {
 		this.cronJob = new CronJob('30 * * * *', async () => {
 			try {
 				await this.importWeekGames();
+				await this.updateCurrentRosters();
 			} catch (e) {
 				console.error(e);
 			}
