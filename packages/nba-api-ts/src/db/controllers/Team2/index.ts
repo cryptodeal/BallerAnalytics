@@ -1,5 +1,5 @@
 import type { Game2Document, Team2Document } from '../../../index';
-import { Player2, Team2 } from '../../../index';
+import { Player2, Team2, initConnect, endConnect } from '../../../index';
 import { getTeamRoster } from '../../../api/bballRef/teams';
 import { getPlayerData } from '../../../api/bballRef/player';
 import mongoose from 'mongoose';
@@ -125,4 +125,17 @@ export const importTeamRosters = async () => {
 		for (let i = 0; i < tempTeam.seasons.length; i++)
 			tempTeam = await importTeamRoster(tempTeam, tempTeam.seasons[i].season);
 	}
+};
+
+export const importCurrentRosters = (year: number) => {
+	initConnect(true)
+		.then(async () => {
+			for (const team of await Team2.find({ seasons: { $elemMatch: { season: year } } })) {
+				const seasonIdx = team.seasons.findIndex((s) => s.season == year);
+				team.seasons[seasonIdx].roster.players.splice(0);
+				await importTeamRoster(team, year);
+			}
+		})
+		.then(endConnect)
+		.then(() => console.log('Completed updating 2022 team rosters'));
 };

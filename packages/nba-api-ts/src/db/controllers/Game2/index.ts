@@ -582,5 +582,5 @@ export const importGamesLastWeek = () => {
 			await importLatestGames();
 		})
 		.then(endConnect)
-		.then(() => console.log('Completed!'));
+		.then(() => console.log('Completed import games last 7 days'));
 };

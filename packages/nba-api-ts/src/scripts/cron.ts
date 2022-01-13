@@ -1,5 +1,6 @@
 import { CronJob } from 'cron';
 import { importGamesLastWeek } from '../db/controllers/Game2';
+import { importCurrentRosters } from '../db/controllers/Team2';
 
 class DataImportScripts {
 	cronJob: CronJob;
@@ -20,6 +21,10 @@ class DataImportScripts {
 
 	private async importWeekGames() {
 		await importGamesLastWeek();
+	}
+
+	private async updateCurrentRosters() {
+		await importCurrentRosters(2022);
 	}
 }
 
