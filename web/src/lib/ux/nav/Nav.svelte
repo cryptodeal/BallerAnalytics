@@ -25,18 +25,11 @@
 		<Hamburger />
 	</div>
 	<div class="w-4/5 px-5 p-1 md:(flex justify-start w-1/3 px-2)">
-		<div
-			class="flex my-1 antialiased bg-gray-300 backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
-		>
-			<Logo />
-		</div>
-		<!--
 		<img
 			src="/logo.svg"
 			alt="Baller Analytics Logo"
 			class="flex my-1 antialiased bg-gray-300 backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
 		/>
-    -->
 	</div>
 
 	<div
