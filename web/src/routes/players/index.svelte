@@ -56,10 +56,10 @@
 				let:index
 				let:style
 				{style}
-				class="flex inline-flex h-75px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				class="flex inline-flex h-50px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
 				<Headshot
-					src="https://dttbvdi5lj1g6.cloudfront.net/{players[index].meta.images.headshot.avif[2]}"
+					src="https://dttbvdi5lj1g6.cloudfront.net/{players[index].meta.images.headshot.png[2]}"
 					alt="{players[index].name.full} headshot"
 				/>
 

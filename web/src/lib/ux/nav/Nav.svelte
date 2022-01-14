@@ -3,7 +3,7 @@
 	import { session } from '$app/stores';
 	import ThemeToggle from '$lib/ux/nav/ThemeToggle.svelte';
 	import AuthButton from '$lib/ux/nav/AuthButton.svelte';
-	// import Logo from '$lib/ux/nav/Logo/index.svelte';
+	import Logo from '$lib/ux/Logo.svelte';
 
 	export let segment: string;
 
@@ -25,11 +25,18 @@
 		<Hamburger />
 	</div>
 	<div class="w-4/5 px-5 p-1 md:(flex justify-start w-1/3 px-2)">
+		<div
+			class="flex my-1 antialiased bg-gray-300 backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
+		>
+			<Logo />
+		</div>
+		<!--
 		<img
 			src="/logo.svg"
 			alt="Baller Analytics Logo"
 			class="flex my-1 antialiased bg-gray-300 backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
 		/>
+    -->
 	</div>
 
 	<div
