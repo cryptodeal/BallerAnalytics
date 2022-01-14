@@ -182,6 +182,12 @@ Player2Schema.statics = {
 	}
 };
 
+Player2Schema.query = {
+	paginate(page = 0, limit = 100) {
+		return this.limit(limit).skip(page * limit);
+	}
+};
+
 Player2Schema.index({ 'meta.slug': 1 }, { name: 'slug', unique: true });
 
 Player2Schema.plugin(

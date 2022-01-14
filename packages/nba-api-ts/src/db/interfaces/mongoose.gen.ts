@@ -1600,7 +1600,9 @@ export type Player2Query = mongoose.Query<any, Player2Document, Player2Queries> 
  *
  * This type represents `Player2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
-export type Player2Queries = {};
+export type Player2Queries = {
+	paginate: (this: Player2Query, ...args: any[]) => Player2Query;
+};
 
 export type Player2Methods = {};
 

@@ -3,7 +3,7 @@ import type { Team2Document, Game2Document } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
-	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } }, {})
+	return Team2.find({ seasons: { $elemMatch: { season: 2022 } } })
 		.select('infoCommon seasons.season')
 		.lean()
 		.exec()

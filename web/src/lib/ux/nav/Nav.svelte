@@ -48,6 +48,14 @@
 		>
 			teams
 		</a>
+		<a
+			sveltekit:prefetch
+			href="/players"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			aria-current={segment === 'players' ? 'page' : undefined}
+		>
+			players
+		</a>
 		{#if $session.user}
 			<a
 				sveltekit:prefetch
