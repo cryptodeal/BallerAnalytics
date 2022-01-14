@@ -7,4 +7,4 @@
 	}
 </script>
 
-<img on:error={handleError} class="object-scale-down h-10" {src} {alt} />
+<img on:error={handleError} class="object-scale-down h-full" {src} {alt} />

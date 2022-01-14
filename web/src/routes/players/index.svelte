@@ -50,13 +50,13 @@
 
 <div class="h-full pt-12 w-full flex md:(container pt-14 mx-auto)">
 	<div class="list glassmorphicBg" bind:offsetHeight={listHeight}>
-		<VirtualList width="auto" height={listHeight} itemCount={players.length} itemSize={100}>
+		<VirtualList width="auto" height={listHeight} itemCount={players.length} itemSize={50}>
 			<div
 				slot="item"
 				let:index
 				let:style
 				{style}
-				class="flex inline-flex mx-2 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				class="flex inline-flex h-75px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
 				<Headshot
 					src="https://dttbvdi5lj1g6.cloudfront.net/{players[index].meta.images.headshot.avif[2]}"
