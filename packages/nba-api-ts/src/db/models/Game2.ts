@@ -402,6 +402,10 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 Game2Schema.query = {
 	populatePlayers() {
 		return this.populate('home.players.player visitor.players.player', 'name.full');
+	},
+
+	populateTeams() {
+		return this.populate('home.team visitor.team', 'infoCommon seasons.season seasons.infoCommon');
 	}
 };
 

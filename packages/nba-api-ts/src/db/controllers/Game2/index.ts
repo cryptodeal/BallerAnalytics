@@ -1,5 +1,5 @@
 import { Game2, League, Team2, Player2, Official2, initConnect, endConnect } from '../../../index';
-import type { Game2Document } from '../../../index';
+import type { Game2Document, PopulatedDocument } from '../../../index';
 import { getBoxScore } from '../../../api/bballRef/games';
 import {
 	SeasonGameItem,
@@ -12,6 +12,8 @@ import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
 import dayjs from 'dayjs';
+import { getNbaBoxscore, getNbaBoxScoreRes } from '../../../api/nba/boxscores';
+import type { NbaBoxScoreRes, NbaBoxScoreData } from '../../../api/nba/nba';
 
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
@@ -583,4 +585,82 @@ export const importGamesLastWeek = () => {
 		})
 		.then(endConnect)
 		.then(() => console.log('Completed import games last 7 days'));
+};
+
+const storeNbaData = async (
+	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+	period?: string
+) => {
+	if (!period) {
+		/* store data from nba dependency boxcore query
+    data is for entire game */
+		return game.save();
+	}
+	/* store data for specific period of game */
+	return game.save();
+};
+
+const helperTest = (year: number) => {
+	initConnect(true)
+		.then(() => {
+			return Game2.findOne({ 'meta.helpers.bballRef.year': year })
+				.populateTeams()
+				.exec()
+				.then(
+					(
+						game: PopulatedDocument<
+							PopulatedDocument<Game2Document, 'home.team'>,
+							'visitor.team'
+						> | null
+					) => {
+						if (!game) throw Error(`Error: Could not find game in season: ${year}`);
+						return getNbaBoxscore(game).then(async (data: NbaBoxScoreData) => {
+							const periods: Set<string> = new Set();
+
+							data.game.home.linescores.period.map((p) => {
+								const { period_value, period_name } = p;
+								periods.add(JSON.stringify({ period_value, period_name }));
+							});
+							data.game.visitor.linescores.period.map((p) => {
+								const { period_value, period_name } = p;
+								periods.add(JSON.stringify({ period_value, period_name }));
+							});
+							for (const p of periods) {
+								const parsed: PeriodSetItem = JSON.parse(p);
+								const periodData = await getNbaBoxScoreRes(data.game.id, parsed.period_value);
+								console.log(periodData);
+							}
+						});
+					}
+				);
+		})
+		.then(endConnect);
+};
+
+helperTest(2020);
+
+interface PeriodSetItem {
+	period_value: string;
+	period_name: string;
+}
+
+export const importNbaBoxscore = async (
+	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
+) => {
+	return getNbaBoxscore(game).then(async (data: NbaBoxScoreData) => {
+		const periods: Set<string> = new Set();
+		data.game.home.linescores.period.map((p) => {
+			const { period_value, period_name } = p;
+			periods.add(JSON.stringify({ period_value, period_name }));
+		});
+		data.game.visitor.linescores.period.map((p) => {
+			const { period_value, period_name } = p;
+			periods.add(JSON.stringify({ period_value, period_name }));
+		});
+		for (const p of periods) {
+			const parsed: PeriodSetItem = JSON.parse(p);
+			const periodData = await getNbaBoxScoreRes(data.game.id, parsed.period_value);
+			console.log(periodData);
+		}
+	});
 };
