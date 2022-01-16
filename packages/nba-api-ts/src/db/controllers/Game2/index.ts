@@ -12,8 +12,8 @@ import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
 import dayjs from 'dayjs';
-import { getNbaBoxscore, getNbaBoxScoreRes } from '../../../api/nba/boxscores';
-import type { NbaBoxScoreRes, NbaBoxScoreData } from '../../../api/nba/nba';
+import { getNbaBoxscore } from '../../../api/nba/boxscores';
+import type { NbaBoxScoreData } from '../../../api/nba/nba';
 
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
@@ -589,78 +589,731 @@ export const importGamesLastWeek = () => {
 
 const storeNbaData = async (
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
-	period?: string
+	data: NbaBoxScoreData
 ) => {
-	if (!period) {
-		/* store data from nba dependency boxcore query
-    data is for entire game */
-		return game.save();
+	/* store data for boxscore game totals */
+	const { game: dataGame } = data;
+	if (!game.city) game.city = dataGame.city;
+	if (!game.state) game.state = dataGame.state;
+	if (!game.arena) game.arena = dataGame.arena;
+	if (!game.country) game.country = dataGame.country;
+	if (!game.attendance && Number.isNaN(parseInt(dataGame.attendance))) {
+		game.attendance = parseInt(dataGame.attendance);
 	}
-	/* store data for specific period of game */
-	return game.save();
+	for (const official of dataGame.officials) {
+		const fullName = `${official.first_name} ${official.last_name}`;
+		const parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+			nameArray = [fullName, parsedName],
+			officialDocument = await Official2.findByNameOrNbaId(nameArray, official.person_id);
+
+		if (officialDocument) {
+			if (!officialDocument.meta.helpers.nbaOfficialId) {
+				officialDocument.meta.helpers.nbaOfficialId = official.person_id;
+				await officialDocument.save();
+			}
+			game.officials.addToSet({
+				official: officialDocument._id,
+				jersey_number: official.jersey_number
+			});
+			/** TODO: MAKE meta.helpers.bballRef.officialUrl OPTIONAL
+			 * IF !meta.helpers.bballRef.officialUrl USE NBA OFFICIAL ID TO GET DATA
+			 */
+		}
+	}
+
+	for (const homePlayer of dataGame.home.players.player) {
+		/** Find player by name or nba playerId or name */
+		const fullName = `${homePlayer.first_name} ${homePlayer.last_name}`,
+			parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+			nameArray = [fullName, parsedName];
+
+		const playerDocument = await Player2.findByNameOrNbaId(nameArray, homePlayer.person_id);
+		if (!playerDocument)
+			throw Error(
+				`Error: could not find matching player in dataset. NbaPlayerId: ${homePlayer.person_id}, Name: ${fullName}`
+			);
+
+		if (!playerDocument.meta.helpers.nbaPlayerId) {
+			if (!Number.isNaN(parseInt(homePlayer.person_id))) {
+				playerDocument.meta.helpers.nbaPlayerId = parseInt(homePlayer.person_id);
+				await playerDocument.save();
+			}
+		}
+		const playerIdx = game.home.players.findIndex((p) => p.player == playerDocument._id);
+		if (playerIdx === -1) {
+			const playerData = {
+				player: playerDocument._id,
+				jerseyNumber: homePlayer.jersey_number,
+				positionFull: homePlayer.position_full,
+				positionShort: homePlayer.position_short,
+				active:
+					!Number.isNaN(parseInt(homePlayer.minutes)) || !Number.isNaN(parseInt(homePlayer.seconds))
+						? true
+						: false,
+				inactive: false,
+				stats: {
+					totals: {
+						minutes: Number.isNaN(parseInt(homePlayer.minutes))
+							? null
+							: parseInt(homePlayer.minutes),
+						seconds: Number.isNaN(parseInt(homePlayer.seconds))
+							? null
+							: parseInt(homePlayer.seconds),
+						fieldGoalsMade: Number.isNaN(parseInt(homePlayer.field_goals_made))
+							? null
+							: parseInt(homePlayer.field_goals_made),
+						fieldGoalsAttempted: Number.isNaN(parseInt(homePlayer.field_goals_attempted))
+							? null
+							: parseInt(homePlayer.field_goals_attempted),
+						fieldGoalsPct:
+							homePlayer.field_goals_attempted === '0' && homePlayer.field_goals_made === '0'
+								? null
+								: parseInt(homePlayer.field_goals_made) /
+								  parseInt(homePlayer.field_goals_attempted),
+						threePointersMade: Number.isNaN(parseInt(homePlayer.three_pointers_made))
+							? null
+							: parseInt(homePlayer.three_pointers_made),
+						threePointersAttempted: Number.isNaN(parseInt(homePlayer.three_pointers_attempted))
+							? null
+							: parseInt(homePlayer.three_pointers_attempted),
+						threePointersPct:
+							homePlayer.three_pointers_attempted === '0' && homePlayer.three_pointers_made === '0'
+								? null
+								: parseInt(homePlayer.three_pointers_made) /
+								  parseInt(homePlayer.three_pointers_attempted),
+						freeThrowsMade: Number.isNaN(parseInt(homePlayer.free_throws_made))
+							? null
+							: parseInt(homePlayer.free_throws_made),
+						freeThrowsAttempted: Number.isNaN(parseInt(homePlayer.free_throws_attempted))
+							? null
+							: parseInt(homePlayer.free_throws_attempted),
+						freeThrowsPct:
+							homePlayer.free_throws_attempted === '0' && homePlayer.free_throws_made === '0'
+								? null
+								: parseInt(homePlayer.free_throws_made) /
+								  parseInt(homePlayer.free_throws_attempted),
+						offReb: Number.isNaN(parseInt(homePlayer.rebounds_offensive))
+							? null
+							: parseInt(homePlayer.rebounds_offensive),
+						defReb: Number.isNaN(parseInt(homePlayer.rebounds_defensive))
+							? null
+							: parseInt(homePlayer.rebounds_defensive),
+						totalReb: Number.isNaN(
+							parseInt(homePlayer.rebounds_offensive) + parseInt(homePlayer.rebounds_defensive)
+						)
+							? null
+							: parseInt(homePlayer.rebounds_offensive) + parseInt(homePlayer.rebounds_defensive),
+						assists: Number.isNaN(parseInt(homePlayer.assists))
+							? null
+							: parseInt(homePlayer.assists),
+						steals: Number.isNaN(parseInt(homePlayer.steals)) ? null : parseInt(homePlayer.steals),
+						blocks: Number.isNaN(parseInt(homePlayer.blocks)) ? null : parseInt(homePlayer.blocks),
+						turnovers: Number.isNaN(parseInt(homePlayer.turnovers))
+							? null
+							: parseInt(homePlayer.turnovers),
+						personalFouls: Number.isNaN(parseInt(homePlayer.fouls))
+							? null
+							: parseInt(homePlayer.fouls),
+						points: Number.isNaN(parseInt(homePlayer.points)) ? null : parseInt(homePlayer.points),
+						plusMinus: Number.isNaN(parseInt(homePlayer.plus_minus))
+							? null
+							: parseInt(homePlayer.plus_minus)
+					}
+				}
+			};
+			playerData.inactive = playerData.active == true ? false : true;
+			game.home.players.addToSet(playerData);
+		} else {
+			game.home.players[playerIdx].jerseyNumber = homePlayer.jersey_number;
+			game.home.players[playerIdx].positionFull = homePlayer.position_full;
+			game.home.players[playerIdx].positionShort = homePlayer.position_short;
+			game.home.players[playerIdx].active =
+				!Number.isNaN(parseInt(homePlayer.minutes)) || !Number.isNaN(parseInt(homePlayer.seconds))
+					? true
+					: false;
+
+			game.home.players[playerIdx].stats.totals.minutes = Number.isNaN(parseInt(homePlayer.minutes))
+				? undefined
+				: parseInt(homePlayer.minutes);
+			game.home.players[playerIdx].stats.totals.seconds = Number.isNaN(parseInt(homePlayer.seconds))
+				? undefined
+				: parseInt(homePlayer.seconds);
+
+			game.home.players[playerIdx].stats.totals.fieldGoalsMade = Number.isNaN(
+				parseInt(homePlayer.field_goals_made)
+			)
+				? undefined
+				: parseInt(homePlayer.field_goals_made);
+
+			game.home.players[playerIdx].stats.totals.fieldGoalsAttempted = Number.isNaN(
+				parseInt(homePlayer.field_goals_attempted)
+			)
+				? undefined
+				: parseInt(homePlayer.field_goals_attempted);
+
+			game.home.players[playerIdx].stats.totals.fieldGoalsPct =
+				homePlayer.field_goals_attempted === '0' && homePlayer.field_goals_made === '0'
+					? undefined
+					: parseInt(homePlayer.field_goals_made) / parseInt(homePlayer.field_goals_attempted);
+
+			game.home.players[playerIdx].stats.totals.threePointersMade = Number.isNaN(
+				parseInt(homePlayer.three_pointers_made)
+			)
+				? undefined
+				: parseInt(homePlayer.three_pointers_made);
+
+			game.home.players[playerIdx].stats.totals.threePointersAttempted = Number.isNaN(
+				parseInt(homePlayer.three_pointers_attempted)
+			)
+				? undefined
+				: parseInt(homePlayer.three_pointers_attempted);
+
+			game.home.players[playerIdx].stats.totals.threePointersPct =
+				homePlayer.three_pointers_attempted === '0' && homePlayer.three_pointers_made === '0'
+					? undefined
+					: parseInt(homePlayer.three_pointers_made) /
+					  parseInt(homePlayer.three_pointers_attempted);
+
+			game.home.players[playerIdx].stats.totals.freeThrowsMade = Number.isNaN(
+				parseInt(homePlayer.free_throws_made)
+			)
+				? undefined
+				: parseInt(homePlayer.free_throws_made);
+
+			game.home.players[playerIdx].stats.totals.freeThrowsAttempted = Number.isNaN(
+				parseInt(homePlayer.free_throws_attempted)
+			)
+				? undefined
+				: parseInt(homePlayer.free_throws_attempted);
+
+			game.home.players[playerIdx].stats.totals.freeThrowsPct =
+				homePlayer.free_throws_attempted === '0' && homePlayer.free_throws_made === '0'
+					? undefined
+					: parseInt(homePlayer.free_throws_made) / parseInt(homePlayer.free_throws_attempted);
+
+			game.home.players[playerIdx].stats.totals.offReb = Number.isNaN(
+				parseInt(homePlayer.rebounds_offensive)
+			)
+				? undefined
+				: parseInt(homePlayer.rebounds_offensive);
+
+			game.home.players[playerIdx].stats.totals.defReb = Number.isNaN(
+				parseInt(homePlayer.rebounds_defensive)
+			)
+				? undefined
+				: parseInt(homePlayer.rebounds_defensive);
+
+			game.home.players[playerIdx].stats.totals.totalReb = Number.isNaN(
+				parseInt(homePlayer.rebounds_offensive) + parseInt(homePlayer.rebounds_defensive)
+			)
+				? undefined
+				: parseInt(homePlayer.rebounds_defensive) + parseInt(homePlayer.rebounds_offensive);
+
+			game.home.players[playerIdx].stats.totals.assists = Number.isNaN(parseInt(homePlayer.assists))
+				? undefined
+				: parseInt(homePlayer.assists);
+
+			game.home.players[playerIdx].stats.totals.steals = Number.isNaN(parseInt(homePlayer.steals))
+				? undefined
+				: parseInt(homePlayer.steals);
+
+			game.home.players[playerIdx].stats.totals.blocks = Number.isNaN(parseInt(homePlayer.blocks))
+				? undefined
+				: parseInt(homePlayer.blocks);
+
+			game.home.players[playerIdx].stats.totals.turnovers = Number.isNaN(
+				parseInt(homePlayer.turnovers)
+			)
+				? undefined
+				: parseInt(homePlayer.turnovers);
+
+			game.home.players[playerIdx].stats.totals.personalFouls = Number.isNaN(
+				parseInt(homePlayer.fouls)
+			)
+				? undefined
+				: parseInt(homePlayer.fouls);
+
+			game.home.players[playerIdx].stats.totals.points = Number.isNaN(parseInt(homePlayer.points))
+				? undefined
+				: parseInt(homePlayer.points);
+
+			game.home.players[playerIdx].stats.totals.plusMinus = Number.isNaN(
+				parseInt(homePlayer.plus_minus)
+			)
+				? undefined
+				: parseInt(homePlayer.plus_minus);
+
+			game.home.players[playerIdx].inactive =
+				game.home.players[playerIdx].active == true ? false : true;
+		}
+	}
+
+	for (const visitorPlayer of dataGame.visitor.players.player) {
+		/** Find player by name or nba playerId or name */
+		const fullName = `${visitorPlayer.first_name} ${visitorPlayer.last_name}`,
+			parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+			nameArray = [fullName, parsedName];
+
+		const playerDocument = await Player2.findByNameOrNbaId(nameArray, visitorPlayer.person_id);
+		if (!playerDocument)
+			throw Error(
+				`Error: could not find matching player in dataset. NbaPlayerId: ${visitorPlayer.person_id}, Name: ${fullName}`
+			);
+
+		if (!playerDocument.meta.helpers.nbaPlayerId) {
+			if (!Number.isNaN(parseInt(visitorPlayer.person_id))) {
+				playerDocument.meta.helpers.nbaPlayerId = parseInt(visitorPlayer.person_id);
+				await playerDocument.save();
+			}
+		}
+		const playerIdx = game.visitor.players.findIndex((p) => p.player == playerDocument._id);
+		if (playerIdx === -1) {
+			const playerData = {
+				player: playerDocument._id,
+				jerseyNumber: visitorPlayer.jersey_number,
+				positionFull: visitorPlayer.position_full,
+				positionShort: visitorPlayer.position_short,
+				active:
+					!Number.isNaN(parseInt(visitorPlayer.minutes)) ||
+					!Number.isNaN(parseInt(visitorPlayer.seconds))
+						? true
+						: false,
+				inactive: false,
+				stats: {
+					totals: {
+						minutes: Number.isNaN(parseInt(visitorPlayer.minutes))
+							? null
+							: parseInt(visitorPlayer.minutes),
+						seconds: Number.isNaN(parseInt(visitorPlayer.seconds))
+							? null
+							: parseInt(visitorPlayer.seconds),
+						fieldGoalsMade: Number.isNaN(parseInt(visitorPlayer.field_goals_made))
+							? null
+							: parseInt(visitorPlayer.field_goals_made),
+						fieldGoalsAttempted: Number.isNaN(parseInt(visitorPlayer.field_goals_attempted))
+							? null
+							: parseInt(visitorPlayer.field_goals_attempted),
+						fieldGoalsPct:
+							visitorPlayer.field_goals_attempted === '0' && visitorPlayer.field_goals_made === '0'
+								? null
+								: parseInt(visitorPlayer.field_goals_made) /
+								  parseInt(visitorPlayer.field_goals_attempted),
+						threePointersMade: Number.isNaN(parseInt(visitorPlayer.three_pointers_made))
+							? null
+							: parseInt(visitorPlayer.three_pointers_made),
+						threePointersAttempted: Number.isNaN(parseInt(visitorPlayer.three_pointers_attempted))
+							? null
+							: parseInt(visitorPlayer.three_pointers_attempted),
+						threePointersPct:
+							visitorPlayer.three_pointers_attempted === '0' &&
+							visitorPlayer.three_pointers_made === '0'
+								? null
+								: parseInt(visitorPlayer.three_pointers_made) /
+								  parseInt(visitorPlayer.three_pointers_attempted),
+						freeThrowsMade: Number.isNaN(parseInt(visitorPlayer.free_throws_made))
+							? null
+							: parseInt(visitorPlayer.free_throws_made),
+						freeThrowsAttempted: Number.isNaN(parseInt(visitorPlayer.free_throws_attempted))
+							? null
+							: parseInt(visitorPlayer.free_throws_attempted),
+						freeThrowsPct:
+							visitorPlayer.free_throws_attempted === '0' && visitorPlayer.free_throws_made === '0'
+								? null
+								: parseInt(visitorPlayer.free_throws_made) /
+								  parseInt(visitorPlayer.free_throws_attempted),
+						offReb: Number.isNaN(parseInt(visitorPlayer.rebounds_offensive))
+							? null
+							: parseInt(visitorPlayer.rebounds_offensive),
+						defReb: Number.isNaN(parseInt(visitorPlayer.rebounds_defensive))
+							? null
+							: parseInt(visitorPlayer.rebounds_defensive),
+						totalReb: Number.isNaN(
+							parseInt(visitorPlayer.rebounds_offensive) +
+								parseInt(visitorPlayer.rebounds_defensive)
+						)
+							? null
+							: parseInt(visitorPlayer.rebounds_offensive) +
+							  parseInt(visitorPlayer.rebounds_defensive),
+						assists: Number.isNaN(parseInt(visitorPlayer.assists))
+							? null
+							: parseInt(visitorPlayer.assists),
+						steals: Number.isNaN(parseInt(visitorPlayer.steals))
+							? null
+							: parseInt(visitorPlayer.steals),
+						blocks: Number.isNaN(parseInt(visitorPlayer.blocks))
+							? null
+							: parseInt(visitorPlayer.blocks),
+						turnovers: Number.isNaN(parseInt(visitorPlayer.turnovers))
+							? null
+							: parseInt(visitorPlayer.turnovers),
+						personalFouls: Number.isNaN(parseInt(visitorPlayer.fouls))
+							? null
+							: parseInt(visitorPlayer.fouls),
+						points: Number.isNaN(parseInt(visitorPlayer.points))
+							? null
+							: parseInt(visitorPlayer.points),
+						plusMinus: Number.isNaN(parseInt(visitorPlayer.plus_minus))
+							? null
+							: parseInt(visitorPlayer.plus_minus)
+					}
+				}
+			};
+			playerData.inactive = playerData.active == true ? false : true;
+			game.visitor.players.addToSet(playerData);
+		} else {
+			game.visitor.players[playerIdx].jerseyNumber = visitorPlayer.jersey_number;
+			game.visitor.players[playerIdx].positionFull = visitorPlayer.position_full;
+			game.visitor.players[playerIdx].positionShort = visitorPlayer.position_short;
+			game.visitor.players[playerIdx].active =
+				!Number.isNaN(parseInt(visitorPlayer.minutes)) ||
+				!Number.isNaN(parseInt(visitorPlayer.seconds))
+					? true
+					: false;
+
+			game.visitor.players[playerIdx].stats.totals.minutes = Number.isNaN(
+				parseInt(visitorPlayer.minutes)
+			)
+				? undefined
+				: parseInt(visitorPlayer.minutes);
+			game.visitor.players[playerIdx].stats.totals.seconds = Number.isNaN(
+				parseInt(visitorPlayer.seconds)
+			)
+				? undefined
+				: parseInt(visitorPlayer.seconds);
+
+			game.visitor.players[playerIdx].stats.totals.fieldGoalsMade = Number.isNaN(
+				parseInt(visitorPlayer.field_goals_made)
+			)
+				? undefined
+				: parseInt(visitorPlayer.field_goals_made);
+
+			game.visitor.players[playerIdx].stats.totals.fieldGoalsAttempted = Number.isNaN(
+				parseInt(visitorPlayer.field_goals_attempted)
+			)
+				? undefined
+				: parseInt(visitorPlayer.field_goals_attempted);
+
+			game.visitor.players[playerIdx].stats.totals.fieldGoalsPct =
+				visitorPlayer.field_goals_attempted === '0' && visitorPlayer.field_goals_made === '0'
+					? undefined
+					: parseInt(visitorPlayer.field_goals_made) /
+					  parseInt(visitorPlayer.field_goals_attempted);
+
+			game.visitor.players[playerIdx].stats.totals.threePointersMade = Number.isNaN(
+				parseInt(visitorPlayer.three_pointers_made)
+			)
+				? undefined
+				: parseInt(visitorPlayer.three_pointers_made);
+
+			game.visitor.players[playerIdx].stats.totals.threePointersAttempted = Number.isNaN(
+				parseInt(visitorPlayer.three_pointers_attempted)
+			)
+				? undefined
+				: parseInt(visitorPlayer.three_pointers_attempted);
+
+			game.visitor.players[playerIdx].stats.totals.threePointersPct =
+				visitorPlayer.three_pointers_attempted === '0' && visitorPlayer.three_pointers_made === '0'
+					? undefined
+					: parseInt(visitorPlayer.three_pointers_made) /
+					  parseInt(visitorPlayer.three_pointers_attempted);
+
+			game.visitor.players[playerIdx].stats.totals.freeThrowsMade = Number.isNaN(
+				parseInt(visitorPlayer.free_throws_made)
+			)
+				? undefined
+				: parseInt(visitorPlayer.free_throws_made);
+
+			game.visitor.players[playerIdx].stats.totals.freeThrowsAttempted = Number.isNaN(
+				parseInt(visitorPlayer.free_throws_attempted)
+			)
+				? undefined
+				: parseInt(visitorPlayer.free_throws_attempted);
+
+			game.visitor.players[playerIdx].stats.totals.freeThrowsPct =
+				visitorPlayer.free_throws_attempted === '0' && visitorPlayer.free_throws_made === '0'
+					? undefined
+					: parseInt(visitorPlayer.free_throws_made) /
+					  parseInt(visitorPlayer.free_throws_attempted);
+
+			game.visitor.players[playerIdx].stats.totals.offReb = Number.isNaN(
+				parseInt(visitorPlayer.rebounds_offensive)
+			)
+				? undefined
+				: parseInt(visitorPlayer.rebounds_offensive);
+
+			game.visitor.players[playerIdx].stats.totals.defReb = Number.isNaN(
+				parseInt(visitorPlayer.rebounds_defensive)
+			)
+				? undefined
+				: parseInt(visitorPlayer.rebounds_defensive);
+
+			game.visitor.players[playerIdx].stats.totals.totalReb = Number.isNaN(
+				parseInt(visitorPlayer.rebounds_offensive) + parseInt(visitorPlayer.rebounds_defensive)
+			)
+				? undefined
+				: parseInt(visitorPlayer.rebounds_defensive) + parseInt(visitorPlayer.rebounds_offensive);
+
+			game.visitor.players[playerIdx].stats.totals.assists = Number.isNaN(
+				parseInt(visitorPlayer.assists)
+			)
+				? undefined
+				: parseInt(visitorPlayer.assists);
+
+			game.visitor.players[playerIdx].stats.totals.steals = Number.isNaN(
+				parseInt(visitorPlayer.steals)
+			)
+				? undefined
+				: parseInt(visitorPlayer.steals);
+
+			game.visitor.players[playerIdx].stats.totals.blocks = Number.isNaN(
+				parseInt(visitorPlayer.blocks)
+			)
+				? undefined
+				: parseInt(visitorPlayer.blocks);
+
+			game.visitor.players[playerIdx].stats.totals.turnovers = Number.isNaN(
+				parseInt(visitorPlayer.turnovers)
+			)
+				? undefined
+				: parseInt(visitorPlayer.turnovers);
+
+			game.visitor.players[playerIdx].stats.totals.personalFouls = Number.isNaN(
+				parseInt(visitorPlayer.fouls)
+			)
+				? undefined
+				: parseInt(visitorPlayer.fouls);
+
+			game.visitor.players[playerIdx].stats.totals.points = Number.isNaN(
+				parseInt(visitorPlayer.points)
+			)
+				? undefined
+				: parseInt(visitorPlayer.points);
+
+			game.visitor.players[playerIdx].stats.totals.plusMinus = Number.isNaN(
+				parseInt(visitorPlayer.plus_minus)
+			)
+				? undefined
+				: parseInt(visitorPlayer.plus_minus);
+
+			game.visitor.players[playerIdx].inactive =
+				game.visitor.players[playerIdx].active == true ? false : true;
+		}
+	}
+
+	/* Add home team stat totals to game */
+	if (!Number.isNaN(parseInt(dataGame.home.stats.points)))
+		game.home.stats.totals.points = parseInt(dataGame.home.stats.points);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.field_goals_made)))
+		game.home.stats.totals.fieldGoalsMade = parseInt(dataGame.home.stats.field_goals_made);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.field_goals_attempted)))
+		game.home.stats.totals.fieldGoalsAttempted = parseInt(
+			dataGame.home.stats.field_goals_attempted
+		);
+
+	if (
+		!Number.isNaN(
+			parseInt(dataGame.home.stats.field_goals_made) && dataGame.home.stats.field_goals_made !== '0'
+		) &&
+		parseInt(dataGame.home.stats.field_goals_attempted) &&
+		dataGame.home.stats.field_goals_attempted !== '0'
+	)
+		game.home.stats.totals.fieldGoalsPct =
+			parseInt(dataGame.home.stats.field_goals_made) /
+			parseInt(dataGame.home.stats.field_goals_attempted);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.free_throws_made)))
+		game.home.stats.totals.freeThrowsMade = parseInt(dataGame.home.stats.free_throws_made);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.free_throws_attempted)))
+		game.home.stats.totals.freeThrowsAttempted = parseInt(
+			dataGame.home.stats.free_throws_attempted
+		);
+
+	if (
+		!Number.isNaN(
+			parseInt(dataGame.home.stats.free_throws_made) && dataGame.home.stats.free_throws_made !== '0'
+		) &&
+		parseInt(dataGame.home.stats.free_throws_attempted) &&
+		dataGame.home.stats.free_throws_attempted !== '0'
+	)
+		game.home.stats.totals.freeThrowsPct =
+			parseInt(dataGame.home.stats.free_throws_made) /
+			parseInt(dataGame.home.stats.free_throws_attempted);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.three_pointers_made)))
+		game.home.stats.totals.threePointersMade = parseInt(dataGame.home.stats.three_pointers_made);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.three_pointers_attempted)))
+		game.home.stats.totals.threePointersAttempted = parseInt(
+			dataGame.home.stats.three_pointers_attempted
+		);
+
+	if (
+		!Number.isNaN(
+			parseInt(dataGame.home.stats.three_pointers_made) &&
+				dataGame.home.stats.three_pointers_made !== '0'
+		) &&
+		parseInt(dataGame.home.stats.three_pointers_attempted) &&
+		dataGame.home.stats.three_pointers_attempted !== '0'
+	)
+		game.home.stats.totals.threePointersPct =
+			parseInt(dataGame.home.stats.three_pointers_made) /
+			parseInt(dataGame.home.stats.three_pointers_attempted);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.rebounds_offensive)))
+		game.home.stats.totals.offReb = parseInt(dataGame.home.stats.rebounds_offensive);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.rebounds_defensive)))
+		game.home.stats.totals.defReb = parseInt(dataGame.home.stats.rebounds_defensive);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.assists)))
+		game.home.stats.totals.assists = parseInt(dataGame.home.stats.assists);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.fouls)))
+		game.home.stats.totals.personalFouls = parseInt(dataGame.home.stats.fouls);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.team_fouls)))
+		game.home.stats.totals.fouls.team = parseInt(dataGame.home.stats.team_fouls);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.technical_fouls)))
+		game.home.stats.totals.fouls.technical = parseInt(dataGame.home.stats.technical_fouls);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.steals)))
+		game.home.stats.totals.steals = parseInt(dataGame.home.stats.steals);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.turnovers)))
+		game.home.stats.totals.turnovers = parseInt(dataGame.home.stats.turnovers);
+
+	if (!Number.isNaN(parseInt(dataGame.home.stats.blocks)))
+		game.home.stats.totals.blocks = parseInt(dataGame.home.stats.blocks);
+
+	/** TODO: Store # of short and long timeouts remaining for home team */
+
+	/* Add visitor team stat totals to game */
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.points)))
+		game.visitor.stats.totals.points = parseInt(dataGame.visitor.stats.points);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.field_goals_made)))
+		game.visitor.stats.totals.fieldGoalsMade = parseInt(dataGame.visitor.stats.field_goals_made);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.field_goals_attempted)))
+		game.visitor.stats.totals.fieldGoalsAttempted = parseInt(
+			dataGame.visitor.stats.field_goals_attempted
+		);
+
+	if (
+		!Number.isNaN(
+			parseInt(dataGame.visitor.stats.field_goals_made) &&
+				dataGame.visitor.stats.field_goals_made !== '0'
+		) &&
+		parseInt(dataGame.visitor.stats.field_goals_attempted) &&
+		dataGame.visitor.stats.field_goals_attempted !== '0'
+	)
+		game.visitor.stats.totals.fieldGoalsPct =
+			parseInt(dataGame.visitor.stats.field_goals_made) /
+			parseInt(dataGame.visitor.stats.field_goals_attempted);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.free_throws_made)))
+		game.visitor.stats.totals.freeThrowsMade = parseInt(dataGame.visitor.stats.free_throws_made);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.free_throws_attempted)))
+		game.visitor.stats.totals.freeThrowsAttempted = parseInt(
+			dataGame.visitor.stats.free_throws_attempted
+		);
+
+	if (
+		!Number.isNaN(
+			parseInt(dataGame.visitor.stats.free_throws_made) &&
+				dataGame.visitor.stats.free_throws_made !== '0'
+		) &&
+		parseInt(dataGame.visitor.stats.free_throws_attempted) &&
+		dataGame.visitor.stats.free_throws_attempted !== '0'
+	)
+		game.visitor.stats.totals.freeThrowsPct =
+			parseInt(dataGame.visitor.stats.free_throws_made) /
+			parseInt(dataGame.visitor.stats.free_throws_attempted);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.three_pointers_made)))
+		game.visitor.stats.totals.threePointersMade = parseInt(
+			dataGame.visitor.stats.three_pointers_made
+		);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.three_pointers_attempted)))
+		game.visitor.stats.totals.threePointersAttempted = parseInt(
+			dataGame.visitor.stats.three_pointers_attempted
+		);
+
+	if (
+		!Number.isNaN(
+			parseInt(dataGame.visitor.stats.three_pointers_made) &&
+				dataGame.visitor.stats.three_pointers_made !== '0'
+		) &&
+		parseInt(dataGame.visitor.stats.three_pointers_attempted) &&
+		dataGame.visitor.stats.three_pointers_attempted !== '0'
+	)
+		game.visitor.stats.totals.threePointersPct =
+			parseInt(dataGame.visitor.stats.three_pointers_made) /
+			parseInt(dataGame.visitor.stats.three_pointers_attempted);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.rebounds_offensive)))
+		game.visitor.stats.totals.offReb = parseInt(dataGame.visitor.stats.rebounds_offensive);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.rebounds_defensive)))
+		game.visitor.stats.totals.defReb = parseInt(dataGame.visitor.stats.rebounds_defensive);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.assists)))
+		game.visitor.stats.totals.assists = parseInt(dataGame.visitor.stats.assists);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.fouls)))
+		game.visitor.stats.totals.personalFouls = parseInt(dataGame.visitor.stats.fouls);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.team_fouls)))
+		game.visitor.stats.totals.fouls.team = parseInt(dataGame.visitor.stats.team_fouls);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.technical_fouls)))
+		game.visitor.stats.totals.fouls.technical = parseInt(dataGame.visitor.stats.technical_fouls);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.steals)))
+		game.visitor.stats.totals.steals = parseInt(dataGame.visitor.stats.steals);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.turnovers)))
+		game.visitor.stats.totals.turnovers = parseInt(dataGame.visitor.stats.turnovers);
+
+	if (!Number.isNaN(parseInt(dataGame.visitor.stats.blocks)))
+		game.visitor.stats.totals.blocks = parseInt(dataGame.visitor.stats.blocks);
+
+	/** TODO: Store # of short and long timeouts remaining for visitor team */
+
+	await game.save();
 };
 
-const helperTest = (year: number) => {
-	initConnect(true)
-		.then(() => {
-			return Game2.findOne({ 'meta.helpers.bballRef.year': year })
-				.populateTeams()
-				.exec()
-				.then(
-					(
-						game: PopulatedDocument<
-							PopulatedDocument<Game2Document, 'home.team'>,
-							'visitor.team'
-						> | null
-					) => {
-						if (!game) throw Error(`Error: Could not find game in season: ${year}`);
-						return getNbaBoxscore(game).then(async (data: NbaBoxScoreData) => {
-							const periods: Set<string> = new Set();
+/*
+  interface PeriodSetItem {
+    period_value: string;
+    period_name: string;
+  }
+*/
 
-							data.game.home.linescores.period.map((p) => {
-								const { period_value, period_name } = p;
-								periods.add(JSON.stringify({ period_value, period_name }));
-							});
-							data.game.visitor.linescores.period.map((p) => {
-								const { period_value, period_name } = p;
-								periods.add(JSON.stringify({ period_value, period_name }));
-							});
-							for (const p of periods) {
-								const parsed: PeriodSetItem = JSON.parse(p);
-								const periodData = await getNbaBoxScoreRes(data.game.id, parsed.period_value);
-								console.log(periodData);
-							}
-						});
-					}
-				);
+const syncLiveNbaStats = async () => {
+	const endDate = dayjs();
+	const startDate = endDate.startOf('day');
+	for (const game of await Game2.find({
+		date: { $lte: endDate, $gte: startDate }
+	}).populateTeams()) {
+		return getNbaBoxscore(game)
+			.then(async (data: NbaBoxScoreData) => {
+				return storeNbaData(game, data);
+			})
+			.catch(console.log);
+	}
+};
+
+export const syncLiveGameData = () => {
+	initConnect(true)
+		.then(async () => {
+			await syncLiveNbaStats();
 		})
 		.then(endConnect);
-};
-
-helperTest(2020);
-
-interface PeriodSetItem {
-	period_value: string;
-	period_name: string;
-}
-
-export const importNbaBoxscore = async (
-	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
-) => {
-	return getNbaBoxscore(game).then(async (data: NbaBoxScoreData) => {
-		const periods: Set<string> = new Set();
-		data.game.home.linescores.period.map((p) => {
-			const { period_value, period_name } = p;
-			periods.add(JSON.stringify({ period_value, period_name }));
-		});
-		data.game.visitor.linescores.period.map((p) => {
-			const { period_value, period_name } = p;
-			periods.add(JSON.stringify({ period_value, period_name }));
-		});
-		for (const p of periods) {
-			const parsed: PeriodSetItem = JSON.parse(p);
-			const periodData = await getNbaBoxScoreRes(data.game.id, parsed.period_value);
-			console.log(periodData);
-		}
-	});
 };

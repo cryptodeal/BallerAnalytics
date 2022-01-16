@@ -1,14 +1,23 @@
 import { CronJob } from 'cron';
-import { importGamesLastWeek } from '../db/controllers/Game2';
+import { importGamesLastWeek, syncLiveGameData } from '../db/controllers/Game2';
 import { importCurrentRosters } from '../db/controllers/Team2';
 
 class DataImportScripts {
 	cronJob: CronJob;
+	nbaGamesCron: CronJob;
 	constructor(year: number) {
 		this.cronJob = new CronJob('30 * * * *', async () => {
 			try {
 				await this.importWeekGames();
 				await this.updateCurrentRosters(year);
+			} catch (e) {
+				console.error(e);
+			}
+		});
+
+		this.nbaGamesCron = new CronJob('* * * * *', async () => {
+			try {
+				await this.syncLiveGames();
 			} catch (e) {
 				console.error(e);
 			}
@@ -26,6 +35,10 @@ class DataImportScripts {
 
 	private async updateCurrentRosters(year: number) {
 		await importCurrentRosters(year);
+	}
+
+	private async syncLiveGames() {
+		await syncLiveGameData();
 	}
 }
 

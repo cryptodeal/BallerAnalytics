@@ -23,6 +23,7 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 	city: { type: String },
 	state: { type: String },
 	country: { type: String },
+	attendance: { type: Number },
 	officials: [
 		{
 			official: { type: mongoose.Schema.Types.ObjectId, ref: 'Official2', index: true },
@@ -85,6 +86,10 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 				steals: { type: Number },
 				blocks: { type: Number },
 				turnovers: { type: Number },
+				fouls: {
+					team: { type: Number },
+					technical: { type: Number }
+				},
 				personalFouls: { type: Number },
 				points: { type: Number },
 				advanced: {
@@ -269,6 +274,10 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 				steals: { type: Number },
 				blocks: { type: Number },
 				turnovers: { type: Number },
+				fouls: {
+					team: { type: Number },
+					technical: { type: Number }
+				},
 				personalFouls: { type: Number },
 				points: { type: Number },
 				advanced: {
@@ -405,7 +414,10 @@ Game2Schema.query = {
 	},
 
 	populateTeams() {
-		return this.populate('home.team visitor.team', 'infoCommon seasons.season seasons.infoCommon');
+		return this.populate(
+			'home.team visitor.team',
+			'infoCommon seasons.season seasons.infoCommon meta.helpers.nbaTeamId'
+		);
 	}
 };
 

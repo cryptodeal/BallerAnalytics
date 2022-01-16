@@ -4,14 +4,15 @@ import { Official2Document, Official2Model, Official2Schema } from '../interface
 const Official2Schema: Official2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
-			nbaOfficialId: { type: Number },
+			nbaOfficialId: { type: String },
 			bballRef: {
 				officialUrl: { type: String, required: true, unique: true }
 			}
 		}
 	},
 	name: {
-		full: { type: String, required: true }
+		full: { type: String, required: true },
+		parsed: [{ type: String }]
 	},
 	seasons: [
 		{
@@ -37,8 +38,18 @@ Official2Schema.statics = {
 		return this.findOne({ 'meta.helpers.bballRef.officialUrl': url }).exec();
 	},
 
-	findByName(name: string) {
-		return this.find({ 'name.full': name }).exec();
+	findByName(name: string | string[]) {
+		return this.find({ 'name.full': Array.isArray(name) ? { $in: name } : name }).exec();
+	},
+
+	findByNameOrNbaId(name: string | string[], nbaId: string) {
+		return this.findOne({
+			$or: [
+				{ 'name.full': Array.isArray(name) ? { $in: name } : name },
+				{ 'name.parsed': Array.isArray(name) ? { $in: name } : name },
+				{ 'meta.helpers.nbaOfficialId': nbaId }
+			]
+		}).exec();
 	}
 };
 

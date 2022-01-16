@@ -179,6 +179,16 @@ Player2Schema.statics = {
 				}
 			}
 		]);
+	},
+
+	findByNameOrNbaId(name: string | string[], nbaId: string) {
+		return this.findOne({
+			$or: [
+				{ 'name.full': Array.isArray(name) ? { $in: name } : name },
+				{ 'name.parsed': Array.isArray(name) ? { $in: name } : name },
+				{ 'meta.helpers.nbaPlayerId': nbaId }
+			]
+		}).exec();
 	}
 };
 

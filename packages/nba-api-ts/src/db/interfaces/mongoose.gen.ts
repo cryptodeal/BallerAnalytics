@@ -474,6 +474,7 @@ export type Game2 = {
 	city?: string;
 	state?: string;
 	country?: string;
+	attendance?: number;
 	officials: Game2Official[];
 	home: {
 		team: Team2['_id'] | Team2;
@@ -510,6 +511,10 @@ export type Game2 = {
 				steals?: number;
 				blocks?: number;
 				turnovers?: number;
+				fouls: {
+					team?: number;
+					technical?: number;
+				};
 				personalFouls?: number;
 				points?: number;
 				advanced: {
@@ -569,6 +574,10 @@ export type Game2 = {
 				steals?: number;
 				blocks?: number;
 				turnovers?: number;
+				fouls: {
+					team?: number;
+					technical?: number;
+				};
 				personalFouls?: number;
 				points?: number;
 				advanced: {
@@ -939,6 +948,7 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 		city?: string;
 		state?: string;
 		country?: string;
+		attendance?: number;
 		officials: mongoose.Types.DocumentArray<Game2OfficialDocument>;
 		home: {
 			team: Team2Document['_id'] | Team2Document;
@@ -975,6 +985,10 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 					steals?: number;
 					blocks?: number;
 					turnovers?: number;
+					fouls: {
+						team?: number;
+						technical?: number;
+					};
 					personalFouls?: number;
 					points?: number;
 					advanced: {
@@ -1034,6 +1048,10 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 					steals?: number;
 					blocks?: number;
 					turnovers?: number;
+					fouls: {
+						team?: number;
+						technical?: number;
+					};
 					personalFouls?: number;
 					points?: number;
 					advanced: {
@@ -1272,7 +1290,7 @@ export type Official2Season = {
 export type Official2 = {
 	meta: {
 		helpers: {
-			nbaOfficialId?: number;
+			nbaOfficialId?: string;
 			bballRef: {
 				officialUrl: string;
 			};
@@ -1280,6 +1298,7 @@ export type Official2 = {
 	};
 	name: {
 		full: string;
+		parsed: string[];
 	};
 	seasons: Official2Season[];
 	_id: mongoose.Types.ObjectId;
@@ -1317,7 +1336,8 @@ export type Official2Methods = {};
 
 export type Official2Statics = {
 	findByUrl: (this: Official2Model, url: string) => any;
-	findByName: (this: Official2Model, name: string) => any;
+	findByName: (this: Official2Model, name: string | string[]) => any;
+	findByNameOrNbaId: (this: Official2Model, name: string | string[], nbaId: string) => any;
 };
 
 /**
@@ -1380,7 +1400,7 @@ export type Official2Document = mongoose.Document<mongoose.Types.ObjectId, Offic
 	Official2Methods & {
 		meta: {
 			helpers: {
-				nbaOfficialId?: number;
+				nbaOfficialId?: string;
 				bballRef: {
 					officialUrl: string;
 				};
@@ -1388,6 +1408,7 @@ export type Official2Document = mongoose.Document<mongoose.Types.ObjectId, Offic
 		};
 		name: {
 			full: string;
+			parsed: mongoose.Types.Array<string>;
 		};
 		seasons: mongoose.Types.DocumentArray<Official2SeasonDocument>;
 		_id: mongoose.Types.ObjectId;
@@ -1610,6 +1631,7 @@ export type Player2Methods = {};
 export type Player2Statics = {
 	findByPlayerUrl: (this: Player2Model, ...args: any[]) => any;
 	getPlayers: (this: Player2Model, ...args: any[]) => any;
+	findByNameOrNbaId: (this: Player2Model, ...args: any[]) => any;
 };
 
 /**

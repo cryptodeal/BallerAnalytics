@@ -3,8 +3,8 @@ import fetch from 'cross-fetch';
 import type {
 	NbaBoxScore,
 	NbaBoxScoreData,
-	NbaScoreboard,
-	NbaScoreboardGame,
+	IStatsScoreboard,
+	IStatsScoreboardGameHeaderItem,
 	NbaBoxScoreQuery,
 	NbaBoxScoreRes,
 	BoxScoreTraditional
@@ -38,27 +38,36 @@ const fetchNbaBoxScore = (query: NbaBoxScoreQuery): Promise<BoxScoreTraditional>
 		});
 };
 
-const getNbaScoreboard = (date: string): Promise<NbaScoreboardGame[]> => {
-	return nba.data.scoreboard(date).then((data: NbaScoreboard) => {
-		const { game } = data.sports_content.games;
-		return game;
-	});
+const getNbaScoreboard = (gameDate: string): Promise<IStatsScoreboardGameHeaderItem[]> => {
+	console.log('made it to getNbaScoreboard');
+	return nba.stats
+		.scoreboard({ gameDate })
+		.then((data: IStatsScoreboard) => {
+			const { gameHeader } = data;
+			return gameHeader;
+		})
+		.catch(console.trace);
 };
 
 const findNbaGameId = async (
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
 	date: string
 ): Promise<string | undefined> => {
+	console.log(date);
 	const games = await getNbaScoreboard(date);
+	//console.log(games);
 	for (const scoreBoardGame of games) {
-		const { home, visitor } = scoreBoardGame;
-		console.log(`nba home abbrev: ${home.abbreviation}`);
-		console.log(`nba visitor abbrev: ${visitor.abbreviation}`);
+		const { homeTeamId, visitorTeamId } = scoreBoardGame;
+
 		const { nbaTeamId: homeId } = game.home.team.meta.helpers,
 			{ nbaTeamId: visitorId } = game.visitor.team.meta.helpers;
+		console.log(`homeId:`, homeId);
+		console.log(`visitorId:`, visitorId);
+		console.log(`homeTeamId:`, homeTeamId);
+		console.log(`visitorTeamId:`, visitorTeamId);
 
-		if (home.id === homeId && visitor.id === visitorId) {
-			return scoreBoardGame.id;
+		if (`${homeTeamId}` === homeId && `${visitorTeamId}` === visitorId) {
+			return scoreBoardGame.gameId;
 		}
 	}
 };
@@ -82,16 +91,17 @@ export const parseBoxScoreRes = (data: NbaBoxScoreData) => {};
 export const getNbaBoxscore = async (
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
 ) /*: Promise<NbaBoxScoreData>*/ => {
-	const formattedDate = dayjs(game.date).format('YYYYMMDD');
+	const tempDate = dayjs(game.date);
 	if (!game.meta.helpers.nbaGameId) {
-		const nbaGameId = await findNbaGameId(game, formattedDate);
+		const nbaGameId = await findNbaGameId(game, tempDate.format('MM/DD/YYYY'));
+		console.log(nbaGameId);
 		if (!nbaGameId) throw Error(`Error: Could not find nba game id for game: ${game._id}`);
 		game.meta.helpers.nbaGameId = nbaGameId;
 		await game.save();
 	}
 
 	return nba.data
-		.boxScore(formattedDate, game.meta.helpers.nbaGameId)
+		.boxScore(tempDate.format('YYYYMMDD'), game.meta.helpers.nbaGameId)
 		.then((data: NbaBoxScore): NbaBoxScoreData => {
 			const { sports_content } = data;
 			return sports_content;
