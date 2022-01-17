@@ -1,6 +1,7 @@
 import { CronJob } from 'cron';
 import { importGamesLastWeek, syncLiveGameData } from '../db/controllers/Game2';
 import { importCurrentRosters } from '../db/controllers/Team2';
+import config from '../config';
 
 class DataImportScripts {
 	cronJob: CronJob;
@@ -15,13 +16,16 @@ class DataImportScripts {
 			}
 		});
 
-		this.nbaGamesCron = new CronJob('* * * * *', async () => {
-			try {
-				await this.syncLiveGames();
-			} catch (e) {
-				console.error(e);
+		this.nbaGamesCron = new CronJob(
+			config.VITE_NODE_ENV === 'production' ? '* * * * *' : '5 * * * *',
+			async () => {
+				try {
+					await this.syncLiveGames();
+				} catch (e) {
+					console.error(e);
+				}
 			}
-		});
+		);
 
 		// Start job
 		if (!this.cronJob.running) {
