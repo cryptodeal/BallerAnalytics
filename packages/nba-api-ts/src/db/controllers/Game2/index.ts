@@ -7,13 +7,15 @@ import {
 	getSeasonGames,
 	getPlayoffGames
 } from '../../../api/bballRef/seasons';
-import { addGameToPlayer } from '../Player2';
+import { addGameToPlayer, comparePlayerBday, findMatchingBballRefPlayers } from '../Player2';
 import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
 import dayjs from 'dayjs';
 import { getNbaBoxscore } from '../../../api/nba/boxscores';
 import type { NbaBoxScoreData } from '../../../api/nba/nba';
+import { getPlayerInfo } from '../../../api/nba/player';
+import { getPlayerQuery } from '../../../api/bballRef/player';
 
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
@@ -627,11 +629,13 @@ const storeNbaData = async (
 			parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
 			nameArray = [fullName, parsedName];
 
-		const playerDocument = await Player2.findByNameOrNbaId(nameArray, homePlayer.person_id);
-		if (!playerDocument)
-			throw Error(
-				`Error: could not find matching player in dataset. NbaPlayerId: ${homePlayer.person_id}, Name: ${fullName}`
-			);
+		let playerDocument = await Player2.findByNameOrNbaId(nameArray, homePlayer.person_id);
+		if (!playerDocument) {
+			const playerInfo = await getPlayerInfo(homePlayer.person_id);
+			const playersQuery = await getPlayerQuery(playerInfo.commonPlayerInfo[0].displayFirstLast);
+			const players = await findMatchingBballRefPlayers(playersQuery);
+			playerDocument = await comparePlayerBday(playerInfo, players);
+		}
 
 		if (!playerDocument.meta.helpers.nbaPlayerId) {
 			if (!Number.isNaN(parseInt(homePlayer.person_id))) {
@@ -854,11 +858,13 @@ const storeNbaData = async (
 			parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
 			nameArray = [fullName, parsedName];
 
-		const playerDocument = await Player2.findByNameOrNbaId(nameArray, visitorPlayer.person_id);
-		if (!playerDocument)
-			throw Error(
-				`Error: could not find matching player in dataset. NbaPlayerId: ${visitorPlayer.person_id}, Name: ${fullName}`
-			);
+		let playerDocument = await Player2.findByNameOrNbaId(nameArray, visitorPlayer.person_id);
+		if (!playerDocument) {
+			const playerInfo = await getPlayerInfo(visitorPlayer.person_id);
+			const playersQuery = await getPlayerQuery(playerInfo.commonPlayerInfo[0].displayFirstLast);
+			const players = await findMatchingBballRefPlayers(playersQuery);
+			playerDocument = await comparePlayerBday(playerInfo, players);
+		}
 
 		if (!playerDocument.meta.helpers.nbaPlayerId) {
 			if (!Number.isNaN(parseInt(visitorPlayer.person_id))) {
@@ -1302,7 +1308,7 @@ const syncLiveNbaStats = async () => {
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
-		return getNbaBoxscore(game)
+		await getNbaBoxscore(game)
 			.then(async (data: NbaBoxScoreData) => {
 				return storeNbaData(game, data);
 			})

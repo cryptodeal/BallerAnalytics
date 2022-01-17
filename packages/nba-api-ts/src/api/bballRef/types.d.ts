@@ -46,3 +46,8 @@ export interface PlayerCareerStatSeason {
 	pfPerGame: number;
 	ptsPerGame: number;
 }
+
+export interface BballRefPlayerQueryResItem {
+	name: string;
+	playerUrl: string;
+}

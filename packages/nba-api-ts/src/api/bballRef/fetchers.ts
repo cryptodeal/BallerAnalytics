@@ -113,3 +113,13 @@ export const loadPlayerRoster = (teamAbbrev: string, year: number): Promise<chee
 		return cheerio.load(body);
 	});
 };
+
+export const loadPlayerQuery = (name: string): Promise<cheerio.Root> => {
+	const nameSplit = name.split(' ');
+	return fetch(
+		`${baseUrl}/search/search.fcgi?hint=${nameSplit.join('+')}&search=${nameSplit.join('+')}`
+	).then(async (result) => {
+		const body = await result.text();
+		return cheerio.load(body);
+	});
+};

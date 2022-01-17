@@ -1,11 +1,28 @@
 import { Player2 } from '../../../index';
 import type { Game2Document, Player2Document } from '../../../index';
 import { BoxScorePlayer } from '../../../api/bballRef/games/utils';
+import type { BballRefPlayerQueryResItem } from '../../../api/bballRef/types';
 import { getPlayerData } from '../../../api/bballRef/player';
 import mongoose from 'mongoose';
+import { IStatsPlayerInfo } from '../../../api/nba/nba';
+import dayjs from 'dayjs';
 
-export const addOrFindPlayer = async (playerData: BoxScorePlayer) => {
-	const { playerUrl } = playerData.meta.helpers.bballRef;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isBballRefPlayerQueryItem = (arg: any): arg is BballRefPlayerQueryResItem => {
+	return (
+		arg &&
+		arg.playerUrl &&
+		typeof arg.playerUrl == 'string' &&
+		arg.name &&
+		typeof arg.name == 'string'
+	);
+};
+
+export const addOrFindPlayer = async (playerData: BoxScorePlayer | BballRefPlayerQueryResItem) => {
+	const playerUrl = isBballRefPlayerQueryItem(playerData)
+		? playerData.playerUrl
+		: playerData.meta.helpers.bballRef.playerUrl;
+	const name = isBballRefPlayerQueryItem(playerData) ? playerData.name : playerData.fullName;
 	const result: Player2Document = await Player2.findByPlayerUrl(playerUrl);
 	if (!result) {
 		const player = {
@@ -17,7 +34,7 @@ export const addOrFindPlayer = async (playerData: BoxScorePlayer) => {
 				}
 			},
 			name: {
-				full: playerData.fullName
+				full: name
 			}
 		};
 
@@ -35,7 +52,7 @@ export const addOrFindPlayer = async (playerData: BoxScorePlayer) => {
 	}
 };
 
-export const addPlayerBasicData = (player: Player2Document) => {
+export const addPlayerBasicData = (player: Player2Document): Promise<Player2Document> => {
 	const { playerUrl } = player.meta.helpers.bballRef;
 	return getPlayerData(playerUrl).then((data) => {
 		const { height, weight, birthDate, birthPlace, position, shoots, name, college, socials } =
@@ -57,7 +74,9 @@ export const addPlayerBasicData = (player: Player2Document) => {
 		if (college) player.college = college;
 		if (socials?.twitter) player.socials.twitter = socials.twitter;
 		if (socials?.instagram) player.socials.instagram = socials.instagram;
-		return player.save();
+		return player.save().then((player) => {
+			return player;
+		});
 	});
 };
 
@@ -120,4 +139,32 @@ export const addGameToPlayer = async (
 		}
 	}
 	return player.save();
+};
+
+export const comparePlayerBday = (
+	nbaPlayerInfo: IStatsPlayerInfo,
+	playerDocs: Player2Document[]
+): Player2Document => {
+	const { birthdate, personId, firstName, lastName } = nbaPlayerInfo.commonPlayerInfo[0];
+
+	const nbaPlayerBday = dayjs(birthdate);
+	for (let i = 0; i < playerDocs.length; i++) {
+		if (nbaPlayerBday.isSame(dayjs(playerDocs[i].birthDate), 'day')) {
+			return playerDocs[i];
+		}
+	}
+	throw Error(`Could not player match for nbaId: ${personId}, name: ${firstName} ${lastName}`);
+};
+
+export const findMatchingBballRefPlayers = async (
+	playerQueries: BballRefPlayerQueryResItem[]
+): Promise<Player2Document[]> => {
+	const players: Player2Document[] = [];
+	for (let i = 0; i < playerQueries.length; i++) {
+		let player = await addOrFindPlayer(playerQueries[i]);
+		if (!player) throw Error(`Player not found in db. Full Name: ${playerQueries[i].name}`);
+		player = await addPlayerBasicData(player);
+		players.push(player);
+	}
+	return players;
 };

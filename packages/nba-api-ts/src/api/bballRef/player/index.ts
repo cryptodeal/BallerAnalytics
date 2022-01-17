@@ -1,6 +1,8 @@
-import { loadPlayerPage } from '../fetchers';
+import { loadPlayerPage, loadPlayerQuery } from '../fetchers';
 import { findByAlpha2 } from 'iso-3166-1-ts';
-import type { PlayerCareerStatSeason } from '../types';
+import type { PlayerCareerStatSeason, BballRefPlayerQueryResItem } from '../types';
+import { addOrFindPlayer, addPlayerBasicData } from '../../../db/controllers/Player2';
+import { Player2Document } from '../../..';
 
 interface PlayerName {
 	display: string;
@@ -174,4 +176,34 @@ export const getPlayerData = async (playerUrl: string) => {
 export const getPlayerCareerStats = async (playerUrl: string) => {
 	const $ = await loadPlayerPage(playerUrl);
 	return findPlayerCareerStats($);
+};
+
+const findPlayerQueryRes = ($: cheerio.Root): BballRefPlayerQueryResItem[] => {
+	const res: BballRefPlayerQueryResItem[] = [];
+	$('#searches')
+		.find('.search-item')
+		.each(function (i, searchItem) {
+			const name = $(searchItem)
+				.find('.search-item-name')
+				.find('a')
+				.first()
+				.text()
+				.split(' (')[0]
+				.trim();
+
+			const playerUrlSplit = $(searchItem).find('.search-item-url').text().trim().split('/');
+			const playerUrl = playerUrlSplit[playerUrlSplit.length - 1].split('.')[0];
+			const playerResItem: BballRefPlayerQueryResItem = {
+				name,
+				playerUrl
+			};
+
+			res.push(playerResItem);
+		});
+	return res;
+};
+
+export const getPlayerQuery = async (playerName: string): Promise<BballRefPlayerQueryResItem[]> => {
+	const $ = await loadPlayerQuery(playerName);
+	return findPlayerQueryRes($);
 };

@@ -8,8 +8,8 @@ import type {
 	NbaBoxScoreQuery,
 	NbaBoxScoreRes,
 	BoxScoreTraditional
-} from './nba';
-import type { Game2Document, PopulatedDocument } from '../../index';
+} from '../nba';
+import type { Game2Document, PopulatedDocument } from '../../../index';
 import dayjs from 'dayjs';
 const baseUrl = `https://stats.nba.com/stats/`;
 

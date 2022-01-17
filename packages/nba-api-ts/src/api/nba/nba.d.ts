@@ -509,3 +509,59 @@ export interface IStatsScoreboard {
 	westConfStandingsByDay: IStatsScoreboardConfStandingsByDayItem[];
 	available: IStatsScoreboardAvailable[];
 }
+
+export interface IStatsPlayerInfoCommon {
+	personId: number;
+	firstName: string;
+	lastName: string;
+	displayFirstLast: string;
+	displayLastCommaFirst: string;
+	displayFiLast: string;
+	playerSlug: string;
+	birthdate: Date;
+	school: string;
+	country: string;
+	lastAffiliation: string;
+	height: string;
+	weight: string;
+	seasExp: number;
+	jersey: string;
+	position: string;
+	rosterstatus: string;
+	gamesPlayedCurrentSeasonFlag: string;
+	teamId: number;
+	teamName: string;
+	teamAbbreviation: string;
+	teamCode: string;
+	teamCity: string;
+	playercode: string;
+	fromYear: number;
+	toYear: number;
+	dleagueFlag: string;
+	nbaFlag: string;
+	gamesPlayedFlag: string;
+	draftYear: string;
+	draftRound: string;
+	draftNumber: string;
+	greatest75Flag: string;
+}
+
+export interface IStatsPlayerInfoHeadlineStats {
+	playerId: number;
+	playerName: string;
+	timeFrame: string;
+	pts: number;
+	ast: number;
+	reb: number;
+	pie: number;
+}
+
+export interface IStatsPlayerInfoAvailableSeasons {
+	seasonId: string;
+}
+
+export interface IStatsPlayerInfo {
+	commonPlayerInfo: [IStatsPlayerInfoCommon];
+	playerHeadlineStats: [IStatsPlayerInfoHeadlineStats];
+	avaiableSeasons: IStatsPlayerInfoAvailableSeasons[];
+}

@@ -2,7 +2,7 @@ import { suite } from 'uvu';
 import * as assert from 'uvu/assert';
 import { Player2, initConnect, endConnect } from '../../../src';
 import { Player2Document } from '../../../src/db/interfaces/mongoose.gen';
-import { storePlayerImage } from '../../../src/api/nba/images';
+import { storePlayerImage } from '../../../src/api/nba/player/images';
 
 const PlayerImageTest = suite('playerImageTest');
 let playerWPic: Player2Document;
