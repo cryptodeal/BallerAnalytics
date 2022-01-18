@@ -106,14 +106,14 @@
 										{/if}
 									</div>
 								</td>
-								{#if home.stats.totals?.points && visitor.stats.totals?.points && meta.helpers.isOver}
+								{#if home.stats.totals?.points && visitor.stats.totals?.points}
 									<td class="px-2 py-4 border-b border-gray-200 md:px-4 xl:px-6">
 										<div
 											class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
 										>
-											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points)}
+											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
 												<div class="text-green-700 font-bold mr-0.5">W</div>
-											{:else}
+											{:else if meta.helpers.isOver}
 												<div class="text-red-700 font-bold mr-0.5">L</div>
 											{/if}
 											<div>
