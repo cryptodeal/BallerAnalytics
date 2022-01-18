@@ -60,7 +60,7 @@
 						</tr>
 					</thead>
 					<tbody class="text-black">
-						{#each schedule as { home, visitor, date, time }, i}
+						{#each schedule as { home, visitor, date, time, meta }, i}
 							<tr>
 								<!-- Display Game Date and Time -->
 								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
@@ -106,7 +106,7 @@
 										{/if}
 									</div>
 								</td>
-								{#if home.stats.totals?.points && visitor.stats.totals?.points}
+								{#if home.stats.totals?.points && visitor.stats.totals?.points && meta.helpers.isOver}
 									<td class="px-2 py-4 border-b border-gray-200 md:px-4 xl:px-6">
 										<div
 											class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"

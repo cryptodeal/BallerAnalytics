@@ -52,6 +52,7 @@ importers:
       mongoose-slugger-plugin: ^3.0.3
       mongoose-tsgen: ^8.4.8
       nba: ^4.15.0
+      proxifly: ^1.0.12
       sharp: ^0.29.3
       tslib: ^2.3.1
       tsm: ^2.2.1
@@ -69,6 +70,7 @@ importers:
       mongoose-slugger-plugin: 3.0.3_mongoose@6.1.6
       mongoose-tsgen: 8.4.8_mongoose@6.1.6+typescript@4.5.4
       nba: 4.15.0
+      proxifly: 1.0.12
       sharp: 0.29.3
     devDependencies:
       '@tsconfig/node14': 1.0.1
@@ -5058,6 +5060,11 @@ packages:
   /property-expr/2.0.4:
     resolution: {integrity: sha512-sFPkHQjVKheDNnPvotjQmm3KD3uk1fWKUN7CrpdbwmUx3CrG3QiM8QpTSimvig5vTXmTvjz7+TDvXOI9+4rkcg==}
     dev: true
+
+  /proxifly/1.0.12:
+    resolution: {integrity: sha512-3M3hwR+lkdsHSb0r0SmFr/xITzh3ADBtQgqpNsKanG7pJUHpa7FoR2/r7eSyQ9Mtivcx7t1JjkU7rtyJ7wT54g==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /psl/1.8.0:
     resolution: {integrity: sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==}

@@ -52,6 +52,11 @@ export interface GameScheduleItem {
 	visitor: GameScheduleTeam;
 	date: Date;
 	time: string;
+	meta: {
+		helpers: {
+			isOver: boolean;
+		};
+	};
 }
 
 export interface PlayerRosterItem {

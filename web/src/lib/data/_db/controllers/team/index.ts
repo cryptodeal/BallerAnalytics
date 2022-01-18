@@ -24,6 +24,7 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Document[]> => {
 
 export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<Team2Document> => {
 	return Team2.findOne({ 'infoCommon.slug': slug }, [
+		'meta.helpers.isOver',
 		'infoCommon',
 		'seasons.season',
 		'seasons.regularSeason',
