@@ -61,10 +61,6 @@ const findNbaGameId = async (
 
 		const { nbaTeamId: homeId } = game.home.team.meta.helpers,
 			{ nbaTeamId: visitorId } = game.visitor.team.meta.helpers;
-		console.log(`homeId:`, homeId);
-		console.log(`visitorId:`, visitorId);
-		console.log(`homeTeamId:`, homeTeamId);
-		console.log(`visitorTeamId:`, visitorTeamId);
 
 		if (`${homeTeamId}` === homeId && `${visitorTeamId}` === visitorId) {
 			return scoreBoardGame.gameId;

@@ -1,8 +1,6 @@
 import { loadPlayerPage, loadPlayerQuery } from '../fetchers';
 import { findByAlpha2 } from 'iso-3166-1-ts';
 import type { PlayerCareerStatSeason, BballRefPlayerQueryResItem } from '../types';
-import { addOrFindPlayer, addPlayerBasicData } from '../../../db/controllers/Player2';
-import { Player2Document } from '../../..';
 
 interface PlayerName {
 	display: string;

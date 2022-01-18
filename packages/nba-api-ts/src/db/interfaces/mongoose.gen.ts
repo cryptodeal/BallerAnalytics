@@ -455,6 +455,7 @@ export type Game2VisitorPlayer = {
 export type Game2 = {
 	meta: {
 		helpers: {
+			isOver: boolean;
 			nbaGameId?: string;
 			espnGameId?: string;
 			bballRef: {
@@ -929,6 +930,7 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 	Game2Methods & {
 		meta: {
 			helpers: {
+				isOver: boolean;
 				nbaGameId?: string;
 				espnGameId?: string;
 				bballRef: {

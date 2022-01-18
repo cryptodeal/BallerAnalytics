@@ -22,14 +22,19 @@ class DataImportScripts {
 				try {
 					await this.syncLiveGames();
 				} catch (e) {
-					console.error(e);
+					console.trace(e);
 				}
 			}
 		);
 
-		// Start job
+		// Start cronJob
 		if (!this.cronJob.running) {
 			this.cronJob.start();
+		}
+
+		// Start nbaGamesCron
+		if (!this.nbaGamesCron.running) {
+			this.nbaGamesCron.start();
 		}
 	}
 

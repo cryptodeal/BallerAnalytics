@@ -1310,7 +1310,7 @@ const syncLiveNbaStats = async () => {
 	}).populateTeams()) {
 		await getNbaBoxscore(game)
 			.then(async (data: NbaBoxScoreData) => {
-				return storeNbaData(game, data);
+				await storeNbaData(game, data);
 			})
 			.catch(console.log);
 	}
@@ -1321,5 +1321,6 @@ export const syncLiveGameData = () => {
 		.then(async () => {
 			await syncLiveNbaStats();
 		})
-		.then(endConnect);
+		.then(endConnect)
+		.then(() => console.log(`Completed syncing live game data`));
 };
