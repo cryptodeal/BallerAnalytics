@@ -81,7 +81,7 @@ export const getNbaBoxScoreRes = async (GameID: string, period: string) => {
 	return fetchNbaBoxScore(query);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
+// eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
 export const parseBoxScoreRes = (data: NbaBoxScoreData) => {};
 
 export const getNbaBoxscore = async (

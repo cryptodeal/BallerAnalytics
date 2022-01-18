@@ -595,6 +595,7 @@ const storeNbaData = async (
 ) => {
 	/* store data for boxscore game totals */
 	const { game: dataGame } = data;
+	if (dataGame.period_time.game_status === '3') game.meta.helpers.isOver = true;
 	if (!game.city) game.city = dataGame.city;
 	if (!game.state) game.state = dataGame.state;
 	if (!game.arena) game.arena = dataGame.arena;
@@ -1306,7 +1307,8 @@ const syncLiveNbaStats = async () => {
 	const endDate = dayjs();
 	const startDate = endDate.startOf('day');
 	for (const game of await Game2.find({
-		date: { $lte: endDate, $gte: startDate }
+		date: { $lte: endDate, $gte: startDate },
+		'meta.helpers.isOver': false
 	}).populateTeams()) {
 		await getNbaBoxscore(game)
 			.then(async (data: NbaBoxScoreData) => {
