@@ -1,9 +1,8 @@
 import type { Game2Document, Team2Document } from '../../../index';
-import { Player2, Team2, initConnect } from '../../../index';
+import { Player2, Team2 } from '../../../index';
 import { getTeamRoster } from '../../../api/bballRef/teams';
 import { getPlayerData } from '../../../api/bballRef/player';
 import mongoose from 'mongoose';
-import { endConnect } from '../../connect';
 
 interface Team2Season {
 	year: number;

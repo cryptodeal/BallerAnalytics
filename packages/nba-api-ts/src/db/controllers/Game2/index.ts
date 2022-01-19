@@ -1,4 +1,4 @@
-import { Game2, League, Team2, Player2, Official2, initConnect, endConnect } from '../../../index';
+import { Game2, League, Team2, Player2, Official2 } from '../../../index';
 import type { Game2Document, PopulatedDocument } from '../../../index';
 import { getBoxScore } from '../../../api/bballRef/games';
 import {

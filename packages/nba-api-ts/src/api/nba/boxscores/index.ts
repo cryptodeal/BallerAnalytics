@@ -56,7 +56,8 @@ const getNbaScoreboard = (gameDate: string): Promise<IStatsScoreboardGameHeaderI
 	console.log('made it to getNbaScoreboard');
 	return proxyNbaStats
 		.scoreboard({ gameDate })
-		.then((data: IStatsScoreboard) => {
+		.then((data: IStatsScoreboard | undefined) => {
+			if (!data) throw Error(`No scoreboard data found for ${gameDate}`);
 			const { gameHeader } = data;
 			return gameHeader;
 		})
@@ -112,7 +113,13 @@ export const getNbaBoxscore = async (
 
 	return proxyNbaData
 		.boxScore(tempDate.format('YYYYMMDD'), game.meta.helpers.nbaGameId)
-		.then((data: NbaBoxScore): NbaBoxScoreData => {
+		.then((data: NbaBoxScore): NbaBoxScoreData | undefined => {
+			if (!data)
+				throw Error(
+					`Error: Could not find boxScore data for date: ${tempDate.format(
+						'MM/DD/YYYY'
+					)}, gameId: ${game.meta.helpers.nbaGameId}`
+				);
 			const { sports_content } = data;
 			return sports_content;
 		});
