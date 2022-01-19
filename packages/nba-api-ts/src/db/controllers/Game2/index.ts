@@ -580,13 +580,8 @@ export const importLatestGames = () => {
 		});
 };
 
-export const importGamesLastWeek = () => {
-	initConnect(true)
-		.then(async () => {
-			await importLatestGames();
-		})
-		.then(endConnect)
-		.then(() => console.log('Completed import games last 7 days'));
+export const importGamesLastWeek = async () => {
+	await importLatestGames().then(() => console.log('Completed import games last 7 days'));
 };
 
 const storeNbaData = async (
@@ -1307,9 +1302,9 @@ const syncLiveNbaStats = async () => {
 	const endDate = dayjs();
 	const startDate = endDate.startOf('day');
 	for (const game of await Game2.find({
-		date: { $lte: endDate, $gte: startDate },
-		'meta.helpers.isOver': false
+		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
+		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
 		await getNbaBoxscore(game)
 			.then(async (data: NbaBoxScoreData) => {
 				await storeNbaData(game, data);
@@ -1318,11 +1313,6 @@ const syncLiveNbaStats = async () => {
 	}
 };
 
-export const syncLiveGameData = () => {
-	initConnect(true)
-		.then(async () => {
-			await syncLiveNbaStats();
-		})
-		.then(endConnect)
-		.then(() => console.log(`Completed syncing live game data`));
+export const syncLiveGameData = async () => {
+	await syncLiveNbaStats().then(() => console.log(`Completed syncing live game data`));
 };

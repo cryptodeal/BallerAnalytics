@@ -43,12 +43,13 @@
 		"cross-fetch": "^3.1.4",
 		"dayjs": "^1.10.7",
 		"dotenv": "^11.0.0",
+    "free-proxy": "^0.2.0",
+    "https-proxy-agent": "^5.0.0",
 		"iso-3166-1-ts": "^0.2.2",
 		"mongoose": "^6.1.6",
 		"mongoose-slugger-plugin": "^3.0.3",
 		"mongoose-tsgen": "^8.4.8",
 		"nba": "^4.15.0",
-    "proxifly": "^1.0.12",
     "sharp": "^0.29.3"
 	},
 	"devDependencies": {

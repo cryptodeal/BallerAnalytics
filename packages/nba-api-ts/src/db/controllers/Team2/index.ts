@@ -128,15 +128,11 @@ export const importTeamRosters = async () => {
 	}
 };
 
-export const importCurrentRosters = (year: number) => {
-	initConnect(true)
-		.then(async () => {
-			for (const team of await Team2.find({ seasons: { $elemMatch: { season: year } } })) {
-				const seasonIdx = team.seasons.findIndex((s) => s.season == year);
-				team.seasons[seasonIdx].roster.players.splice(0);
-				await importTeamRoster(team, year);
-			}
-		})
-		.then(endConnect)
-		.then(() => console.log('Completed updating 2022 team rosters'));
+export const importCurrentRosters = async (year: number) => {
+	for (const team of await Team2.find({ seasons: { $elemMatch: { season: year } } })) {
+		const seasonIdx = team.seasons.findIndex((s) => s.season == year);
+		team.seasons[seasonIdx].roster.players.splice(0);
+		await importTeamRoster(team, year);
+	}
+	console.log('Completed updating 2022 team rosters');
 };

@@ -1,6 +1,7 @@
 import { CronJob } from 'cron';
 import { importGamesLastWeek, syncLiveGameData } from '../db/controllers/Game2';
 import { importCurrentRosters } from '../db/controllers/Team2';
+import { serverlessConnect } from '../db/connect';
 import config from '../config';
 
 class DataImportScripts {
@@ -9,6 +10,7 @@ class DataImportScripts {
 	constructor(year: number) {
 		this.cronJob = new CronJob('30 * * * *', async () => {
 			try {
+				await this.connect();
 				await this.importWeekGames();
 				await this.updateCurrentRosters(year);
 			} catch (e) {
@@ -16,16 +18,14 @@ class DataImportScripts {
 			}
 		});
 
-		this.nbaGamesCron = new CronJob(
-			config.VITE_NODE_ENV === 'production' ? '* * * * *' : '5 * * * *',
-			async () => {
-				try {
-					await this.syncLiveGames();
-				} catch (e) {
-					console.trace(e);
-				}
+		this.nbaGamesCron = new CronJob('* * * * *', async () => {
+			try {
+				await this.connect();
+				await this.syncLiveGames();
+			} catch (e) {
+				console.trace(e);
 			}
-		);
+		});
 
 		// Start cronJob
 		if (!this.cronJob.running) {
@@ -36,6 +36,10 @@ class DataImportScripts {
 		if (!this.nbaGamesCron.running) {
 			this.nbaGamesCron.start();
 		}
+	}
+
+	private async connect() {
+		await serverlessConnect(config.MONGO_URI);
 	}
 
 	private async importWeekGames() {

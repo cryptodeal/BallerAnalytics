@@ -1,4 +1,6 @@
 import nba from 'nba';
+import getJSON from 'nba/src/get-json';
+import HttpsProxyAgent from 'https-proxy-agent';
 import fetch from 'cross-fetch';
 import type {
 	NbaBoxScore,
@@ -11,6 +13,18 @@ import type {
 } from '../nba';
 import type { Game2Document, PopulatedDocument } from '../../../index';
 import dayjs from 'dayjs';
+import { proxyList } from '../../utils';
+const transport = async (url, params, options) => {
+	const proxy = await proxyList.randomByProtocol('https');
+	if (!proxy) throw Error(`No proxy found!`);
+	const { ip, port } = proxy;
+	const proxyAgent = HttpsProxyAgent(`${ip}:${port}`);
+	options.agent = proxyAgent;
+	return getJSON(url, params, options);
+};
+const proxyNbaStats = nba.stats.withTransport(transport);
+const proxyNbaData = nba.data.withTransport(transport);
+
 const baseUrl = `https://stats.nba.com/stats/`;
 
 const fetchNbaBoxScore = (query: NbaBoxScoreQuery): Promise<BoxScoreTraditional> => {
@@ -40,7 +54,7 @@ const fetchNbaBoxScore = (query: NbaBoxScoreQuery): Promise<BoxScoreTraditional>
 
 const getNbaScoreboard = (gameDate: string): Promise<IStatsScoreboardGameHeaderItem[]> => {
 	console.log('made it to getNbaScoreboard');
-	return nba.stats
+	return proxyNbaStats
 		.scoreboard({ gameDate })
 		.then((data: IStatsScoreboard) => {
 			const { gameHeader } = data;
@@ -96,7 +110,7 @@ export const getNbaBoxscore = async (
 		await game.save();
 	}
 
-	return nba.data
+	return proxyNbaData
 		.boxScore(tempDate.format('YYYYMMDD'), game.meta.helpers.nbaGameId)
 		.then((data: NbaBoxScore): NbaBoxScoreData => {
 			const { sports_content } = data;
