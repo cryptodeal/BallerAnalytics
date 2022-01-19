@@ -111,7 +111,7 @@
 										<div
 											class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
 										>
-											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
+											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
 												<div class="text-green-700 font-bold mr-0.5">W</div>
 											{:else if meta.helpers.isOver}
 												<div class="text-red-700 font-bold mr-0.5">L</div>
@@ -123,17 +123,18 @@
 											</div>
 										</div>
 									</td>
-
+								{:else}
+									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
+										<div class="text-sm leading-5">--</div>
+									</td>
+								{/if}
+								{#if meta.helpers.isOver}
 									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
 										<div class="text-sm leading-5">
 											{`${getRecord(i).wins}-${getRecord(i).losses}`}
 										</div>
 									</td>
 								{:else}
-									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
-										<div class="text-sm leading-5">--</div>
-									</td>
-
 									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
 										<div class="text-sm leading-5">--</div>
 									</td>

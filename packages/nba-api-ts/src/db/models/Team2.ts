@@ -347,7 +347,7 @@ Team2Schema.query = {
 		return this.populate({
 			path: `seasons.${seasonIndex}.regularSeason.games seasons.${seasonIndex}.postseason.games`,
 			select:
-				'home.team home.stats.totals.points visitor.team visitor.stats.totals.points date time',
+				'meta.helpers.isOver home.team home.stats.totals.points visitor.team visitor.stats.totals.points date time',
 			populate: {
 				path: 'home.team visitor.team',
 				select: 'infoCommon.name infoCommon.slug'

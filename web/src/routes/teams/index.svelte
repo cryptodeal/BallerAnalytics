@@ -25,7 +25,6 @@
 <script lang="ts">
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	export let teams: Team2Document[];
-	$: console.log(teams[0]);
 </script>
 
 <div class="appContent">
