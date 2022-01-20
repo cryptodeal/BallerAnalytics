@@ -138,6 +138,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 						value: { type: Number },
 						rank: { type: Number }
 					},
+					/* TODO: STORE TEAM TURNOVERS AND TOTAL TURNOVERS FROM ESPN */
 					personalFouls: {
 						value: { type: Number },
 						rank: { type: Number }

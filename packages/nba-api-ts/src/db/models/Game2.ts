@@ -417,7 +417,7 @@ Game2Schema.query = {
 	populateTeams() {
 		return this.populate(
 			'home.team visitor.team',
-			'infoCommon seasons.season seasons.infoCommon meta.helpers.nbaTeamId'
+			'infoCommon seasons.season seasons.infoCommon meta.helpers.nbaTeamId meta.helpers.espnTeamId'
 		);
 	}
 };

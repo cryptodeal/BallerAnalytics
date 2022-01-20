@@ -16,7 +16,9 @@ import { getNbaBoxscore } from '../../../api/nba/boxscores';
 import type { NbaBoxScoreData } from '../../../api/nba/nba';
 import { getPlayerInfo } from '../../../api/nba/player';
 import { getPlayerQuery } from '../../../api/bballRef/player';
-
+import { findEspnGameId, getScheduleEspn } from '../../../api/espn';
+import { serverlessConnect } from '../../connect';
+import config from '../../../config';
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
 	const boxScore = await getBoxScore(populatedGame);
@@ -1313,6 +1315,30 @@ const syncLiveNbaStats = async () => {
 	}
 };
 
+const syncLiveEspnStats = async () => {
+	const endDate = dayjs();
+	const startDate = endDate.startOf('day');
+	const espnScoreboard = await getScheduleEspn(
+		startDate.year(),
+		startDate.month() + 1,
+		startDate.date()
+	);
+	for (const game of await Game2.find({
+		date: { $lte: endDate, $gte: startDate }
+	}).populateTeams()) {
+		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
+		const gameId = findEspnGameId(startDate.format('YYYYMMDD'), espnScoreboard, game);
+		console.log(gameId);
+	}
+};
+
 export const syncLiveGameData = async () => {
-	await syncLiveNbaStats().then(() => console.log(`Completed syncing live game data`));
+	await syncLiveNbaStats().then(() =>
+		console.log(`Completed syncing live game data from nba stats api`)
+	);
+};
+
+export const syncLiveEspnGameData = async () => {
+	await serverlessConnect(config.MONGO_URI);
+	await syncLiveEspnStats().then(() => console.log(`Completed syncing live game data from espn`));
 };
