@@ -5,6 +5,7 @@ import type { BballRefPlayerQueryResItem } from '../../../api/bballRef/types';
 import { getPlayerData } from '../../../api/bballRef/player';
 import mongoose from 'mongoose';
 import { IStatsPlayerInfo } from '../../../api/nba/nba';
+import type { IEspnTeamPlayersTeamAthlete } from '../../../api/espn/types';
 import dayjs from 'dayjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,15 +39,10 @@ export const addOrFindPlayer = async (playerData: BoxScorePlayer | BballRefPlaye
 			}
 		};
 
-		return new Player2(player)
-			.save()
-			.then((player) => {
-				return addPlayerBasicData(player);
-			})
-			.catch((err) => {
-				console.log(playerData);
-				console.trace(err);
-			});
+		return new Player2(player).save().catch((err) => {
+			console.log(playerData);
+			console.trace(err);
+		});
 	} else {
 		return result;
 	}
@@ -141,7 +137,7 @@ export const addGameToPlayer = async (
 	return player.save();
 };
 
-export const comparePlayerBday = (
+export const compareNbaPlayerBday = (
 	nbaPlayerInfo: IStatsPlayerInfo,
 	playerDocs: Player2Document[]
 ): Player2Document => {
@@ -154,6 +150,21 @@ export const comparePlayerBday = (
 		}
 	}
 	throw Error(`Could not player match for nbaId: ${personId}, name: ${firstName} ${lastName}`);
+};
+
+export const compareEspnPlayerBday = (
+	espnPlayerInfo: IEspnTeamPlayersTeamAthlete,
+	playerDocs: Player2Document[]
+): Player2Document => {
+	const { dateOfBirth, fullName, id } = espnPlayerInfo;
+
+	const nbaPlayerBday = dayjs(dateOfBirth);
+	for (let i = 0; i < playerDocs.length; i++) {
+		if (nbaPlayerBday.isSame(dayjs(playerDocs[i].birthDate), 'day')) {
+			return playerDocs[i];
+		}
+	}
+	throw Error(`Could not player match for espnId: ${id}, name: ${fullName}`);
 };
 
 export const findMatchingBballRefPlayers = async (

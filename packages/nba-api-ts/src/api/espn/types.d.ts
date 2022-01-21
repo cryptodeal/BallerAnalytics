@@ -1,3 +1,5 @@
+import { StringSchemaDefinition } from 'mongoose';
+
 export interface IEspnScheduleDataGameSeason {
 	year: number;
 	type: number;
@@ -495,7 +497,13 @@ export interface IEspnBoxscore {
 	players: [IEspnBoxscorePlayerData, IEspnBoxscorePlayerData];
 }
 
+export interface ParsedEspnBoxscoreTeamPlayerName {
+	displayName: string;
+	shortName: string;
+}
+
 export interface ParsedEspnBoxscoreTeamPlayer {
+	name: ParsedEspnBoxscoreTeamPlayerName;
 	reason: string;
 	starter: boolean;
 	espnId: string;
@@ -525,6 +533,8 @@ export interface ParsedEspnBoxscoreTeamPlayer {
 		plusMinus: number;
 		points: number;
 	};
+	didNotPlay: boolean;
+	active: boolean;
 }
 
 export interface ParsedEspnBoxscoreTeam {
@@ -562,5 +572,185 @@ export interface ParsedEspnBoxscoreTeam {
 }
 
 export interface ParsedEspnBoxscore {
-	[teamName: string]: ParsedEspnBoxscoreTeam | undefined;
+	[teamName: string]: ParsedEspnBoxscoreTeam;
+}
+
+export interface IEspnTeamPlayersTeamLogo {
+	href: string;
+	width: number;
+	height: number;
+	alter: string;
+	rel: string[];
+	lastUpdate: string;
+}
+
+export interface IEspnTeamPlayersTeamRecordItemStats {
+	name: string;
+	value: number;
+}
+
+export interface IEspnTeamPlayersTeamRecordItem {
+	description: string;
+	type: string;
+	summary: string;
+	stats: IEspnTeamPlayersTeamRecordItemStats[];
+}
+
+export interface IEspnTeamPlayersTeamRecord {
+	items: [
+		IEspnTeamPlayersTeamRecordItem,
+		IEspnTeamPlayersTeamRecordItem,
+		IEspnTeamPlayersTeamRecordItem
+	];
+}
+
+export interface IEspnTeamPlayersTeamAthleteInjury {
+	id: string;
+	longComment: string;
+	shortComment: string;
+	status: string;
+	date: Date;
+	// athlete: {};
+	source: {
+		id: string;
+		description: string;
+		state: string;
+	};
+	type: {
+		id: string;
+		name: string;
+		description: string;
+		abbreviation: string;
+	};
+	details: {
+		fantasyStatus: {
+			description: string;
+			abbreviation: string;
+		};
+		type: string;
+		location: string;
+		detail: string;
+		side: string;
+		returnDate: Date;
+	};
+}
+
+export interface IEspnTeamPlayersTeamAthleteContract {
+	birdStatus: number;
+	baseYearCompensation: {
+		active: boolean;
+	};
+	poisonPillProvision: {
+		active: boolean;
+	};
+	incomingTradeValue: number;
+	outgoingTradeValue: number;
+	minimumSalaryException: boolean;
+	optionType: number;
+	salary: number;
+	salaryRemaining: number;
+	yearsRemaining: number;
+	// season: {}
+	tradeKicker: {
+		active: boolean;
+		percentage: number;
+		value: number;
+		tradeValue: number;
+	};
+	tradeResctriction: boolean;
+	unsignedForeignPick: boolean;
+	active: boolean;
+}
+
+export interface IEspnTeamPlayersTeamAthleteDraft {
+	displayText: string;
+	round: number;
+	year: number;
+	selection: number;
+	// pick: {}
+}
+
+export interface IEspnTeamPlayersTeamAthlete {
+	id: string;
+	uid: string;
+	guid: string;
+	type: string;
+	alternateIds: {
+		sdr: string;
+	};
+	firstName: string;
+	lastName: string;
+	fullName: string;
+	displayName: string;
+	shortName: string;
+	weight: number;
+	displayWeight: string;
+	height: number;
+	displayHeight: string;
+	age: number;
+	dateOfBirth: Date;
+	debutYear: number;
+	links: IEspnScheduleAdvancedLink[];
+	birthPlace: {
+		city: string;
+		state: string;
+		country: string;
+	};
+	// college: {}
+	slug: string;
+	headshot: {
+		href: string;
+		alt: string;
+	};
+	jersey: string;
+	position: {
+		id: string;
+		name: string;
+		displayName: string;
+		abbreviation: string;
+		leaf: boolean;
+	};
+	injuries: IEspnTeamPlayersTeamAthleteInjury[];
+	linked: boolean;
+	teams: [];
+	experience: {
+		years: number;
+	};
+	// collegeAthlete: {}
+	active: boolean;
+	contract: IEspnTeamPlayersTeamAthleteContract;
+	// eventLog: {}
+	draft: IEspnTeamPlayersTeamAthleteDraft;
+	status: {
+		id: string;
+		name: string;
+		type: string;
+		abbreviation: string;
+	};
+}
+
+export interface IEspnTeamPlayersTeam {
+	id: string;
+	uid: string;
+	slug: string;
+	location: string;
+	name: string;
+	abbreviation: string;
+	displayName: string;
+	shortDisplayName: string;
+	color: string;
+	alternateColor: string;
+	isActive: boolean;
+	logos: IEspnTeamPlayersTeamLogo[];
+	record: IEspnTeamPlayersTeamRecord;
+	athletes: IEspnTeamPlayersTeamAthlete[];
+}
+
+export interface IEspnTeamPlayers {
+	team: IEspnTeamPlayersTeam;
+}
+
+export interface EspnGameIdAndStatus {
+	gameId: string | undefined;
+	isOver: boolean | undefined;
 }

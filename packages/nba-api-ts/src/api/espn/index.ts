@@ -4,7 +4,9 @@ import type {
 	IEspnBoxscore,
 	ParsedEspnBoxscore,
 	ParsedEspnBoxscoreTeam,
-	ParsedEspnBoxscoreTeamPlayer
+	ParsedEspnBoxscoreTeamPlayer,
+	IEspnTeamPlayers,
+	EspnGameIdAndStatus
 } from './types';
 import type { PopulatedDocument, Game2Document } from '../../index';
 
@@ -20,7 +22,7 @@ export const findEspnGameId = (
 	dateStr: string,
 	espnSchedule: IEspnSchedule,
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
-): string | void => {
+): EspnGameIdAndStatus => {
 	const data = espnSchedule[dateStr];
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
 	/* if key "dateStr" is defined, destructure array of games from data */
@@ -33,8 +35,9 @@ export const findEspnGameId = (
 			gameData.competitors[homeIdx].id === game.home.team.meta.helpers.espnTeamId &&
 			gameData.competitors[visitorIdx].id === game.visitor.team.meta.helpers.espnTeamId
 		)
-			return games[i].id;
+			return { gameId: games[i].id, isOver: games[i].status.type.completed };
 	}
+	throw Error(`Could not find game id for game: ${game._id}`);
 };
 
 export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => {
@@ -126,6 +129,10 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 				] = player.statistics[0].athletes[i].stats;
 
 				const playerData: ParsedEspnBoxscoreTeamPlayer = {
+					name: {
+						displayName: player.statistics[0].athletes[i].athlete.displayName,
+						shortName: player.statistics[0].athletes[i].athlete.shortName
+					},
 					reason: player.statistics[0].athletes[i].reason,
 					starter: player.statistics[0].athletes[i].starter,
 					espnId: player.statistics[0].athletes[i].athlete.id,
@@ -135,7 +142,9 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 						name: player.statistics[0].athletes[i].athlete.position.name,
 						abbreviation: player.statistics[0].athletes[i].athlete.position.abbreviation
 					},
-					ejected: player.statistics[0].athletes[i].ejected
+					ejected: player.statistics[0].athletes[i].ejected,
+					didNotPlay: player.statistics[0].athletes[i].didNotPlay,
+					active: player.statistics[0].athletes[i].active
 				};
 				if (player.statistics[0].athletes[i].stats.length > 0) {
 					const fgSplit = fg.split('-');
@@ -166,4 +175,8 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 		}
 		return parsedBoxscore;
 	});
+};
+
+export const getEspnTeamPlayers = (teamId: string): Promise<IEspnTeamPlayers> => {
+	return sdv.nba.getTeamPlayers(teamId);
 };

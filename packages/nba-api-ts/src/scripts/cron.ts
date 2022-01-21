@@ -1,5 +1,9 @@
 import { CronJob } from 'cron';
-import { importGamesLastWeek, syncLiveGameData } from '../db/controllers/Game2';
+import {
+	importGamesLastWeek,
+	syncLiveGameData,
+	syncLiveEspnGameData
+} from '../db/controllers/Game2';
 import { importCurrentRosters } from '../db/controllers/Team2';
 import { serverlessConnect } from '../db/connect';
 import config from '../config';
@@ -51,7 +55,11 @@ class DataImportScripts {
 	}
 
 	private async syncLiveGames() {
-		await syncLiveGameData();
+		if (config.VITE_NODE_ENV === 'production') {
+			await syncLiveEspnGameData();
+		} else {
+			await syncLiveGameData();
+		}
 	}
 }
 

@@ -203,5 +203,14 @@ const findPlayerQueryRes = ($: cheerio.Root): BballRefPlayerQueryResItem[] => {
 
 export const getPlayerQuery = async (playerName: string): Promise<BballRefPlayerQueryResItem[]> => {
 	const $ = await loadPlayerQuery(playerName);
+	const isPlayerPage = $("meta[name='generated-by']").attr('content');
+	if (isPlayerPage === '/home/bbr/build/players/build_player_page.pl') {
+		const name = $('#meta').find("*[itemprop = 'name']").text();
+		const playerUrlHref = $("meta[property='og:url']").attr('content')?.split('/');
+		if (!playerUrlHref) throw Error(`Could not find playerUrlHref for player ${name}`);
+		const playerUrl = playerUrlHref[playerUrlHref.length - 1].split('.')[0];
+		const playerQuery: BballRefPlayerQueryResItem[] = [{ name, playerUrl }];
+		return playerQuery;
+	}
 	return findPlayerQueryRes($);
 };

@@ -13,7 +13,6 @@ export const loadBoxScorePage = (
 		boxScoreUrl !== undefined
 			? `${baseUrl}/boxscores/${boxScoreUrl}.html`
 			: `${baseUrl}/boxscores/${date}0${homeTeam}.html`;
-	console.log(url);
 	return fetch(url).then(async (result) => {
 		const body = await result.text();
 		return cheerio.load(body);
@@ -115,11 +114,11 @@ export const loadPlayerRoster = (teamAbbrev: string, year: number): Promise<chee
 };
 
 export const loadPlayerQuery = (name: string): Promise<cheerio.Root> => {
-	const nameSplit = name.split(' ');
-	return fetch(
-		`${baseUrl}/search/search.fcgi?hint=${nameSplit.join('+')}&search=${nameSplit.join('+')}`
-	).then(async (result) => {
-		const body = await result.text();
-		return cheerio.load(body);
-	});
+	const nameQuery = name.split(' ').join('+');
+	return fetch(`${baseUrl}/search/search.fcgi?hint=${nameQuery}&search=${nameQuery}`).then(
+		async (result) => {
+			const body = await result.text();
+			return cheerio.load(body);
+		}
+	);
 };

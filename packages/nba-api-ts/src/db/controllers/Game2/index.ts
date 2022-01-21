@@ -7,7 +7,12 @@ import {
 	getSeasonGames,
 	getPlayoffGames
 } from '../../../api/bballRef/seasons';
-import { addGameToPlayer, comparePlayerBday, findMatchingBballRefPlayers } from '../Player2';
+import {
+	addGameToPlayer,
+	compareNbaPlayerBday,
+	findMatchingBballRefPlayers,
+	compareEspnPlayerBday
+} from '../Player2';
 import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
@@ -16,9 +21,16 @@ import { getNbaBoxscore } from '../../../api/nba/boxscores';
 import type { NbaBoxScoreData } from '../../../api/nba/nba';
 import { getPlayerInfo } from '../../../api/nba/player';
 import { getPlayerQuery } from '../../../api/bballRef/player';
-import { findEspnGameId, getScheduleEspn } from '../../../api/espn';
+import {
+	findEspnGameId,
+	getEspnBoxscore,
+	getScheduleEspn,
+	getEspnTeamPlayers
+} from '../../../api/espn';
+import type { ParsedEspnBoxscoreTeamPlayer, ParsedEspnBoxscoreTeam } from '../../../api/espn/types';
 import { serverlessConnect } from '../../connect';
 import config from '../../../config';
+import { Player2Document } from '../../interfaces/mongoose.gen';
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
 	const boxScore = await getBoxScore(populatedGame);
@@ -632,7 +644,7 @@ const storeNbaData = async (
 			const playerInfo = await getPlayerInfo(homePlayer.person_id);
 			const playersQuery = await getPlayerQuery(playerInfo.commonPlayerInfo[0].displayFirstLast);
 			const players = await findMatchingBballRefPlayers(playersQuery);
-			playerDocument = await comparePlayerBday(playerInfo, players);
+			playerDocument = await compareNbaPlayerBday(playerInfo, players);
 		}
 
 		if (!playerDocument.meta.helpers.nbaPlayerId) {
@@ -861,7 +873,7 @@ const storeNbaData = async (
 			const playerInfo = await getPlayerInfo(visitorPlayer.person_id);
 			const playersQuery = await getPlayerQuery(playerInfo.commonPlayerInfo[0].displayFirstLast);
 			const players = await findMatchingBballRefPlayers(playersQuery);
-			playerDocument = await comparePlayerBday(playerInfo, players);
+			playerDocument = await compareNbaPlayerBday(playerInfo, players);
 		}
 
 		if (!playerDocument.meta.helpers.nbaPlayerId) {
@@ -1293,6 +1305,215 @@ const storeNbaData = async (
 	await game.save();
 };
 
+const setEspnPlayerStatTotals = (stats: ParsedEspnBoxscoreTeamPlayer['stats']) => {
+	return {
+		minutes: stats?.minutes ? stats.minutes : undefined,
+		fieldGoalsMade: stats?.fieldGoalsMade ? stats.fieldGoalsMade : undefined,
+		fieldGoalsAttempted: stats?.fieldGoalsAttempted ? stats.fieldGoalsAttempted : undefined,
+		fieldGoalsPct:
+			stats?.fieldGoalsMade && stats?.fieldGoalsAttempted
+				? stats.fieldGoalsMade / stats.fieldGoalsAttempted
+				: undefined,
+		threePointersMade: stats?.threePointersMade ? stats.threePointersMade : undefined,
+		threePointersAttempted: stats?.threePointersAttempted
+			? stats.threePointersAttempted
+			: undefined,
+		threePointersPct:
+			stats?.threePointersMade && stats?.threePointersAttempted
+				? stats.threePointersMade / stats.threePointersAttempted
+				: undefined,
+		freeThrowsMade: stats?.freeThrowsMade ? stats.freeThrowsMade : undefined,
+		freeThrowsAttempted: stats?.freeThrowsAttempted ? stats.freeThrowsAttempted : undefined,
+		freeThrowsPct:
+			stats?.freeThrowsMade && stats?.freeThrowsAttempted
+				? stats.freeThrowsMade / stats.freeThrowsAttempted
+				: undefined,
+		offReb: stats?.offReb ? stats.offReb : undefined,
+		defReb: stats?.defReb ? stats.defReb : undefined,
+		totalReb: stats?.totalReb ? stats.totalReb : undefined,
+		assists: stats?.assists ? stats.assists : undefined,
+		steals: stats?.steals ? stats.steals : undefined,
+		blocks: stats?.blocks ? stats.blocks : undefined,
+		turnovers: stats?.turnovers ? stats.turnovers : undefined,
+		personalFouls: stats?.personalFouls ? stats.personalFouls : undefined,
+		points: stats?.points ? stats.points : undefined,
+		plusMinus: stats?.plusMinus ? stats.plusMinus : undefined,
+		advanced: {}
+	};
+};
+
+const addEspnTeamStats = (teamData: ParsedEspnBoxscoreTeam) => {
+	const {
+		fieldGoalsMade,
+		fieldGoalsAttempted,
+		fieldGoalsPct,
+		threePointersMade,
+		threePointersAttempted,
+		threePointersPct,
+		freeThrowsMade,
+		freeThrowsAttempted,
+		freeThrowsPct,
+		totalReb,
+		offReb,
+		defReb,
+		assists,
+		steals,
+		blocks,
+		turnovers,
+		fouls,
+		turnoverPoints,
+		fastBreakPoints,
+		pointsInPaint,
+		largestLead
+	} = teamData;
+	return {
+		fieldGoalsMade,
+		fieldGoalsAttempted,
+		fieldGoalsPct,
+		threePointersMade,
+		threePointersAttempted,
+		threePointersPct,
+		freeThrowsMade,
+		freeThrowsAttempted,
+		freeThrowsPct,
+		totalReb,
+		offReb,
+		defReb,
+		assists,
+		steals,
+		blocks,
+		turnovers: turnovers.total,
+		fouls: {
+			technical: fouls.technical,
+			team: fouls.fouls,
+			totalTechnical: fouls.totalTechnical,
+			flagrant: fouls.flagrant
+		},
+		pointsOffTov: turnoverPoints,
+		fastBreakPoints: fastBreakPoints,
+		pointsInPaint: pointsInPaint,
+		largestLead: largestLead,
+		advanced: {}
+	};
+};
+
+const storeEspnData = (
+	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+	gameId: number
+) => {
+	return getEspnBoxscore(gameId).then(async (data) => {
+		if (!game.home.team.meta.helpers.espnTeamId)
+			throw Error(`No ESPN team ID found for home team ${game.home.team.infoCommon.name}`);
+		if (!game.visitor.team.meta.helpers.espnTeamId)
+			throw Error(`No ESPN team ID found for visitor team ${game.visitor.team.infoCommon.name}`);
+		/* Set stats for home team */
+		if (data[game.home.team.meta.helpers.espnTeamId] !== undefined) {
+			const teamData = data[game.home.team.meta.helpers.espnTeamId];
+			game.home.stats.totals = addEspnTeamStats(teamData);
+			/* Update home player stats */
+			const { team } = await getEspnTeamPlayers(game.home.team.meta.helpers.espnTeamId);
+			for (const player of teamData.players) {
+				/* If player exists, find player : create new player in db */
+				const fullName = player.name.displayName,
+					parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+					nameArray = [fullName, parsedName];
+
+				let playerDocument = await Player2.findByNameOrNbaId(nameArray, player.espnId);
+				if (!playerDocument) {
+					const playersQuery = await getPlayerQuery(fullName);
+					const players = await findMatchingBballRefPlayers(playersQuery);
+					const rosterPlayer = team.athletes.findIndex((p) => p.id === player.espnId);
+					playerDocument = await compareEspnPlayerBday(team.athletes[rosterPlayer], players);
+				}
+
+				if (!playerDocument.meta.helpers.nbaPlayerId) {
+					if (!Number.isNaN(parseInt(player.espnId))) {
+						playerDocument.meta.helpers.espnPlayerId = parseInt(player.espnId);
+						await playerDocument.save();
+					}
+				}
+
+				const playerIdx = game.home.players.findIndex((p) => p.player == playerDocument._id);
+				if (playerIdx === -1) {
+					const playerData = {
+						player: playerDocument._id,
+						jerseyNumber: player.jersey,
+						positionFull: player.position.name,
+						positionShort: player.position.abbreviation,
+						active: player.active,
+						inactive: player.didNotPlay,
+						stats: {
+							totals: setEspnPlayerStatTotals(player.stats)
+						}
+					};
+					game.home.players.addToSet(playerData);
+				} else {
+					game.home.players[playerIdx].jerseyNumber = player.jersey;
+					game.home.players[playerIdx].positionFull = player.position.name;
+					game.home.players[playerIdx].positionShort = player.position.abbreviation;
+					game.home.players[playerIdx].active = player.active;
+					game.home.players[playerIdx].inactive = player.didNotPlay;
+					game.home.players[playerIdx].stats.totals = setEspnPlayerStatTotals(player.stats);
+				}
+			}
+		}
+
+		/* Set stats for visitor team */
+		if (data[game.visitor.team.meta.helpers.espnTeamId] !== undefined) {
+			const teamData = data[game.visitor.team.meta.helpers.espnTeamId];
+			game.home.stats.totals = addEspnTeamStats(teamData);
+
+			/* Update visitor player stats */
+			const { team } = await getEspnTeamPlayers(game.visitor.team.meta.helpers.espnTeamId);
+			for (const player of teamData.players) {
+				/* If player exists, find player : create new player in db */
+				const fullName = player.name.displayName,
+					parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
+					nameArray = [fullName, parsedName];
+
+				let playerDocument = await Player2.findByNameOrNbaId(nameArray, player.espnId);
+				if (!playerDocument) {
+					const playersQuery = await getPlayerQuery(fullName);
+					const players = await findMatchingBballRefPlayers(playersQuery);
+					const rosterPlayer = team.athletes.findIndex((p) => p.id === player.espnId);
+					playerDocument = await compareEspnPlayerBday(team.athletes[rosterPlayer], players);
+				}
+
+				if (!playerDocument.meta.helpers.nbaPlayerId) {
+					if (!Number.isNaN(parseInt(player.espnId))) {
+						playerDocument.meta.helpers.espnPlayerId = parseInt(player.espnId);
+						await playerDocument.save();
+					}
+				}
+
+				const playerIdx = game.visitor.players.findIndex((p) => p.player == playerDocument._id);
+				if (playerIdx === -1) {
+					const playerData = {
+						player: playerDocument._id,
+						jerseyNumber: player.jersey,
+						positionFull: player.position.name,
+						positionShort: player.position.abbreviation,
+						active: player.active,
+						inactive: player.didNotPlay,
+						stats: {
+							totals: setEspnPlayerStatTotals(player.stats)
+						}
+					};
+					game.visitor.players.addToSet(playerData);
+				} else {
+					game.visitor.players[playerIdx].jerseyNumber = player.jersey;
+					game.visitor.players[playerIdx].positionFull = player.position.name;
+					game.visitor.players[playerIdx].positionShort = player.position.abbreviation;
+					game.visitor.players[playerIdx].active = player.active;
+					game.visitor.players[playerIdx].inactive = player.didNotPlay;
+					game.visitor.players[playerIdx].stats.totals = setEspnPlayerStatTotals(player.stats);
+				}
+			}
+		}
+		return game.save();
+	});
+};
+
 /*
   interface PeriodSetItem {
     period_value: string;
@@ -1301,7 +1522,7 @@ const storeNbaData = async (
 */
 
 const syncLiveNbaStats = async () => {
-	const endDate = dayjs();
+	const endDate = dayjs().hour(dayjs().hour() + 1);
 	const startDate = endDate.startOf('day');
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
@@ -1316,7 +1537,7 @@ const syncLiveNbaStats = async () => {
 };
 
 const syncLiveEspnStats = async () => {
-	const endDate = dayjs();
+	const endDate = dayjs().hour(dayjs().hour() + 1);
 	const startDate = endDate.startOf('day');
 	const espnScoreboard = await getScheduleEspn(
 		startDate.year(),
@@ -1327,8 +1548,16 @@ const syncLiveEspnStats = async () => {
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
 		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
-		const gameId = findEspnGameId(startDate.format('YYYYMMDD'), espnScoreboard, game);
-		console.log(gameId);
+		const { gameId, isOver } = findEspnGameId(startDate.format('YYYYMMDD'), espnScoreboard, game);
+		if (isOver) game.meta.helpers.isOver = true;
+		if (!gameId) {
+			throw Error(
+				`Error: no matching game id found for ${dayjs(game.date).format('YYYY-MM-DD')}, ${
+					game.visitor.team.infoCommon.name
+				} @ ${game.home.team.infoCommon.name}`
+			);
+		}
+		await storeEspnData(game, parseInt(gameId)).then(console.log);
 	}
 };
 
@@ -1339,6 +1568,7 @@ export const syncLiveGameData = async () => {
 };
 
 export const syncLiveEspnGameData = async () => {
-	await serverlessConnect(config.MONGO_URI);
-	await syncLiveEspnStats().then(() => console.log(`Completed syncing live game data from espn`));
+	await syncLiveEspnStats().then(() =>
+		console.log(`Completed syncing live game data from espn api`)
+	);
 };

@@ -515,9 +515,15 @@ export type Game2 = {
 				fouls: {
 					team?: number;
 					technical?: number;
+					totalTechnical?: number;
+					flagrant?: number;
 				};
 				personalFouls?: number;
 				points?: number;
+				pointsOffTov?: number;
+				fastBreakPoints?: number;
+				pointsInPaint?: number;
+				largestLead?: number;
 				advanced: {
 					trueShootingPct?: number;
 					effectiveFieldGoalPct?: number;
@@ -578,9 +584,15 @@ export type Game2 = {
 				fouls: {
 					team?: number;
 					technical?: number;
+					totalTechnical?: number;
+					flagrant?: number;
 				};
 				personalFouls?: number;
 				points?: number;
+				pointsOffTov?: number;
+				fastBreakPoints?: number;
+				pointsInPaint?: number;
+				largestLead?: number;
 				advanced: {
 					trueShootingPct?: number;
 					effectiveFieldGoalPct?: number;
@@ -990,9 +1002,15 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 					fouls: {
 						team?: number;
 						technical?: number;
+						totalTechnical?: number;
+						flagrant?: number;
 					};
 					personalFouls?: number;
 					points?: number;
+					pointsOffTov?: number;
+					fastBreakPoints?: number;
+					pointsInPaint?: number;
+					largestLead?: number;
 					advanced: {
 						trueShootingPct?: number;
 						effectiveFieldGoalPct?: number;
@@ -1053,9 +1071,15 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 					fouls: {
 						team?: number;
 						technical?: number;
+						totalTechnical?: number;
+						flagrant?: number;
 					};
 					personalFouls?: number;
 					points?: number;
+					pointsOffTov?: number;
+					fastBreakPoints?: number;
+					pointsInPaint?: number;
+					largestLead?: number;
 					advanced: {
 						trueShootingPct?: number;
 						effectiveFieldGoalPct?: number;

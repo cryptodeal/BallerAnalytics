@@ -89,10 +89,16 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 				turnovers: { type: Number },
 				fouls: {
 					team: { type: Number },
-					technical: { type: Number }
+					technical: { type: Number },
+					totalTechnical: { type: Number },
+					flagrant: { type: Number }
 				},
 				personalFouls: { type: Number },
 				points: { type: Number },
+				pointsOffTov: { type: Number },
+				fastBreakPoints: { type: Number },
+				pointsInPaint: { type: Number },
+				largestLead: { type: Number },
 				advanced: {
 					trueShootingPct: { type: Number },
 					effectiveFieldGoalPct: { type: Number },
@@ -277,10 +283,16 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 				turnovers: { type: Number },
 				fouls: {
 					team: { type: Number },
-					technical: { type: Number }
+					technical: { type: Number },
+					totalTechnical: { type: Number },
+					flagrant: { type: Number }
 				},
 				personalFouls: { type: Number },
 				points: { type: Number },
+				pointsOffTov: { type: Number },
+				fastBreakPoints: { type: Number },
+				pointsInPaint: { type: Number },
+				largestLead: { type: Number },
 				advanced: {
 					trueShootingPct: { type: Number },
 					effectiveFieldGoalPct: { type: Number },
