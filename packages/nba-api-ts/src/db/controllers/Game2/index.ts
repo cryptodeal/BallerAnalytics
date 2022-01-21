@@ -1544,15 +1544,17 @@ const syncLiveEspnStats = async () => {
 		);
 	const dateStr = startDate.format('YYYYMMDD');
 	console.log(dateStr);
-	console.log(espnScoreboard);
+	//console.log(espnScoreboard);
 
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
 		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
+		game.home.players.splice(0);
+		game.visitor.players.splice(0);
 		const espnGameBasic = findEspnGameId(dateStr, espnScoreboard, game);
 		if (!espnGameBasic) throw Error(`Error: could not find info`);
-		const { gameId, isOver } = espnGameBasic;
+		const [gameId, isOver]: [string, boolean] = espnGameBasic;
 		if (isOver) game.meta.helpers.isOver = true;
 		if (!gameId) {
 			throw Error(

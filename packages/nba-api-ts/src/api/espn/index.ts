@@ -22,7 +22,7 @@ export const findEspnGameId = (
 	dateStr: string,
 	espnSchedule: IEspnSchedule,
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
-) => {
+): [string, boolean] | undefined => {
 	const data = espnSchedule[dateStr];
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
 	/* if key "dateStr" is defined, destructure array of games from data */
@@ -31,15 +31,19 @@ export const findEspnGameId = (
 		const [gameData] = games[i].competitions;
 		const homeIdx = gameData.competitors.findIndex((c) => c.homeAway === 'home');
 		const visitorIdx = gameData.competitors.findIndex((c) => c.homeAway === 'away');
+		console.log(`homeIdx id: ${gameData.competitors[homeIdx].id}`);
+		console.log(
+			`game.home.team.meta.helpers.espnTeamId: ${game.home.team.meta.helpers.espnTeamId}`
+		);
+		console.log(`visitorIdx id: ${gameData.competitors[visitorIdx].id}`);
+		console.log(
+			`game.visitor.team.meta.helpers.espnTeamId: ${game.visitor.team.meta.helpers.espnTeamId}`
+		);
 		if (
 			gameData.competitors[homeIdx].id === game.home.team.meta.helpers.espnTeamId &&
 			gameData.competitors[visitorIdx].id === game.visitor.team.meta.helpers.espnTeamId
 		) {
-			const result: EspnGameIdAndStatus = {
-				gameId: games[i].id,
-				isOver: games[i].status.type.completed
-			};
-			return result;
+			return [games[i].id, games[i].status.type.completed];
 		}
 	}
 };
