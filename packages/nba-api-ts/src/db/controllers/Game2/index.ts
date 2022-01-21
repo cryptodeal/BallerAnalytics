@@ -1537,7 +1537,7 @@ const syncLiveNbaStats = async () => {
 const syncLiveEspnStats = async () => {
 	const endDate = dayjs(),
 		startDate = endDate.startOf('day'),
-		espnScoreboard = await getScheduleEspn(startDate.year(), startDate.month(), startDate.date());
+		espnScoreboard = await getScheduleEspn(startDate.year(), startDate.month() + 1, startDate.date());
 	const dateStr = startDate.format('YYYYMMDD');
 	console.log(dateStr);
 	console.log(espnScoreboard);
