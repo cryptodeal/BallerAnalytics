@@ -24,6 +24,7 @@ export const findEspnGameId = (
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
 ): EspnGameIdAndStatus => {
 	const data = espnSchedule[dateStr];
+	console.log(espnSchedule);
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
 	/* if key "dateStr" is defined, destructure array of games from data */
 	const { games } = data;

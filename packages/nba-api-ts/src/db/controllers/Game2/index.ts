@@ -1544,6 +1544,8 @@ const syncLiveEspnStats = async () => {
 		startDate.month() + 1,
 		startDate.date()
 	);
+	console.log(`espnScoreboard:`);
+	console.log(espnScoreboard);
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
@@ -1572,3 +1574,5 @@ export const syncLiveEspnGameData = async () => {
 		console.log(`Completed syncing live game data from espn api`)
 	);
 };
+
+syncLiveEspnGameData();
