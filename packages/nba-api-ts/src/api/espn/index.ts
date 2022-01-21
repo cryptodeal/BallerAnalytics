@@ -53,6 +53,8 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 	return sdv.nba.getBoxScore(gameId).then((data: IEspnBoxscore) => {
 		const parsedBoxscore: ParsedEspnBoxscore = {};
 		for (const team of data.teams) {
+			const stats = team.statistics;
+			if (!stats.length) throw Error(`Error: Stats not found for ${gameId}`);
 			const [
 				fg,
 				fgPct,
@@ -77,7 +79,8 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 				pIP,
 				pf,
 				ll
-			] = team.statistics;
+			] = stats;
+
 			const fgSplit = fg.displayValue.split('-');
 			const threePtFgSplit = threePtFg.displayValue.split('-');
 			const ftSplit = ft.displayValue.split('-');
@@ -120,6 +123,8 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 		for (const player of data.players) {
 			const teamId = player.team.id;
 			for (let i = 0; i < player.statistics[0].athletes.length; i++) {
+				const athleteStats = player.statistics[0].athletes[i].stats;
+				if (athleteStats.length < 1) throw Error(`Error: Athlete not found for ${gameId}`);
 				const [
 					min,
 					fg,
@@ -135,7 +140,7 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 					pf,
 					plusMinus,
 					pts
-				] = player.statistics[0].athletes[i].stats;
+				] = athleteStats;
 
 				const playerData: ParsedEspnBoxscoreTeamPlayer = {
 					name: {

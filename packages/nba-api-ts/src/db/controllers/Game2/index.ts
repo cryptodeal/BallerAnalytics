@@ -1520,7 +1520,7 @@ const storeEspnData = (
 */
 
 const syncLiveNbaStats = async () => {
-	const endDate = dayjs();
+	const endDate = dayjs().endOf('day');
 	const startDate = endDate.startOf('day');
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
@@ -1535,13 +1535,13 @@ const syncLiveNbaStats = async () => {
 };
 
 const syncLiveEspnStats = async () => {
-	const endDate = dayjs(),
-		startDate = endDate.startOf('day'),
-		espnScoreboard = await getScheduleEspn(
-			startDate.year(),
-			startDate.month() + 1,
-			startDate.date()
-		);
+	const endDate = dayjs().endOf('day');
+	const startDate = endDate.startOf('day');
+	const espnScoreboard = await getScheduleEspn(
+		startDate.year(),
+		startDate.month() + 1,
+		startDate.date()
+	);
 	const dateStr = startDate.format('YYYYMMDD');
 	console.log(dateStr);
 	//console.log(espnScoreboard);
@@ -1555,6 +1555,8 @@ const syncLiveEspnStats = async () => {
 		const espnGameBasic = findEspnGameId(dateStr, espnScoreboard, game);
 		if (!espnGameBasic) throw Error(`Error: could not find info`);
 		const [gameId, isOver]: [string, boolean] = espnGameBasic;
+		console.log(gameId);
+		console.log(isOver);
 		if (isOver) game.meta.helpers.isOver = true;
 		if (!gameId) {
 			throw Error(
