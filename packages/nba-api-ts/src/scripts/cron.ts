@@ -1,9 +1,5 @@
 import { CronJob } from 'cron';
-import {
-	importGamesLastWeek,
-	syncLiveGameData,
-	syncLiveEspnGameData
-} from '../db/controllers/Game2';
+import { importGamesLastWeek, syncLiveEspnGameData } from '../db/controllers/Game2';
 import { importCurrentRosters } from '../db/controllers/Team2';
 import { serverlessConnect } from '../db/connect';
 import config from '../config';

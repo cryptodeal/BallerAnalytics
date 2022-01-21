@@ -528,6 +528,7 @@ export const importLatestGames = () => {
 					if (regularSeasonGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
 						await importBoxScore(game).then(async (g) => {
 							if (g) {
+								g.meta.helpers.isOver = true;
 								/** Add game._id to regularSeason games for team, players, officials, coaches */
 								await addGameRefs(g, 'regular');
 								/** Add game._id to regular regularSeason games for league */
@@ -566,6 +567,7 @@ export const importLatestGames = () => {
 					if (playoffGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
 						await importBoxScore(game).then(async (g) => {
 							if (g) {
+								g.meta.helpers.isOver = true;
 								/** Add game._id to postseason games for team, players, officials, coaches */
 								await addGameRefs(g, 'post');
 								/** Add game._id to regular postSeason games for league */
