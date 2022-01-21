@@ -43,6 +43,7 @@ export const findEspnGameId = (
 			gameData.competitors[homeIdx].id === game.home.team.meta.helpers.espnTeamId &&
 			gameData.competitors[visitorIdx].id === game.visitor.team.meta.helpers.espnTeamId
 		) {
+			console.log(`found match: ${games[i].id}`);
 			return [games[i].id, games[i].status.type.completed];
 		}
 	}
