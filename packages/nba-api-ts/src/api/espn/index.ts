@@ -5,7 +5,8 @@ import type {
 	ParsedEspnBoxscore,
 	ParsedEspnBoxscoreTeam,
 	ParsedEspnBoxscoreTeamPlayer,
-	IEspnTeamPlayers
+	IEspnTeamPlayers,
+	EspnGameIdAndStatus
 } from './types';
 import type { PopulatedDocument, Game2Document } from '../../index';
 
@@ -33,8 +34,13 @@ export const findEspnGameId = (
 		if (
 			gameData.competitors[homeIdx].id === game.home.team.meta.helpers.espnTeamId &&
 			gameData.competitors[visitorIdx].id === game.visitor.team.meta.helpers.espnTeamId
-		)
-			return { gameId: games[i].id, isOver: games[i].status.type.completed };
+		) {
+			const result: EspnGameIdAndStatus = {
+				gameId: games[i].id,
+				isOver: games[i].status.type.completed
+			};
+			return result;
+		}
 	}
 };
 
