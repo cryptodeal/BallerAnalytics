@@ -24,4 +24,5 @@ jobs:
             cd BallerAnalytics
             pnpm install
             cd packages/nba-api-ts
+            pnpm build
             pm2 start "node --experimental-specifier-resolution=node dist/scripts/cron" --name cron
