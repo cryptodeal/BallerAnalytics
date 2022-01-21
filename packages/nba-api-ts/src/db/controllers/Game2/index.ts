@@ -1522,7 +1522,7 @@ const storeEspnData = (
 */
 
 const syncLiveNbaStats = async () => {
-	const endDate = dayjs().hour(dayjs().hour() + 1);
+	const endDate = dayjs();
 	const startDate = endDate.startOf('day');
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
@@ -1537,7 +1537,7 @@ const syncLiveNbaStats = async () => {
 };
 
 const syncLiveEspnStats = async () => {
-	const endDate = dayjs().hour(dayjs().hour() + 1);
+	const endDate = dayjs();
 	const startDate = endDate.startOf('day');
 	const espnScoreboard = await getScheduleEspn(
 		startDate.year(),

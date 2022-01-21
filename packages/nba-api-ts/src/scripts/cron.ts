@@ -55,7 +55,7 @@ class DataImportScripts {
 	}
 
 	private async syncLiveGames() {
-		if (config.VITE_NODE_ENV === 'production') {
+		if (config.VITE_NODE_ENV === 'production' || config.VITE_NODE_ENV === 'development') {
 			await syncLiveEspnGameData();
 		} else {
 			await syncLiveGameData();
