@@ -1432,12 +1432,18 @@ const storeEspnData = (
 						await playerDocument.save();
 					}
 				}
-
 				const playerIdx = game.home.players.findIndex((p) => p.player == playerDocument._id);
-				if (playerIdx === -1) {
+				if (playerIdx !== -1) {
+					game.home.players[playerIdx].jerseyNumber = player.jersey ? player.jersey : undefined;
+					game.home.players[playerIdx].positionFull = player.position.name;
+					game.home.players[playerIdx].positionShort = player.position.abbreviation;
+					game.home.players[playerIdx].active = player.active;
+					game.home.players[playerIdx].inactive = player.didNotPlay;
+					game.home.players[playerIdx].stats.totals = setEspnPlayerStatTotals(player.stats);
+				} else {
 					const playerData = {
 						player: playerDocument._id,
-						jerseyNumber: player.jersey,
+						jerseyNumber: player.jersey ? player.jersey : undefined,
 						positionFull: player.position.name,
 						positionShort: player.position.abbreviation,
 						active: player.active,
@@ -1447,13 +1453,6 @@ const storeEspnData = (
 						}
 					};
 					game.home.players.addToSet(playerData);
-				} else {
-					game.home.players[playerIdx].jerseyNumber = player.jersey;
-					game.home.players[playerIdx].positionFull = player.position.name;
-					game.home.players[playerIdx].positionShort = player.position.abbreviation;
-					game.home.players[playerIdx].active = player.active;
-					game.home.players[playerIdx].inactive = player.didNotPlay;
-					game.home.players[playerIdx].stats.totals = setEspnPlayerStatTotals(player.stats);
 				}
 			}
 		}
@@ -1485,12 +1484,18 @@ const storeEspnData = (
 						await playerDocument.save();
 					}
 				}
-
 				const playerIdx = game.visitor.players.findIndex((p) => p.player == playerDocument._id);
-				if (playerIdx === -1) {
+				if (playerIdx !== -1) {
+					game.visitor.players[playerIdx].jerseyNumber = player.jersey ? player.jersey : undefined;
+					game.visitor.players[playerIdx].positionFull = player.position.name;
+					game.visitor.players[playerIdx].positionShort = player.position.abbreviation;
+					game.visitor.players[playerIdx].active = player.active;
+					game.visitor.players[playerIdx].inactive = player.didNotPlay;
+					game.visitor.players[playerIdx].stats.totals = setEspnPlayerStatTotals(player.stats);
+				} else {
 					const playerData = {
 						player: playerDocument._id,
-						jerseyNumber: player.jersey,
+						jerseyNumber: player.jersey ? player.jersey : undefined,
 						positionFull: player.position.name,
 						positionShort: player.position.abbreviation,
 						active: player.active,
@@ -1500,13 +1505,6 @@ const storeEspnData = (
 						}
 					};
 					game.visitor.players.addToSet(playerData);
-				} else {
-					game.visitor.players[playerIdx].jerseyNumber = player.jersey;
-					game.visitor.players[playerIdx].positionFull = player.position.name;
-					game.visitor.players[playerIdx].positionShort = player.position.abbreviation;
-					game.visitor.players[playerIdx].active = player.active;
-					game.visitor.players[playerIdx].inactive = player.didNotPlay;
-					game.visitor.players[playerIdx].stats.totals = setEspnPlayerStatTotals(player.stats);
 				}
 			}
 		}
@@ -1541,11 +1539,9 @@ const syncLiveEspnStats = async () => {
 	const startDate = endDate.startOf('day');
 	const espnScoreboard = await getScheduleEspn(
 		startDate.year(),
-		startDate.month() + 1,
+		startDate.month(),
 		startDate.date()
 	);
-	console.log(`espnScoreboard:`);
-	console.log(espnScoreboard);
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
@@ -1576,5 +1572,3 @@ export const syncLiveEspnGameData = async () => {
 		console.log(`Completed syncing live game data from espn api`)
 	);
 };
-
-syncLiveEspnGameData();

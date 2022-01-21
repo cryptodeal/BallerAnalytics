@@ -5,8 +5,7 @@ import type {
 	ParsedEspnBoxscore,
 	ParsedEspnBoxscoreTeam,
 	ParsedEspnBoxscoreTeamPlayer,
-	IEspnTeamPlayers,
-	EspnGameIdAndStatus
+	IEspnTeamPlayers
 } from './types';
 import type { PopulatedDocument, Game2Document } from '../../index';
 
@@ -24,7 +23,6 @@ export const findEspnGameId = (
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
 ) => {
 	const data = espnSchedule[dateStr];
-	console.log(espnSchedule);
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
 	/* if key "dateStr" is defined, destructure array of games from data */
 	const { games } = data;
