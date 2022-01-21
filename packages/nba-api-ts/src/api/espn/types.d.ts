@@ -1,5 +1,3 @@
-import { StringSchemaDefinition } from 'mongoose';
-
 export interface IEspnScheduleDataGameSeason {
 	year: number;
 	type: number;
