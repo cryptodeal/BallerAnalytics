@@ -22,7 +22,7 @@ export const findEspnGameId = (
 	dateStr: string,
 	espnSchedule: IEspnSchedule,
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
-): EspnGameIdAndStatus => {
+) => {
 	const data = espnSchedule[dateStr];
 	console.log(espnSchedule);
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
@@ -38,7 +38,6 @@ export const findEspnGameId = (
 		)
 			return { gameId: games[i].id, isOver: games[i].status.type.completed };
 	}
-	throw Error(`Could not find game id for game: ${game._id}`);
 };
 
 export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => {

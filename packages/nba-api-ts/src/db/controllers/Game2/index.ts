@@ -1550,7 +1550,9 @@ const syncLiveEspnStats = async () => {
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
 		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
-		const { gameId, isOver } = findEspnGameId(startDate.format('YYYYMMDD'), espnScoreboard, game);
+		const espnGameBasic = findEspnGameId(startDate.format('YYYYMMDD'), espnScoreboard, game);
+		if (!espnGameBasic) throw Error(`Error: could not find info`);
+		const { gameId, isOver } = espnGameBasic;
 		if (isOver) game.meta.helpers.isOver = true;
 		if (!gameId) {
 			throw Error(
