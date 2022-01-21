@@ -1418,7 +1418,7 @@ const storeEspnData = (
 					parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
 					nameArray = [fullName, parsedName];
 
-				let playerDocument = await Player2.findByNameOrNbaId(nameArray, player.espnId);
+				let playerDocument = await Player2.findByNameOrEspnId(nameArray, parseInt(player.espnId));
 				if (!playerDocument) {
 					const playersQuery = await getPlayerQuery(fullName);
 					const players = await findMatchingBballRefPlayers(playersQuery);
@@ -1470,7 +1470,7 @@ const storeEspnData = (
 					parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
 					nameArray = [fullName, parsedName];
 
-				let playerDocument = await Player2.findByNameOrNbaId(nameArray, player.espnId);
+				let playerDocument = await Player2.findByNameOrEspnId(nameArray, parseInt(player.espnId));
 				if (!playerDocument) {
 					const playersQuery = await getPlayerQuery(fullName);
 					const players = await findMatchingBballRefPlayers(playersQuery);
@@ -1478,7 +1478,7 @@ const storeEspnData = (
 					playerDocument = await compareEspnPlayerBday(team.athletes[rosterPlayer], players);
 				}
 
-				if (!playerDocument.meta.helpers.nbaPlayerId) {
+				if (!playerDocument.meta.helpers.espnPlayerId) {
 					if (!Number.isNaN(parseInt(player.espnId))) {
 						playerDocument.meta.helpers.espnPlayerId = parseInt(player.espnId);
 						await playerDocument.save();

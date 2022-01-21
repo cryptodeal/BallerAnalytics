@@ -189,6 +189,16 @@ Player2Schema.statics = {
 				{ 'meta.helpers.nbaPlayerId': nbaId }
 			]
 		}).exec();
+	},
+
+	findByNameOrEspnId(name: string | string[], espnId: number) {
+		return this.findOne({
+			$or: [
+				{ 'name.full': Array.isArray(name) ? { $in: name } : name },
+				{ 'name.parsed': Array.isArray(name) ? { $in: name } : name },
+				{ 'meta.helpers.espnPlayerId': espnId }
+			]
+		}).exec();
 	}
 };
 
