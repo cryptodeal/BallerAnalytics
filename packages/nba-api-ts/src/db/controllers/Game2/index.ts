@@ -1578,9 +1578,9 @@ const syncLiveEspnStats = async () => {
 				} @ ${game.home.team.infoCommon.name}`
 			);
 		}
-		if (isOver) {
+		if (!game.meta.helpers.isOver) {
+			if (isOver) game.meta.helpers.isOver = true;
 			game.meta.helpers.isOver = true;
-		} else {
 			await storeEspnData(game, parseInt(gameId)).then(console.log);
 		}
 	}
