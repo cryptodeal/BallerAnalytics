@@ -5,8 +5,7 @@ import type {
 	ParsedEspnBoxscore,
 	ParsedEspnBoxscoreTeam,
 	ParsedEspnBoxscoreTeamPlayer,
-	IEspnTeamPlayers,
-	EspnGameIdAndStatus
+	IEspnTeamPlayers
 } from './types';
 import type { PopulatedDocument, Game2Document } from '../../index';
 

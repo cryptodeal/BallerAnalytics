@@ -1413,9 +1413,15 @@ const storeEspnData = (
 			const teamData = data[game.home.team.meta.helpers.espnTeamId];
 			const parsedTeamStats = Object.assign(game.home.stats.totals, addEspnTeamStats(teamData));
 			game.home.stats.totals = parsedTeamStats;
+			game.home.stats.totals.points = 0;
+			game.home.score = 0;
 			/* Update home player stats */
 			const { team } = await getEspnTeamPlayers(game.home.team.meta.helpers.espnTeamId);
 			for (const player of teamData.players) {
+				if (player.stats?.points) {
+					game.home.stats.totals.points += player.stats.points;
+					game.home.score += player.stats.points;
+				}
 				/* If player exists, find player : create new player in db */
 				const fullName = player.name.displayName,
 					parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
@@ -1465,10 +1471,15 @@ const storeEspnData = (
 			const teamData = data[game.visitor.team.meta.helpers.espnTeamId];
 			const parsedTeamStats = Object.assign(game.visitor.stats.totals, addEspnTeamStats(teamData));
 			game.visitor.stats.totals = parsedTeamStats;
-
+			game.visitor.stats.totals.points = 0;
+			game.visitor.score = 0;
 			/* Update visitor player stats */
 			const { team } = await getEspnTeamPlayers(game.visitor.team.meta.helpers.espnTeamId);
 			for (const player of teamData.players) {
+				if (player.stats?.points) {
+					game.visitor.stats.totals.points += player.stats.points;
+					game.visitor.score += player.stats.points;
+				}
 				/* If player exists, find player : create new player in db */
 				const fullName = player.name.displayName,
 					parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
