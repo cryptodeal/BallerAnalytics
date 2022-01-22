@@ -1544,6 +1544,7 @@ const syncLiveNbaStats = async () => {
 
 const syncLiveEspnStats = async () => {
 	const now = dayjs();
+	if (now.hour() < 3) now.hour(now.hour() - 4);
 	const endDate = now.endOf('date');
 	const startDate = now.startOf('date');
 	const espnScoreboard = await getScheduleEspn(
