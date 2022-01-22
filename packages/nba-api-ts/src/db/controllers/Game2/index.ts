@@ -1462,7 +1462,7 @@ const storeEspnData = (
 		/* Set stats for visitor team */
 		if (data[game.visitor.team.meta.helpers.espnTeamId] !== undefined) {
 			const teamData = data[game.visitor.team.meta.helpers.espnTeamId];
-			game.home.stats.totals = addEspnTeamStats(teamData);
+			game.visitor.stats.totals = addEspnTeamStats(teamData);
 
 			/* Update visitor player stats */
 			const { team } = await getEspnTeamPlayers(game.visitor.team.meta.helpers.espnTeamId);
