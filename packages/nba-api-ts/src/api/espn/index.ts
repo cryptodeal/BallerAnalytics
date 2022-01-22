@@ -29,23 +29,27 @@ export const findEspnGameId = (
 	const { games } = data;
 	for (let i = 0; i < games.length; i++) {
 		const [gameData] = games[i].competitions;
-		const homeIdx = gameData.competitors.findIndex((c) => c.homeAway === 'home');
-		const visitorIdx = gameData.competitors.findIndex((c) => c.homeAway === 'away');
-		console.log(gameData.competitors[homeIdx]);
-		console.log(`homeIdx id: ${gameData.competitors[homeIdx].id}`);
+		const homeIdx = gameData.competitors.findIndex((c) => c.homeAway == 'home');
+		const visitorIdx = gameData.competitors.findIndex((c) => c.homeAway == 'away');
+		console.log(gameData.competitors[homeIdx].team);
+		console.log(`gameData.competitors[homeIdx].team.id: \n`, gameData.competitors[homeIdx].team.id);
 		console.log(
-			`game.home.team.meta.helpers.espnTeamId: ${game.home.team.meta.helpers.espnTeamId}`
+			`game.home.team.meta.helpers.espnTeamId: \n`,
+			game.home.team.meta.helpers.espnTeamId
 		);
-		console.log(gameData.competitors[visitorIdx]);
-		console.log(`visitorIdx id: ${gameData.competitors[visitorIdx].id}`);
+		console.log(gameData.competitors[visitorIdx].team);
 		console.log(
-			`game.visitor.team.meta.helpers.espnTeamId: ${game.visitor.team.meta.helpers.espnTeamId}`
+			`gameData.competitors[visitorIdx].team.id: \n`,
+			gameData.competitors[visitorIdx].team.id
+		);
+		console.log(
+			`game.visitor.team.meta.helpers.espnTeamId: \n`,
+			game.visitor.team.meta.helpers.espnTeamId
 		);
 		if (
-			gameData.competitors[homeIdx].id == game.home.team.meta.helpers.espnTeamId &&
-			gameData.competitors[visitorIdx].id == game.visitor.team.meta.helpers.espnTeamId
+			gameData.competitors[homeIdx].team.id == game.home.team.meta.helpers.espnTeamId &&
+			gameData.competitors[visitorIdx].team.id == game.visitor.team.meta.helpers.espnTeamId
 		) {
-			console.log(`found match: ${games[i].id}`);
 			return [games[i].id, games[i].status.type.completed];
 		}
 	}
