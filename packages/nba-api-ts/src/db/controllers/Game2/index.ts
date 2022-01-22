@@ -1528,8 +1528,13 @@ const storeEspnData = (
 };
 
 const syncLiveNbaStats = async () => {
-	const endDate = dayjs().endOf('day');
-	const startDate = endDate.startOf('day');
+	let now = dayjs();
+	if (now.hour() < 3) {
+		const tempDate = now.subtract(4, 'hour');
+		now = tempDate;
+	}
+	const endDate = now.endOf('date');
+	const startDate = now.startOf('date');
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
 	}).populateTeams()) {
@@ -1543,8 +1548,11 @@ const syncLiveNbaStats = async () => {
 };
 
 const syncLiveEspnStats = async () => {
-	const now = dayjs();
-	if (now.hour() < 3) now.date(now.date() - 1);
+	let now = dayjs();
+	if (now.hour() < 3) {
+		const tempDate = now.subtract(4, 'hour');
+		now = tempDate;
+	}
 	const endDate = now.endOf('date');
 	const startDate = now.startOf('date');
 	const espnScoreboard = await getScheduleEspn(
