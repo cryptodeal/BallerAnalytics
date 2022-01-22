@@ -1656,6 +1656,7 @@ export type Player2Methods = {};
 
 export type Player2Statics = {
 	findByPlayerUrl: (this: Player2Model, ...args: any[]) => any;
+	findBySlug: (this: Player2Model, ...args: any[]) => any;
 	getPlayers: (this: Player2Model, ...args: any[]) => any;
 	findByNameOrNbaId: (this: Player2Model, ...args: any[]) => any;
 	findByNameOrEspnId: (this: Player2Model, ...args: any[]) => any;

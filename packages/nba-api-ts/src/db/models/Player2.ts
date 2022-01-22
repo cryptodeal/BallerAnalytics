@@ -186,6 +186,10 @@ Player2Schema.statics = {
 		}).exec();
 	},
 
+	findBySlug(slug: string) {
+		return this.findOne({ 'meta.slug': slug });
+	},
+
 	async getPlayers(playerUids: Player2Document['_id'][]): Promise<Player2Object[]> {
 		return await this.aggregate([
 			{ $match: { _id: { $in: playerUids } } },

@@ -3,7 +3,7 @@
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 	export const load: Load = async ({ fetch }) => {
-		const url = `teams.json`;
+		const url = `/teams.json`;
 		const res = await fetch(url);
 
 		if (res.ok) {

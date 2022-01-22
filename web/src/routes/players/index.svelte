@@ -3,7 +3,7 @@
 	import type { Player2Document } from '@balleranalytics/nba-api-ts';
 
 	export const load: Load = async ({ fetch }) => {
-		const url = `players.json`;
+		const url = `/players.json`;
 		const res = await fetch(url);
 
 		if (res.ok) {
@@ -51,15 +51,17 @@
 <div class="h-full pt-12 w-full flex md:(container pt-14 mx-auto)">
 	<div class="list glassmorphicBg" bind:offsetHeight={listHeight}>
 		<VirtualList width="auto" height={listHeight} itemCount={players.length} itemSize={50}>
-			<div
+			<a
 				slot="item"
 				let:index
 				let:style
 				{style}
-				class="flex inline-flex h-50px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				sveltekit:prefetch
+				href="/players/{players[index].meta.slug}"
+				class="flex inline-flex w-full h-50px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
 				<PlayerListItem player={players[index]} />
-			</div>
+			</a>
 
 			<div slot="footer">
 				<InfiniteLoading on:infinite={loadPlayers} distance={150} />
