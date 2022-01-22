@@ -25,9 +25,9 @@
 <script lang="ts">
 	import VirtualList from 'svelte-tiny-virtual-list';
 	import InfiniteLoading from 'svelte-infinite-loading';
-	import Headshot from '$lib/ux/img/Headshot.svelte';
+	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	export let players: Player2Document[] = [];
-	let page = 0;
+	let page = 1;
 	let listHeight: number;
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
@@ -58,16 +58,11 @@
 				{style}
 				class="flex inline-flex h-50px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
-				<Headshot
-					src="https://dttbvdi5lj1g6.cloudfront.net/{players[index].meta.images.headshot.png[2]}"
-					alt="{players[index].name.full} headshot"
-				/>
-
-				<h5 class="m-4 text-dark-600 dark:text-light-600">{players[index].name.full}</h5>
+				<PlayerListItem player={players[index]} />
 			</div>
 
 			<div slot="footer">
-				<InfiniteLoading on:infinite={loadPlayers} />
+				<InfiniteLoading on:infinite={loadPlayers} distance={150} />
 			</div>
 		</VirtualList>
 	</div>

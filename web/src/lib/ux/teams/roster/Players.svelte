@@ -59,12 +59,18 @@
 
 								<td class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 xl:px-6">
 									<div class="flex w-full inline-flex items-center">
-										<div class="flex-shrink-0 w-auto">
-											{#if player}
+										<div class="flex-shrink-0 w-auto h-20">
+											{#if player.meta.images.headshot.png}
 												<Headshot
 													src="https://dttbvdi5lj1g6.cloudfront.net/{player.meta.images.headshot
-														.avif[2]}"
+														.png[2]}"
 													alt="{player.name.full} headshot"
+												/>
+											{:else}
+												<img
+													class="object-scale-down h-full"
+													src="headshotFallback.png"
+													alt="missing player headshot"
 												/>
 											{/if}
 										</div>

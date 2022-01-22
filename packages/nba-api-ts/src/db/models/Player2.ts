@@ -163,6 +163,22 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 	]
 });
 
+Player2Schema.pre('save', function (this: Player2Document, next) {
+	if (!this.isModified('name')) {
+		next();
+	}
+	this.name.full = this.name.full.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
+	if (this.name.display)
+		this.name.display = this.name.display.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
+	if (this.name.pronunciation)
+		this.name.pronunciation = this.name.pronunciation.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
+	if (this.name.nicknames.length > 0)
+		this.name.nicknames.map((n) => n.replace(/\r?\n?\t|\r?\n|\r/g, '').trim());
+	if (this.name.parsed.length > 0)
+		this.name.parsed.map((p) => p.replace(/\r?\n?\t|\r?\n|\r/g, '').trim());
+	next();
+});
+
 Player2Schema.statics = {
 	findByPlayerUrl(playerUrl: string) {
 		return this.findOne({
