@@ -1563,7 +1563,8 @@ const syncLiveEspnStats = async () => {
 	const dateStr = startDate.format('YYYYMMDD');
 
 	for (const game of await Game2.find({
-		date: { $lte: endDate, $gte: startDate }
+		date: { $lte: endDate, $gte: startDate },
+		'meta.helpers.isOver': false
 	}).populateTeams()) {
 		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
 		game.home.players.splice(0);
@@ -1578,11 +1579,9 @@ const syncLiveEspnStats = async () => {
 				} @ ${game.home.team.infoCommon.name}`
 			);
 		}
-		if (!game.meta.helpers.isOver) {
-			if (isOver) game.meta.helpers.isOver = true;
-			game.meta.helpers.isOver = true;
-			await storeEspnData(game, parseInt(gameId)).then(console.log);
-		}
+		if (isOver) game.meta.helpers.isOver = true;
+		game.meta.helpers.isOver = true;
+		await storeEspnData(game, parseInt(gameId)).then(console.log);
 	}
 };
 
