@@ -31,19 +31,14 @@ export const findEspnGameId = (
 		const [gameData] = games[i].competitions;
 		const homeIdx = gameData.competitors.findIndex((c) => c.homeAway == 'home');
 		const visitorIdx = gameData.competitors.findIndex((c) => c.homeAway == 'away');
-		console.log(gameData.competitors[homeIdx].team);
-		console.log(`gameData.competitors[homeIdx].team.id: \n`, gameData.competitors[homeIdx].team.id);
+		console.log(`gameData.competitors[homeIdx].team.id:`, gameData.competitors[homeIdx].team.id);
+		console.log(`game.home.team.meta.helpers.espnTeamId:`, game.home.team.meta.helpers.espnTeamId);
 		console.log(
-			`game.home.team.meta.helpers.espnTeamId: \n`,
-			game.home.team.meta.helpers.espnTeamId
-		);
-		console.log(gameData.competitors[visitorIdx].team);
-		console.log(
-			`gameData.competitors[visitorIdx].team.id: \n`,
+			`gameData.competitors[visitorIdx].team.id:`,
 			gameData.competitors[visitorIdx].team.id
 		);
 		console.log(
-			`game.visitor.team.meta.helpers.espnTeamId: \n`,
+			`game.visitor.team.meta.helpers.espnTeamId:`,
 			game.visitor.team.meta.helpers.espnTeamId
 		);
 		if (
@@ -60,94 +55,77 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 		const parsedBoxscore: ParsedEspnBoxscore = {};
 		for (const team of data.teams) {
 			const stats = team.statistics;
-			if (!stats.length) throw Error(`Error: Stats not found for ${gameId}`);
-			const [
-				fg,
-				fgPct,
-				threePtFg,
-				threePtFgPct,
-				ft,
-				ftPct,
-				totReb,
-				offReb,
-				defReb,
-				ast,
-				stl,
-				blk,
-				to,
-				tTo,
-				totalTo,
-				techFouls,
-				totalTechFouls,
-				flagrantFouls,
-				ptsOffTo,
-				fBPs,
-				pIP,
-				pf,
-				ll
-			] = stats;
+			if (stats.length > 0) {
+				const [
+					fg,
+					fgPct,
+					threePtFg,
+					threePtFgPct,
+					ft,
+					ftPct,
+					totReb,
+					offReb,
+					defReb,
+					ast,
+					stl,
+					blk,
+					to,
+					tTo,
+					totalTo,
+					techFouls,
+					totalTechFouls,
+					flagrantFouls,
+					ptsOffTo,
+					fBPs,
+					pIP,
+					pf,
+					ll
+				] = stats;
 
-			const fgSplit = fg.displayValue.split('-');
-			const threePtFgSplit = threePtFg.displayValue.split('-');
-			const ftSplit = ft.displayValue.split('-');
-			const teamData: ParsedEspnBoxscoreTeam = {
-				fieldGoalsMade: parseInt(fgSplit[0]),
-				fieldGoalsAttempted: parseInt(fgSplit[1]),
-				fieldGoalsPct: parseFloat(fgPct.displayValue) / 100,
-				threePointersMade: parseInt(threePtFgSplit[0]),
-				threePointersAttempted: parseInt(threePtFgSplit[1]),
-				threePointersPct: parseFloat(threePtFgPct.displayValue) / 100,
-				freeThrowsMade: parseInt(ftSplit[0]),
-				freeThrowsAttempted: parseInt(ftSplit[1]),
-				freeThrowsPct: parseFloat(ftPct.displayValue) / 100,
-				totalReb: parseInt(totReb.displayValue),
-				offReb: parseInt(offReb.displayValue),
-				defReb: parseInt(defReb.displayValue),
-				assists: parseInt(ast.displayValue),
-				steals: parseInt(stl.displayValue),
-				blocks: parseInt(blk.displayValue),
-				turnovers: {
-					tov: parseInt(to.displayValue),
-					team: parseInt(tTo.displayValue),
-					total: parseInt(totalTo.displayValue)
-				},
-				fouls: {
-					technical: parseInt(techFouls.displayValue),
-					totalTechnical: parseInt(totalTechFouls.displayValue),
-					flagrant: parseInt(flagrantFouls.displayValue),
-					fouls: parseInt(pf.displayValue)
-				},
-				turnoverPoints: parseInt(ptsOffTo.displayValue),
-				fastBreakPoints: parseInt(fBPs.displayValue),
-				pointsInPaint: parseInt(pIP.displayValue),
-				largestLead: parseInt(ll.displayValue),
-				players: []
-			};
-			parsedBoxscore[team.team.id] = teamData;
+				const fgSplit = fg.displayValue.split('-');
+				const threePtFgSplit = threePtFg.displayValue.split('-');
+				const ftSplit = ft.displayValue.split('-');
+				const teamData: ParsedEspnBoxscoreTeam = {
+					fieldGoalsMade: parseInt(fgSplit[0]),
+					fieldGoalsAttempted: parseInt(fgSplit[1]),
+					fieldGoalsPct: parseFloat(fgPct.displayValue) / 100,
+					threePointersMade: parseInt(threePtFgSplit[0]),
+					threePointersAttempted: parseInt(threePtFgSplit[1]),
+					threePointersPct: parseFloat(threePtFgPct.displayValue) / 100,
+					freeThrowsMade: parseInt(ftSplit[0]),
+					freeThrowsAttempted: parseInt(ftSplit[1]),
+					freeThrowsPct: parseFloat(ftPct.displayValue) / 100,
+					totalReb: parseInt(totReb.displayValue),
+					offReb: parseInt(offReb.displayValue),
+					defReb: parseInt(defReb.displayValue),
+					assists: parseInt(ast.displayValue),
+					steals: parseInt(stl.displayValue),
+					blocks: parseInt(blk.displayValue),
+					turnovers: {
+						tov: parseInt(to.displayValue),
+						team: parseInt(tTo.displayValue),
+						total: parseInt(totalTo.displayValue)
+					},
+					fouls: {
+						technical: parseInt(techFouls.displayValue),
+						totalTechnical: parseInt(totalTechFouls.displayValue),
+						flagrant: parseInt(flagrantFouls.displayValue),
+						fouls: parseInt(pf.displayValue)
+					},
+					turnoverPoints: parseInt(ptsOffTo.displayValue),
+					fastBreakPoints: parseInt(fBPs.displayValue),
+					pointsInPaint: parseInt(pIP.displayValue),
+					largestLead: parseInt(ll.displayValue),
+					players: []
+				};
+				parsedBoxscore[team.team.id] = teamData;
+			}
 		}
 		/* add players to team */
 		for (const player of data.players) {
 			const teamId = player.team.id;
 			for (let i = 0; i < player.statistics[0].athletes.length; i++) {
 				const athleteStats = player.statistics[0].athletes[i].stats;
-				if (athleteStats.length < 1) throw Error(`Error: Athlete not found for ${gameId}`);
-				const [
-					min,
-					fg,
-					threePtFg,
-					ft,
-					offReb,
-					defReb,
-					totReb,
-					assists,
-					steals,
-					blocks,
-					tov,
-					pf,
-					plusMinus,
-					pts
-				] = athleteStats;
-
 				const playerData: ParsedEspnBoxscoreTeamPlayer = {
 					name: {
 						displayName: player.statistics[0].athletes[i].athlete.displayName,
@@ -166,7 +144,23 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 					didNotPlay: player.statistics[0].athletes[i].didNotPlay,
 					active: player.statistics[0].athletes[i].active
 				};
-				if (player.statistics[0].athletes[i].stats.length > 0) {
+				if (athleteStats.length > 0) {
+					const [
+						min,
+						fg,
+						threePtFg,
+						ft,
+						offReb,
+						defReb,
+						totReb,
+						assists,
+						steals,
+						blocks,
+						tov,
+						pf,
+						plusMinus,
+						pts
+					] = athleteStats;
 					const fgSplit = fg.split('-');
 					const threePtFgSplit = threePtFg.split('-');
 					const ftSplit = ft.split('-');

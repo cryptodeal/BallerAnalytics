@@ -1514,13 +1514,6 @@ const storeEspnData = (
 	});
 };
 
-/*
-  interface PeriodSetItem {
-    period_value: string;
-    period_name: string;
-  }
-*/
-
 const syncLiveNbaStats = async () => {
 	const endDate = dayjs().endOf('day');
 	const startDate = endDate.startOf('day');
@@ -1537,16 +1530,15 @@ const syncLiveNbaStats = async () => {
 };
 
 const syncLiveEspnStats = async () => {
-	const endDate = dayjs().endOf('day');
-	const startDate = endDate.startOf('day');
+	const now = dayjs();
+	const endDate = now.endOf('date');
+	const startDate = now.startOf('date');
 	const espnScoreboard = await getScheduleEspn(
 		startDate.year(),
 		startDate.month() + 1,
 		startDate.date()
 	);
 	const dateStr = startDate.format('YYYYMMDD');
-	console.log(dateStr);
-	//console.log(espnScoreboard);
 
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate }
@@ -1557,9 +1549,6 @@ const syncLiveEspnStats = async () => {
 		const espnGameBasic = findEspnGameId(dateStr, espnScoreboard, game);
 		if (!espnGameBasic) throw Error(`Error: could not find info`);
 		const [gameId, isOver]: [string, boolean] = espnGameBasic;
-		console.log(gameId);
-		console.log(isOver);
-		if (isOver) game.meta.helpers.isOver = true;
 		if (!gameId) {
 			throw Error(
 				`Error: no matching game id found for ${dayjs(game.date).format('YYYY-MM-DD')}, ${
@@ -1567,7 +1556,11 @@ const syncLiveEspnStats = async () => {
 				} @ ${game.home.team.infoCommon.name}`
 			);
 		}
-		await storeEspnData(game, parseInt(gameId)).then(console.log);
+		if (isOver) {
+			game.meta.helpers.isOver = true;
+		} else {
+			await storeEspnData(game, parseInt(gameId)).then(console.log);
+		}
 	}
 };
 

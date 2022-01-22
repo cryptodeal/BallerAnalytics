@@ -113,11 +113,26 @@ export const loadPlayerRoster = (teamAbbrev: string, year: number): Promise<chee
 	});
 };
 
+const testPlayerQuery = ($: cheerio.Root): boolean => {
+	const isPlayerPage = $("meta[name='generated-by']").attr('content');
+	if (isPlayerPage === '/home/bbr/deploy/www/search/search.fcgi') {
+		const testStr = $('#content').find('p').first().text().trim();
+		console.log(testStr);
+		if (testStr === 'Found 0 hits that match your search.') return false;
+	}
+	return true;
+};
+
 export const loadPlayerQuery = (name: string): Promise<cheerio.Root> => {
 	const nameQuery = name.split(' ').join('+');
 	return fetch(`${baseUrl}/search/search.fcgi?hint=${nameQuery}&search=${nameQuery}`).then(
 		async (result) => {
 			const body = await result.text();
+			const $ = cheerio.load(body);
+			if (!testPlayerQuery($)) {
+				const playerName = name.split(' ').splice(-1).join('');
+				return loadPlayerQuery(playerName);
+			}
 			return cheerio.load(body);
 		}
 	);
