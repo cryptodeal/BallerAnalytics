@@ -1369,21 +1369,21 @@ const addEspnTeamStats = (teamData: ParsedEspnBoxscoreTeam) => {
 		largestLead
 	} = teamData;
 	return {
-		fieldGoalsMade,
-		fieldGoalsAttempted,
-		fieldGoalsPct,
-		threePointersMade,
-		threePointersAttempted,
-		threePointersPct,
-		freeThrowsMade,
-		freeThrowsAttempted,
-		freeThrowsPct,
-		totalReb,
-		offReb,
-		defReb,
-		assists,
-		steals,
-		blocks,
+		fieldGoalsMade: fieldGoalsMade,
+		fieldGoalsAttempted: fieldGoalsAttempted,
+		fieldGoalsPct: fieldGoalsPct,
+		threePointersMade: threePointersMade,
+		threePointersAttempted: threePointersAttempted,
+		threePointersPct: threePointersPct,
+		freeThrowsMade: freeThrowsMade,
+		freeThrowsAttempted: freeThrowsAttempted,
+		freeThrowsPct: freeThrowsPct,
+		totalReb: totalReb,
+		offReb: offReb,
+		defReb: defReb,
+		assists: assists,
+		steals: steals,
+		blocks: blocks,
 		turnovers: turnovers.total,
 		fouls: {
 			technical: fouls.technical,
@@ -1411,7 +1411,8 @@ const storeEspnData = (
 		/* Set stats for home team */
 		if (data[game.home.team.meta.helpers.espnTeamId] !== undefined) {
 			const teamData = data[game.home.team.meta.helpers.espnTeamId];
-			game.home.stats.totals = addEspnTeamStats(teamData);
+			const parsedTeamStats = Object.assign(game.home.stats.totals, addEspnTeamStats(teamData));
+			game.home.stats.totals = parsedTeamStats;
 			/* Update home player stats */
 			const { team } = await getEspnTeamPlayers(game.home.team.meta.helpers.espnTeamId);
 			for (const player of teamData.players) {
@@ -1462,7 +1463,8 @@ const storeEspnData = (
 		/* Set stats for visitor team */
 		if (data[game.visitor.team.meta.helpers.espnTeamId] !== undefined) {
 			const teamData = data[game.visitor.team.meta.helpers.espnTeamId];
-			game.visitor.stats.totals = addEspnTeamStats(teamData);
+			const parsedTeamStats = Object.assign(game.visitor.stats.totals, addEspnTeamStats(teamData));
+			game.visitor.stats.totals = parsedTeamStats;
 
 			/* Update visitor player stats */
 			const { team } = await getEspnTeamPlayers(game.visitor.team.meta.helpers.espnTeamId);

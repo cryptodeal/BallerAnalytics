@@ -122,7 +122,6 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 			}
 		}
 		/* add players to team */
-		console.log(data.players);
 		if (data.players && data.players.length > 0) {
 			for (const player of data.players) {
 				const teamId = player.team.id;
