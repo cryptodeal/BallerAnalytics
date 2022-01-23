@@ -23,7 +23,6 @@
 <script lang="ts">
 	import Headshot from '$lib/ux/img/Headshot.svelte';
 	export let player: Player2Document;
-	const height = 200;
 </script>
 
 <div class="appContent">

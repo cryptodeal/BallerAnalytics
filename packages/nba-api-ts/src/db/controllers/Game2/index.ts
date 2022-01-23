@@ -1564,7 +1564,7 @@ const syncLiveEspnStats = async () => {
 
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate },
-		'meta.helpers.isOver': false
+		$or: [{ 'meta.helpers.isOver': false }, { 'meta.helpers.isOver': { $exists: false } }]
 	}).populateTeams()) {
 		if (!game.meta.helpers.isOver) game.meta.helpers.isOver = false;
 		game.home.players.splice(0);
@@ -1580,7 +1580,6 @@ const syncLiveEspnStats = async () => {
 			);
 		}
 		if (isOver) game.meta.helpers.isOver = true;
-		game.meta.helpers.isOver = true;
 		await storeEspnData(game, parseInt(gameId)).then(console.log);
 	}
 };
