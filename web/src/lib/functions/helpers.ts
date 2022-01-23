@@ -147,3 +147,10 @@ export const invertColor = (hex: string, bw?: boolean): string => {
 	/* pad result */
 	return '#' + padZero(r) + padZero(g) + padZero(b);
 };
+
+export const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
+
+export const getImgSize = (srcStr: string): number => {
+	const hrefSplit = srcStr.split('/')[srcStr.split('/').length - 1].split('.')[0].split('-');
+	return parseInt(hrefSplit[hrefSplit.length - 1]);
+};

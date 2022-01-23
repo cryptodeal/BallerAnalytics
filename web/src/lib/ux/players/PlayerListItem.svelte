@@ -4,13 +4,15 @@
 	export let player: Player2Document;
 </script>
 
-{#if player.meta.images.headshot.png.length > 2}
-	<Headshot
-		src="https://dttbvdi5lj1g6.cloudfront.net/{player.meta.images.headshot.png[2]}"
-		alt="{player.name.full} headshot"
-	/>
-{:else}
-	<img class="object-scale-down h-full" src="headshotFallback.png" alt="missing player headshot" />
-{/if}
-
-<h5 class="m-4 text-dark-600 dark:text-light-600">{player.name.full}</h5>
+<div class="flex inline-flex h-full py-1 w-full">
+	<div class="w-30">
+		<Headshot
+			avif={player.meta.images.headshot.avif}
+			alt="{player.name.full} headshot"
+			png={player.meta.images.headshot.png}
+			webp={player.meta.images.headshot.webp}
+			ratio="40px"
+		/>
+	</div>
+	<h5 class="p-4 text-dark-600 dark:text-light-600">{player.name.full}</h5>
+</div>

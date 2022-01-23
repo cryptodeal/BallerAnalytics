@@ -58,7 +58,7 @@
 				{style}
 				sveltekit:prefetch
 				href="/players/{players[index].meta.slug}"
-				class="flex inline-flex w-full h-50px py-1 border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				class="flex inline-flex w-full h-50px border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
 				<PlayerListItem player={players[index]} />
 			</a>

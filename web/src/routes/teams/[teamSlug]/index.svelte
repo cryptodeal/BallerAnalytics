@@ -72,7 +72,6 @@
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
-	$: console.log(teamData.seasons);
 
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
