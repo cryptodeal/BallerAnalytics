@@ -34,7 +34,7 @@
 				<slot />
 			</div>
 		</div>-->
-		<div class="h-full w-full overflow-scroll">
+		<div class="h-100vh w-full overflow-auto">
 			<slot />
 		</div>
 	</Notifications>

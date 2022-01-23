@@ -48,9 +48,15 @@
 	}
 </script>
 
-<div class="h-full pt-12 w-full flex md:(container pt-14 mx-auto)">
+<div class="h-100vh overflow-scroll pt-12 w-full flex md:(container h-full pt-14 mx-auto)">
 	<div class="list glassmorphicBg" bind:offsetHeight={listHeight}>
-		<VirtualList width="auto" height={listHeight} itemCount={players.length} itemSize={50}>
+		<VirtualList
+			width="auto"
+			height={listHeight}
+			overscanCount={10}
+			itemCount={players.length}
+			itemSize={50}
+		>
 			<a
 				slot="item"
 				let:index
@@ -64,7 +70,7 @@
 			</a>
 
 			<div slot="footer">
-				<InfiniteLoading on:infinite={loadPlayers} distance={150} />
+				<InfiniteLoading on:infinite={loadPlayers} distance={200} />
 			</div>
 		</VirtualList>
 	</div>

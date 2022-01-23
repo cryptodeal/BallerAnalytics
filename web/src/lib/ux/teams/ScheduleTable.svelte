@@ -116,7 +116,7 @@
 											{:else if meta.helpers.isOver}
 												<div class="text-red-700 font-bold mr-0.5">L</div>
 											{:else if !meta.helpers.isOver && home.stats.totals.points && visitor.stats.totals.points}
-												<div class="text-red-500 font-light animate-pulse text-sm mr-0.5">Live</div>
+												<div class="text-red-600 font-medium animate-pulse text-sm mr-2">Live</div>
 											{/if}
 											<div>
 												{home.stats.totals.points > visitor.stats.totals.points

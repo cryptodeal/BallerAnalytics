@@ -1,9 +1,6 @@
-html {
-	@apply overflow-hidden bg-white dark:bg-black;
-}
-
+html,
 body {
-	@apply bg-white dark:bg-black;
+	@apply overflow-hidden h-full relative mb-4 bg-white dark:bg-black;
 }
 
 p {
@@ -72,7 +69,18 @@ nav a[aria-current]::after {
 }
 
 .appContent {
-	@apply h-full w-full pt-12 md:pt-14;
+	@apply w-full pt-12 md:pt-14;
+}
+.appContent {
+	height: 100%;
+	height: -moz-available; /* WebKit-based browsers will ignore this. */
+	height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+	height: fill-available;
+	width: 100%;
+	width: -moz-available;
+	width: -webkit-fill-available;
+	width: fill-available;
+	-webkit-overflow-scrolling: touch;
 }
 
 .glassmorphicBg {

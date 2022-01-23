@@ -18,7 +18,7 @@ const avifOptions = {
 
 const pngOptions = {
 	compressionLevel: 8,
-	force: false
+	force: true
 };
 
 const webpOptions = {
