@@ -1,6 +1,12 @@
 html,
 body {
-	@apply overflow-hidden h-full relative mb-4 bg-white dark:bg-black;
+	@apply bg-white dark:bg-black;
+}
+
+body {
+	min-height: 100%;
+	overflow: hidden;
+	padding-bottom: calc(1em + env(safe-area-inset-bottom));
 }
 
 p {
@@ -70,17 +76,6 @@ nav a[aria-current]::after {
 
 .appContent {
 	@apply w-full pt-12 md:pt-14;
-}
-.appContent {
-	height: 100%;
-	height: -moz-available; /* WebKit-based browsers will ignore this. */
-	height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-	height: fill-available;
-	width: 100%;
-	width: -moz-available;
-	width: -webkit-fill-available;
-	width: fill-available;
-	-webkit-overflow-scrolling: touch;
 }
 
 .glassmorphicBg {
@@ -173,7 +168,7 @@ nav a[aria-current]::after {
 }
 
 .list .virtual-list-wrapper {
-	overflow: visible;
+	overflow-y: scroll;
 	overflow-x: hidden;
 	white-space: nowrap;
 }
