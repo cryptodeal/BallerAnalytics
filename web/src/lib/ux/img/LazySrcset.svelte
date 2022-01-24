@@ -84,19 +84,19 @@
 
 	.blur {
 		transition: opacity 200ms;
-		transition-delay: 50ms;
+		/* transition-delay: 50ms; */
 	}
 
 	.placeholder {
 		opacity: 1;
 		transition: opacity 200ms ease-out;
-		transition-delay: 50ms;
+		/* transition-delay: 50ms; */
 	}
 
 	.main {
 		opacity: 0;
 		transition: opacity 200ms ease-out;
-		transition-delay: 50ms;
+		/* transition-delay: 50ms; */
 	}
 
 	.loaded .placeholder {

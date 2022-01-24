@@ -29,6 +29,8 @@
 	export let players: Player2Document[] = [];
 	let page = 1;
 	let listHeight: number;
+	let listWidth: number;
+	$: console.log(listWidth);
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
 		fetch(`players.json?page=${page}`)
@@ -49,7 +51,7 @@
 </script>
 
 <div class="h-100vh overflow-scroll pt-12 w-full flex md:(container h-full pt-14 mx-auto)">
-	<div class="list glassmorphicBg" bind:offsetHeight={listHeight}>
+	<div class="list glassmorphicBg" bind:offsetHeight={listHeight} bind:offsetWidth={listWidth}>
 		<VirtualList
 			width="auto"
 			height={listHeight}
