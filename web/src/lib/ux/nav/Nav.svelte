@@ -3,7 +3,6 @@
 	import { session } from '$app/stores';
 	import ThemeToggle from '$lib/ux/nav/ThemeToggle.svelte';
 	import AuthButton from '$lib/ux/nav/AuthButton.svelte';
-	// import Logo from '$lib/ux/Logo.svelte';
 
 	export let segment: string;
 
