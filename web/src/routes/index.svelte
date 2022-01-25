@@ -3,20 +3,27 @@
 </script>
 
 <script lang="ts">
-	// import Basketball from '$lib/ux/animations/hero/Hero.svelte';
-	import Logo from '$lib/ux/Logo.svelte';
+	import { onMount } from 'svelte';
+	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
+	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
+	let isVisible = false;
+	let done = false;
+	onMount(() => {
+		isVisible = true;
+		done = true;
+	});
 </script>
 
 <div class="w-full h-full bg-hero-circuit-board-blue-30">
 	<div class="appContent">
 		<div
-			class="w-full flex flex-col justify-center p-1 mt-5 glassmorphicBg rounded-md sm:(flex m-10 p-4 w-3/4 mx-auto) md:(w-1/2)"
+			class="mt-10 w-full flex flex-wrap items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:(w-3/4 p-4 min-h-100)"
 		>
 			<div class="w-full">
-				<Logo />
+				<BallerAnalytics {isVisible} />
 			</div>
-			<div class="w-full flex flex-wrap">
-				<div class="flex flex-col w-full sm:w-1/2" />
+			<div class="md:w-1/2">
+				<WordCloud {isVisible} />
 			</div>
 		</div>
 	</div>
