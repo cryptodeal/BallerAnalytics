@@ -25,16 +25,10 @@
 	</script>
 </svelte:head>
 
-<div class="h-100vh w-100vw">
+<div class="h-full">
 	<Notifications>
 		<Nav {segment} />
-		<!--<div class="w-full">
-			 pt-15 works well w nav on md/large?? 
-			<div class="h-100vh overflow-scroll">
-				<slot />
-			</div>
-		</div>-->
-		<div class="h-full w-full overflow-scroll">
+		<div class="h-full w-full overflow-auto">
 			<slot />
 		</div>
 	</Notifications>
