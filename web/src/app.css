@@ -4,17 +4,20 @@ body {
 }
 
 body {
+	overflow-y: hidden;
 	min-height: 100vh;
-	min-height: -moz-available;
-	min-height: -webkit-fill-available;
-	min-height: fill-available;
-	overflow: hidden;
-	padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+	width: 100vw;
+}
+
+@supports (-webkit-touch-callout: none) {
+	body {
+		min-height: -webkit-fill-available;
+	}
 }
 
 #svelte {
-	height: calc(100vh - env(safe-area-inset-bottom));
 	width: 100%;
+	height: calc(100% + 1px);
 }
 
 p {
@@ -83,7 +86,7 @@ nav a[aria-current]::after {
 }
 
 .appContent {
-	@apply pt-12 md:pt-14;
+	@apply pt-12 md:pt-14 w-full;
 }
 
 .glassmorphicBg {

@@ -15,7 +15,7 @@
 </script>
 
 <nav
-	class="absolute px-1 top-0 z-10 text-bold flex flex-wrap md:(flex inline-flex items-center) w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
+	class="fixed min-h-10 px-1 top-0 z-10 text-bold flex flex-wrap md:(flex inline-flex items-center) w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
 >
 	<div
 		class="flex justify-start text-dark-700 dark:text-light-200 md:(hidden)"

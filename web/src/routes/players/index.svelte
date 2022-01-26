@@ -50,7 +50,7 @@
 	}
 </script>
 
-<div class="h-100vh overflow-scroll pt-12 w-full flex md:(container h-full pt-14 mx-auto)">
+<div class="min-h-100vh overflow-scroll pt-12 w-full flex md:(container h-full pt-14 mx-auto)">
 	<div class="list glassmorphicBg" bind:offsetHeight={listHeight} bind:offsetWidth={listWidth}>
 		<VirtualList
 			width="auto"

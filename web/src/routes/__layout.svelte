@@ -25,11 +25,9 @@
 	</script>
 </svelte:head>
 
-<div class="h-full">
-	<Notifications>
-		<Nav {segment} />
-		<div class="h-full w-full overflow-auto">
-			<slot />
-		</div>
-	</Notifications>
-</div>
+<Notifications>
+	<Nav {segment} />
+	<div class="h-full w-full">
+		<slot />
+	</div>
+</Notifications>

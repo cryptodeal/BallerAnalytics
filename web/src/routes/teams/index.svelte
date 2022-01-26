@@ -27,7 +27,7 @@
 	export let teams: Team2Document[];
 </script>
 
-<div class="appContent">
+<div class="appContent min-h-100vh overflow-y-scroll">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
 			<a sveltekit:prefetch href="teams/{infoCommon.slug}">
