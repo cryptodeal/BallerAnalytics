@@ -48,12 +48,12 @@
 	}
 </script>
 
-<div class="min-h-100vh overflow-scroll pt-12 w-full flex md:(container h-full pt-14 mx-auto)">
+<div class="pt-12 h-100vh w-full flex md:(container pt-14 mx-auto)">
 	<div class="list glassmorphicBg" bind:offsetHeight={listHeight}>
 		<VirtualList
 			width="auto"
 			height={listHeight}
-			overscanCount={10}
+			overscanCount={15}
 			itemCount={players.length}
 			itemSize={50}
 		>
