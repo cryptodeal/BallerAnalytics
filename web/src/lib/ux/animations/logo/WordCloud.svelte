@@ -5,7 +5,7 @@
 	const wordClouds = 'Building Better,/Faster,/AI Driven,/Fan Fueled Analytics';
 </script>
 
-<div class="h-full w-full">
+<div class="h-full">
 	{#if isVisible}
 		<div class="font-light leading-relaxed text-4xl text-blue-500 md:(text-5xl)">
 			{#each wordClouds.split('') as character, i}

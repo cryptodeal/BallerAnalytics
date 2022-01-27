@@ -20,7 +20,7 @@
 	SC.onFrame(() => {
 		delta = clock.getDelta();
 		time += delta;
-		ballXRotation = time * 4;
+		ballXRotation = time * 2;
 		ballYPosition = 0.5 + Math.abs(Math.sin(time * 3)) * 2;
 		ballZPosition = Math.cos(time) * 4;
 	});
@@ -28,19 +28,11 @@
 
 <SC.Canvas antialias alpha={true} background={null} {height} {width}>
 	<SC.Mesh
-		geometry={new THREE.PlaneGeometry(100, 100, 100, 100)}
-		material={new THREE.MeshBasicMaterial({
-			map: courtTexture
-		})}
-		rotation={[-Math.PI * 0.5, 0, 0]}
-	/>
-	<SC.Mesh
-		geometry={new THREE.SphereGeometry(0.5, 16, 8)}
+		geometry={new THREE.SphereGeometry(2, 17, 17)}
 		material={new THREE.MeshBasicMaterial({
 			map: ballTexture
 		})}
-		rotation={[ballXRotation, 0, 0]}
-		position={[0, ballYPosition, ballZPosition]}
+		rotation={[0, ballXRotation, 0]}
 	/>
 	<SC.PerspectiveCamera position={[2, 3, 5]} />
 	<SC.OrbitControls enableZoom={false} />
