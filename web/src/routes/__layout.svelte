@@ -27,7 +27,5 @@
 
 <Notifications>
 	<Nav {segment} />
-	<div class="h-full w-full">
-		<slot />
-	</div>
+	<slot />
 </Notifications>

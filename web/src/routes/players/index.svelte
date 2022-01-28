@@ -28,7 +28,7 @@
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	export let players: Player2Document[] = [];
 	let page = 1;
-	let listHeight: number;
+	let listHeight;
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
 		fetch(`players.json?page=${page}`)
@@ -46,17 +46,13 @@
 			})
 			.catch(() => error());
 	}
+
+	$: console.log(listHeight);
 </script>
 
-<div class="pt-12 h-100vh w-full flex md:(container pt-14 mx-auto)">
-	<div class="list glassmorphicBg" bind:offsetHeight={listHeight}>
-		<VirtualList
-			width="auto"
-			height={listHeight}
-			overscanCount={15}
-			itemCount={players.length}
-			itemSize={50}
-		>
+<div class="listContainer">
+	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
+		<VirtualList overscanCount={5} height={listHeight} itemCount={players.length} itemSize={50}>
 			<a
 				slot="item"
 				let:index
@@ -64,26 +60,29 @@
 				{style}
 				sveltekit:prefetch
 				href="/players/{players[index].meta.slug}"
-				class="flex inline-flex w-full h-50px border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				class="flex inline-flex max-h-50px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
 				<PlayerListItem player={players[index]} />
 			</a>
 
 			<div slot="footer">
-				<InfiniteLoading on:infinite={loadPlayers} distance={200} />
+				<InfiniteLoading on:infinite={loadPlayers} />
 			</div>
 		</VirtualList>
 	</div>
 </div>
 
 <style>
-	.list {
-		flex-grow: 1;
+	@media (max-width: 768px) {
+		.listContainer {
+			height: 100vh;
+			padding-top: 3rem;
+			margin-bottom: 1rem;
+		}
 	}
 
-	.list :global(.virtual-list-wrapper) {
-		overflow: visible;
-		overflow-x: hidden;
-		white-space: nowrap;
+	.listContainer {
+		height: 100vh;
+		padding-top: 3.2rem;
 	}
 </style>

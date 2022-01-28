@@ -1,23 +1,30 @@
 html,
 body {
-	@apply bg-white dark:bg-black;
+	overscroll-behavior-y: none;
 }
 
 body {
-	overflow-y: hidden;
-	min-height: 100vh;
-	width: 100vw;
-}
-
-@supports (-webkit-touch-callout: none) {
-	body {
-		min-height: -webkit-fill-available;
-	}
+	@apply bg-white dark:bg-black;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 #svelte {
-	width: 100%;
-	height: calc(100% + 1px);
+	flex-grow: 1;
+	@apply bg-white dark:bg-black;
+}
+
+@media (min-width: 768px) {
+	.listContainer {
+		height: 100vh;
+		padding-top: 4rem;
+	}
+}
+
+.listContainer {
+	height: calc(100vh - 4rem);
+	padding-top: 3rem;
 }
 
 p {
