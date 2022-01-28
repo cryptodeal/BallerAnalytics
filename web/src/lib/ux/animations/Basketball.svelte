@@ -35,5 +35,4 @@
 		rotation={[0, ballXRotation, 0]}
 	/>
 	<SC.PerspectiveCamera position={[2, 3, 5]} />
-	<SC.OrbitControls enableZoom={false} />
 </SC.Canvas>

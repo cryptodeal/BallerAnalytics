@@ -66,7 +66,7 @@
 			</a>
 
 			<div slot="footer">
-				<InfiniteLoading on:infinite={loadPlayers} />
+				<InfiniteLoading distance={150} on:infinite={loadPlayers} />
 			</div>
 		</VirtualList>
 	</div>
