@@ -5,24 +5,19 @@
 	export let height: number;
 	export let width: number;
 	let ballTexture;
-	let courtTexture;
+
 	if (browser) {
 		ballTexture = new THREE.TextureLoader().load('basketball.png');
-		courtTexture = new THREE.TextureLoader().load('texture.png');
 	}
 	let clock = new THREE.Clock();
 	let time = 0;
 	let delta = 0;
 	let ballXRotation = 0;
-	let ballYPosition = 0;
-	let ballZPosition = 0;
 
 	SC.onFrame(() => {
 		delta = clock.getDelta();
 		time += delta;
 		ballXRotation = time * 2;
-		ballYPosition = 0.5 + Math.abs(Math.sin(time * 3)) * 2;
-		ballZPosition = Math.cos(time) * 4;
 	});
 </script>
 
