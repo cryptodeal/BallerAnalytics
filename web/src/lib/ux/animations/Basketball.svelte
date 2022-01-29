@@ -4,9 +4,11 @@
 	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 	import { onMount } from 'svelte';
+	import darkMode from '$lib/data/stores/theme';
 	export let height: number;
 	export let width: number;
 	let basketballObj;
+	$: console.log(`darkMode: ${$darkMode}`);
 
 	onMount(() => {
 		new MTLLoader()
@@ -42,7 +44,7 @@
 			rotation={[0, ballYRotation, 0]}
 		/>
 	{/if}
-	<SC.AmbientLight intensity={0.65} />
+	<SC.AmbientLight intensity={$darkMode ? 0.65 : 0.8} />
 	<SC.DirectionalLight intensity={0.2} position={[2, 1, 0]} />
 	<SC.PerspectiveCamera position={[0, 0, 10]} />
 </SC.Canvas>
