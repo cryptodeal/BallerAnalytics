@@ -5,9 +5,9 @@ import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 
-export const handle: Handle = async ({ request, resolve }) => {
+export const handle: Handle = async ({ event, resolve }) => {
 	await serverlessConnect(config.MONGO_URI);
-	const cookies = cookie.parse(request.headers.cookie || '');
+	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 	let refreshedAccessToken: string;
 
 	if (!cookies.accessToken && cookies.refreshToken) {
@@ -19,25 +19,16 @@ export const handle: Handle = async ({ request, resolve }) => {
 		const decoded = decodeToken(cookies.accessToken);
 		if (decoded) {
 			const { payload } = decoded;
-			request.locals.user = payload;
+			event.locals.user = payload;
 		}
 	}
 
-	/*
-    // TODO https://github.com/sveltejs/kit/issues/1046
-    if (request.query.has('_method')) {
-      request.method = request.query.get('_method').toUpperCase();
-    }
-  */
-
-	const response = await resolve(request);
-	if (refreshedAccessToken) response.headers['set-cookie'] = refreshedAccessToken;
+	const response = await resolve(event);
+	if (refreshedAccessToken) response.headers.set('set-cookie', refreshedAccessToken);
 
 	return response;
 };
 
-export const getSession: GetSession = async (request) => {
-	return {
-		user: request.locals.user
-	};
+export const getSession: GetSession = async (event) => {
+	return event.locals.user ? { user: event.locals.user } : {};
 };

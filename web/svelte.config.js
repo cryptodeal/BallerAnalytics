@@ -4,10 +4,9 @@ import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
 import Icons from 'unplugin-icons/vite';
-import dotenv from 'dotenv';
-import path from 'path';
-import svelteSVG from 'vite-plugin-svelte-svg';
-dotenv.config();
+// import dotenv from 'dotenv';
+// import path from 'path';
+// dotenv.config();
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -17,15 +16,7 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter({
-			esbuild(defaultOptions) {
-				return {
-					...defaultOptions,
-					plugins: [],
-					external: ['@napi-rs/*']
-				};
-			}
-		}),
+		adapter: adapter({ external: ['@napi-rs/*'] }),
 
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
@@ -35,18 +26,11 @@ const config = {
 				WindiCSS(),
 				Icons({
 					compiler: 'svelte'
-				}),
-				svelteSVG({
-					svgoConfig: {} // See https://github.com/svg/svgo#configuration
 				})
 			],
-			optimizeDeps: {
-				exclude: ['@napi-rs/*']
-			},
 			ssr: {
-				external: ['@napi-rs/*']
+				noExternal: ['@balleranalytics/nba-api-ts']
 			},
-
 			resolve: {
 				dedupe: ['mongoose']
 			}
@@ -54,12 +38,12 @@ const config = {
 	}
 };
 
-if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
+/*if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve = {
 		alias: {
 			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
 		}
 	};
-}
+}*/
 
 export default config;

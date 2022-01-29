@@ -3,9 +3,10 @@ import { User } from '@balleranalytics/nba-api-ts';
 import createToken from '$lib/functions/_api/auth/createToken';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import type { RequestHandler } from '@sveltejs/kit';
+import type { Locals, JWTPayload } from '$lib/types';
 
-export const get: RequestHandler = async (request) => {
-	const { authToken } = request.params;
+export const get: RequestHandler<Locals> = async (event) => {
+	const { authToken } = event.params;
 
 	const hashedToken = crypto.createHash('sha256').update(authToken).digest('hex');
 
@@ -32,7 +33,7 @@ export const get: RequestHandler = async (request) => {
 
 	const decoded = decodeToken(tokenPayload);
 	if (decoded == null) throw Error(`Error: could not decode token`);
-	request.locals.user = decoded.payload;
+	event.locals.user = decoded.payload as JWTPayload;
 	//let cookie1 = `cookie1Test=testCookie1; Path=/; HttpOnly`
 	//let cookie2 = `cookie2Test=testCookie2; Path=/; HttpOnly`
 

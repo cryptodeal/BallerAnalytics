@@ -2,14 +2,16 @@
 	import type { Load } from '@sveltejs/kit';
 	import type { SeasonList } from '$lib/types';
 
-	export const load: Load = async ({ fetch, page }) => {
-		if (page.query.has('seasonIdx')) {
-			const apiUrl = `/teams/${page.params.teamSlug}.json?seasonIdx=${page.query.get('seasonIdx')}`;
+	export const load: Load = async ({ fetch, params, url }) => {
+		if (url.searchParams.get('seasonIdx')) {
+			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
+				'seasonIdx'
+			)}`;
 			const res = await fetch(apiUrl);
 
 			if (res.ok) {
 				const { teamData } = await res.json();
-				const seasonIdx = page.query.get('seasonIdx');
+				const seasonIdx = url.searchParams.get('seasonIdx');
 				const seasons: SeasonList[] = [];
 				teamData.seasons.map((s) => {
 					const { season } = s;
@@ -31,7 +33,7 @@
 				error: new Error(`Could not load ${apiUrl}`)
 			};
 		} else {
-			const apiUrl = `/teams/${page.params.teamSlug}.json`;
+			const apiUrl = `/teams/${params.teamSlug}.json`;
 			const res = await fetch(apiUrl);
 
 			if (res.ok) {

@@ -1,8 +1,8 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { Player2Document } from '@balleranalytics/nba-api-ts';
-	export const load: Load = async ({ fetch, page }) => {
-		const url = `/players/${page.params.playerSlug}.json`;
+	export const load: Load = async ({ fetch, params }) => {
+		const url = `/players/${params.playerSlug}.json`;
 		const res = await fetch(url);
 		if (res.ok) {
 			const { playerData: player }: { playerData: Player2Document } = await res.json();

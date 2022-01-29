@@ -4,8 +4,8 @@ import { validateNewUserForm } from '$lib/functions/helpers';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { Locals, NewUserFormData, JWTPayload } from '$lib/types';
 
-export const get: RequestHandler = async ({ query }) => {
-	const userId = query.get('userId');
+export const get: RequestHandler = async ({ url }) => {
+	const userId = url.searchParams.get('userId');
 	if (!userId) throw Error('userId is required');
 
 	const userData = await findUserById(userId);
@@ -23,8 +23,9 @@ export const get: RequestHandler = async ({ query }) => {
 	};
 };
 
-export const post: RequestHandler<Locals, NewUserFormData> = async ({ headers, body }) => {
-	const { valid, errors } = validateNewUserForm(body);
+export const post: RequestHandler<Locals> = async (event) => {
+	const data = (await event.request.json()) as NewUserFormData;
+	const { valid, errors } = validateNewUserForm(data);
 	if (!valid) {
 		return {
 			status: 422,
@@ -34,12 +35,12 @@ export const post: RequestHandler<Locals, NewUserFormData> = async ({ headers, b
 		};
 	}
 
-	const userAuth = (await protect(headers)) as JWTPayload;
+	const userAuth = (await protect(event.request.headers)) as JWTPayload;
 	if (!userAuth) {
 		throw new Error(`Error: unable to authenticate request`);
 	}
 
-	const user = await addNewUserFormData(userAuth.id, body);
+	const user = await addNewUserFormData(userAuth.id, data);
 	if (user) {
 		return {
 			status: 200

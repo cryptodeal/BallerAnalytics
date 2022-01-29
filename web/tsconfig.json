@@ -25,8 +25,8 @@
 		//"checkJs": true,
 		"paths": {
 			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"],
-			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"]
+			"$lib/*": ["src/lib/*"]
+			//"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"]
 		}
 	},
 	"exclude": ["svelte.config.js"],

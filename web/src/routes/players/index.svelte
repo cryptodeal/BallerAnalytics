@@ -52,7 +52,7 @@
 
 <div class="listContainer">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
-		<VirtualList overscanCount={15} height={listHeight} itemCount={players.length} itemSize={50}>
+		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={50}>
 			<a
 				slot="item"
 				let:index
@@ -66,7 +66,7 @@
 			</a>
 
 			<div slot="footer">
-				<InfiniteLoading distance={150} on:infinite={loadPlayers} />
+				<InfiniteLoading distance={200} on:infinite={loadPlayers} />
 			</div>
 		</VirtualList>
 	</div>

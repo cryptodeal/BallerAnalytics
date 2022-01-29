@@ -4,11 +4,11 @@ import dayjs from 'dayjs';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { Locals, PostAuthBody } from '$lib/types';
 
-export const post: RequestHandler<Locals, PostAuthBody> = async ({ headers, body }) => {
-	const { host } = headers;
-	const { email } = body;
-	const ua = uaParser(headers['user-agent']);
-	const time: string = dayjs().format('DD MMMM, YYYY HH:mm:ss Z UTC');
+export const post: RequestHandler<Locals> = async (event) => {
+	const { email } = (await event.request.json()) as PostAuthBody,
+		host = event.request.headers.get('host'),
+		ua = uaParser(event.request.headers.get('user-agent')),
+		time = dayjs().format('DD MMMM, YYYY HH:mm:ss Z UTC');
 
 	const result = await sendAuthLink(email, ua, time, host);
 
