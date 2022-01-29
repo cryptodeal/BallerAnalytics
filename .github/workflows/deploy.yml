@@ -17,7 +17,7 @@ jobs:
             pm2 stop all
             pm2 delete all
             rm -rf BallerAnalytics
-            git clone -b TempVercelFix git@github.com:cryptodeal/BallerAnalytics.git
+            git clone git@github.com:cryptodeal/BallerAnalytics.git
             cp .env ./BallerAnalytics
             cp .env ./BallerAnalytics/web
             cp .env ./BallerAnalytics/packages/nba-api-ts
