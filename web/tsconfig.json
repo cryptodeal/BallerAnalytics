@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
 		"moduleResolution": "node",
-		"module": "ESNext",
+		"module": "es2020",
 		"lib": ["es2020", "DOM"],
-		"target": "ESNext",
+		"target": "es2020",
 		/**
 			svelte-preprocess cannot figure out whether you have a value or a type, so tell TypeScript
 			to enforce using \`import type\` instead of \`import\` for Types.
@@ -20,15 +20,13 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
-		//"composite": true,
-		//"allowJs": true,
-		//"checkJs": true,
+		"allowJs": true,
+		"checkJs": true,
 		"paths": {
 			"$lib": ["src/lib"],
-			"$lib/*": ["src/lib/*"]
-			//"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"]
+			"$lib/*": ["src/lib/*"],
+			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts"]
 		}
 	},
-	"exclude": ["svelte.config.js"],
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]
 }

@@ -4,9 +4,9 @@ import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
 import Icons from 'unplugin-icons/vite';
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config();
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config();
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -38,12 +38,12 @@ const config = {
 	}
 };
 
-/*if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
+if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve = {
 		alias: {
 			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
 		}
 	};
-}*/
+}
 
 export default config;
