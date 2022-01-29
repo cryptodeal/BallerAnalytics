@@ -22,12 +22,14 @@
 </script>
 
 <SC.Canvas antialias alpha={true} background={null} {height} {width}>
-	<SC.Mesh
-		geometry={new THREE.SphereGeometry(2, 17, 17)}
-		material={new THREE.MeshBasicMaterial({
-			map: ballTexture
-		})}
-		rotation={[0, ballXRotation, 0]}
-	/>
+	{#if ballTexture}
+		<SC.Mesh
+			geometry={new THREE.SphereGeometry(2, 17, 17)}
+			material={new THREE.MeshBasicMaterial({
+				map: ballTexture
+			})}
+			rotation={[0, ballXRotation, 0]}
+		/>
+	{/if}
 	<SC.PerspectiveCamera position={[2, 3, 5]} />
 </SC.Canvas>

@@ -12,7 +12,7 @@
 				{#if character == '/'}
 					<br />
 				{:else}
-					<span in:fade={{ delay: Math.random() * 2500 + 1000, duration: 150 }}>{character}</span>
+					<span in:fade={{ delay: Math.random() * 2500 + 200, duration: 150 }}>{character}</span>
 				{/if}
 			{/each}
 		</div>

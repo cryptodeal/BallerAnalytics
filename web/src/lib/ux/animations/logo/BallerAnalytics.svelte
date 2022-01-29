@@ -29,12 +29,12 @@
 				{#if i === paths.length - 1}
 					<path
 						class:done
-						in:draw={{ delay: i * 250, duration: 500 }}
+						in:draw={{ delay: i * 150, duration: 500 }}
 						d={path}
 						on:introend={() => (done = true)}
 					/>
 				{/if}
-				<path class:done in:draw={{ delay: i * 250, duration: 500 }} d={path} />
+				<path class:done in:draw={{ delay: i * 150, duration: 500 }} d={path} />
 			{/each}
 		</svg>
 	{/if}
