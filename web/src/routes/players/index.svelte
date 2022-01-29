@@ -52,7 +52,7 @@
 
 <div class="listContainer">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
-		<VirtualList overscanCount={5} height={listHeight} itemCount={players.length} itemSize={50}>
+		<VirtualList overscanCount={15} height={listHeight} itemCount={players.length} itemSize={50}>
 			<a
 				slot="item"
 				let:index
