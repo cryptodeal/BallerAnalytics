@@ -1,49 +1,72 @@
 <script lang="ts">
 	import * as THREE from 'three';
 	import * as SC from 'svelte-cubed';
-	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 	import { browser } from '$app/env';
-	import darkMode from '$lib/data/stores/theme';
-	export let height: number;
-	export let width: number;
-	let basketballObj: THREE.Group;
+	import treeMat from '$models/Basketball_size6_SF.mtl';
+	import treeObj from '$models/Basketball_size6_SF.obj';
+	export let height = 0,
+		width = 0;
 	let clock = new THREE.Clock();
 	let time = 0;
 	let delta = 0;
 	let ballYRotation = 0;
-
-	if (browser) {
-		new MTLLoader()
-			.setPath('/obj/basketball/')
-			.load('Basketball_size6_SF.mtl', function (materials) {
-				materials.preload();
-				new OBJLoader()
-					.setMaterials(materials)
-					.setPath('/obj/basketball/')
-					.load('Basketball_size6_SF.obj', function (object) {
-						basketballObj = object;
-					});
-			});
-
-		SC.onFrame(() => {
-			delta = clock.getDelta();
-			time += delta;
-			ballYRotation = time * 1.5;
-		});
-	}
+	const loadMtl = () => {
+		const material = new MTLLoader().parse(treeMat, 'mtlRef/');
+		material.preload();
+		return material;
+	};
+	SC.onFrame(() => {
+		delta = clock.getDelta();
+		time += delta;
+		ballYRotation = time * 1.5;
+	});
 </script>
 
-<SC.Canvas antialias alpha={true} {height} {width}>
-	{#if basketballObj?.children[0] instanceof THREE.Mesh}
-		<SC.Mesh
-			position={[0, -3.4, 0]}
-			geometry={basketballObj.children[0].geometry}
-			material={basketballObj.children[0].material}
-			rotation={[0, ballYRotation, 0]}
-		/>
+<div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
+	{#if !browser}
+		<div class="loadingContainer">
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+		</div>
+	{:else}
+		{#await loadMtl()}
+			<div class="loadingContainer">
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+				<div class="wave" />
+			</div>
+		{:then loadedMaterial}
+			<SC.Canvas antialias alpha={true} background={null} {height} {width}>
+				<SC.Primitive
+					position={[0, 0, 0]}
+					object={new OBJLoader().setMaterials(loadedMaterial).parse(treeObj)}
+					rotation={[0, ballYRotation, 0]}
+				/>
+				<SC.PerspectiveCamera position={[10, 10, 10]} />
+				<SC.AmbientLight intensity={0.6} />
+				<SC.DirectionalLight
+					intensity={0.6}
+					position={[-2, 3, 2]}
+					shadow={{ mapSize: [2048, 2048] }}
+				/>
+			</SC.Canvas>
+		{/await}
 	{/if}
-	<SC.AmbientLight intensity={$darkMode ? 0.65 : 0.8} />
-	<SC.DirectionalLight intensity={0.8} position={[2, 1, 0]} />
-	<SC.PerspectiveCamera position={[0, 0, 10]} />
-</SC.Canvas>
+</div>

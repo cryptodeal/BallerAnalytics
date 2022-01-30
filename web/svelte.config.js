@@ -4,6 +4,9 @@ import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 import WindiCSS from 'vite-plugin-windicss';
 import Icons from 'unplugin-icons/vite';
+import ObjFileImport from 'unplugin-obj/vite';
+import MtlFileImport from 'unplugin-mtl/vite';
+
 import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
@@ -26,10 +29,12 @@ const config = {
 				WindiCSS(),
 				Icons({
 					compiler: 'svelte'
-				})
+				}),
+				ObjFileImport(),
+				MtlFileImport()
 			],
 			ssr: {
-				noExternal: ['@balleranalytics/nba-api-ts']
+				noExternal: ['three']
 			},
 			resolve: {
 				dedupe: ['mongoose']
@@ -39,10 +44,13 @@ const config = {
 };
 
 if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
-	config.kit.vite.resolve = {
-		alias: {
-			'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src')
-		}
+	config.kit.vite.resolve.alias = {
+		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts')
+	};
+} else {
+	config.kit.vite.resolve.alias = {
+		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts'),
+		$models: path.resolve('src/models')
 	};
 }
 

@@ -134,6 +134,8 @@ importers:
       typewriter-editor: ^0.6.45
       ua-parser-js: ^1.0.2
       unplugin-icons: ^0.13.0
+      unplugin-mtl: ^0.0.5
+      unplugin-obj: ^0.1.2
       vite-plugin-windicss: ^1.6.3
       windicss: ^3.4.3
       yup: ^0.32.11
@@ -181,6 +183,8 @@ importers:
       typewriter-editor: 0.6.45_svelte@3.46.3
       ua-parser-js: 1.0.2
       unplugin-icons: 0.13.0
+      unplugin-mtl: 0.0.5
+      unplugin-obj: 0.1.2
       vite-plugin-windicss: 1.6.3
       windicss: 3.4.3
       yup: 0.32.11
@@ -5775,6 +5779,26 @@ packages:
     transitivePeerDependencies:
       - rollup
       - supports-color
+      - vite
+      - webpack
+    dev: true
+
+  /unplugin-mtl/0.0.5:
+    resolution: {integrity: sha512-Ke/af17IiiO7ixsaAl1na4sP6Sle3tP5I0m10nQagH/Bo4QzTB/d3H1Bra6P7o8XilFqME/Tt7Jjp2la88Rt0g==}
+    dependencies:
+      unplugin: 0.2.21
+    transitivePeerDependencies:
+      - rollup
+      - vite
+      - webpack
+    dev: true
+
+  /unplugin-obj/0.1.2:
+    resolution: {integrity: sha512-gf5eh16LiStLyGXYxCDnnjUqvOmUznCpWatIh7ZzBLJ/o0E66up58B8w7bjzaY853Os/eiRIY4P0uZg4lxR3gQ==}
+    dependencies:
+      unplugin: 0.2.21
+    transitivePeerDependencies:
+      - rollup
       - vite
       - webpack
     dev: true

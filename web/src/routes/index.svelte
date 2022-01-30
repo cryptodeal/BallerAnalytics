@@ -1,15 +1,10 @@
-<script context="module" lang="ts">
-	export const prerender = true;
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
 	import Bball from '$lib/ux/animations/Basketball.svelte';
 	let isVisible = false;
-	let width = 1;
-	let height = 1;
+	let width, height: number;
 	onMount(() => {
 		isVisible = true;
 	});
