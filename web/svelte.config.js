@@ -45,7 +45,8 @@ const config = {
 
 if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve.alias = {
-		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts')
+		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts'),
+		$models: path.resolve('src/models')
 	};
 } else {
 	config.kit.vite.resolve.alias = {
