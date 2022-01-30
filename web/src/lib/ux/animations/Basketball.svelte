@@ -4,6 +4,7 @@
 	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 	import { browser } from '$app/env';
+	import darkMode from '$lib/data/stores/theme';
 	import { onMount } from 'svelte';
 	import treeMat from '$models/Basketball_size6_SF.mtl';
 	import treeObj from '$models/Basketball_size6_SF.obj';
@@ -14,14 +15,10 @@
 	let time = 0;
 	let delta = 0;
 	let ballYRotation = 0;
-	const loadMtl = async () => {
-		const material = await new MTLLoader().parse(treeMat, 'mtlRef/');
-		await material.preload();
-		return await new OBJLoader().setMaterials(material).parse(treeObj);
-	};
-	$: if (basketball) console.log(basketball);
-	onMount(async () => {
-		basketball = await loadMtl();
+	onMount(() => {
+		const material = new MTLLoader().parse(treeMat, 'mtlRef/');
+		material.preload();
+		basketball = new OBJLoader().setMaterials(material).parse(treeObj);
 	});
 	SC.onFrame(() => {
 		delta = clock.getDelta();
@@ -47,18 +44,15 @@
 	{:else}
 		<SC.Canvas antialias alpha={true} background={null} {height} {width}>
 			<SC.Mesh
-				position={[0, 0, 0]}
+				position={[0, -5, 0]}
+				scale={1.5}
 				geometry={basketball.children[0].geometry}
 				material={basketball.children[0].material}
 				rotation={[0, ballYRotation, 0]}
 			/>
 			<SC.PerspectiveCamera position={[10, 10, 10]} />
-			<SC.AmbientLight intensity={0.6} />
-			<SC.DirectionalLight
-				intensity={0.6}
-				position={[-2, 3, 2]}
-				shadow={{ mapSize: [2048, 2048] }}
-			/>
+			<SC.AmbientLight intensity={$darkMode ? 0.6 : 0.8} />
+			<SC.DirectionalLight intensity={0.2} position={[-2, 3, 2]} />
 		</SC.Canvas>
 	{/if}
 </div>
