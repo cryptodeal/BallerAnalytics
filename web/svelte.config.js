@@ -6,7 +6,6 @@ import WindiCSS from 'vite-plugin-windicss';
 import Icons from 'unplugin-icons/vite';
 import ObjFileImport from 'unplugin-obj/vite';
 import MtlFileImport from 'unplugin-mtl/vite';
-
 import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
@@ -50,7 +49,7 @@ if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	};
 } else {
 	config.kit.vite.resolve.alias = {
-		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/sr'),
+		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src'),
 		$models: path.resolve('src/models')
 	};
 }
