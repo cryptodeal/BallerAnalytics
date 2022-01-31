@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { invertColor } from '$lib/functions/helpers';
-
 	import { getContext } from 'svelte';
 	import { TABS } from './Tabs.svelte';
 	export let primaryColor: number[];

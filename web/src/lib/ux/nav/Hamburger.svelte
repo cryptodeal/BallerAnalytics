@@ -5,6 +5,7 @@
 <button
 	class="bg-transparent cursor-pointer rounded-md border-none text-dark-700 dark:text-light-200 hover:text-dark-900 hover:dark:text-gray-300 focus:outline-none"
 	class:open
+	aria-label="Toggle Navbar Dropdown"
 	on:click={() => (open = !open)}
 >
 	<svg width="32" height="24">
