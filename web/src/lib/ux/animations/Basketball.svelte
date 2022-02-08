@@ -6,7 +6,7 @@
 	import { browser } from '$app/env';
 	import darkMode from '$lib/data/stores/theme';
 	import { onMount } from 'svelte';
-	import treeMat from '$models/Basketball_size6_SF.mtl';
+	import { mtl } from '$models/Basketball_size6_SF.mtl';
 	import treeObj from '$models/Basketball_size6_SF.obj';
 	export let height = 0,
 		width = 0;
@@ -16,7 +16,7 @@
 	let delta = 0;
 	let ballYRotation = 0;
 	onMount(() => {
-		const material = new MTLLoader().parse(treeMat, 'mtlRef/');
+		const material = new MTLLoader().parse(mtl, '');
 		material.preload();
 		basketball = new OBJLoader().setMaterials(material).parse(treeObj);
 	});
@@ -28,7 +28,7 @@
 </script>
 
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
-	{#if !browser || !(basketball?.children[0] instanceof THREE.Mesh) || !(basketball?.children[0] instanceof THREE.Mesh)}
+	{#if (!browser && !(basketball?.children[0] instanceof THREE.Mesh)) || !(basketball?.children[0] instanceof THREE.Mesh)}
 		<div class="loadingContainer">
 			<div class="wave" />
 			<div class="wave" />
