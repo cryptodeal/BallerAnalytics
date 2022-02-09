@@ -42,7 +42,14 @@
 			<div class="wave" />
 		</div>
 	{:else}
-		<SC.Canvas antialias alpha={true} background={null} {height} {width}>
+		<SC.Canvas
+			antialias
+			alpha={true}
+			background={null}
+			{height}
+			{width}
+			failIfMajorPerformanceCaveat={true}
+		>
 			<SC.Mesh
 				position={[0, -5, 0]}
 				scale={1.5}
