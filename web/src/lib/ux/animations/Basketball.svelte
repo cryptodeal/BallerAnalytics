@@ -1,24 +1,54 @@
 <script lang="ts">
 	import * as THREE from 'three';
 	import * as SC from 'svelte-cubed';
-	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
-	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-	import { browser } from '$app/env';
+	import Worker from '$lib/functions/_worker/loader?worker';
 	import darkMode from '$lib/data/stores/theme';
 	import { onMount } from 'svelte';
-	import { mtl } from '$models/Basketball_size6_SF.mtl';
-	import treeObj from '$models/Basketball_size6_SF.obj';
+	//import { MTLLoader } from '$lib/functions/_worker/core/MTLLoader';
+	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+	import { mtl, extRefHelpers } from '$models/Basketball_size6_SF.mtl';
+	import obj from '$models/Basketball_size6_SF.obj';
+	import type {
+		WorkerLoaderMessageEvent,
+		MTLWorkerMessageEvent
+	} from '$lib/functions/_worker/core/types';
+	//import { isWorkerLoaderMessage } from '$lib/functions/_worker/core/utils';
 	export let height = 0,
 		width = 0;
-	let basketball: THREE.Group | undefined;
-	let clock = new THREE.Clock();
-	let time = 0;
-	let delta = 0;
-	let ballYRotation = 0;
+
+	let basketball: THREE.Object3D,
+		clock = new THREE.Clock(),
+		time = 0,
+		delta = 0,
+		ballYRotation = 0;
+
 	onMount(() => {
-		const material = new MTLLoader().parse(mtl, '');
-		material.preload();
-		basketball = new OBJLoader().setMaterials(material).parse(treeObj);
+		const worker = new Worker();
+		worker.postMessage({ mtl, obj, extRefHelpers });
+		worker.onmessage = (event: WorkerLoaderMessageEvent | MTLWorkerMessageEvent) => {
+			const { data } = event;
+			//if (isWorkerLoaderMessage(data)) {
+			const loadedExtRef = data;
+			//console.log(loadedExtRef);
+			for (const key in loadedExtRef) {
+				const { width, height, src } = loadedExtRef[key];
+				const img = new Image(width, height);
+				img.src = src;
+			}
+			//}
+			/*
+      else {
+				const { material: loadedMaterial, geometry: loadedGeometry } = data;
+				material = restructureMaterial(loadedMaterial[0]) as THREE.Material;
+				geometry = restructureGeometry(loadedGeometry);
+			}
+      */
+		};
+		worker.terminate();
+		const materials = new MTLLoader().parse(mtl, '');
+		materials.preload();
+		basketball = new OBJLoader().setMaterials(materials).parse(obj);
 	});
 	SC.onFrame(() => {
 		delta = clock.getDelta();
@@ -28,20 +58,7 @@
 </script>
 
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
-	{#if (!browser && !(basketball?.children[0] instanceof THREE.Mesh)) || !(basketball?.children[0] instanceof THREE.Mesh)}
-		<div class="loadingContainer">
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-			<div class="wave" />
-		</div>
-	{:else}
+	{#if basketball?.children[0] instanceof THREE.Mesh}
 		<SC.Canvas
 			antialias
 			alpha={true}
@@ -61,5 +78,18 @@
 			<SC.AmbientLight intensity={$darkMode ? 0.6 : 0.8} />
 			<SC.DirectionalLight intensity={0.2} position={[-2, 3, 2]} />
 		</SC.Canvas>
+	{:else}
+		<div class="loadingContainer">
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+			<div class="wave" />
+		</div>
 	{/if}
 </div>

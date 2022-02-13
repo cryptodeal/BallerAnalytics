@@ -273,17 +273,17 @@ export class MaterialCreator {
 		return converted;
 	}
 
-	preload() {
+	preload(): void {
 		for (const mn in this.materialsInfo) {
 			this.create(mn);
 		}
 	}
 
-	getIndex(materialName: string) {
+	getIndex(materialName: string): number {
 		return this.nameLookup[materialName];
 	}
 
-	getAsArray() {
+	getAsArray(): Material[] {
 		let index = 0;
 
 		for (const mn in this.materialsInfo) {
@@ -295,7 +295,7 @@ export class MaterialCreator {
 		return this.materialsArray;
 	}
 
-	create(materialName: string) {
+	create(materialName: string): Material {
 		if (this.materials[materialName] === undefined) {
 			this.createMaterial_(materialName);
 		}
