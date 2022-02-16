@@ -1,18 +1,6 @@
 import type { Writable } from 'svelte/store';
 import mongoose from 'mongoose';
 import type { Team2Document, Game2Document, Player2Document } from '@balleranalytics/nba-api-ts';
-/**
- * Can be made globally available by placing this
- * inside `global.d.ts` and removing `export` keyword
- */
-export interface Locals {
-	user?: {
-		id: string;
-		email: string;
-		scope: string;
-		username?: string;
-	};
-}
 
 export interface ValidatedFormData {
 	valid: boolean;

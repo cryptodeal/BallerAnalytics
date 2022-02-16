@@ -1,13 +1,12 @@
 import cookie from 'cookie';
 import { User } from '@balleranalytics/nba-api-ts';
-import type { Locals } from '$lib/types';
 
 interface IAuthLogout {
 	accessToken: string;
 	refreshToken: string;
 }
 
-const logout = async (locals: Locals): Promise<IAuthLogout> => {
+const logout = async (locals: App.Locals): Promise<IAuthLogout> => {
 	console.log(locals);
 	const env = import.meta.env.VITE_NODE_ENV;
 	if (

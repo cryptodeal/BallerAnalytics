@@ -19,7 +19,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const decoded = decodeToken(cookies.accessToken);
 		if (decoded) {
 			const { payload } = decoded;
-			event.locals.user = payload;
+			event.locals.user = payload as {
+				id: string;
+				email: string;
+				scope: string;
+				username?: string;
+			};
 		}
 	}
 

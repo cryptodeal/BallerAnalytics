@@ -3,7 +3,7 @@
 	import * as SC from 'svelte-cubed';
 	import Worker from '$lib/functions/_worker/loader?worker';
 	import darkMode from '$lib/data/stores/theme';
-	import { onMount } from 'svelte';
+	import { browser } from '$app/env';
 	//import { MTLLoader } from '$lib/functions/_worker/core/MTLLoader';
 	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
@@ -23,7 +23,7 @@
 		delta = 0,
 		ballYRotation = 0;
 
-	onMount(() => {
+	if (browser) {
 		const worker = new Worker();
 		worker.postMessage({ mtl, obj, extRefHelpers });
 		worker.onmessage = (event: WorkerLoaderMessageEvent | MTLWorkerMessageEvent) => {
@@ -49,7 +49,7 @@
 		const materials = new MTLLoader().parse(mtl, '');
 		materials.preload();
 		basketball = new OBJLoader().setMaterials(materials).parse(obj);
-	});
+	}
 	SC.onFrame(() => {
 		delta = clock.getDelta();
 		time += delta;

@@ -6,7 +6,6 @@ import type {
 import {
 	BufferAttribute,
 	BufferGeometry,
-	CanvasTexture,
 	Color,
 	DataTexture,
 	LineBasicMaterial,
@@ -31,7 +30,6 @@ import {
 	Vector2,
 	Vector3
 } from 'three';
-
 import type {
 	LineBasicMaterialParameters,
 	LineDashedMaterialParameters,

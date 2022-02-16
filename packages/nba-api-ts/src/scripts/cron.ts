@@ -18,7 +18,7 @@ class DataImportScripts {
 			}
 		});
 
-		this.nbaGamesCron = new CronJob('* * * * *', async () => {
+		this.nbaGamesCron = new CronJob('*/10 * * * * *', async () => {
 			try {
 				await this.connect();
 				await this.syncLiveGames();

@@ -1,14 +1,12 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { SeasonList } from '$lib/types';
-
 	export const load: Load = async ({ fetch, params, url }) => {
 		if (url.searchParams.get('seasonIdx')) {
 			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
 				'seasonIdx'
 			)}`;
 			const res = await fetch(apiUrl);
-
 			if (res.ok) {
 				const { teamData } = await res.json();
 				const seasonIdx = url.searchParams.get('seasonIdx');
@@ -27,7 +25,6 @@
 					}
 				};
 			}
-
 			return {
 				status: res.status,
 				error: new Error(`Could not load ${apiUrl}`)
@@ -35,7 +32,6 @@
 		} else {
 			const apiUrl = `/teams/${params.teamSlug}.json`;
 			const res = await fetch(apiUrl);
-
 			if (res.ok) {
 				const { teamData } = await res.json();
 				const seasonIdx = 0;
@@ -54,7 +50,6 @@
 					}
 				};
 			}
-
 			return {
 				status: res.status,
 				error: new Error(`Could not load ${apiUrl}`)
@@ -70,18 +65,30 @@
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
+	import Color from 'color';
+	import { tweened } from 'svelte/motion';
+	import { interpolateLab as interpolate } from 'd3-interpolate';
+	import darkMode from '$lib/data/stores/theme';
+	import { onMount } from 'svelte';
+	import { genPalette, getBackgroundColors } from '$lib/ux/teams/genBg/core/colors';
 	export let teamData;
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
-
+	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
+		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
-
+	const colorPalette = genPalette(Color(primaryColor), Color(secondaryColor), 5);
+	onMount(() => {
+		const background = getBackgroundColors(colorPalette);
+		$bgInner = background.bgInner;
+		$bgOuter = background.bgOuter;
+	});
 	async function loadRosterData() {
 		const seasonIndex = teamData.seasons.findIndex((s) => s.season === seasonYear);
 		const res = await fetch(`/teams/${teamData.infoCommon.slug}.json?seasonIdx=${seasonIndex}`);
@@ -92,15 +99,9 @@
 </script>
 
 <div
-	class="w-full h-full overflow-scroll bg-opacity-10"
-	style="color:#fcfcfc;background-color:rgba(8, 15, 53, 1);background-repeat:no-repeat;
-  background:linear-gradient(180deg, rgba({color1[0]}, {color1[1]}, {color1[2]}, 0.9) 1%, rgba({color2[0]}, {color2[1]}, {color2[2]}, .02) 100%),
-  linear-gradient(333deg, rgba(153, 207, 255, 0.2), rgba(180, 255, 217, 0.08)),
-  radial-gradient(circle at 77% 89%, rgba(125, 163, 169, 0.8), rgba(125, 163, 169, 0) 50%),
-  radial-gradient(circle at 15% 95%, rgba(125, 163, 169, 0.8), rgba(125, 163, 169, 0) 43%),
-  radial-gradient(circle at 65% 23%, rgba(137, 151, 119, 0.4), rgba(137, 151, 119, 0) 70%),
-  radial-gradient(circle at 10% 0%, rgba(187, 211, 204, 0.33), rgba(187, 211, 204, 0) 35%),
-  radial-gradient(circle at 11% 100%, rgba(131, 165, 203, 0.3), rgba(131, 165, 203, 0) 30%);"
+	class="w-full h-full overflow-scroll teamBg"
+	style:--bg-inner={$bgInner}
+	style:--bg-outer={$bgOuter}
 >
 	<div class="appContent">
 		<div class="w-full h-full p-2">
@@ -182,5 +183,9 @@
 <style>
 	.tabPanelTitle {
 		@apply text-center m-4;
+	}
+
+	.teamBg {
+		background-image: radial-gradient(var(--bg-inner) 0%, var(--bg-outer) 100%);
 	}
 </style>

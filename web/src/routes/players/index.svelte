@@ -46,13 +46,11 @@
 			})
 			.catch(() => error());
 	}
-
-	$: console.log(listHeight);
 </script>
 
 <div class="listContainer">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
-		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={50}>
+		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={75}>
 			<a
 				slot="item"
 				let:index
@@ -60,7 +58,7 @@
 				{style}
 				sveltekit:prefetch
 				href="/players/{players[index].meta.slug}"
-				class="flex inline-flex max-h-50px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				class="flex inline-flex max-h-75px h-75px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>
 				<PlayerListItem player={players[index]} />
 			</a>
