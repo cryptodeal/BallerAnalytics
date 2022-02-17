@@ -68,7 +68,7 @@
 		srcsetWebP=""
 		srcsetAvif=""
 		srcsetPng=""
-		src="headshotFallback.png"
+		src="/headshotFallback.png"
 		sizes=""
 		{placeholder}
 		alt="missing player headshot"

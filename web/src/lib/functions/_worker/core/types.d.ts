@@ -71,10 +71,14 @@ export type MainExtRefImageData = {
 	src: string;
 };
 
-export type WorkerLoaderMessage = Record<string, WorkerLoadedExtRef>;
+export type WorkerLoaderMessageData = Record<string, WorkerLoadedExtRef>;
+
+export interface WorkerLoaderMessageEventData {
+	loadedExtRef: WorkerLoaderMessageData;
+}
 
 export interface WorkerLoaderMessageEvent extends MessageEvent {
-	data: WorkerLoaderMessage;
+	data: WorkerLoaderMessageEventData;
 }
 
 export interface MainMessageEventImageData extends MessageEvent {
@@ -82,9 +86,9 @@ export interface MainMessageEventImageData extends MessageEvent {
 }
 
 export interface MTLWorkerListenerEventData {
-	mtl: string;
-	obj: string;
 	extRefHelpers?: ExtRefData[];
+	mtl: Uint8Array;
+	obj: Uint8Array;
 }
 
 export interface MTLWorkerListenerEvent extends MessageEvent {

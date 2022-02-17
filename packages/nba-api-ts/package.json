@@ -44,7 +44,7 @@
 		"dayjs": "^1.10.7",
 		"dotenv": "^14.3.2",
 		"iso-3166-1-ts": "^0.2.2",
-		"mongoose": "^6.2.1",
+		"mongoose": "^6.2.2",
 		"mongoose-slugger-plugin": "^3.0.3",
 		"mongoose-tsgen": "^8.4.10",
 		"nba": "^4.15.0",

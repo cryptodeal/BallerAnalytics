@@ -5,14 +5,14 @@
 	import darkMode from '$lib/data/stores/theme';
 	import { browser } from '$app/env';
 	//import { MTLLoader } from '$lib/functions/_worker/core/MTLLoader';
+	import type { WorkerLoaderMessageEvent } from '$lib/functions/_worker/core/types';
 	import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+	import { isWorkerLoaderMessageEventData } from '$lib/functions/_worker/core/utils';
+
 	import { mtl, extRefHelpers } from '$models/Basketball_size6_SF.mtl';
 	import obj from '$models/Basketball_size6_SF.obj';
-	import type {
-		WorkerLoaderMessageEvent,
-		MTLWorkerMessageEvent
-	} from '$lib/functions/_worker/core/types';
+
 	//import { isWorkerLoaderMessage } from '$lib/functions/_worker/core/utils';
 	export let height = 0,
 		width = 0;
@@ -25,30 +25,38 @@
 
 	if (browser) {
 		const worker = new Worker();
-		worker.postMessage({ mtl, obj, extRefHelpers });
-		worker.onmessage = (event: WorkerLoaderMessageEvent | MTLWorkerMessageEvent) => {
+		const encoder = new TextEncoder();
+		const encodedMtl = encoder.encode(mtl);
+		const encodedObj = encoder.encode(obj);
+		worker.postMessage({ mtl: encodedMtl, obj: encodedObj, extRefHelpers }, [
+			encodedMtl.buffer,
+			encodedObj.buffer
+		]);
+		worker.onmessage = (event: WorkerLoaderMessageEvent /* | MTLWorkerMessageEvent */) => {
 			const { data } = event;
-			//if (isWorkerLoaderMessage(data)) {
-			const loadedExtRef = data;
-			//console.log(loadedExtRef);
-			for (const key in loadedExtRef) {
-				const { width, height, src } = loadedExtRef[key];
-				const img = new Image(width, height);
-				img.src = src;
+			console.log(data);
+			if (isWorkerLoaderMessageEventData(data)) {
+				const { loadedExtRef } = data;
+				for (const key in loadedExtRef) {
+					const { width, height, src } = loadedExtRef[key];
+					const img = new Image(width, height);
+					img.src = src;
+				}
+				const materials = new MTLLoader().parse(mtl, '');
+				materials.preload();
+				basketball = new OBJLoader().setMaterials(materials).parse(obj);
 			}
-			//}
 			/*
       else {
-				const { material: loadedMaterial, geometry: loadedGeometry } = data;
+				
+        const { material: loadedMaterial, geometry: loadedGeometry } = data;
 				material = restructureMaterial(loadedMaterial[0]) as THREE.Material;
 				geometry = restructureGeometry(loadedGeometry);
+        
+				console.log(`failing isWorkerLoaderMessageEventData test in Basketball.svelte`);
 			}
       */
 		};
-		worker.terminate();
-		const materials = new MTLLoader().parse(mtl, '');
-		materials.preload();
-		basketball = new OBJLoader().setMaterials(materials).parse(obj);
 	}
 	SC.onFrame(() => {
 		delta = clock.getDelta();

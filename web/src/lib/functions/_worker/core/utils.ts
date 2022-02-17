@@ -1,5 +1,9 @@
 import { DataTexture } from 'three';
-import type { MTLWorkerListenerEventData, WorkerLoadedExtRef, WorkerLoaderMessage } from './types';
+import type {
+	MTLWorkerListenerEventData,
+	WorkerLoadedExtRef,
+	WorkerLoaderMessageEventData
+} from './types';
 
 export const loadDataTexture = (imageData: ImageData) => {
 	const { data, width, height } = imageData;
@@ -13,9 +17,9 @@ export const isMessageEventDataTest = (obj: unknown): obj is MTLWorkerListenerEv
 		obj !== null &&
 		typeof obj === 'object' &&
 		'mtl' in obj &&
-		typeof obj['mtl'] === 'string' &&
+		obj['mtl'] instanceof Uint8Array &&
 		'obj' in obj &&
-		typeof obj['obj'] === 'string' &&
+		obj['obj'] instanceof Uint8Array &&
 		(('extRefHelpers' in obj && Array.isArray(obj['extRefHelpers'])) ||
 			('extRefHelpers' in obj && typeof obj['extRefHelpers'] === 'undefined'))
 	);
@@ -36,7 +40,9 @@ const isWorkerLoadedExtRef = (obj: unknown): obj is WorkerLoadedExtRef => {
 	);
 };
 
-export const isWorkerLoaderMessage = (obj: unknown): obj is WorkerLoaderMessage => {
+export const isWorkerLoaderMessageEventData = (
+	obj: unknown
+): obj is WorkerLoaderMessageEventData => {
 	return obj !== null && typeof obj === 'object' && Object.values(obj).every(isWorkerLoadedExtRef);
 };
 

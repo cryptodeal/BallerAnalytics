@@ -4,7 +4,7 @@
 	export let player: Player2Document;
 </script>
 
-<div class="flex inline-flex h-full py-1 w-full">
+<div class="flex inline-flex h-full py-1">
 	<div class="w-30">
 		<Headshot
 			avif={player.meta.images.headshot.avif}

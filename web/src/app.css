@@ -244,3 +244,7 @@ nav a[aria-current]::after {
 		transform: scale(0);
 	}
 }
+
+svg {
+	shape-rendering: crispEdges;
+}

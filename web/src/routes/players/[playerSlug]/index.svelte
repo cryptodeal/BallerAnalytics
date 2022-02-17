@@ -23,22 +23,21 @@
 <script lang="ts">
 	import Headshot from '$lib/ux/img/Headshot.svelte';
 	export let player: Player2Document;
+	$: console.log(player);
 </script>
 
-<div class="appContent">
-	<div class="h-full w-full px-1 py-4">
-		<div class="w-auto mx-auto glassmorphicBg">
-			<div class="flex flex-wrap justify-center text-center opacity-100 items-center">
-				<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">
-					<Headshot
-						avif={player.meta.images.headshot.avif}
-						alt="{player.name.full} headshot"
-						png={player.meta.images.headshot.png}
-						webp={player.meta.images.headshot.webp}
-					/>
-				</div>
-				<h1>{player.name.full}</h1>
+<div class="h-full appContent w-full px-1 pb-4">
+	<div class="mt-4 mx-auto glassmorphicBg md:container">
+		<div class="flex flex-wrap justify-center text-center opacity-100 items-center">
+			<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">
+				<Headshot
+					avif={player.meta.images.headshot.avif}
+					alt="{player.name.full} headshot"
+					png={player.meta.images.headshot.png}
+					webp={player.meta.images.headshot.webp}
+				/>
 			</div>
+			<h1>{player.name.full}</h1>
 		</div>
 	</div>
 </div>
