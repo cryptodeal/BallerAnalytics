@@ -1,12 +1,19 @@
 <script lang="ts">
-	import * as THREE from 'three';
-	import * as SC from 'svelte-cubed';
+	import { Clock, Mesh as threeMesh } from 'three';
+	import {
+		onFrame,
+		Canvas,
+		Mesh,
+		PerspectiveCamera,
+		AmbientLight,
+		DirectionalLight
+	} from 'svelte-cubed';
 	import { browser } from '$app/env';
 	import Worker from '$lib/functions/_worker/testWorker?worker';
 	import { mtl } from '$models/lowpoly_bball.mtl';
 	import obj from '$models/lowpoly_bball.obj';
 	import darkMode from '$lib/data/stores/theme';
-	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 	import { MTLLoader } from '$lib/functions/_worker/core/TestLoader';
 	import type { MTLLoader as threeMtlLoader } from 'three/examples/jsm/loaders/MTLLoader';
 
@@ -20,7 +27,7 @@
 		encodedMtl: Uint8Array,
 		encodedObj: Uint8Array,
 		object,
-		clock = new THREE.Clock(),
+		clock = new Clock(),
 		time = 0,
 		delta = 0,
 		ballYRotation = 0;
@@ -55,7 +62,7 @@
 	$: if (offscreen && worker && (width || height || $darkMode)) {
 		worker.postMessage({ width, height, darkMode: $darkMode.valueOf() });
 	}
-	SC.onFrame(() => {
+	onFrame(() => {
 		delta = clock.getDelta();
 		time += delta;
 		ballYRotation = time * 1.5;
@@ -72,7 +79,7 @@
 			style="width:{width}px;height:{height}px;"
 		/>
 	{:else}
-		<SC.Canvas
+		<Canvas
 			antialias
 			alpha={true}
 			background={null}
@@ -80,8 +87,8 @@
 			{width}
 			failIfMajorPerformanceCaveat={true}
 		>
-			{#if object?.children[0] instanceof THREE.Mesh}
-				<SC.Mesh
+			{#if object?.children[0] instanceof threeMesh}
+				<Mesh
 					position={[0, 0, 0]}
 					geometry={object.children[0].geometry}
 					scale={24}
@@ -89,10 +96,10 @@
 					rotation={[0, ballYRotation, 0]}
 				/>
 			{/if}
-			<SC.PerspectiveCamera position={[0, 0, 40]} />
-			<SC.AmbientLight intensity={$darkMode ? 1.4 : 2} />
-			<SC.DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-4, 4, 2]} />
-		</SC.Canvas>
+			<PerspectiveCamera position={[0, 0, 40]} />
+			<AmbientLight intensity={$darkMode ? 1.4 : 2} />
+			<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-4, 4, 2]} />
+		</Canvas>
 	{/if}
 </div>
 

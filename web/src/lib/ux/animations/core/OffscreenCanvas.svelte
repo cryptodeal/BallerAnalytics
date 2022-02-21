@@ -2,7 +2,7 @@
 	import { browser } from '$app/env';
 	import { onMount } from 'svelte';
 	import Worker from '$lib/functions/_worker/testWorker?worker';
-	import { mtl, extRefHelpers } from '$models/Basketball_size6_SF.mtl';
+	import { mtl } from '$models/Basketball_size6_SF.mtl';
 	import obj from '$models/Basketball_size6_SF.obj';
 	let canvas: HTMLCanvasElement, width: number, height: number, offscreen: OffscreenCanvas;
 	$: if (browser && canvas) offscreen = canvas.transferControlToOffscreen();

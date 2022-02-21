@@ -48,7 +48,7 @@
 				for (const key in loadedExtRef) {
 					const { width, height, src } = loadedExtRef[key];
 					const img = new Image(width, height);
-					img.onload = function (e: Event) {
+					img.onload = function () {
 						const canvas = document.createElement('canvas');
 						canvas.width = img.width;
 						canvas.height = img.height;
