@@ -26,11 +26,12 @@ let parsedMtl: string, parsedObj: string, workerExtRefHelpers: WorkerExtRefData[
 
 ctx.addEventListener('message', (event: MTLWorkerListenerEvent | MainMessageEventImageData) => {
 	const { data } = event;
+	console.log(`worker thread received message:`, data);
 	if (isMessageEventDataTest(data)) {
-		console.log(`worker received message:`, data);
+		console.log(`isMessageEventDataTest: true`);
 		const { extRefHelpers, mtl, obj } = data;
 		if (!parsedMtl) parsedMtl = decoder.decode(mtl);
-		if (!parsedMtl) parsedObj = decoder.decode(obj);
+		if (!parsedObj) parsedObj = decoder.decode(obj);
 		if (!workerExtRefHelpers) workerExtRefHelpers = extRefHelpers as WorkerExtRefData[];
 		return Promise.all(
 			extRefHelpers.map(({ src, width, height }) => {
@@ -40,14 +41,14 @@ ctx.addEventListener('message', (event: MTLWorkerListenerEvent | MainMessageEven
 			})
 		).then((res: WorkerLoadedExtRef[]) => {
 			const transferrables = res.map(({ data }) => data);
-			const loadedExtRef: WorkerLoaderMessageData = {};
+			const finalLoaded: WorkerLoaderMessageData = {};
 			for (const { data, height, src, width } of res) {
-				loadedExtRef[src] = { data, width, height, src };
+				finalLoaded[src] = { data, width, height, src };
 			}
-			return ctx.postMessage(loadedExtRef, transferrables);
+			return ctx.postMessage({ loadedExtRef: finalLoaded }, transferrables);
 		});
 	} else {
-		console.log(workerExtRefHelpers);
+		console.log(`isMessageEventDataTest: false`);
 		workerExtRefHelpers[workerExtRefHelpers.findIndex(({ src }) => src === data.src)].imageData =
 			data.imageData;
 		loadedExtRef[data.src] = workerExtRefHelpers[
@@ -86,6 +87,7 @@ ctx.addEventListener('message', (event: MTLWorkerListenerEvent | MainMessageEven
 						geometry: parsedGeometry,
 						material: parsedMaterials
 					};
+					console.log(message);
 					ctx.postMessage(message);
 				}
 			});

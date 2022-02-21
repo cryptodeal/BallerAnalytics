@@ -28,9 +28,6 @@ const config = {
 				ObjFileImport(),
 				MtlFileImport()
 			],
-			ssr: {
-				noExternal: ['three']
-			},
 			resolve: {
 				dedupe: ['mongoose']
 			}

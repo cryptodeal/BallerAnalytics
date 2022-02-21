@@ -2,7 +2,9 @@ import { DataTexture } from 'three';
 import type {
 	MTLWorkerListenerEventData,
 	WorkerLoadedExtRef,
-	WorkerLoaderMessageEventData
+	WorkerLoaderMessageEventData,
+	MTLOffscreenWorkerResizeData,
+	MTLOffscreenWorkerEventData
 } from './types';
 
 export const loadDataTexture = (imageData: ImageData) => {
@@ -43,7 +45,48 @@ const isWorkerLoadedExtRef = (obj: unknown): obj is WorkerLoadedExtRef => {
 export const isWorkerLoaderMessageEventData = (
 	obj: unknown
 ): obj is WorkerLoaderMessageEventData => {
-	return obj !== null && typeof obj === 'object' && Object.values(obj).every(isWorkerLoadedExtRef);
+	return (
+		obj !== null &&
+		typeof obj === 'object' &&
+		'loadedExtRef' in obj &&
+		Object.values(obj['loadedExtRef']).every(isWorkerLoadedExtRef)
+	);
+};
+
+export const isMTLOffscreenWorkerResizeEvent = (
+	obj: unknown
+): obj is MTLOffscreenWorkerResizeData => {
+	return (
+		obj !== null &&
+		typeof obj === 'object' &&
+		'width' in obj &&
+		typeof obj['width'] === 'number' &&
+		'height' in obj &&
+		typeof obj['height'] === 'number' &&
+		'darkMode' in obj &&
+		typeof obj['darkMode'] === 'boolean' &&
+		!('mtl' in obj) &&
+		!('obj' in obj) &&
+		!('extRefHelpers' in obj) &&
+		!('drawingSurface' in obj)
+	);
+};
+
+export const isMTLOffscreenWorkerEvent = (obj: unknown): obj is MTLOffscreenWorkerEventData => {
+	return (
+		obj !== null &&
+		typeof obj === 'object' &&
+		'width' in obj &&
+		typeof obj['width'] === 'number' &&
+		'height' in obj &&
+		typeof obj['height'] === 'number' &&
+		'darkMode' in obj &&
+		typeof obj['darkMode'] === 'boolean' &&
+		(!('mtl' in obj) || ('mtl' in obj && obj['mtl'] instanceof Uint8Array)) &&
+		(!('obj' in obj) || ('obj' in obj && obj['obj'] instanceof Uint8Array)) &&
+		'drawingSurface' in obj &&
+		obj['drawingSurface'] instanceof OffscreenCanvas
+	);
 };
 
 export const loadResource = (src: string): Promise<ArrayBuffer> => {

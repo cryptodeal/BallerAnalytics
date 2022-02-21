@@ -1,3 +1,5 @@
+/// <reference types="@types/offscreencanvas" />
+
 export interface MaterialInfo {
 	ks?: number[] | undefined;
 	kd?: number[] | undefined;
@@ -93,6 +95,39 @@ export interface MTLWorkerListenerEventData {
 
 export interface MTLWorkerListenerEvent extends MessageEvent {
 	data: MTLWorkerListenerEventData;
+}
+
+export interface MTLOffscreenWorkerEventData {
+	mtl?: Uint8Array;
+	obj?: Uint8Array;
+	extRefHelpers?: ExtRefData[];
+	drawingSurface: OffscreenCanvas;
+	darkMode: boolean;
+	width: number;
+	height: number;
+	pixelRatio: number;
+}
+
+export interface MTLOffscreenWorkerEvent extends MessageEvent {
+	data: MTLOffscreenWorkerEventData;
+}
+
+export interface WorkerExtRefHelperEventData {
+	extRefHelpers: ExtRefData[];
+}
+
+export interface WorkerExtRefHelperEvent extends MessageEvent {
+	data: WorkerExtRefHelperEventData;
+}
+
+export interface MTLOffscreenWorkerResizeData {
+	width: number;
+	height: number;
+	darkMode: boolean;
+}
+
+export interface MTLOffscreenWorkerResizeEvent {
+	data: MTLOffscreenWorkerResizeData;
 }
 
 export type LoadedResources = Record<string, WorkerLoadedExtRefData>;
@@ -232,7 +267,7 @@ export interface RestructureTextureParams {
 	flipY?: boolean;
 	format?: PixelFormat;
 	generateMipmaps?: boolean;
-	image?: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | ImageData | null;
+	image?: ImageData | null;
 	internalFormat?: PixelFormatGPU | null;
 	isRenderTargetTexture?: boolean;
 	magFilter?: TextureFilter; // default THREE.LinearFilter
@@ -269,7 +304,7 @@ export interface WorkerLoadedModelDataGeometry {
 
 export interface WorkerLoadedModelData {
 	geometry: WorkerLoadedModelDataGeometry;
-	material?: RestructureMaterialParams[];
+	material?: RestructureMaterialParams[] | RestructureMaterialParams;
 }
 
 export interface MTLWorkerMessageEvent extends MessageEvent {

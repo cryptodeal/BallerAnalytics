@@ -2,9 +2,8 @@
 	import { onMount } from 'svelte';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
-	import Bball from '$lib/ux/animations/Basketball.svelte';
+	import Bball from '$lib/ux/animations/LowPolyBall.svelte';
 	let isVisible = false;
-	let width, height: number;
 	onMount(() => {
 		isVisible = true;
 	});
@@ -19,14 +18,12 @@
 				<BallerAnalytics {isVisible} />
 			</div>
 			<div class="w-full mt-2 flex flex-wrap justify-center items-center">
-				<div class="flex justify-center md:(w-1/2 justify-end)">
-					<div class="h-full w-full md:w-1/2">
-						<WordCloud {isVisible} />
-					</div>
+				<div class="w-full flex justify-center md:(w-1/2 justify-end)">
+					<WordCloud {isVisible} />
 				</div>
-				<div class="w-screen flex justify-center h-40 md:(w-1/2 justify-start)">
-					<div class="h-full w-full md:w-1/2" bind:clientHeight={height} bind:clientWidth={width}>
-						<Bball {width} {height} />
+				<div class="w-full flex justify-center h-40 md:(w-1/2 justify-start)">
+					<div class="h-full w-full">
+						<Bball />
 					</div>
 				</div>
 			</div>

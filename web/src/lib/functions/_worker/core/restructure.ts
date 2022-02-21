@@ -8,145 +8,18 @@ import {
 	BufferGeometry,
 	Color,
 	DataTexture,
-	LineBasicMaterial,
-	LineDashedMaterial,
-	Material,
-	MeshBasicMaterial,
-	MeshDepthMaterial,
-	MeshDistanceMaterial,
-	MeshLambertMaterial,
-	MeshMatcapMaterial,
-	MeshNormalMaterial,
 	MeshPhongMaterial,
-	MeshPhysicalMaterial,
-	MeshStandardMaterial,
-	MeshToonMaterial,
-	PointsMaterial,
-	RawShaderMaterial,
-	ShaderMaterial,
-	ShadowMaterial,
-	SpriteMaterial,
-	Texture,
+	RGBAFormat,
+	UnsignedByteType,
 	Vector2,
 	Vector3
 } from 'three';
-import type {
-	LineBasicMaterialParameters,
-	LineDashedMaterialParameters,
-	MaterialParameters,
-	MeshBasicMaterialParameters,
-	MeshDepthMaterialParameters,
-	MeshDistanceMaterialParameters,
-	MeshLambertMaterialParameters,
-	MeshMatcapMaterialParameters,
-	MeshNormalMaterialParameters,
-	MeshPhongMaterialParameters,
-	MeshPhysicalMaterialParameters,
-	MeshStandardMaterialParameters,
-	MeshToonMaterialParameters,
-	PointsMaterialParameters,
-	ShaderMaterialParameters,
-	ShadowMaterialParameters,
-	SpriteMaterialParameters
-} from 'three';
+import type { MeshPhongMaterialParameters } from 'three';
 
 export const restructureMaterial = (materialProps: RestructureMaterialParams) => {
-	let resultingMaterial;
-
-	switch (materialProps.type) {
-		case 'LineBasicMaterial':
-			materialProps as LineBasicMaterialParameters;
-			resultingMaterial = new LineBasicMaterial(materialProps);
-			break;
-
-		case 'LineDashedMaterial':
-			materialProps as LineDashedMaterialParameters;
-			resultingMaterial = new LineDashedMaterial(materialProps);
-			break;
-
-		case 'MeshBasicMaterial':
-			materialProps as MeshBasicMaterialParameters;
-			resultingMaterial = new MeshBasicMaterial(materialProps);
-			break;
-
-		case 'MeshDepthMaterial':
-			materialProps as MeshDepthMaterialParameters;
-			resultingMaterial = new MeshDepthMaterial(materialProps);
-			break;
-
-		case 'MeshDistanceMaterial':
-			materialProps as MeshDistanceMaterialParameters;
-			resultingMaterial = new MeshDistanceMaterial(materialProps);
-			break;
-
-		case 'MeshLambertMaterial':
-			materialProps as MeshLambertMaterialParameters;
-			resultingMaterial = new MeshLambertMaterial(materialProps);
-			break;
-
-		case 'MeshMatcapMaterial':
-			materialProps as MeshMatcapMaterialParameters;
-			resultingMaterial = new MeshMatcapMaterial(materialProps);
-			break;
-
-		case 'MeshNormalMaterial':
-			materialProps as MeshNormalMaterialParameters;
-			resultingMaterial = new MeshNormalMaterial(materialProps);
-			break;
-
-		case 'MeshPhongMaterial': {
-			materialProps as MeshPhongMaterialParameters;
-			restructureHelpers(materialProps);
-			resultingMaterial = new MeshPhongMaterial(materialProps);
-			break;
-		}
-		case 'MeshPhysicalMaterial':
-			materialProps as MeshPhysicalMaterialParameters;
-			resultingMaterial = new MeshPhysicalMaterial(materialProps);
-			break;
-
-		case 'MeshStandardMaterial':
-			materialProps as MeshStandardMaterialParameters;
-			resultingMaterial = new MeshStandardMaterial(materialProps);
-			break;
-
-		case 'MeshToonMaterial':
-			materialProps as MeshToonMaterialParameters;
-			resultingMaterial = new MeshToonMaterial(materialProps);
-			break;
-
-		case 'PointsMaterial':
-			materialProps as PointsMaterialParameters;
-			resultingMaterial = new PointsMaterial(materialProps);
-			break;
-
-		case 'RawShaderMaterial':
-			materialProps as ShaderMaterialParameters;
-			resultingMaterial = new RawShaderMaterial(materialProps);
-			break;
-
-		case 'ShaderMaterial':
-			materialProps as ShaderMaterialParameters;
-			resultingMaterial = new ShaderMaterial(materialProps);
-			break;
-
-		case 'ShadowMaterial':
-			materialProps as ShadowMaterialParameters;
-			resultingMaterial = new ShadowMaterial(materialProps);
-			break;
-
-		case 'SpriteMaterial':
-			materialProps as SpriteMaterialParameters;
-			resultingMaterial = new SpriteMaterial(materialProps);
-			break;
-
-		default:
-			materialProps as MaterialParameters;
-			resultingMaterial = new Material();
-			resultingMaterial.setValues(materialProps);
-			break;
-	}
-	return resultingMaterial;
+	materialProps as MeshPhongMaterialParameters;
+	restructureHelpers(materialProps);
+	return new MeshPhongMaterial(materialProps);
 };
 
 export const restructureGeometry = (geometry: WorkerLoadedModelDataGeometry): BufferGeometry => {
@@ -173,36 +46,51 @@ export const restructureHelpers = (
 			typeof materialProps[key] === 'object'
 		) {
 			const {
-				image,
-				mapping,
-				wrapS,
-				wrapT,
-				magFilter,
-				minFilter,
-				format,
-				type,
 				anisotropy,
-				encoding
+				center,
+				encoding,
+				flipY,
+				format,
+				generateMipmaps,
+				image,
+				internalFormat,
+				isRenderTargetTexture,
+				magFilter,
+				mapping,
+				matrix,
+				matrixAutoUpdate,
+				minFilter,
+				mipmaps,
+				name,
+				needsPMREMUpdate,
+				offset,
+				premultiplyAlpha,
+				repeat,
+				rotation,
+				type,
+				unpackAlignment,
+				userData,
+				wrapS,
+				wrapT
 			} = materialProps[key] as RestructureTextureParams;
 			if (!image) {
 				throw new Error('Image is required for texture');
 			} else {
-				if (image instanceof ImageData) {
-					materialProps[key] = new DataTexture(image.data, image.width, image.height);
-				} else {
-					materialProps[key] = new Texture(
-						image,
-						mapping,
-						wrapS,
-						wrapT,
-						magFilter,
-						minFilter,
-						format,
-						type,
-						anisotropy,
-						encoding
-					);
-				}
+				materialProps[key] = new DataTexture(
+					new Uint8Array(image.data.buffer),
+					image.width,
+					image.height,
+					RGBAFormat,
+					UnsignedByteType,
+					mapping,
+					wrapS,
+					wrapT,
+					magFilter,
+					minFilter,
+					anisotropy,
+					encoding
+				);
+				materialProps[key].needsUpdate = true;
 			}
 		} else if (
 			typeof materialProps[key]?.r === 'number' &&
