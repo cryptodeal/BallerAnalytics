@@ -91,7 +91,7 @@
 				<Mesh
 					position={[0, 0, 0]}
 					geometry={object.children[0].geometry}
-					scale={24}
+					scale={30}
 					material={object.children[0].material}
 					rotation={[0, ballYRotation, 0]}
 				/>

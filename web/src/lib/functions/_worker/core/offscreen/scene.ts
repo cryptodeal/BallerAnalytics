@@ -31,7 +31,7 @@ export function init(
 	obj?: string,
 	mtl?: string
 ) {
-	camera = new PerspectiveCamera(40, width / height, 1, 1000);
+	camera = new PerspectiveCamera(30, width / height, 1, 1000);
 	camera.position.z = 2;
 
 	scene = new Scene();
