@@ -23,14 +23,14 @@ let parsedMtl: string, parsedObj: string;
 ctx.addEventListener(
 	'message',
 	(event: MTLOffscreenWorkerEvent | MTLOffscreenWorkerResizeEvent | WorkerExtRefHelperEvent) => {
-		console.log(`worker thread received message:`, event.data);
+		// console.log(`worker thread received message:`, event.data);
 		const { data } = event;
 		if (isMTLOffscreenWorkerResizeEvent(data)) {
-			console.log(true, 'resize');
+			// console.log(true, 'resize');
 			const { width, height, darkMode } = data;
 			updateSize(width, height, darkMode);
 		} else if (isMTLOffscreenWorkerEvent(data)) {
-			console.log(false, 'init');
+			// console.log(false, 'init');
 			const { drawingSurface, width, height, pixelRatio, obj, mtl, darkMode } = data;
 			if (!parsedMtl) parsedMtl = decoder.decode(mtl);
 			if (!parsedObj) parsedObj = decoder.decode(obj);
