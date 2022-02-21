@@ -13,7 +13,7 @@
 	import { mtl } from '$models/lowpoly_bball.mtl';
 	import obj from '$models/lowpoly_bball.obj';
 	import darkMode from '$lib/data/stores/theme';
-	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+	import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 	import { MTLLoader } from '$lib/functions/_worker/core/TestLoader';
 	import type { MTLLoader as threeMtlLoader } from 'three/examples/jsm/loaders/MTLLoader';
 
