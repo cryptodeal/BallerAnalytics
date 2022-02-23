@@ -36,7 +36,7 @@ a {
 }
 
 button {
-	@apply bg-blue-600 text-dark-900 backdrop-filter backdrop-blug-lg bg-opacity-60 uppercase py-1 px-2 rounded-sm dark:text-light-200 focus:outline-none hover:dark:text-dark-900 hover:(bg-opacity-100 text-light-200);
+	@apply bg-blue-600 text-dark-900 backdrop-filter backdrop-blur-lg bg-opacity-60 uppercase py-1 px-2 rounded-sm dark:text-light-200 focus:outline-none hover:dark:text-dark-900 hover:(bg-opacity-100 text-light-200);
 }
 
 h1,

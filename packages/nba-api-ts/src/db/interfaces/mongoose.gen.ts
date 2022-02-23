@@ -100,8 +100,7 @@ export type Coach2Statics = {
  * const Coach2 = mongoose.model<Coach2Document, Coach2Model>("Coach2", Coach2Schema);
  * ```
  */
-export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries, Coach2Methods> &
-	Coach2Statics;
+export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries> & Coach2Statics;
 
 /**
  * Mongoose Schema type
@@ -111,12 +110,7 @@ export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries, Coach2Me
  * const Coach2Schema: Coach2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Coach2Schema = mongoose.Schema<
-	Coach2Document,
-	Coach2Model,
-	Coach2Methods,
-	Coach2Queries
->;
+export type Coach2Schema = mongoose.Schema<Coach2Document, Coach2Model, Coach2Methods>;
 
 /**
  * Mongoose Subdocument type
@@ -464,6 +458,11 @@ export type Game2 = {
 				boxScoreUrl: string;
 			};
 		};
+		status: {
+			period?: number;
+			displayClock?: string;
+			clock?: number;
+		};
 		displaySeason: string;
 		league?: League['_id'] | League;
 	};
@@ -652,6 +651,7 @@ export type Game2Methods = {};
 
 export type Game2Statics = {
 	findByUrl: (this: Game2Model, url: string) => any;
+	getDailyGames: (this: Game2Model, startDate: Date, endDate: Date) => Promise<Game2Object[]>;
 	getGames: (this: Game2Model, gameUids: Game2Document['_id'][]) => Promise<Game2Object[]>;
 };
 
@@ -663,7 +663,7 @@ export type Game2Statics = {
  * const Game2 = mongoose.model<Game2Document, Game2Model>("Game2", Game2Schema);
  * ```
  */
-export type Game2Model = mongoose.Model<Game2Document, Game2Queries, Game2Methods> & Game2Statics;
+export type Game2Model = mongoose.Model<Game2Document, Game2Queries> & Game2Statics;
 
 /**
  * Mongoose Schema type
@@ -673,7 +673,7 @@ export type Game2Model = mongoose.Model<Game2Document, Game2Queries, Game2Method
  * const Game2Schema: Game2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Game2Schema = mongoose.Schema<Game2Document, Game2Model, Game2Methods, Game2Queries>;
+export type Game2Schema = mongoose.Schema<Game2Document, Game2Model, Game2Methods>;
 
 /**
  * Mongoose Subdocument type
@@ -951,6 +951,11 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 					boxScoreUrl: string;
 				};
 			};
+			status: {
+				period?: number;
+				displayClock?: string;
+				clock?: number;
+			};
 			displaySeason: string;
 			league?: LeagueDocument['_id'] | LeagueDocument;
 		};
@@ -1204,8 +1209,7 @@ export type LeagueStatics = {};
  * const League = mongoose.model<LeagueDocument, LeagueModel>("League", LeagueSchema);
  * ```
  */
-export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries, LeagueMethods> &
-	LeagueStatics;
+export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries> & LeagueStatics;
 
 /**
  * Mongoose Schema type
@@ -1215,12 +1219,7 @@ export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries, LeagueMe
  * const LeagueSchema: LeagueSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type LeagueSchema = mongoose.Schema<
-	LeagueDocument,
-	LeagueModel,
-	LeagueMethods,
-	LeagueQueries
->;
+export type LeagueSchema = mongoose.Schema<LeagueDocument, LeagueModel, LeagueMethods>;
 
 /**
  * Mongoose Subdocument type
@@ -1374,8 +1373,7 @@ export type Official2Statics = {
  * const Official2 = mongoose.model<Official2Document, Official2Model>("Official2", Official2Schema);
  * ```
  */
-export type Official2Model = mongoose.Model<Official2Document, Official2Queries, Official2Methods> &
-	Official2Statics;
+export type Official2Model = mongoose.Model<Official2Document, Official2Queries> & Official2Statics;
 
 /**
  * Mongoose Schema type
@@ -1385,12 +1383,7 @@ export type Official2Model = mongoose.Model<Official2Document, Official2Queries,
  * const Official2Schema: Official2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Official2Schema = mongoose.Schema<
-	Official2Document,
-	Official2Model,
-	Official2Methods,
-	Official2Queries
->;
+export type Official2Schema = mongoose.Schema<Official2Document, Official2Model, Official2Methods>;
 
 /**
  * Mongoose Subdocument type
@@ -1670,8 +1663,7 @@ export type Player2Statics = {
  * const Player2 = mongoose.model<Player2Document, Player2Model>("Player2", Player2Schema);
  * ```
  */
-export type Player2Model = mongoose.Model<Player2Document, Player2Queries, Player2Methods> &
-	Player2Statics;
+export type Player2Model = mongoose.Model<Player2Document, Player2Queries> & Player2Statics;
 
 /**
  * Mongoose Schema type
@@ -1681,12 +1673,7 @@ export type Player2Model = mongoose.Model<Player2Document, Player2Queries, Playe
  * const Player2Schema: Player2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Player2Schema = mongoose.Schema<
-	Player2Document,
-	Player2Model,
-	Player2Methods,
-	Player2Queries
->;
+export type Player2Schema = mongoose.Schema<Player2Document, Player2Model, Player2Methods>;
 
 /**
  * Mongoose Subdocument type
@@ -2269,7 +2256,7 @@ export type Team2Statics = {
  * const Team2 = mongoose.model<Team2Document, Team2Model>("Team2", Team2Schema);
  * ```
  */
-export type Team2Model = mongoose.Model<Team2Document, Team2Queries, Team2Methods> & Team2Statics;
+export type Team2Model = mongoose.Model<Team2Document, Team2Queries> & Team2Statics;
 
 /**
  * Mongoose Schema type
@@ -2279,7 +2266,7 @@ export type Team2Model = mongoose.Model<Team2Document, Team2Queries, Team2Method
  * const Team2Schema: Team2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Team2Schema = mongoose.Schema<Team2Document, Team2Model, Team2Methods, Team2Queries>;
+export type Team2Schema = mongoose.Schema<Team2Document, Team2Model, Team2Methods>;
 
 /**
  * Mongoose Subdocument type
@@ -2709,7 +2696,7 @@ export type TxStatics = {};
  * const Tx = mongoose.model<TxDocument, TxModel>("Tx", TxSchema);
  * ```
  */
-export type TxModel = mongoose.Model<TxDocument, TxQueries, TxMethods> & TxStatics;
+export type TxModel = mongoose.Model<TxDocument, TxQueries> & TxStatics;
 
 /**
  * Mongoose Schema type
@@ -2719,7 +2706,7 @@ export type TxModel = mongoose.Model<TxDocument, TxQueries, TxMethods> & TxStati
  * const TxSchema: TxSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type TxSchema = mongoose.Schema<TxDocument, TxModel, TxMethods, TxQueries>;
+export type TxSchema = mongoose.Schema<TxDocument, TxModel, TxMethods>;
 
 /**
  * Mongoose Subdocument type
@@ -2850,7 +2837,7 @@ export type UserStatics = {};
  * const User = mongoose.model<UserDocument, UserModel>("User", UserSchema);
  * ```
  */
-export type UserModel = mongoose.Model<UserDocument, UserQueries, UserMethods> & UserStatics;
+export type UserModel = mongoose.Model<UserDocument, UserQueries> & UserStatics;
 
 /**
  * Mongoose Schema type
@@ -2860,7 +2847,7 @@ export type UserModel = mongoose.Model<UserDocument, UserQueries, UserMethods> &
  * const UserSchema: UserSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type UserSchema = mongoose.Schema<UserDocument, UserModel, UserMethods, UserQueries>;
+export type UserSchema = mongoose.Schema<UserDocument, UserModel, UserMethods>;
 
 /**
  * Mongoose Subdocument type
@@ -2982,7 +2969,7 @@ type Modify<T, R> = Omit<T, keyof R> & R;
  * Augment mongoose with Query.populate overloads
  */
 declare module 'mongoose' {
-	interface Query<ResultType, DocType extends Document, THelpers = {}> {
+	interface Query<ResultType, DocType, THelpers = {}> {
 		populate<T extends string>(
 			path: T,
 			select?: string | any,

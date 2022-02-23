@@ -569,8 +569,16 @@ export interface ParsedEspnBoxscoreTeam {
 	players: ParsedEspnBoxscoreTeamPlayer[];
 }
 
+export interface ParsedEspnBoxscoreStatus {
+	period: number;
+	displayClock: string;
+	clock: number;
+	type?: IEspnScheduleGameStatusType;
+}
+
 export interface ParsedEspnBoxscore {
 	[teamName: string]: ParsedEspnBoxscoreTeam;
+	status?: ParsedEspnBoxscoreStatus;
 }
 
 export interface IEspnTeamPlayersTeamLogo {

@@ -4,7 +4,8 @@
 	import { page } from '$app/stores';
 	import Notifications from 'svelte-notifications';
 	import Nav from '$lib/ux/nav/Nav.svelte';
-
+	// import { dailyGames } from '$lib/data/stores/games';
+	// $: console.log($dailyGames);
 	$: segment = $page.url.pathname.split('/')[1];
 </script>
 

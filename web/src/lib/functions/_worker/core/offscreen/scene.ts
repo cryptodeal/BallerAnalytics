@@ -32,7 +32,7 @@ export function init(
 	mtl?: string
 ) {
 	camera = new PerspectiveCamera(30, width / height, 1, 1000);
-	camera.position.z = 2;
+	camera.position.z = 1.5;
 
 	scene = new Scene();
 	// scene.fog = new Fog(0x444466, 100, 400);
@@ -44,9 +44,11 @@ export function init(
 	materials.preload();
 	group = new OBJLoader().setMaterials(materials).parse(obj);
 	scene.add(group);
-	ambientLight = new AmbientLight(0xffffff, darkMode ? 1.4 : 2);
+	ambientLight = new AmbientLight(0xffffff, darkMode ? 1.7 : 2.3);
 	scene.add(ambientLight);
-	directionalLight = new DirectionalLight(0xffffff, darkMode ? 0.4 : 0.6);
+	directionalLight = new DirectionalLight(0xffffff, darkMode ? 0.5 : 0.6);
+	directionalLight.position.x = -2;
+	directionalLight.position.y = 3;
 	scene.add(directionalLight);
 	renderer = new WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
 	renderer.setPixelRatio(pixelRatio);
@@ -74,11 +76,11 @@ export function updateSize(width: number, height: number, darkMode: boolean) {
 		camera.updateProjectionMatrix();
 	}
 
-	let tempIntensity = darkMode ? 1.4 : 2;
+	let tempIntensity = darkMode ? 1.7 : 2.3;
 	if (ambientLight && ambientLight.intensity !== tempIntensity)
 		ambientLight.intensity = tempIntensity;
 
-	tempIntensity = darkMode ? 0.4 : 0.6;
+	tempIntensity = darkMode ? 0.5 : 0.6;
 	if (directionalLight && directionalLight.intensity !== tempIntensity)
 		directionalLight.intensity = tempIntensity;
 	if (renderer) renderer.setSize(width, height, false);

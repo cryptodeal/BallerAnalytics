@@ -42,3 +42,7 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<Team2Doc
 			return team;
 		});
 };
+
+export const getTeamById = (id: string): Promise<Team2Document> => {
+	return Team2.findById(id).exec();
+};

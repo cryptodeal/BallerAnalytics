@@ -5,7 +5,8 @@ import type {
 	ParsedEspnBoxscore,
 	ParsedEspnBoxscoreTeam,
 	ParsedEspnBoxscoreTeamPlayer,
-	IEspnTeamPlayers
+	IEspnTeamPlayers,
+	IEspnScheduleGameStatus
 } from './types';
 import type { PopulatedDocument, Game2Document } from '../../index';
 
@@ -21,7 +22,7 @@ export const findEspnGameId = (
 	dateStr: string,
 	espnSchedule: IEspnSchedule,
 	game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>
-): [string, boolean] | undefined => {
+): [string, IEspnScheduleGameStatus] | undefined => {
 	const data = espnSchedule[dateStr];
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
 	/* if key "dateStr" is defined, destructure array of games from data */
@@ -44,7 +45,7 @@ export const findEspnGameId = (
 			gameData.competitors[homeIdx].team.id == game.home.team.meta.helpers.espnTeamId &&
 			gameData.competitors[visitorIdx].team.id == game.visitor.team.meta.helpers.espnTeamId
 		) {
-			return [games[i].id, games[i].status.type.completed];
+			return [games[i].id, games[i].status];
 		}
 	}
 };

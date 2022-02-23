@@ -65,7 +65,7 @@
 	onFrame(() => {
 		delta = clock.getDelta();
 		time += delta;
-		ballYRotation = time * 1.5;
+		ballYRotation = time * -0.8;
 	});
 </script>
 
@@ -91,14 +91,14 @@
 				<Mesh
 					position={[0, 0, 0]}
 					geometry={object.children[0].geometry}
-					scale={30}
+					scale={20}
 					material={object.children[0].material}
 					rotation={[0, ballYRotation, 0]}
 				/>
 			{/if}
-			<PerspectiveCamera position={[0, 0, 40]} />
-			<AmbientLight intensity={$darkMode ? 1.4 : 2} />
-			<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-4, 4, 2]} />
+			<PerspectiveCamera position={[0, 0, 20]} />
+			<AmbientLight intensity={$darkMode ? 1.7 : 2.3} />
+			<DirectionalLight intensity={$darkMode ? 0.5 : 0.6} position={[-4, 4.7, 0]} />
 		</Canvas>
 	{/if}
 </div>

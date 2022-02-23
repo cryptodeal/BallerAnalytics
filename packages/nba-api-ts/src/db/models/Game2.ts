@@ -13,6 +13,11 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 				boxScoreUrl: { type: String, required: true, index: true, unique: true }
 			}
 		},
+		status: {
+			period: { type: Number },
+			displayClock: { type: String },
+			clock: { type: Number }
+		},
 		displaySeason: { type: String, required: true },
 		league: { type: mongoose.Schema.Types.ObjectId, ref: 'League' }
 	},
@@ -437,6 +442,19 @@ Game2Schema.query = {
 Game2Schema.statics = {
 	findByUrl(url: string) {
 		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url });
+	},
+
+	getDailyGames(startDate: Date, endDate: Date): Promise<Game2Object[]> {
+		return this.aggregate([{ $match: { date: { $gte: startDate, $lte: endDate } } }])
+			.project({
+				'meta.helpers': 1,
+				'meta.status': 1,
+				'visitor.team': 1,
+				'visitor.score': 1,
+				'home.team': 1,
+				'home.score': 1
+			})
+			.exec();
 	},
 
 	async getGames(gameUids: Game2Document['_id'][]): Promise<Game2Object[]> {

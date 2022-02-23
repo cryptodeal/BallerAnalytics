@@ -2,7 +2,7 @@ import { findUserById, addNewUserFormData } from '$lib/data/_db/controllers/user
 import protect from '$lib/functions/_api/auth/protect';
 import { validateNewUserForm } from '$lib/functions/helpers';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { Locals, NewUserFormData, JWTPayload } from '$lib/types';
+import type { NewUserFormData, JWTPayload } from '$lib/types';
 
 export const get: RequestHandler = async ({ url }) => {
 	const userId = url.searchParams.get('userId');
@@ -23,7 +23,7 @@ export const get: RequestHandler = async ({ url }) => {
 	};
 };
 
-export const post: RequestHandler<Locals> = async (event) => {
+export const post: RequestHandler<App.Locals> = async (event) => {
 	const data = (await event.request.json()) as NewUserFormData;
 	const { valid, errors } = validateNewUserForm(data);
 	if (!valid) {

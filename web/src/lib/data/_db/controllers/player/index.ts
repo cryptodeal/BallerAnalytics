@@ -7,10 +7,7 @@ export const getSeasonPlayers = (page: number): Promise<Player2Document[]> => {
 		.sort('name.full')
 		.paginate(page)
 		.lean()
-		.exec()
-		.then((players: Player2Document[]) => {
-			return players;
-		});
+		.exec();
 };
 
 export const getPlayerBySlug = (slug: string): Promise<Player2Document> => {

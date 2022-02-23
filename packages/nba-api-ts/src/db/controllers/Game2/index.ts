@@ -27,10 +27,12 @@ import {
 	getScheduleEspn,
 	getEspnTeamPlayers
 } from '../../../api/espn';
-import type { ParsedEspnBoxscoreTeamPlayer, ParsedEspnBoxscoreTeam } from '../../../api/espn/types';
-import { serverlessConnect } from '../../connect';
-import config from '../../../config';
-import { Player2Document } from '../../interfaces/mongoose.gen';
+import type {
+	ParsedEspnBoxscoreTeamPlayer,
+	ParsedEspnBoxscoreTeam,
+	IEspnScheduleGameStatus
+} from '../../../api/espn/types';
+
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
 	const boxScore = await getBoxScore(populatedGame);
@@ -1561,7 +1563,6 @@ const syncLiveEspnStats = async () => {
 		startDate.date()
 	);
 	const dateStr = startDate.format('YYYYMMDD');
-
 	for (const game of await Game2.find({
 		date: { $lte: endDate, $gte: startDate },
 		$or: [{ 'meta.helpers.isOver': false }, { 'meta.helpers.isOver': { $exists: false } }]
@@ -1571,7 +1572,7 @@ const syncLiveEspnStats = async () => {
 		game.visitor.players.splice(0);
 		const espnGameBasic = findEspnGameId(dateStr, espnScoreboard, game);
 		if (!espnGameBasic) throw Error(`Error: could not find info`);
-		const [gameId, isOver]: [string, boolean] = espnGameBasic;
+		const [gameId, status]: [string, IEspnScheduleGameStatus] = espnGameBasic;
 		if (!gameId) {
 			throw Error(
 				`Error: no matching game id found for ${dayjs(game.date).format('YYYY-MM-DD')}, ${
@@ -1579,7 +1580,19 @@ const syncLiveEspnStats = async () => {
 				} @ ${game.home.team.infoCommon.name}`
 			);
 		}
-		if (isOver) game.meta.helpers.isOver = true;
+
+		if (status) {
+			const { clock, displayClock, period } = status;
+			if (clock) game.meta.helpers.espnGameClock = clock;
+			if (displayClock) game.meta.helpers.espnGameDisplayClock = displayClock;
+			if (period) game.meta.helpers.espnGamePeriod = period;
+			const { completed } = status.type;
+			if (completed) {
+				game.meta.helpers.isOver = true;
+				game.meta.status.isOver = true;
+			}
+		}
+
 		await storeEspnData(game, parseInt(gameId)).then(console.log);
 	}
 };
