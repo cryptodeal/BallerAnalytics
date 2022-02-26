@@ -2,10 +2,10 @@ import { Game2, Team2Document } from '@balleranalytics/nba-api-ts';
 import { getTeamById } from '../team';
 import dayjs from 'dayjs';
 import type { Game2Object } from '@balleranalytics/nba-api-ts';
-import type { DailyGame } from '$lib/data/stores/types';
+import type { DailyGame, DailyGames } from '$lib/data/stores/types';
 
 export const getTodaysGames = async () => {
-	const now = dayjs().date(17).hour() < 3 ? dayjs().date(17).subtract(4, 'hour') : dayjs().date(17);
+	const now = dayjs().hour() < 3 ? dayjs().subtract(3, 'hour') : dayjs();
 	const endDate = now.endOf('date').toDate();
 	const startDate = now.startOf('date').toDate();
 	return Game2.getDailyGames(startDate, endDate).then((games: Game2Object[]) => {
@@ -19,7 +19,7 @@ export const getTodaysGames = async () => {
 			promises.push(visitorPromise);
 		});
 		return Promise.all(promises).then((teams) => {
-			const parsedGames: DailyGame[] = [];
+			const parsedGames: DailyGames = {};
 			for (let i = 0; i < games.length; i++) {
 				const tempGame = games[i];
 				const parsedGame: DailyGame = {
@@ -46,7 +46,7 @@ export const getTodaysGames = async () => {
 					if (displayClock) parsedGame.displayClock = displayClock;
 					if (clock) parsedGame.clock = clock;
 				}
-				parsedGames.push(parsedGame);
+				parsedGames[tempGame._id.toString()] = parsedGame;
 			}
 			return parsedGames;
 		});

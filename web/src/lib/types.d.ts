@@ -36,6 +36,7 @@ interface GameScheduleTeam {
 }
 
 export interface GameScheduleItem {
+	_id: string;
 	home: GameScheduleTeam;
 	visitor: GameScheduleTeam;
 	date: Date;

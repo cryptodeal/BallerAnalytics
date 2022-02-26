@@ -30,6 +30,9 @@ const fetchDailyGames = () => {
 		if (!res.ok) {
 			throw new Error(`Bad response`);
 		}
-		return res.json();
+		return res.json().then((res) => {
+			const { todaysGames } = res;
+			return todaysGames;
+		});
 	});
 };
