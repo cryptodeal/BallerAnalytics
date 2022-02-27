@@ -22,8 +22,9 @@ export const dailyGames = readable<DailyGames>({}, (set) => {
 });
 
 const fetchDailyGames = () => {
-	return fetch('/api/games/today')
+	return fetch('/api/games/today/__data.json')
 		.then((res) => {
+			if (!res.ok) throw new Error(`Error: !res.ok; ${res.status}`);
 			return res.json().then((res) => {
 				const { todaysGames } = res;
 				return todaysGames;

@@ -67,7 +67,9 @@
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"
 					class="rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
-					<div class="glassmorphicBg mx-auto rounded-lg w-1/2 px-2 pb-full md:w-1/8">
+					<div
+						class="rounded-lg shadow-sm antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 mx-auto w-1/2 px-2 pb-full md:w-1/8"
+					>
 						{#if logoModules}
 							{#each Object.entries(logoModules) as [key, { default: Logo }]}
 								{#if key.includes(`logo-${infoCommon.slug}.svelte`)}
