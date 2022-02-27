@@ -1,13 +1,15 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { SeasonList } from '$lib/types';
+
 	export const load: Load = async ({ fetch, params, url }) => {
 		if (url.searchParams.get('seasonIdx')) {
 			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
 				'seasonIdx'
 			)}`;
+			const module = await import(`../../../lib/ux/teams/assets/logo-${params.teamSlug}.svelte`);
 			const res = await fetch(apiUrl);
-			if (res.ok) {
+			if (res.ok && module) {
 				const { teamData } = await res.json();
 				const seasonIdx = url.searchParams.get('seasonIdx');
 				const seasons: SeasonList[] = [];
@@ -21,7 +23,8 @@
 						teamData,
 						seasonIdx,
 						seasonYear: teamData.seasons[seasonIdx].season,
-						seasons
+						seasons,
+						Logo: module.default
 					}
 				};
 			}
@@ -31,8 +34,9 @@
 			};
 		} else {
 			const apiUrl = `/teams/${params.teamSlug}.json`;
+			const module = await import(`../../../lib/ux/teams/assets/logo-${params.teamSlug}.svelte`);
 			const res = await fetch(apiUrl);
-			if (res.ok) {
+			if (res.ok && module) {
 				const { teamData } = await res.json();
 				const seasonIdx = 0;
 				const seasons: SeasonList[] = [];
@@ -46,7 +50,8 @@
 						teamData,
 						seasonIdx,
 						seasonYear: teamData.seasons[seasonIdx].season,
-						seasons
+						seasons,
+						Logo: module.default
 					}
 				};
 			}
@@ -69,12 +74,13 @@
 	import { tweened } from 'svelte/motion';
 	import { interpolateLab as interpolate } from 'd3-interpolate';
 	import darkMode from '$lib/data/stores/theme';
-	import { onMount } from 'svelte';
+	import { browser } from '$app/env';
 	import { genPalette, getBackgroundColors } from '$lib/ux/teams/genBg/core/colors';
 	export let teamData;
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
+	export let Logo;
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
@@ -84,11 +90,12 @@
 		teamData.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 	const colorPalette = genPalette(Color(primaryColor), Color(secondaryColor), 5);
-	onMount(() => {
+	if (browser) {
 		const background = getBackgroundColors(colorPalette);
 		$bgInner = background.bgInner;
 		$bgOuter = background.bgOuter;
-	});
+	}
+
 	async function loadRosterData() {
 		const seasonIndex = teamData.seasons.findIndex((s) => s.season === seasonYear);
 		const res = await fetch(`/teams/${teamData.infoCommon.slug}.json?seasonIdx=${seasonIndex}`);
@@ -106,13 +113,13 @@
 	<div class="appContent">
 		<div class="w-full h-full p-2">
 			<div
-				class="flex flex-wrap justify-center text-center opacity-100 items-center min-h-25 md:h-50"
+				class="flex flex-wrap gap-3 my-3 justify-center text-center opacity-100 items-center min-h-25 md:h-50"
 			>
-				<img
-					class="bg-light-200 rounded-lg bg-opacity-20 backdrop-filter backdrop-blur-lg h-30 w-auto mx-10 p-1 md:(mx-20 h-full w-auto)"
-					src="/teams/assets/min-{teamData.infoCommon.slug}.svg"
-					alt="{teamData.infoCommon.city} {teamData.infoCommon.name} logo"
-				/>
+				<div class="h-full p-1 rounded-lg glassmorphicBg mx-auto sm:mx-20">
+					{#if Logo}
+						<Logo size={200} />
+					{/if}
+				</div>
 				<h1 style="color:rgba({color2[0]}, {color2[1]}, {color2[2]}, 1);">
 					{teamData.infoCommon.name}
 				</h1>

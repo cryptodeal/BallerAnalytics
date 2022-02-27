@@ -8,6 +8,7 @@
 
 	export let teamId: Types.ObjectId;
 	export let schedule: GameScheduleItem[];
+	// $: console.log($dailyGames);
 
 	const getRecord = (index: number): TeamRecord => {
 		const record: TeamRecord = {

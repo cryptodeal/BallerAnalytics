@@ -2,7 +2,7 @@
 	export let size: number;
 </script>
 
-<svg height={size} width={size} viewBox="0 0 648 648">
+<svg class="w-full h-full" height={size} width={size} viewBox="0 0 648 648">
 	<path
 		d="M611.4 323.6c0 159.1-128.9 288-288 288s-288-128.9-288-288 128.9-288 288-288c159 0 288 129 288 288"
 		style="fill:#b5b3b3"

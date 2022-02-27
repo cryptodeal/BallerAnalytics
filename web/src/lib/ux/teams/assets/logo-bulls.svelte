@@ -2,7 +2,7 @@
 	export let size: number;
 </script>
 
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width={size} height={size}>
+<svg class="w-full h-full" viewBox="0 0 400 400" width={size} height={size}>
 	<path
 		fill="#FFF"
 		shape-rendering="crispEdges"

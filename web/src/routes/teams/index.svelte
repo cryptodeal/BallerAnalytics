@@ -67,13 +67,11 @@
 						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"
 					class="rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
-					<div class="md:(w-1/8) w-1/2 mx-auto px-2">
+					<div class="glassmorphicBg mx-auto rounded-lg w-1/2 px-2 pb-full md:w-1/8">
 						{#if logoModules}
 							{#each Object.entries(logoModules) as [key, { default: Logo }]}
 								{#if key.includes(`logo-${infoCommon.slug}.svelte`)}
-									<div class="mx-auto">
-										<Logo size={200} />
-									</div>
+									<Logo size={200} />
 								{/if}
 							{/each}
 						{/if}

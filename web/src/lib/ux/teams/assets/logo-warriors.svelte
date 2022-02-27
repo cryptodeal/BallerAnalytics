@@ -2,7 +2,7 @@
 	export let size: number;
 </script>
 
-<svg height={size} width={size} viewBox="0 0 648 648">
+<svg class="w-full h-full" height={size} width={size} viewBox="0 0 648 648">
 	<pattern
 		x="144"
 		y="504"

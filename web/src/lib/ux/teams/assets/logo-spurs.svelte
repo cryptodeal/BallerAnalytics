@@ -2,7 +2,7 @@
 	export let size: number;
 </script>
 
-<svg height={size} width={size} viewBox="0 0 400 400">
+<svg class="w-full h-full" height={size} width={size} viewBox="0 0 400 400">
 	<path
 		shape-rendering="crispEdges"
 		d="m143.8 252.2-13.2 19.6 21.7-7.1 8.8 21.2 6.6-22.8 24.4 6.3-15.8-18.3 19-15.7-17 1 11.2-12.6h21.9l25-44.3v-29.2h-17.7l-8.5 15.1-1.6 11.4-12.8 22.7h-11.7l11.5-20.3v-28.8h-18.4l-8.2 15-1.5 11.5-20 35.7 3.1 7.9-3.9-4.2 1.6 21.6-23.3 1 18.8 13.3zm9.9-28.2h8.3l-2.5 6.3-5.8-6.3z"
