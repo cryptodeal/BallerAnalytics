@@ -1,6 +1,7 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
+	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
 	export const load: Load = async ({ fetch }) => {
 		const url = `/teams.json`;
 		const res = await fetch(url);
@@ -57,7 +58,7 @@
 	/>
 </svelte:head>
 
-<div class="appContent">
+<div class="appContent flex flex-col">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
 			<a sveltekit:prefetch href="teams/{infoCommon.slug}">
@@ -67,13 +68,13 @@
 					class="rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
 					<div class="md:(w-1/8) w-1/2 mx-auto px-2">
-						<img
-							class="rounded-lg shadow-sm mx-auto h-30 antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 md:m-4"
-							width="400"
-							height="400"
-							src="/teams/assets/logo-{infoCommon.slug}.svg"
-							alt="{infoCommon.name} logo"
-						/>
+						{#if logoModules}
+							{#each Object.entries(logoModules) as [key, { default: Logo }]}
+								{#if key.includes(`logo-${infoCommon.slug}.svelte`)}
+									<Logo size={200} />
+								{/if}
+							{/each}
+						{/if}
 					</div>
 					<div
 						class="md:(w-7/8 justify-end) w-full mx-auto px-3 flex inline-flex h-auto justify-center"

@@ -6,7 +6,6 @@ body {
 body {
 	@apply bg-white dark:bg-black;
 	min-height: 100%;
-	width: 100vw;
 	display: flex;
 	flex-direction: column;
 }

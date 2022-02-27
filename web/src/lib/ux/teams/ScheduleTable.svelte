@@ -120,7 +120,7 @@
 											{:else if !meta.helpers.isOver && home.stats.totals.points && visitor.stats.totals.points}
 												<div class="text-red-600 font-bold animate-pulse text-sm mr-2">Live</div>
 											{/if}
-											{#if $dailyGames[_id] && $dailyGames[_id].home.score && $dailyGames[_id].visitor.score}
+											{#if $dailyGames && $dailyGames[_id]}
 												<div class="flex inline-flex">
 													{#if $dailyGames[_id].home.score === $dailyGames[_id].visitor.score}
 														{$dailyGames[_id].home.score}&nbsp;-&nbsp;{$dailyGames[_id].visitor

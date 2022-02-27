@@ -66,8 +66,8 @@
 		"unplugin-icons": "^0.13.2",
 		"unplugin-mtl": "latest",
 		"unplugin-obj": "^0.1.2",
-		"vite-plugin-windicss": "^1.7.1",
-		"windicss": "^3.4.4",
+		"vite-plugin-windicss": "^1.8.1",
+		"windicss": "^3.5.0",
 		"yup": "^0.32.11"
 	},
 	"type": "module"

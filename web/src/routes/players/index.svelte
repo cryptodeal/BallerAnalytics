@@ -48,7 +48,7 @@
 	}
 </script>
 
-<div class="listContainer">
+<div class="listContainer flex flex-col">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
 		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={75}>
 			<a
@@ -73,14 +73,14 @@
 <style>
 	@media (max-width: 768px) {
 		.listContainer {
-			height: 100vh;
+			height: 100%;
 			padding-top: 3rem;
 			margin-bottom: 1rem;
 		}
 	}
 
 	.listContainer {
-		height: 100vh;
+		height: 100%;
 		padding-top: 3.2rem;
 	}
 </style>
