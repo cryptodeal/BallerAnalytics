@@ -26,6 +26,15 @@
 	$: console.log(player);
 </script>
 
+<svelte:head>
+	<title>{player.name.full} NBA Player Information</title>
+	<html lang="en" />
+	<meta
+		name="Description"
+		content="{player.name
+			.full} season and historical schedule, basic/advanced statistics, fantasy projections/historical data, and more."
+	/>
+</svelte:head>
 <div class="h-full appContent w-full px-1 pb-4">
 	<div class="mt-4 mx-auto glassmorphicBg md:container">
 		<div class="flex flex-wrap justify-center text-center opacity-100 items-center">

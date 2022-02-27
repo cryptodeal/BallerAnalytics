@@ -105,6 +105,16 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{seasonYear} {teamData.infoCommon.name} Season Basic Info</title>
+	<html lang="en" />
+	<meta
+		name="Description"
+		content="Team Schedule, Roster, and Statistics for the {teamData.infoCommon
+			.name}'s {seasonYear} season."
+	/>
+</svelte:head>
+
 <div
 	class="w-full h-full overflow-scroll teamBg"
 	style:--bg-inner={$bgInner}

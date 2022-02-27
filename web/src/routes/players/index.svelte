@@ -48,6 +48,12 @@
 	}
 </script>
 
+<svelte:head>
+	<title>NBA 2021-22 Season Players</title>
+	<html lang="en" />
+	<meta name="Description" content="Index of players from the 2021-22 NBA season." />
+</svelte:head>
+
 <div class="listContainer flex flex-col">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
 		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={75}>
