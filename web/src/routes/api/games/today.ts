@@ -5,6 +5,9 @@ import type { DailyGames } from '$lib/data/stores/types';
 export const get: RequestHandler<DailyGames> = async () => {
 	const todaysGames: DailyGames = await getTodaysGames();
 	return {
+		headers: {
+			'content-type': 'application/json'
+		},
 		body: {
 			todaysGames
 		}

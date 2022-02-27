@@ -3,7 +3,7 @@ import { browser } from '$app/env';
 import type { DailyGames } from './types';
 
 export const dailyGames = readable<DailyGames>({}, (set) => {
-	if (!browser) return null;
+	if (!browser) return;
 
 	fetchDailyGames()
 		.then(set)
@@ -22,18 +22,14 @@ export const dailyGames = readable<DailyGames>({}, (set) => {
 });
 
 const fetchDailyGames = () => {
-	return fetch('/api/games/today', {
-		method: 'GET',
-		headers: {
-			accept: 'application/json'
-		}
-	}).then((res) => {
-		if (!res.ok) {
-			throw new Error(`Bad response`);
-		}
-		return res.json().then((res) => {
-			const { todaysGames } = res;
-			return todaysGames;
+	return fetch('/api/games/today')
+		.then((res) => {
+			return res.json().then((res) => {
+				const { todaysGames } = res;
+				return todaysGames;
+			});
+		})
+		.catch((err) => {
+			throw new Error(`Error: Failed to fetch dailyGames:\n ${err}`);
 		});
-	});
 };
