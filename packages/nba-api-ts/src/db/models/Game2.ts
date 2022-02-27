@@ -21,7 +21,7 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 		displaySeason: { type: String, required: true },
 		league: { type: mongoose.Schema.Types.ObjectId, ref: 'League' }
 	},
-	date: { type: Date, required: true },
+	date: { type: Date, required: true, index: true },
 	time: { type: Boolean },
 	preseason: { type: Boolean, required: true, default: false },
 	postseason: { type: Boolean, required: true, default: false },
@@ -445,16 +445,50 @@ Game2Schema.statics = {
 	},
 
 	getDailyGames(startDate: Date, endDate: Date): Promise<Game2Object[]> {
-		return this.aggregate([{ $match: { date: { $gte: startDate, $lte: endDate } } }])
-			.project({
-				'meta.helpers': 1,
-				'meta.status': 1,
-				'visitor.team': 1,
-				'visitor.score': 1,
-				'home.team': 1,
-				'home.score': 1
-			})
-			.exec();
+		return this.aggregate([
+			{
+				$match: {
+					date: {
+						$gte: startDate,
+						$lte: endDate
+					}
+				}
+			},
+			{
+				$lookup: {
+					from: 'team2',
+					localField: 'home.team',
+					foreignField: '_id',
+					as: 'home.team'
+				}
+			},
+			{
+				$unwind: '$home.team'
+			},
+			{
+				$lookup: {
+					from: 'team2',
+					localField: 'visitor.team',
+					foreignField: '_id',
+					as: 'visitor.team'
+				}
+			},
+			{
+				$unwind: '$visitor.team'
+			},
+			{
+				$project: {
+					'meta.helpers': 1,
+					'meta.status': 1,
+					'visitor.team.infoCommon': 1,
+					'visitor.team._id': 1,
+					'visitor.score': 1,
+					'home.team.infoCommon': 1,
+					'home.team._id': 1,
+					'home.score': 1
+				}
+			}
+		]).exec();
 	},
 
 	async getGames(gameUids: Game2Document['_id'][]): Promise<Game2Object[]> {
