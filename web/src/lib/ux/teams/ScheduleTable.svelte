@@ -2,6 +2,7 @@
 	import dayjs from 'dayjs';
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import { dailyGames } from '$lib/data/stores/games';
+
 	import type { GameScheduleItem, TeamRecord } from '$lib/types';
 	import type { Types } from 'mongoose';
 
@@ -113,13 +114,32 @@
 										<div
 											class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
 										>
-											{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
-												<div class="text-green-700 font-bold mr-0.5">W</div>
-											{:else if meta.helpers.isOver}
-												<div class="text-red-700 font-bold mr-0.5">L</div>
-											{:else if !meta.helpers.isOver && home.stats.totals.points && visitor.stats.totals.points}
-												<div class="text-red-600 font-bold animate-pulse text-sm mr-2">Live</div>
+											{#if !$dailyGames || !$dailyGames[_id]}
+												<div>
+													{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
+														<div class="text-green-700 font-bold mr-0.5">W</div>
+													{:else if meta.helpers.isOver}
+														<div class="text-red-700 font-bold mr-0.5">L</div>
+													{:else if !meta.helpers.isOver && home.stats.totals.points && visitor.stats.totals.points}
+														<div class="text-red-600 font-bold animate-pulse text-sm mr-2">
+															Live
+														</div>
+													{/if}
+												</div>
+											{:else}
+												<div>
+													{#if ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score && $dailyGames[_id].isOver) || ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score && $dailyGames[_id].isOver)}
+														<div class="text-green-700 font-bold mr-0.5">W</div>
+													{:else if $dailyGames && $dailyGames[_id] && $dailyGames[_id].isOver}
+														<div class="text-red-700 font-bold mr-0.5">L</div>
+													{:else if $dailyGames && $dailyGames[_id] && !$dailyGames[_id].isOver && $dailyGames[_id].home.score && $dailyGames[_id].visitor.score}
+														<div class="text-red-600 font-bold animate-pulse text-sm mr-2">
+															Live
+														</div>
+													{/if}
+												</div>
 											{/if}
+
 											{#if $dailyGames && $dailyGames[_id]}
 												<div class="flex inline-flex">
 													{#if $dailyGames[_id].home.score === $dailyGames[_id].visitor.score}

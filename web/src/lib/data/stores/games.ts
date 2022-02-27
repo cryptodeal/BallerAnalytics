@@ -22,7 +22,7 @@ export const dailyGames = readable<DailyGames>({}, (set) => {
 });
 
 const fetchDailyGames = () => {
-	return fetch('/api/games/today', {
+	return fetch('/api/games/today.json', {
 		headers: {
 			Accept: 'application/json'
 		}

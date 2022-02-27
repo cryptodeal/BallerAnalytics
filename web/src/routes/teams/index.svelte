@@ -71,7 +71,9 @@
 						{#if logoModules}
 							{#each Object.entries(logoModules) as [key, { default: Logo }]}
 								{#if key.includes(`logo-${infoCommon.slug}.svelte`)}
-									<Logo size={200} />
+									<div class="mx-auto">
+										<Logo size={200} />
+									</div>
 								{/if}
 							{/each}
 						{/if}
