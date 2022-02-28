@@ -131,7 +131,7 @@
 				</h1>
 			</div>
 			<div class="p-2 md:(container mx-auto)">
-				<div class="flex inline-flex items-center px-4 py-2 text-black">
+				<div class="flex glassmorphicCard inline-flex items-center px-4 py-2 text-black">
 					<h2 class="text-white text-lg mr-4">Season:</h2>
 					<select class="select" bind:value={seasonYear} on:change={loadRosterData}>
 						{#each seasons as { season }}
@@ -140,12 +140,14 @@
 					</select>
 				</div>
 				<Tabs>
-					<TabList
-						primaryColor={color1}
-						secondaryColor={color2}
-						color1={primaryColor}
-						links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
-					/>
+					<div class="w-full glassmorphicCard mx-1 px-2 py-1 md:w-auto">
+						<TabList
+							primaryColor={color1}
+							secondaryColor={color2}
+							color1={primaryColor}
+							links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
+						/>
+					</div>
 
 					<!-- Schedule Data Tab -->
 					<TabPanel>
