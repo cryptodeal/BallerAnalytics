@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/env';
 	import { rand } from './core/utils';
 	import Color from 'color';
 	import { interpolateLab as interpolate } from '$lib/ux/teams/genBg/core/utils';
@@ -8,7 +7,6 @@
 	import { tweened } from 'svelte/motion';
 	import darkMode from '$lib/data/stores/theme';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
-
 	export let selectedTeam: Team2Document;
 
 	let w: number,
@@ -17,13 +15,14 @@
 		teamSecondary: string,
 		rectCount: number,
 		colorPalette: string[] = [],
-		bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 500, interpolate }),
-		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 500, interpolate });
+		bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 250, interpolate }),
+		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 250, interpolate });
+
 	$: if (selectedTeam && w & h) rectCount = Math.round((w * h) / 1000);
 
 	$: if (selectedTeam) {
-		teamPrimary = getMainColor(selectedTeam.infoCommon.abbreviation).hex;
-		teamSecondary = getSecondaryColor(selectedTeam.infoCommon.abbreviation).hex;
+		teamPrimary = getMainColor(selectedTeam.infoCommon.nbaAbbreviation).hex;
+		teamSecondary = getSecondaryColor(selectedTeam.infoCommon.nbaAbbreviation).hex;
 		colorPalette = genPalette(Color(teamPrimary), Color(teamSecondary), 10);
 		const background = getBackgroundColors(colorPalette);
 		$bgInner = background.bgInner;
@@ -31,7 +30,7 @@
 	}
 </script>
 
-{#if browser}
+{#if selectedTeam}
 	<div
 		class="container"
 		bind:offsetWidth={w}
