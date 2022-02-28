@@ -40,13 +40,13 @@
 	>
 		<svg class="w-full h-full">
 			{#if w && h && colorPalette.length && rectCount}
-				{#each new Array(rectCount) as i}
+				{#each new Array(rectCount) as { }, i}
 					<rect
 						x={rand(w + 50) - 50}
 						y={rand(h + 50) - 50}
 						width={rand(200) + 20}
 						height={rand(200) + 20}
-						opacity="0.{i % 2 === 0 ? '8' : '7'}{rand(10)}"
+						opacity="0.{i % 3 === 0 ? '6' : '8'}{rand(10)}"
 						fill={colorPalette[rand(colorPalette.length - 1)]}
 					/>
 				{/each}
