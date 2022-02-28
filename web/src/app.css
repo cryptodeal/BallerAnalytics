@@ -16,6 +16,10 @@ body {
 	max-width: 100%;
 }
 
+.glassmorphicCard {
+	@apply rounded-lg bg-white dark:(bg-gray-700 bg-opacity-20) backdrop-filter backdrop-blur-lg bg-opacity-40;
+}
+
 @media (min-width: 768px) {
 	.listContainer {
 		height: 100vh;
@@ -246,6 +250,12 @@ nav a[aria-current]::after {
 	}
 }
 
-svg {
+circle,
+ellipse,
+line,
+path,
+polygon,
+polyline,
+rect {
 	shape-rendering: crispEdges;
 }

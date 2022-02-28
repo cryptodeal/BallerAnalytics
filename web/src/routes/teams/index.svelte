@@ -1,13 +1,13 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { Team2Document } from '@balleranalytics/nba-api-ts';
+	import type { Team2Object } from '@balleranalytics/nba-api-ts';
 	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
 	export const load: Load = async ({ fetch }) => {
 		const url = `/teams.json`;
 		const res = await fetch(url);
 
 		if (res.ok) {
-			const { teams }: { teams: Team2Document[] } = await res.json();
+			const { teams }: { teams: Team2Object[] } = await res.json();
 			return {
 				props: {
 					teams
@@ -23,9 +23,10 @@
 </script>
 
 <script lang="ts">
+	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	export let teams: Team2Document[];
+	export let teams: Team2Object[];
 </script>
 
 <MetaTags
@@ -65,13 +66,7 @@
 					<div
 						class="rounded-lg shadow-sm antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 mx-auto w-1/2 px-2 pb-full md:w-1/8"
 					>
-						{#if logoModules}
-							{#each Object.entries(logoModules) as [key, { default: Logo }]}
-								{#if key.includes(`logo-${infoCommon.slug}.svelte`)}
-									<Logo size={200} />
-								{/if}
-							{/each}
-						{/if}
+						<TeamLogo {logoModules} slug={infoCommon.slug} />
 					</div>
 					<div
 						class="md:(w-7/8 justify-end) w-full mx-auto px-3 flex inline-flex h-auto justify-center"

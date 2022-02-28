@@ -84,3 +84,11 @@ export interface NewUserFormData {
 		players: mongoose.Types.Array<ObjectId | Player2Document>;
 	};
 }
+
+export type MetaGlobImport = Record<
+	string,
+	{
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		[key: string]: any;
+	}
+>;

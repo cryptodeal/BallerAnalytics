@@ -31,33 +31,33 @@
 	};
 </script>
 
-<div class="my-2 bg-white backdrop-filter backdrop-blur-lg bg-opacity-40 text-black md:(mx-auto)">
+<div class="my-2 glassmorphicCard text-black md:(mx-auto)">
 	<div class="flex flex-col w-full">
 		<div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 			<div
-				class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
+				class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 dark:border-dark-100 shadow sm:rounded-lg"
 			>
 				<table class="min-w-full">
 					<thead>
 						<tr>
 							<th
-								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 							>
 								Date/Time (ET)
 							</th>
 							<th
-								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 md:px-4 xl:px-6"
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 							>
 								Opponent
 							</th>
 
 							<th
-								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200  md:px-4 xl:px-6"
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 							>
 								Result
 							</th>
 							<th
-								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left whitespace-nowrap uppercase border-b border-gray-200 md:px-4 xl:px-6"
+								class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left whitespace-nowrap uppercase border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 							>
 								W-L
 							</th>
@@ -67,7 +67,9 @@
 						{#each schedule as { home, visitor, date, time, meta, _id }, i}
 							<tr>
 								<!-- Display Game Date and Time -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+								<td
+									class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+								>
 									<div class="text-sm font-bold leading-5">
 										{#if time}
 											{dayjs(date).format('ddd, MMM D @ h:mm A')}
@@ -77,7 +79,9 @@
 									</div>
 								</td>
 								<!-- Display Opposing Team -->
-								<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
+								<td
+									class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+								>
 									<div class="flex inline-flex items-center whitespace-nowrap">
 										{#if teamId == home.team._id}
 											<div class="text-sm leading-5 mr-2">vs</div>
@@ -111,7 +115,9 @@
 									</div>
 								</td>
 								{#if home.stats.totals?.points && visitor.stats.totals?.points}
-									<td class="px-2 py-4 border-b border-gray-200 md:px-4 xl:px-6">
+									<td
+										class="px-2 py-4 border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+									>
 										<div
 											class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
 										>
@@ -198,18 +204,24 @@
 										</div>
 									</td>
 								{:else}
-									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
+									<td
+										class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+									>
 										<div class="text-sm leading-5">--</div>
 									</td>
 								{/if}
 								{#if meta.helpers.isOver}
-									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
+									<td
+										class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+									>
 										<div class="text-sm leading-5">
 											{`${getRecord(i).wins}-${getRecord(i).losses}`}
 										</div>
 									</td>
 								{:else}
-									<td class="px-2 py-4 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
+									<td
+										class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+									>
 										<div class="text-sm leading-5">--</div>
 									</td>
 								{/if}

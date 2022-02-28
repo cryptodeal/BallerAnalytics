@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Team2Document, Team2Model, Team2Schema } from '../interfaces/mongoose.gen';
+import { Team2Document, Team2Model, Team2Schema, Team2Object } from '../interfaces/mongoose.gen';
 
 const Team2Schema: Team2Schema = new mongoose.Schema({
 	meta: {
@@ -340,6 +340,31 @@ Team2Schema.statics = {
 				{ 'seasons.infoCommon': { $elemMatch: { name: name } } }
 			]
 		}).exec();
+	},
+
+	getAllTeams(): Promise<Team2Object[]> {
+		return this.aggregate([
+			{
+				$match: {
+					seasons: {
+						$elemMatch: {
+							season: 2022
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					infoCommon: 1,
+					'seasons.season': 1
+				}
+			},
+			{
+				$sort: {
+					'infoCommon.name': 1
+				}
+			}
+		]).exec();
 	}
 };
 

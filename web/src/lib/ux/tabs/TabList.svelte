@@ -10,7 +10,6 @@
 <!-- {JSON.stringify($page, null, '  ')} -->
 
 <!-- {JSON.stringify($navigating, null, '  ')} -->
-
 <ul
 	class="flex m-1 border-b"
 	style="border-bottom-color:rgb({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]})"
