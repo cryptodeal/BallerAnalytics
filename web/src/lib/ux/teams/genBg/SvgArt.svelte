@@ -4,8 +4,7 @@
 	import Color from 'color';
 	import Grid from '$lib/ux/teams/genBg/Grid.svelte';
 	import { interpolateLab as interpolate } from '$lib/ux/teams/genBg/core/utils';
-	import { genPalette } from '$lib/ux/teams/genBg/core/colors';
-	import { getBackgroundColors } from '$lib/ux/teams/genBg/core/colors';
+	import { genPalette, getBackgroundColors } from '$lib/ux/teams/genBg/core/colors';
 	import { tweened } from 'svelte/motion';
 	import { teams } from '$lib/ux/teams/genBg/core/teams';
 	export let selectedTeam: string;

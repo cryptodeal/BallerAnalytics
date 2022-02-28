@@ -1,6 +1,7 @@
 html,
 body {
 	overscroll-behavior-y: none;
+	z-index: -100;
 }
 
 body {
@@ -13,7 +14,6 @@ body {
 .appWrapper {
 	flex-grow: 1;
 	max-width: 100%;
-	@apply bg-white dark:bg-black;
 }
 
 @media (min-width: 768px) {

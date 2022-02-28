@@ -64,9 +64,11 @@
 </script>
 
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
 	import PlayerRosterTable from '$lib/ux/teams/roster/Players.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
+	import RectBg from '$lib/ux/svg/RectBg.svelte';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
@@ -105,27 +107,23 @@
 	}
 </script>
 
-<svelte:head>
-	<title>{seasonYear} {teamData.infoCommon.name} Season Basic Info</title>
-	<html lang="en" />
-	<meta
-		name="Description"
-		content="Team Schedule, Roster, and Statistics for the {teamData.infoCommon
-			.name}'s {seasonYear} season."
-	/>
-</svelte:head>
+<MetaTags
+	title="{seasonYear} {teamData.infoCommon.name} Season Basic Info"
+	description="Team Schedule, Roster, and Statistics for the {teamData.infoCommon
+		.name}'s {seasonYear} season."
+/>
 
-<div
-	class="w-full h-full overflow-scroll teamBg"
-	style:--bg-inner={$bgInner}
-	style:--bg-outer={$bgOuter}
->
+<RectBg selectedTeam={teamData} />
+
+<div class="w-full h-full overflow-scroll">
 	<div class="appContent">
 		<div class="w-full h-full p-2">
 			<div
 				class="flex flex-wrap gap-3 my-3 justify-center text-center opacity-100 items-center min-h-25 md:h-50"
 			>
-				<div class="h-full p-1 rounded-lg glassmorphicBg mx-auto sm:mx-20">
+				<div
+					class="rounded-lg shadow-sm antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 h-full p-1 mx-auto sm:mx-20"
+				>
 					{#if Logo}
 						<Logo size={200} />
 					{/if}
@@ -200,9 +198,5 @@
 <style>
 	.tabPanelTitle {
 		@apply text-center m-4;
-	}
-
-	.teamBg {
-		background-image: radial-gradient(var(--bg-inner) 0%, var(--bg-outer) 100%);
 	}
 </style>

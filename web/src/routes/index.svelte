@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { MetaTags } from 'svelte-meta-tags';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
 	import Bball from '$lib/ux/animations/LowPolyBall.svelte';
@@ -8,6 +9,11 @@
 		isVisible = true;
 	});
 </script>
+
+<MetaTags
+	title="Baller Analytics: Fan Driven Basketball Analytics"
+	description="Providing NBA, ABA, and BAA historical and current statistics, analytics, and information and leveraging Artificial Intelligence to provide unique advanced insight into fantasy basketball management."
+/>
 
 <div class="w-full min-h-screen bg-hero-circuit-board-blue-30">
 	<div class="appContent w-full">

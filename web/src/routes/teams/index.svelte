@@ -23,40 +23,35 @@
 </script>
 
 <script lang="ts">
+	import { MetaTags } from 'svelte-meta-tags';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	export let teams: Team2Document[];
 </script>
 
-<svelte:head>
-	<title
-		>NBA {Math.max.apply(
-			Math,
-			teams[0].seasons.map(function (o) {
-				return o.season;
-			})
-		) - 1}-{`${Math.max.apply(
-			Math,
-			teams[0].seasons.map(function (o) {
-				return o.season;
-			})
-		)}`.substring(-2)} Teams</title
-	>
-	<html lang="en" />
-	<meta
-		name="Description"
-		content="Index of teams from the {Math.max.apply(
-			Math,
-			teams[0].seasons.map(function (o) {
-				return o.season;
-			})
-		) - 1}-{`${Math.max.apply(
-			Math,
-			teams[0].seasons.map(function (o) {
-				return o.season;
-			})
-		)}`.substring(-2)} NBA season."
-	/>
-</svelte:head>
+<MetaTags
+	title="NBA {Math.max.apply(
+		Math,
+		teams[0].seasons.map(function (o) {
+			return o.season;
+		})
+	) - 1}-{`${Math.max.apply(
+		Math,
+		teams[0].seasons.map(function (o) {
+			return o.season;
+		})
+	)}`.substring(-2)} Teams"
+	description="Index of teams from the {Math.max.apply(
+		Math,
+		teams[0].seasons.map(function (o) {
+			return o.season;
+		})
+	) - 1}-{`${Math.max.apply(
+		Math,
+		teams[0].seasons.map(function (o) {
+			return o.season;
+		})
+	)}`.substring(-2)} NBA season."
+/>
 
 <div class="appContent flex flex-col">
 	{#each teams as { infoCommon, seasons }}

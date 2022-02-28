@@ -24,6 +24,7 @@
 
 <script lang="ts">
 	import VirtualList from 'svelte-tiny-virtual-list';
+	import { MetaTags } from 'svelte-meta-tags';
 	import InfiniteLoading from 'svelte-infinite-loading';
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	export let players: Player2Document[] = [];
@@ -48,11 +49,10 @@
 	}
 </script>
 
-<svelte:head>
-	<title>NBA 2021-22 Season Players</title>
-	<html lang="en" />
-	<meta name="Description" content="Index of players from the 2021-22 NBA season." />
-</svelte:head>
+<MetaTags
+	title="NBA 2021-22 Season Players"
+	description="Index of players from the 2021-22 NBA season."
+/>
 
 <div class="listContainer flex flex-col">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
