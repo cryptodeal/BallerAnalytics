@@ -135,7 +135,7 @@
 												</div>
 											{:else}
 												<div>
-													{#if ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score && $dailyGames[_id].isOver) || ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score && $dailyGames[_id].isOver)}
+													{#if ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score && $dailyGames[_id].isOver) || ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].visitor._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score && $dailyGames[_id].isOver)}
 														<div class="text-green-700 font-bold mr-0.5">W</div>
 													{:else if $dailyGames && $dailyGames[_id] && $dailyGames[_id].isOver}
 														<div class="text-red-700 font-bold mr-0.5">L</div>
