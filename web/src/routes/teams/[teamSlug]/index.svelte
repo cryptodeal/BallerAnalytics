@@ -153,9 +153,11 @@
 					<!-- Schedule Data Tab -->
 					<TabPanel>
 						{#if teamData.seasons[seasonIdx].regularSeason.games.length > 0}
-							<h2 class="tabPanelTitle" style="color:{secondaryColor};">
-								{teamData.seasons[seasonIdx].season} Regular Season:
-							</h2>
+							<div class="glassmorphicCard px-4 py-2 my-5">
+								<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+									{teamData.seasons[seasonIdx].season} Regular Season:
+								</h2>
+							</div>
 							<div class="my-4">
 								<ScheduleTable
 									{logoModules}
@@ -164,14 +166,16 @@
 								/>
 							</div>
 						{:else}
-							<h2 class="tabPanelTitle" style="color:{secondaryColor};">
+							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
 								No games played in {teamData.seasons[seasonIdx].season}
 							</h2>
 						{/if}
 						{#if teamData.seasons[seasonIdx].postseason.games.length > 0}
-							<h2 class="tabPanelTitle" style="color:{secondaryColor};">
-								{teamData.seasons[seasonIdx].season} Postseason:
-							</h2>
+							<div class="glassmorphicCard px-4 py-2 my-5">
+								<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+									{teamData.seasons[seasonIdx].season} Postseason:
+								</h2>
+							</div>
 							<div class="my-4">
 								<ScheduleTable
 									{logoModules}
@@ -184,13 +188,17 @@
 
 					<!-- Roster Data Tab -->
 					<TabPanel>
-						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Roster:</h2>
+						<div class="glassmorphicCard px-4 py-2 my-5">
+							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
+						</div>
 						<PlayerRosterTable roster={teamData.seasons[seasonIdx].roster.players} />
 					</TabPanel>
 
 					<!-- Stats Data Tab -->
 					<TabPanel>
-						<h2 class="tabPanelTitle" style="color:{secondaryColor};">Stats:</h2>
+						<div class="glassmorphicCard px-4 py-2 my-5">
+							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Stats:</h2>
+						</div>
 					</TabPanel>
 				</Tabs>
 			</div>
