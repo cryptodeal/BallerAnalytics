@@ -322,6 +322,7 @@ export const importBoxScore = async (game: Game2Document) => {
 				}
 			}
 		}
+		game.meta.helpers.isOver = true;
 		return game.save();
 	}
 	return null;

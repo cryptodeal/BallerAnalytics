@@ -2,7 +2,7 @@ import { Game2 } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
 import type { Game2Object } from '@balleranalytics/nba-api-ts';
 import type { DailyGame, DailyGames } from '$lib/data/stores/types';
-import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 
 export const getTodaysGames = async () => {
 	const now = dayjs().hour() < 3 ? dayjs().subtract(3, 'hour') : dayjs();
@@ -11,7 +11,10 @@ export const getTodaysGames = async () => {
 	return Game2.getDailyGames(startDate, endDate).then((games: Game2Object[]) => {
 		const parsedGames: DailyGames = {};
 		games.map((g) => {
-			if (!(g.home.team instanceof Types.ObjectId) && !(g.visitor.team instanceof Types.ObjectId)) {
+			if (
+				!(g.home.team instanceof mongoose.Types.ObjectId) &&
+				!(g.visitor.team instanceof mongoose.Types.ObjectId)
+			) {
 				const parsedGame: DailyGame = {
 					isOver: g.meta.helpers.isOver,
 					home: {

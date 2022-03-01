@@ -1,15 +1,15 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { SeasonList } from '$lib/types';
+	export const logoModules = import.meta.globEager('../../../lib/ux/teams/assets/logo-*.svelte');
 
 	export const load: Load = async ({ fetch, params, url }) => {
 		if (url.searchParams.get('seasonIdx')) {
 			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
 				'seasonIdx'
 			)}`;
-			const module = await import(`../../../lib/ux/teams/assets/logo-${params.teamSlug}.svelte`);
 			const res = await fetch(apiUrl);
-			if (res.ok && module) {
+			if (res.ok) {
 				const { teamData } = await res.json();
 				const seasonIdx = url.searchParams.get('seasonIdx');
 				const seasons: SeasonList[] = [];
@@ -23,8 +23,7 @@
 						teamData,
 						seasonIdx,
 						seasonYear: teamData.seasons[seasonIdx].season,
-						seasons,
-						Logo: module.default
+						seasons
 					}
 				};
 			}
@@ -34,9 +33,8 @@
 			};
 		} else {
 			const apiUrl = `/teams/${params.teamSlug}.json`;
-			const module = await import(`../../../lib/ux/teams/assets/logo-${params.teamSlug}.svelte`);
 			const res = await fetch(apiUrl);
-			if (res.ok && module) {
+			if (res.ok) {
 				const { teamData } = await res.json();
 				const seasonIdx = 0;
 				const seasons: SeasonList[] = [];
@@ -50,8 +48,7 @@
 						teamData,
 						seasonIdx,
 						seasonYear: teamData.seasons[seasonIdx].season,
-						seasons,
-						Logo: module.default
+						seasons
 					}
 				};
 			}
@@ -69,6 +66,7 @@
 	import PlayerRosterTable from '$lib/ux/teams/roster/Players.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import RectBg from '$lib/ux/svg/RectBg.svelte';
+	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
 	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
@@ -82,7 +80,6 @@
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
-	export let Logo;
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
@@ -122,18 +119,22 @@
 				class="glassmorphicCard mx-auto flex flex-wrap gap-3 my-3 justify-center text-center opacity-100 items-center min-h-25 sm:max-w-3/4 md:(h-50 max-w-1/2) 2xl:max-w-1/4"
 			>
 				<div class="shadow-sm antialiased h-30 p-1 md:h-full">
-					{#if Logo}
-						<Logo size={200} />
-					{/if}
+					<TeamLogo {logoModules} slug={teamData.infoCommon.slug} />
 				</div>
 				<h1 style="color:rgba({color2[0]}, {color2[1]}, {color2[2]}, 1);">
 					{teamData.infoCommon.name}
 				</h1>
 			</div>
 			<div class="p-2 md:(container mx-auto)">
-				<div class="flex glassmorphicCard inline-flex items-center px-4 py-2 text-black">
-					<h2 class="text-white text-lg mr-4">Season:</h2>
-					<select class="select" bind:value={seasonYear} on:change={loadRosterData}>
+				<div class="glassmorphicCard flex inline-flex items-center px-4 py-2 text-black mb-5">
+					<label class="text-white text-lg mr-4" for="season-select">Season:</label>
+
+					<select
+						type="select"
+						id="season-select"
+						bind:value={seasonYear}
+						on:change={loadRosterData}
+					>
 						{#each seasons as { season }}
 							<option value={season}>{season}</option>
 						{/each}
@@ -157,6 +158,7 @@
 							</h2>
 							<div class="my-4">
 								<ScheduleTable
+									{logoModules}
 									schedule={teamData.seasons[seasonIdx].regularSeason.games}
 									teamId={teamData._id}
 								/>
@@ -172,6 +174,7 @@
 							</h2>
 							<div class="my-4">
 								<ScheduleTable
+									{logoModules}
 									schedule={teamData.seasons[seasonIdx].postseason.games}
 									teamId={teamData._id}
 								/>

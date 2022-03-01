@@ -4,7 +4,7 @@ import { Game2Document, Game2Model, Game2Schema, Game2Object } from '../interfac
 const Game2Schema: Game2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
-			isOver: { type: Boolean, required: true },
+			isOver: { type: Boolean, required: true, index: true },
 			nbaGameId: { type: String },
 			espnGameId: { type: String },
 			bballRef: {

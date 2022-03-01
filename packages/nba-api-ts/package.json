@@ -30,6 +30,7 @@
 		"data:import:teamRosters": "node --experimental-specifier-resolution=node dist/scripts/import/teamRosters",
 		"data:cleanup:Game2:clearReferences": "node --experimental-specifier-resolution=node dist/scripts/cleanup/Game2/clearReferences",
 		"data:cleanup:Game2:fixTeamPeriodStats": "node --experimental-specifier-resolution=node dist/scripts/cleanup/Game2/fixTeamPeriodStats",
+		"data:cleanup:Game2:gameOver": "node --experimental-specifier-resolution=node dist/scripts/cleanup/Game2/gameOver",
 		"start": "tsc -p tsconfig.build.json",
 		"test": "uvu -r tsm tests",
 		"test:coverage": "c8 pnpm test"
@@ -44,7 +45,7 @@
 		"dayjs": "^1.10.8",
 		"dotenv": "^14.3.2",
 		"iso-3166-1-ts": "^0.2.2",
-		"mongoose": "^6.2.3",
+		"mongoose": "^6.2.4",
 		"mongoose-slugger-plugin": "^3.0.3",
 		"mongoose-tsgen": "^8.4.10",
 		"nba": "^4.15.0",
@@ -65,7 +66,7 @@
 		"husky": "^7.0.4",
 		"tslib": "^2.3.1",
 		"tsm": "^2.2.1",
-		"typescript": "^4.5.5",
+		"typescript": "^4.6.2",
 		"uvu": "^0.5.3"
 	}
 }

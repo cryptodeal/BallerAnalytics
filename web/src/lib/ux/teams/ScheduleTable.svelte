@@ -2,10 +2,12 @@
 	import dayjs from 'dayjs';
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import { dailyGames } from '$lib/data/stores/games';
+	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 
 	import type { GameScheduleItem, TeamRecord } from '$lib/types';
+	import type { MetaGlobImport } from '$lib/types';
 	import type { Types } from 'mongoose';
-
+	export let logoModules: MetaGlobImport;
 	export let teamId: Types.ObjectId;
 	export let schedule: GameScheduleItem[];
 	// $: console.log($dailyGames);
@@ -86,13 +88,9 @@
 										{#if teamId == home.team._id}
 											<div class="text-sm leading-5 mr-2">vs</div>
 											<div class="flex flex-col w-auto justify-center">
-												<img
-													class="antialiased mx-auto"
-													height="48px"
-													width="48px"
-													src="/teams/assets/min-{visitor.team.infoCommon.slug}.svg"
-													alt="{visitor.team.infoCommon.slug} logo"
-												/>
+												<div class="h-13 w-13">
+													<TeamLogo {logoModules} slug={visitor.team.infoCommon.slug} />
+												</div>
 												<div class="text-sm text-center leading-5">
 													{capitalizeFirstLetter(visitor.team.infoCommon.slug)}
 												</div>
@@ -100,13 +98,9 @@
 										{:else}
 											<div class="text-sm leading-5 mr-2">@</div>
 											<div class="flex flex-col w-auto justify-center">
-												<img
-													class="antialiased mx-auto"
-													height="48px"
-													width="48px"
-													src="/teams/assets/min-{home.team.infoCommon.slug}.svg"
-													alt="{home.team.infoCommon.slug} logo"
-												/>
+												<div class="h-13 w-13">
+													<TeamLogo {logoModules} slug={home.team.infoCommon.slug} />
+												</div>
 												<div class="text-sm text-center leading-5">
 													{capitalizeFirstLetter(home.team.infoCommon.slug)}
 												</div>
@@ -124,9 +118,9 @@
 											{#if !$dailyGames || !$dailyGames[_id]}
 												<div>
 													{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
-														<div class="text-green-700 font-bold mr-0.5">W</div>
+														<div class="text-green-700 dark:text-green-500 font-bold mr-0.5">W</div>
 													{:else if meta.helpers.isOver}
-														<div class="text-red-700 font-bold mr-0.5">L</div>
+														<div class="text-red-700 dark:text-red-600 font-bold mr-0.5">L</div>
 													{:else if !meta.helpers.isOver && home.stats.totals.points && visitor.stats.totals.points}
 														<div class="text-red-600 font-bold animate-pulse text-sm mr-2">
 															Live
@@ -136,11 +130,13 @@
 											{:else}
 												<div>
 													{#if ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score && $dailyGames[_id].isOver) || ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].visitor._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score && $dailyGames[_id].isOver)}
-														<div class="text-green-700 font-bold mr-0.5">W</div>
+														<div class="text-green-700 dark:text-green-500 font-bold mr-0.5">W</div>
 													{:else if $dailyGames && $dailyGames[_id] && $dailyGames[_id].isOver}
-														<div class="text-red-700 font-bold mr-0.5">L</div>
+														<div class="text-red-700 dark:text-red-600 font-bold mr-0.5">L</div>
 													{:else if $dailyGames && $dailyGames[_id] && !$dailyGames[_id].isOver && $dailyGames[_id].home.score && $dailyGames[_id].visitor.score}
-														<div class="text-red-600 font-bold animate-pulse text-sm mr-2">
+														<div
+															class="text-red-600 dark:text-red-600 font-bold animate-pulse text-sm mr-2"
+														>
 															Live
 														</div>
 													{/if}
@@ -153,23 +149,23 @@
 														{$dailyGames[_id].home.score}&nbsp;-&nbsp;{$dailyGames[_id].visitor
 															.score}
 													{:else if teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score}
-														<div class="text-green-700 font-semibold">
+														<div class="text-green-700 dark:text-green-500 font-semibold">
 															{$dailyGames[_id].home.score}
 														</div>
 														&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
 													{:else if teamId.toString() == $dailyGames[_id].home._id}
-														<div class="text-red-700 font-semibold">
+														<div class="text-red-700 dark:text-red-600 font-semibold">
 															{$dailyGames[_id].home.score}
 														</div>
 														&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
 													{:else if teamId.toString() == $dailyGames[_id].visitor._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score}
 														{$dailyGames[_id].home.score}&nbsp;-&nbsp;
-														<div class="text-green-700 font-semibold">
+														<div class="text-green-700 dark:text-green-500 font-semibold">
 															{$dailyGames[_id].visitor.score}
 														</div>
 													{:else}
 														{$dailyGames[_id].home.score}&nbsp;-&nbsp;
-														<div class="text-red-700 font-semibold">
+														<div class="text-red-700 dark:text-red-600 font-semibold">
 															{$dailyGames[_id].visitor.score}
 														</div>
 													{/if}
@@ -179,23 +175,23 @@
 													{#if home.stats.totals.points === visitor.stats.totals.points}
 														{home.stats.totals.points}&nbsp;-&nbsp;{visitor.stats.totals.points}
 													{:else if teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points}
-														<div class="text-green-700 font-semibold">
+														<div class="text-green-700 dark:text-green-500 font-semibold">
 															{home.stats.totals.points}
 														</div>
 														&nbsp;-&nbsp;{visitor.stats.totals.points}
 													{:else if teamId == home.team._id}
-														<div class="text-red-700 font-semibold">
+														<div class="text-red-700 dark:text-red-600 font-semibold">
 															{home.stats.totals.points}
 														</div>
 														&nbsp;-&nbsp;{visitor.stats.totals.points}
 													{:else if teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points}
 														{home.stats.totals.points}&nbsp;-&nbsp;
-														<div class="text-green-700 font-semibold">
+														<div class="text-green-700 dark:text-green-500 font-semibold">
 															{visitor.stats.totals.points}
 														</div>
 													{:else}
 														{home.stats.totals.points}&nbsp;-&nbsp;
-														<div class="text-red-700 font-semibold">
+														<div class="text-red-700 dark:text-red-600 font-semibold">
 															{visitor.stats.totals.points}
 														</div>
 													{/if}
@@ -215,7 +211,7 @@
 										class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 									>
 										<div class="text-sm leading-5">
-											{`${getRecord(i).wins}-${getRecord(i).losses}`}
+											{`${getRecord(i).wins} - ${getRecord(i).losses}`}
 										</div>
 									</td>
 								{:else}
