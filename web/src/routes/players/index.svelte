@@ -54,7 +54,7 @@
 	description="Index of players from the 2021-22 NBA season."
 />
 
-<div class="listContainer flex flex-col">
+<div class="listContainer">
 	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
 		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={75}>
 			<a
