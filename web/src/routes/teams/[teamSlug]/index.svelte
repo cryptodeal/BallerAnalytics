@@ -121,13 +121,15 @@
 				<div class="shadow-sm antialiased h-30 p-1 md:h-full">
 					<TeamLogo {logoModules} slug={teamData.infoCommon.slug} />
 				</div>
-				<h1 style="color:rgba({color2[0]}, {color2[1]}, {color2[2]}, 1);">
+				<h1 class="text-dark-600 dark:text-light-200">
 					{teamData.infoCommon.name}
 				</h1>
 			</div>
 			<div class="p-2 md:(container mx-auto)">
 				<div class="glassmorphicCard flex inline-flex items-center px-4 py-2 text-black mb-5">
-					<label class="text-white text-lg mr-4" for="season-select">Season:</label>
+					<label class="text-dark-600  dark:text-light-200 text-lg mr-4" for="season-select"
+						>Season:</label
+					>
 
 					<select
 						type="select"
