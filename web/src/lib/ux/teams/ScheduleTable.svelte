@@ -33,7 +33,7 @@
 	};
 </script>
 
-<div class="my-2 glassmorphicCard text-black md:(mx-auto)">
+<div class="my-2 glassmorphicCard text-dark-600 dark:text-light-200 md:(mx-auto)">
 	<div class="flex flex-col w-full">
 		<div class="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
 			<div
@@ -65,7 +65,7 @@
 							</th>
 						</tr>
 					</thead>
-					<tbody class="text-black">
+					<tbody>
 						{#each schedule as { home, visitor, date, time, meta, _id }, i}
 							<tr>
 								<!-- Display Game Date and Time -->
@@ -118,9 +118,9 @@
 											{#if !$dailyGames || !$dailyGames[_id]}
 												<div>
 													{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
-														<div class="text-green-700 dark:text-green-500 font-bold mr-0.5">W</div>
+														<div class="text-green-700 dark:text-green-500 font-bold mr-2">W</div>
 													{:else if meta.helpers.isOver}
-														<div class="text-red-700 dark:text-red-600 font-bold mr-0.5">L</div>
+														<div class="text-red-700 dark:text-red-500 font-bold mr-2">L</div>
 													{:else if !meta.helpers.isOver && home.stats.totals.points && visitor.stats.totals.points}
 														<div class="text-red-600 font-bold animate-pulse text-sm mr-2">
 															Live
@@ -130,12 +130,12 @@
 											{:else}
 												<div>
 													{#if ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score && $dailyGames[_id].isOver) || ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].visitor._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score && $dailyGames[_id].isOver)}
-														<div class="text-green-700 dark:text-green-500 font-bold mr-0.5">W</div>
+														<div class="text-green-700 dark:text-green-500 font-bold mr-2">W</div>
 													{:else if $dailyGames && $dailyGames[_id] && $dailyGames[_id].isOver}
-														<div class="text-red-700 dark:text-red-600 font-bold mr-0.5">L</div>
+														<div class="text-red-700 dark:text-red-500 font-bold mr-2">L</div>
 													{:else if $dailyGames && $dailyGames[_id] && !$dailyGames[_id].isOver && $dailyGames[_id].home.score && $dailyGames[_id].visitor.score}
 														<div
-															class="text-red-600 dark:text-red-600 font-bold animate-pulse text-sm mr-2"
+															class="text-red-600 dark:text-red-500 font-bold animate-pulse text-sm mr-2"
 														>
 															Live
 														</div>
@@ -154,7 +154,7 @@
 														</div>
 														&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
 													{:else if teamId.toString() == $dailyGames[_id].home._id}
-														<div class="text-red-700 dark:text-red-600 font-semibold">
+														<div class="text-red-700 dark:text-red-500 font-semibold">
 															{$dailyGames[_id].home.score}
 														</div>
 														&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
@@ -165,7 +165,7 @@
 														</div>
 													{:else}
 														{$dailyGames[_id].home.score}&nbsp;-&nbsp;
-														<div class="text-red-700 dark:text-red-600 font-semibold">
+														<div class="text-red-700 dark:text-red-500 font-semibold">
 															{$dailyGames[_id].visitor.score}
 														</div>
 													{/if}
@@ -180,7 +180,7 @@
 														</div>
 														&nbsp;-&nbsp;{visitor.stats.totals.points}
 													{:else if teamId == home.team._id}
-														<div class="text-red-700 dark:text-red-600 font-semibold">
+														<div class="text-red-700 dark:text-red-500 font-semibold">
 															{home.stats.totals.points}
 														</div>
 														&nbsp;-&nbsp;{visitor.stats.totals.points}
@@ -191,7 +191,7 @@
 														</div>
 													{:else}
 														{home.stats.totals.points}&nbsp;-&nbsp;
-														<div class="text-red-700 dark:text-red-600 font-semibold">
+														<div class="text-red-700 dark:text-red-500 font-semibold">
 															{visitor.stats.totals.points}
 														</div>
 													{/if}

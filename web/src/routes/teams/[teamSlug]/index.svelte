@@ -69,7 +69,9 @@
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
-	import { Tabs, TabList, TabPanel } from '$lib/ux/tabs';
+	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';
+	import TabList from '$lib/ux/tabs/TabList.svelte';
+	import Tabs from '$lib/ux/tabs/Tabs.svelte';
 	import Color from 'color';
 	import { tweened } from 'svelte/motion';
 	import { interpolateLab as interpolate } from 'd3-interpolate';
@@ -147,7 +149,6 @@
 						<TabList
 							primaryColor={color1}
 							secondaryColor={color2}
-							color1={primaryColor}
 							links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
 						/>
 					</div>

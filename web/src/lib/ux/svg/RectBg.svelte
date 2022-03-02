@@ -33,6 +33,7 @@
 {#if selectedTeam}
 	<div
 		class="container"
+		class:opaqueGradient={$darkMode}
 		bind:offsetWidth={w}
 		bind:offsetHeight={h}
 		style:--bg-inner={$bgInner}
@@ -62,5 +63,9 @@
 		height: 100vh;
 		position: fixed;
 		z-index: -10;
+	}
+
+	.opaqueGradient {
+		opacity: 0.6;
 	}
 </style>
