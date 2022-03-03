@@ -7,7 +7,6 @@
 	import { dailyGames } from '$lib/data/stores/games';
 	import Ticker from '$lib/ux/Ticker/Ticker.svelte';
 	import TickerGame from '$lib/ux/Ticker/Game.svelte';
-	$: console.log($dailyGames);
 	$: segment = $page.url.pathname.split('/')[1];
 </script>
 

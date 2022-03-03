@@ -26,7 +26,6 @@ const fetchDailyGames = () => {
 		if (!res.ok) throw new Error(`Error: !res.ok; ${res.status}`);
 		return res.json().then((res) => {
 			const { todaysGames } = res;
-			console.log(todaysGames);
 			return todaysGames;
 		});
 	});

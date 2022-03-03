@@ -18,7 +18,7 @@
 		bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 250, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 250, interpolate });
 
-	$: if (selectedTeam && w & h) rectCount = Math.round((w * h) / 1000);
+	$: if (selectedTeam && w & h) rectCount = Math.round((w * h) / 4000);
 
 	$: if (selectedTeam) {
 		teamPrimary = getMainColor(selectedTeam.infoCommon.nbaAbbreviation).hex;
