@@ -15,6 +15,8 @@
 	export let style = '';
 	export let ratio: string;
 	export let classStr = '';
+	export let width = 290;
+	export let height = 180;
 	export let srcsetWebP: string;
 	export let srcsetAvif: string;
 	export let srcsetPng: string;
@@ -60,6 +62,8 @@
 					src={path}
 					{alt}
 					{style}
+					{width}
+					{height}
 					on:load={handleLoad}
 					bind:this={imgElement}
 					class="svelte-lazy-image main {classStr}"

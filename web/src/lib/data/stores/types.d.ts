@@ -20,6 +20,7 @@ export interface IDailyGameTeam {
 }
 
 export type DailyGame = {
+	date: Date;
 	isOver: boolean;
 	period?: string;
 	periodValue?: number;

@@ -62,11 +62,13 @@
 
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
-	import ScheduleTable from '$lib/ux/teams/ScheduleTable.svelte';
-	import PlayerRosterTable from '$lib/ux/teams/roster/Players.svelte';
+	import ScheduleTable from '$lib/ux/tables/teams/Schedule.svelte';
+	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import RectBg from '$lib/ux/svg/RectBg.svelte';
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
+	import Table from '$lib/ux/tables/core/Table.svelte';
+	import THead from '$lib/ux/tables/core/THead.svelte';
 	import type { Team2Document } from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
 	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';
@@ -77,11 +79,19 @@
 	import { interpolateLab as interpolate } from 'd3-interpolate';
 	import darkMode from '$lib/data/stores/theme';
 	import { browser } from '$app/env';
-	import { genPalette, getBackgroundColors } from '$lib/ux/teams/genBg/core/colors';
+	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
+	import type { IColHeader } from '$lib/ux/tables/types';
 	export let teamData;
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
+
+	const colHeaders: IColHeader[] = [
+		{ title: 'Date/Time (ET)' },
+		{ title: 'Opponent' },
+		{ title: 'Result' },
+		{ title: 'W - L' }
+	];
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
@@ -194,7 +204,7 @@
 						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
 						</div>
-						<PlayerRosterTable roster={teamData.seasons[seasonIdx].roster.players} />
+						<PlayerRoster roster={teamData.seasons[seasonIdx].roster.players} />
 					</TabPanel>
 
 					<!-- Stats Data Tab -->
@@ -202,6 +212,9 @@
 						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Stats:</h2>
 						</div>
+						<Table>
+							<THead slot="thead" {colHeaders} />
+						</Table>
 					</TabPanel>
 				</Tabs>
 			</div>

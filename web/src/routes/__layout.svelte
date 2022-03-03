@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 	import Notifications from 'svelte-notifications';
 	import Nav from '$lib/ux/nav/Nav.svelte';
-	// import Ticker from '$lib/ux/Ticker.svelte';
+	import Ticker from '$lib/ux/Ticker.svelte';
 
 	$: segment = $page.url.pathname.split('/')[1];
 </script>
@@ -29,5 +29,5 @@
 <Notifications>
 	<Nav {segment} />
 	<slot />
-	<!-- <Ticker /> -->
+	<Ticker />
 </Notifications>

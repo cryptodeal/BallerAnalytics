@@ -478,6 +478,7 @@ Game2Schema.statics = {
 			},
 			{
 				$project: {
+					date: 1,
 					'meta.helpers': 1,
 					'meta.status': 1,
 					'visitor.team.infoCommon': 1,

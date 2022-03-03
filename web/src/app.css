@@ -23,13 +23,14 @@ body {
 @media (min-width: 768px) {
 	.listContainer {
 		height: 100vh;
-		padding-top: 4rem;
+		padding-top: 3rem;
 	}
 }
 
 .listContainer {
 	height: calc(100vh - 4rem);
-	padding-top: 3rem;
+	margin-top: 3rem;
+	margin-bottom: 2rem;
 }
 
 p {

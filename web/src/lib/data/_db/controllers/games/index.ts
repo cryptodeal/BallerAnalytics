@@ -16,6 +16,7 @@ export const getTodaysGames = async () => {
 				!(g.visitor.team instanceof mongoose.Types.ObjectId)
 			) {
 				const parsedGame: DailyGame = {
+					date: g.date,
 					isOver: g.meta.helpers.isOver,
 					home: {
 						_id: g.home.team._id.toString(),

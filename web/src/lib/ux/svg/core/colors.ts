@@ -1,5 +1,6 @@
 import Color from 'color';
-import { tinycolor, random } from './utils';
+import tinycolor from 'tinycolor2';
+import { random } from '@georgedoescode/generative-utils';
 
 export function getBackgroundColors(colorPalette: string[]): { bgInner: string; bgOuter: string } {
 	const bg = tinycolor.mix(colorPalette[0], colorPalette[1], 50).desaturate(10).toString();

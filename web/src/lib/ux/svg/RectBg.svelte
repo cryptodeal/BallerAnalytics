@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { rand } from './core/utils';
 	import Color from 'color';
-	import { interpolateLab as interpolate } from '$lib/ux/teams/genBg/core/utils';
-	import { genPalette, getBackgroundColors } from '$lib/ux/teams/genBg/core/colors';
+	import { interpolateLab as interpolate } from 'd3-interpolate';
+	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import { tweened } from 'svelte/motion';
 	import darkMode from '$lib/data/stores/theme';

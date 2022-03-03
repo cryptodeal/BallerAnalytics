@@ -14,10 +14,9 @@
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@georgedoescode/generative-utils": "^1.0.37",
-		"@iconify/json": "^2.1.8",
+		"@iconify/json": "^2.1.10",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
-		"@svgdotjs/svg.js": "3.1.1",
 		"@types/color": "^3.0.3",
 		"@types/cookie": "^0.4.1",
 		"@types/jsonwebtoken": "^8.5.8",
@@ -36,7 +35,7 @@
 		"dayjs": "^1.10.8",
 		"dotenv": "^14.3.2",
 		"eslint": "^8.10.0",
-		"eslint-config-prettier": "^8.4.0",
+		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^3.4.1",
 		"jsonwebtoken": "^8.5.1",
 		"mdsvex": "^0.9.8",
@@ -67,8 +66,8 @@
 		"unplugin-icons": "^0.13.2",
 		"unplugin-mtl": "latest",
 		"unplugin-obj": "^0.1.2",
-		"vite-plugin-windicss": "^1.8.1",
-		"windicss": "^3.5.0",
+		"vite-plugin-windicss": "^1.8.2",
+		"windicss": "^3.5.1",
 		"yup": "^0.32.11"
 	},
 	"type": "module"

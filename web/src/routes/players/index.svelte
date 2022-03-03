@@ -29,7 +29,7 @@
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	export let players: Player2Document[] = [];
 	let page = 1;
-	let listHeight;
+	let listHeight = 500;
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
 		fetch(`players.json?page=${page}`)
@@ -55,8 +55,8 @@
 />
 
 <div class="listContainer">
-	<div class="list h-full w-full sm:(container mx-auto)" bind:offsetHeight={listHeight}>
-		<VirtualList overscanCount={10} height={listHeight} itemCount={players.length} itemSize={75}>
+	<div class="list h-full w-full sm:(list container mx-auto h-full)" bind:clientHeight={listHeight}>
+		<VirtualList overscanCount={20} height={listHeight} itemCount={players.length} itemSize={75}>
 			<a
 				slot="item"
 				let:index
@@ -75,18 +75,3 @@
 		</VirtualList>
 	</div>
 </div>
-
-<style>
-	@media (max-width: 768px) {
-		.listContainer {
-			height: 100%;
-			padding-top: 3rem;
-			margin-bottom: 1rem;
-		}
-	}
-
-	.listContainer {
-		height: 100%;
-		padding-top: 3.2rem;
-	}
-</style>

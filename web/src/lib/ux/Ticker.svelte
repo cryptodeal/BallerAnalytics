@@ -1,17 +1,48 @@
+<script lang="ts">
+	import { getMainColor } from 'nba-color';
+	import { dailyGames } from '$lib/data/stores/games';
+	import dayjs from 'dayjs';
+</script>
+
 <div class="ticker-wrap">
 	<div class="ticker">
-		<div class="ticker__item">Letterpress chambray brunch.</div>
-		<div class="ticker__item">
-			Vice mlkshk crucifix beard chillwave meditation hoodie asymmetrical Helvetica.
-		</div>
-		<div class="ticker__item">Ugh PBR&B kale chips Echo Park.</div>
-		<div class="ticker__item">Gluten-free mumblecore chambray mixtape food truck.</div>
-		<!--<div class="ticker__item">Authentic bitters seitan pug single-origin coffee whatever.</div>
-    <div class="ticker__item">Letterpress chambray brunch.</div>
-    <div class="ticker__item">Vice mlkshk crucifix beard chillwave meditation hoodie asymmetrical Helvetica.</div>
-    <div class="ticker__item">Ugh PBR&B kale chips Echo Park.</div>
-    <div class="ticker__item">Gluten-free mumblecore chambray mixtape food truck. </div>
-    <div class="ticker__item">Authentic bitters seitan pug single-origin coffee whatever.</div>-->
+		{#each Object.values($dailyGames) as { date, isOver, period, periodValue, displayClock, clock, home, visitor }}
+			<div class="ticker__item bg-gray-200 bg-opacity-30 mr-50">
+				<div
+					class="inline-block h-full text-3xl px-2 font-semibold"
+					style="background-color:{getMainColor(visitor.infoCommon.nbaAbbreviation)
+						.hex};opacity:100%;"
+				>
+					{visitor.infoCommon.nbaAbbreviation}
+				</div>
+				{#if visitor.score && visitor.score !== null}
+					<div class="inline-block h-full px-2 bg-red-600 text-3xl font-semibold">
+						{visitor.score}
+					</div>
+				{/if}
+
+				<div class="inline-block text-3xl font-semibold">&nbsp;@&nbsp;</div>
+				<div
+					class="inline-block h-full text-3xl px-2 font-semibold"
+					style="background-color:{getMainColor(home.infoCommon.nbaAbbreviation).hex};opacity:100%;"
+				>
+					{home.infoCommon.nbaAbbreviation}
+				</div>
+				{#if home.score && home.score !== null}
+					<div class="inline-block h-full bg-red-600 px-2 text-3xl font-semibold">
+						{home.score}
+					</div>
+				{/if}
+
+				{#if home.score == null && visitor.score == null}
+					<div class="inline-block h-full px-2 text-3xl font-semibold">
+						{dayjs(date).minute() !== 0
+							? dayjs(date).format('h:mm A') + 'ET'
+							: dayjs(date).format('h A') + 'ET'}
+					</div>
+				{/if}
+			</div>
+		{/each}
 	</div>
 </div>
 
@@ -45,16 +76,16 @@
 		bottom: 0;
 		width: 100%;
 		overflow: hidden;
-		height: 4rem;
-		background-color: rgba(0, 0, 0, 0.9);
+		height: 2.25rem;
+		background-color: rgba(0, 0, 0, 0.3);
 		padding-left: 100%;
 		box-sizing: content-box;
 	}
 
 	.ticker-wrap .ticker {
 		display: inline-block;
-		height: 4rem;
-		line-height: 4rem;
+		height: 2.25rem;
+		line-height: 2.25rem;
 		white-space: nowrap;
 		padding-right: 100%;
 		box-sizing: content-box;
@@ -64,8 +95,8 @@
 		animation-timing-function: linear;
 		-webkit-animation-name: ticker;
 		animation-name: ticker;
-		-webkit-animation-duration: 30s;
-		animation-duration: 30s;
+		-webkit-animation-duration: 45s;
+		animation-duration: 45s;
 	}
 
 	.ticker-wrap .ticker__item {
