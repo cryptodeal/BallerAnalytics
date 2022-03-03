@@ -99,7 +99,7 @@
 			{/if}
 			<PerspectiveCamera position={[0, 0, 20]} />
 			<AmbientLight intensity={$darkMode ? 1.7 : 2.3} />
-			<OrbitControls enableZoom={false} />
+			<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.02} />
 			<DirectionalLight intensity={$darkMode ? 0.5 : 0.6} position={[-4, 4.7, 0]} />
 		</Canvas>
 	{/if}
