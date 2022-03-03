@@ -11,7 +11,7 @@
 	export let game: DailyGame;
 </script>
 
-<div class="inline-block mr-15 bg-dark-400 text-white px-2 bg-opacity-40">
+<div class="inline-block mr-20 bg-dark-400 text-white px-2 bg-opacity-40">
 	{#if !game.isOver && dayjs(game.date).isBefore(dayjs().tz('America/New_York'))}
 		<div class="inline-block text-red-600 font-semibold animate-pulse text-2xl px-2">Live</div>
 	{:else if game.isOver}
