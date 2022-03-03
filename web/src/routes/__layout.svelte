@@ -4,7 +4,9 @@
 	import { page } from '$app/stores';
 	import Notifications from 'svelte-notifications';
 	import Nav from '$lib/ux/nav/Nav.svelte';
-	import Ticker from '$lib/ux/Ticker.svelte';
+	import { dailyGames } from '$lib/data/stores/games';
+	import Ticker from '$lib/ux/Ticker/Ticker.svelte';
+	import TickerGame from '$lib/ux/Ticker/Game.svelte';
 
 	$: segment = $page.url.pathname.split('/')[1];
 </script>
@@ -29,5 +31,24 @@
 <Notifications>
 	<Nav {segment} />
 	<slot />
-	<Ticker />
+	{#if Object.values($dailyGames).length}
+		<div
+			class="ticker bg-white backdrop-filter backdrop-blur-lg bg-opacity-80 dark:(bg-gray-500 backdrop-filter backdrop-blur-lg bg-opacity-80)"
+		>
+			<Ticker behavior="always">
+				{#each Object.values($dailyGames) as game}
+					<TickerGame {game} />
+				{/each}
+			</Ticker>
+		</div>
+	{/if}
 </Notifications>
+
+<style>
+	.ticker {
+		width: 100vw;
+		overflow: hidden;
+		position: absolute;
+		bottom: 0;
+	}
+</style>
