@@ -1,11 +1,18 @@
 import { Game2 } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
+import mongoose from 'mongoose';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 import type { Game2Object } from '@balleranalytics/nba-api-ts';
 import type { DailyGame, DailyGames } from '$lib/data/stores/types';
-import mongoose from 'mongoose';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const getTodaysGames = async () => {
-	const now = dayjs().hour() < 3 ? dayjs().subtract(3, 'hour') : dayjs();
+	const now =
+		dayjs(dayjs()).tz('America/New_York').hour() < 3
+			? dayjs(dayjs()).tz('America/New_York').subtract(3, 'hour')
+			: dayjs(dayjs()).tz('America/New_York');
 	const endDate = now.endOf('date').toDate();
 	const startDate = now.startOf('date').toDate();
 	return Game2.getDailyGames(startDate, endDate).then((games: Game2Object[]) => {
