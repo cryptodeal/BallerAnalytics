@@ -54,7 +54,7 @@
 	)}`.substring(-2)} NBA season."
 />
 
-<div class="appContent">
+<div class="appContent flex flex-col mb-6">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
 			<a sveltekit:prefetch href="teams/{infoCommon.slug}">
