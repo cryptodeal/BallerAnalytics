@@ -11,6 +11,8 @@ import {
 	DirectionalLight
 } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
 import { MTLLoader } from '../TestLoader';
 import type { MTLLoader as threeMTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
 
@@ -20,6 +22,7 @@ let camera: PerspectiveCamera,
 	group: Group,
 	ambientLight: AmbientLight,
 	directionalLight: DirectionalLight;
+// orbitControls: OrbitControls;
 
 /* worker logic */
 export function init(
@@ -38,6 +41,8 @@ export function init(
 	// scene.fog = new Fog(0x444466, 100, 400);
 	// scene.background = new Color(0x444466);
 	scene.background = null;
+
+	// orbitControls =  new OrbitControls(camera, renderer.domElement)
 
 	/* parse obj & mtl here */
 	const materials = new MTLLoader().parse(mtl) as unknown as threeMTLLoader.MaterialCreator;
@@ -59,6 +64,7 @@ export function init(
 function animate() {
 	if (renderer) {
 		group.rotation.y = -Date.now() / 900;
+		// orbitControls.update();
 
 		renderer.render(scene, camera);
 

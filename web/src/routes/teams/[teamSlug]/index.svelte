@@ -124,7 +124,7 @@
 
 <RectBg selectedTeam={teamData} />
 
-<div class="w-full h-full overflow-scroll">
+<div class="w-full h-full overflow-hidden">
 	<div class="appContent">
 		<div class="w-full h-full p-2">
 			<div

@@ -6,7 +6,8 @@
 		Mesh,
 		PerspectiveCamera,
 		AmbientLight,
-		DirectionalLight
+		DirectionalLight,
+		OrbitControls
 	} from 'svelte-cubed';
 	import { browser } from '$app/env';
 	import Worker from '$lib/functions/_worker/testWorker?worker';
@@ -98,6 +99,7 @@
 			{/if}
 			<PerspectiveCamera position={[0, 0, 20]} />
 			<AmbientLight intensity={$darkMode ? 1.7 : 2.3} />
+			<OrbitControls enableZoom={false} />
 			<DirectionalLight intensity={$darkMode ? 0.5 : 0.6} position={[-4, 4.7, 0]} />
 		</Canvas>
 	{/if}
