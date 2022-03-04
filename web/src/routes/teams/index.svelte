@@ -54,9 +54,9 @@
 	)}`.substring(-2)} NBA season."
 />
 
-<div class="appContent mb-2">
+<div class="appContent mb-10">
 	{#each teams as { infoCommon, seasons }}
-		<div class="container h-50 mx-auto my-4">
+		<div class="container mx-auto my-4">
 			<a sveltekit:prefetch href="teams/{infoCommon.slug}">
 				<div
 					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)

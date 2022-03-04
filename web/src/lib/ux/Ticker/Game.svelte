@@ -31,6 +31,8 @@
 		<div class="inline-block px-2 bg-red-600 text-2xl font-semibold">
 			{game.visitor.score}
 		</div>
+	{:else if game.home.score && game.home.score !== null}
+		<div class="inline-block bg-red-600 px-2 text-2xl font-semibold">0</div>
 	{/if}
 
 	<div class="inline-block text-2xl font-semibold">&nbsp;@&nbsp;</div>
@@ -48,6 +50,8 @@
 		<div class="inline-block bg-red-600 px-2 text-2xl font-semibold">
 			{game.home.score}
 		</div>
+	{:else if game.visitor.score && game.visitor.score !== null}
+		<div class="inline-block bg-red-600 px-2 text-2xl font-semibold">0</div>
 	{/if}
 
 	{#if game.home.score == null && game.home.score == null}

@@ -1407,6 +1407,7 @@ const storeEspnData = (
 	gameId: number
 ) => {
 	return getEspnBoxscore(gameId).then(async (data) => {
+		console.log(data);
 		if (!game.home.team.meta.helpers.espnTeamId)
 			throw Error(`No ESPN team ID found for home team ${game.home.team.infoCommon.name}`);
 		if (!game.visitor.team.meta.helpers.espnTeamId)
@@ -1584,9 +1585,17 @@ const syncLiveEspnStats = async () => {
 
 		if (status) {
 			const { clock, displayClock, period } = status;
-			if (clock) game.meta.helpers.espnGameClock = clock;
-			if (displayClock) game.meta.helpers.espnGameDisplayClock = displayClock;
-			if (period) game.meta.helpers.espnGamePeriod = period;
+			if (!game.meta.status) {
+				game.meta.status = {
+					clock,
+					displayClock,
+					period
+				};
+			} else {
+				if (clock) game.meta.status.clock = clock;
+				if (displayClock) game.meta.helpers.espnGameDisplayClock = displayClock;
+				if (period) game.meta.helpers.espnGamePeriod = period;
+			}
 			const { completed } = status.type;
 			if (completed) {
 				game.meta.helpers.isOver = true;
