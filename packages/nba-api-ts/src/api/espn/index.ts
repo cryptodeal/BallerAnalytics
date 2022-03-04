@@ -31,16 +31,18 @@ export const findEspnGameId = (
 		const [gameData] = games[i].competitions;
 		const homeIdx = gameData.competitors.findIndex((c) => c.homeAway == 'home');
 		const visitorIdx = gameData.competitors.findIndex((c) => c.homeAway == 'away');
-		console.log(`gameData.competitors[homeIdx].team.id:`, gameData.competitors[homeIdx].team.id);
-		console.log(`game.home.team.meta.helpers.espnTeamId:`, game.home.team.meta.helpers.espnTeamId);
-		console.log(
-			`gameData.competitors[visitorIdx].team.id:`,
-			gameData.competitors[visitorIdx].team.id
-		);
-		console.log(
-			`game.visitor.team.meta.helpers.espnTeamId:`,
-			game.visitor.team.meta.helpers.espnTeamId
-		);
+		/*
+      console.log(`gameData.competitors[homeIdx].team.id:`, gameData.competitors[homeIdx].team.id);
+      console.log(`game.home.team.meta.helpers.espnTeamId:`, game.home.team.meta.helpers.espnTeamId);
+      console.log(
+        `gameData.competitors[visitorIdx].team.id:`,
+        gameData.competitors[visitorIdx].team.id
+      );
+      console.log(
+        `game.visitor.team.meta.helpers.espnTeamId:`,
+        game.visitor.team.meta.helpers.espnTeamId
+      );
+    */
 		if (
 			gameData.competitors[homeIdx].team.id == game.home.team.meta.helpers.espnTeamId &&
 			gameData.competitors[visitorIdx].team.id == game.visitor.team.meta.helpers.espnTeamId
@@ -52,7 +54,6 @@ export const findEspnGameId = (
 
 export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => {
 	return sdv.nba.getBoxScore(gameId).then((data: IEspnBoxscore) => {
-		console.log(data);
 		const parsedBoxscore: ParsedEspnBoxscore = {};
 		for (const team of data.teams) {
 			const stats = team.statistics;
@@ -190,6 +191,7 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 				}
 			}
 		}
+		return parsedBoxscore;
 	});
 };
 
