@@ -223,7 +223,7 @@ Player2Schema.statics = {
 };
 
 Player2Schema.query = {
-	paginate(page = 0, limit = 150) {
+	paginate(page = 0, limit = 50) {
 		return this.limit(limit).skip(page * limit);
 	}
 };
