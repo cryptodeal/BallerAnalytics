@@ -26,7 +26,7 @@ export const getTodaysGames = async () => {
 					date: g.date,
 					isOver: g.meta.helpers.isOver,
 					clock: g.meta.status?.clock,
-					period: g.meta.status?.displayClock,
+					periodValue: g.meta.status?.period,
 					displayClock: g.meta.status?.displayClock,
 					home: {
 						_id: g.home.team._id.toString(),

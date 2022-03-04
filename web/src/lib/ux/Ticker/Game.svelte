@@ -12,8 +12,16 @@
 </script>
 
 <div class="inline-block mr-20 bg-dark-400 text-white px-2 bg-opacity-40">
-	{#if !game.isOver && dayjs(game.date).isBefore(dayjs().tz('America/New_York'))}
+	{#if !game.isOver && (dayjs(game.date)
+			.tz('America/New_York')
+			.isBefore(dayjs(dayjs()).tz('America/New_York')) || (game.home.score !== null && game.visitor.score !== null))}
 		<div class="inline-block text-red-600 font-semibold animate-pulse text-2xl px-2">Live</div>
+		{#if game.periodValue && game.displayClock}
+			<div class="inline-block font-semibold animate-pulse text-2xl px-2">
+				Q{game.periodValue}
+				{game.displayClock}
+			</div>
+		{/if}
 	{:else if game.isOver}
 		<div class="inline-block text-red-600 font-semibold text-2xl px-2">Final</div>
 	{/if}

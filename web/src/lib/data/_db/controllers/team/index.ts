@@ -1,5 +1,5 @@
-import { Team2, Team2Object } from '@balleranalytics/nba-api-ts';
-import type { Team2Document, Game2Document } from '@balleranalytics/nba-api-ts';
+import { Team2 } from '@balleranalytics/nba-api-ts';
+import type { Team2Document, Game2Document, Team2Object } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
