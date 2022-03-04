@@ -6,10 +6,9 @@ import {
 	Vector2,
 	sRGBEncoding,
 	ImageBitmapLoader,
-	Texture,
 	CanvasTexture
 } from 'three';
-import type { Side, Wrapping, Material, Mapping, LoadingManager } from 'three';
+import type { Texture, Side, Wrapping, Material, Mapping, LoadingManager } from 'three';
 import type { MaterialInfo, MaterialCreatorOptions, TexParams } from './types';
 
 /* Loads a Wavefront .mtl file specifying materials */
