@@ -124,11 +124,11 @@
 
 <RectBg selectedTeam={teamData} />
 
-<div class="w-full h-full overflow-hidden">
-	<div class="appContent">
+<div class="w-full h-full">
+	<div class="appContent mb-2">
 		<div class="w-full h-full p-2">
 			<div
-				class="glassmorphicCard mx-auto flex flex-wrap gap-3 my-3 justify-center text-center opacity-100 items-center min-h-25 sm:max-w-3/4 md:(h-50 max-w-1/2) 2xl:max-w-1/4"
+				class="glassmorphicCard mx-auto flex flex-wrap gap-3 my-3 justify-center text-center opacity-100 items-center min-h-25 sm:max-w-3/4 md:(max-w-1/2) 2xl:max-w-1/4"
 			>
 				<div class="shadow-sm antialiased h-30 p-1 md:h-full">
 					<TeamLogo {logoModules} slug={teamData.infoCommon.slug} />

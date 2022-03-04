@@ -52,6 +52,7 @@ export const findEspnGameId = (
 
 export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => {
 	return sdv.nba.getBoxScore(gameId).then((data: IEspnBoxscore) => {
+		console.log(data);
 		const parsedBoxscore: ParsedEspnBoxscore = {};
 		for (const team of data.teams) {
 			const stats = team.statistics;
@@ -189,7 +190,6 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 				}
 			}
 		}
-		return parsedBoxscore;
 	});
 };
 

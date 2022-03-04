@@ -23,7 +23,9 @@
 		{#each roster as { player, number, position, twoWay }, i}
 			<tr>
 				<!-- Display Player Name -->
-				<td class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 xl:px-6">
+				<td
+					class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
+				>
 					<div class="flex w-full inline-flex items-center">
 						<div class="flex-shrink-0 w-30 h-20">
 							<Headshot
@@ -53,7 +55,9 @@
 				</td>
 
 				<!-- Display Player Position (POS) -->
-				<td class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 md:px-4 xl:px-6">
+				<td
+					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+				>
 					<div class="text-sm font-bold leading-5">
 						{#if position}
 							{position}
@@ -62,7 +66,9 @@
 				</td>
 
 				<!-- Display Player Age -->
-				<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+				<td
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+				>
 					<div class="text-sm font-bold leading-5">
 						{#if player}
 							{getAge(new Date(player.birthDate).toString())}
@@ -71,7 +77,9 @@
 				</td>
 
 				<!-- Display Player Height -->
-				<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+				<td
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+				>
 					<div class="text-sm font-bold leading-5">
 						{#if player.height.feet}
 							{player.height.feet}-{#if player.height.inches}
@@ -84,7 +92,9 @@
 				</td>
 
 				<!-- Display Player Weight -->
-				<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+				<td
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+				>
 					<div class="text-sm font-bold leading-5">
 						{#if player.weight}
 							{player.weight}
@@ -93,7 +103,9 @@
 				</td>
 
 				<!-- Display Player College -->
-				<td class="px-2 py-2 whitespace-nowrap border-b border-gray-200  md:px-4 xl:px-6">
+				<td
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+				>
 					<div class="text-sm font-bold leading-5">
 						{#if player.college}
 							{player.college}

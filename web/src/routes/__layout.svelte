@@ -7,6 +7,8 @@
 	import { dailyGames } from '$lib/data/stores/games';
 	import Ticker from '$lib/ux/Ticker/Ticker.svelte';
 	import TickerGame from '$lib/ux/Ticker/Game.svelte';
+
+	// $: console.log($dailyGames);
 	$: segment = $page.url.pathname.split('/')[1];
 </script>
 
@@ -35,7 +37,7 @@
 			class="ticker bg-white backdrop-filter backdrop-blur-lg bg-opacity-80 dark:(bg-gray-500 backdrop-filter backdrop-blur-lg bg-opacity-80)"
 		>
 			<Ticker behavior="always">
-				{#each Object.values($dailyGames) as game}
+				{#each Object.values($dailyGames).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) as game}
 					<TickerGame {game} />
 				{/each}
 			</Ticker>
