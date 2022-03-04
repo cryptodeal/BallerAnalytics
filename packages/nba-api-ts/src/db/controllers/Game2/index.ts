@@ -1583,19 +1583,19 @@ const syncLiveEspnStats = async () => {
 		}
 
 		if (status) {
-			console.log(status);
-			const { clock, displayClock, period } = status;
-
+			const { clock, displayClock, period, type } = status;
 			game.meta.status = {
 				clock,
 				displayClock,
 				period
 			};
 
-			const { completed } = status.type;
-			if (completed) {
-				game.meta.helpers.isOver = true;
-				game.meta.status.isOver = true;
+			if (type) {
+				const { completed } = type;
+				if (completed) {
+					game.meta.helpers.isOver = true;
+					game.meta.status.isOver = true;
+				}
 			}
 		}
 
