@@ -12,7 +12,7 @@
 	export let game: DailyGame;
 </script>
 
-<div class="inline-block mr-20 bg-dark-400 text-white px-2 bg-opacity-40">
+<div class="inline-block mr-50 bg-dark-400 text-white px-2 bg-opacity-40">
 	{#if !game.isOver && (dayjs()
 			.tz('America/New_York')
 			.isBefore(dayjs().tz('America/New_York')) || (game.home.score && game.home.score !== null && game.visitor.score && game.visitor.score !== null))}
