@@ -7,14 +7,15 @@
 	import type { DailyGame } from '$lib/data/stores/types';
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
+	dayjs().utc();
 
 	export let game: DailyGame;
 </script>
 
 <div class="inline-block mr-20 bg-dark-400 text-white px-2 bg-opacity-40">
-	{#if !game.isOver && (dayjs(game.date)
+	{#if !game.isOver && (dayjs()
 			.tz('America/New_York')
-			.isBefore(dayjs(dayjs()).tz('America/New_York')) || (game.home.score !== null && game.visitor.score !== null))}
+			.isBefore(dayjs().tz('America/New_York')) || (game.home.score && game.home.score !== null && game.visitor.score && game.visitor.score !== null))}
 		<div class="inline-block text-red-600 font-semibold animate-pulse text-2xl px-2">Live</div>
 		{#if game.periodValue && game.displayClock}
 			<div class="inline-block font-semibold animate-pulse text-2xl px-2">
