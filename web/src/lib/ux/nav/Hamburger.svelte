@@ -8,16 +8,16 @@
 	aria-label="Toggle Navbar Dropdown"
 	on:click={() => (open = !open)}
 >
-	<svg width="32" height="24">
-		<line id="top" x1="0" y1="2" x2="32" y2="2" />
-		<line id="middle" x1="0" y1="12" x2="24" y2="12" />
-		<line id="bottom" x1="0" y1="22" x2="32" y2="22" />
+	<svg width="24" height="18">
+		<line id="top" x1="0" y1="1.5" x2="24" y2="1.5" />
+		<line id="middle" x1="0" y1="9" x2="18" y2="9" />
+		<line id="bottom" x1="0" y1="16.5" x2="24" y2="16.5" />
 	</svg>
 </button>
 
 <style>
 	svg {
-		min-height: 24px;
+		min-height: 18px;
 		transition: transform 0.3s ease-in-out;
 	}
 
@@ -36,7 +36,7 @@
 	}
 
 	.open #top {
-		transform: translate(6px, 0px) rotate(45deg);
+		transform: translate(4.5px, 0px) rotate(45deg);
 	}
 
 	.open #middle {
@@ -44,6 +44,6 @@
 	}
 
 	.open #bottom {
-		transform: translate(-12px, 9px) rotate(-45deg);
+		transform: translate(-9px, 6.75px) rotate(-45deg);
 	}
 </style>

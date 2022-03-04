@@ -3,7 +3,16 @@
 	import { session } from '$app/stores';
 	import ThemeToggle from '$lib/ux/nav/ThemeToggle.svelte';
 	import AuthButton from '$lib/ux/nav/AuthButton.svelte';
+	import Logo from '$lib/ux/nav/Logo.svelte';
+	import { onMount } from 'svelte';
+
 	export let segment: string;
+
+	let isVisible = false;
+
+	onMount(() => {
+		isVisible = true;
+	});
 
 	function toggleNav() {
 		const navToggle = document.getElementsByClassName('toggle');
@@ -14,7 +23,7 @@
 </script>
 
 <nav
-	class="fixed min-h-10 px-1 top-0 left-0 right-0 z-10 text-bold flex flex-wrap md:(flex inline-flex items-center) w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
+	class="fixed px-1 top-0 left-0 right-0 z-10 text-bold flex flex-wrap md:(flex inline-flex items-center) w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
 >
 	<div
 		class="flex justify-start text-dark-700 dark:text-light-200 md:(hidden)"
@@ -22,24 +31,19 @@
 	>
 		<Hamburger />
 	</div>
-	<div class="w-4/5 px-5 p-1 md:(flex justify-start w-1/3 px-2)">
-		<img
-			src="/logo.svg"
-			width="500"
-			height="38"
-			alt="Baller Analytics Logo"
-			class="flex my-1 antialiased bg-gray-300 backdrop-filter backdrop-blur-lg bg-opacity-30 p-1 rounded md:(h-10 w-auto)"
-		/>
+	<div
+		class="h-10 flex inline-flex items-center min-h-41px w-4/5 px-5 md:(flex justify-start w-1/3 px-1)"
+	>
+		<div
+			class="flex inline-flex items-center min-h-full w-full md:(max-w-25vw) px-2 h-antialiased bg-gray-300 dark:bg-gray-900 backdrop-filter backdrop-blur-lg bg-opacity-80 p-1 rounded"
+		>
+			<Logo {isVisible} {segment} />
+		</div>
 	</div>
 
 	<div
 		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 gap-4 justify-center border-none)"
 	>
-		<a
-			href="/"
-			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
-			aria-current={segment === '' ? 'page' : undefined}>home</a
-		>
 		<a
 			sveltekit:prefetch
 			href="/teams"
