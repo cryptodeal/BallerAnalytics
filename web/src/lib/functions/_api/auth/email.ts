@@ -1,4 +1,5 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import nodemailer from 'nodemailer';
+import type { Transporter } from 'nodemailer';
 import { renderMail } from 'svelte-mail';
 import config from '$lib/_config';
 import Mail from '$lib/ux/auth/Mail.svelte';
