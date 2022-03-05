@@ -15,7 +15,9 @@
 	dayjs.extend(timezone);
 </script>
 
-<div class="inline-block h-10 mr-50 bg-dark-400 text-white px-2 bg-opacity-40">
+<div
+	class="inline-block h-10 mr-50 text-white px-2 bg-gray-900 backdrop-filter backdrop-blur-2xl bg-opacity-85"
+>
 	{#if !game.isOver && (dayjs(game.date)
 			.utc()
 			.tz('America/New_York')

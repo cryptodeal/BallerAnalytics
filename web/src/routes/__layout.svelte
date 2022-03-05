@@ -32,7 +32,7 @@
 	<slot />
 	{#if Object.values($dailyGames).length}
 		<div
-			class="ticker bg-white backdrop-filter backdrop-blur-lg bg-opacity-80 dark:(bg-gray-500 backdrop-filter backdrop-blur-lg bg-opacity-80)"
+			class="ticker bg-gray-300 backdrop-filter backdrop-blur-sm bg-opacity-20 dark:(bg-gray-900 backdrop-filter backdrop-blur-sm bg-opacity-20)"
 		>
 			<Ticker behavior="always">
 				{#each Object.values($dailyGames).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) as game}

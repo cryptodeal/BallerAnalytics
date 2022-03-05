@@ -154,3 +154,4 @@ export const getImgSize = (srcStr: string): number => {
 	const hrefSplit = srcStr.split('/')[srcStr.split('/').length - 1].split('.')[0].split('-');
 	return parseInt(hrefSplit[hrefSplit.length - 1]);
 };
+
