@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let size: number;
+	export let size: string | number;
 	export let isTicker: boolean;
 </script>
 

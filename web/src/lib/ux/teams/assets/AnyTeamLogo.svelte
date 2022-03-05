@@ -3,7 +3,7 @@
 	export let logoModules: MetaGlobImport,
 		slug: string,
 		isTicker = false,
-		size = 200;
+		size: string | number = 200;
 </script>
 
 {#if logoModules}
