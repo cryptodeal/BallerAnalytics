@@ -31,8 +31,8 @@
 	>
 		<Hamburger />
 	</div>
-	<div class="flex inline-flex items-center w-4/5 px-5 md:(flex justify-start w-1/3 px-1)">
-		<div class="flex inline-flex max-w-120 items-center w-full">
+	<div class="flex inline-flex h-full items-center w-4/5 px-5 md:(flex justify-start w-1/3 px-1)">
+		<div class="flex inline-flex h-full items-center w-full">
 			<Logo {isVisible} {segment} />
 		</div>
 	</div>

@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@georgedoescode/generative-utils": "^1.0.37",
-		"@iconify/json": "^2.1.10",
+		"@iconify/json": "^2.1.11",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@types/color": "^3.0.3",

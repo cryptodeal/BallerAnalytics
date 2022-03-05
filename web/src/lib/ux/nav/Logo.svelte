@@ -26,7 +26,7 @@
 </script>
 
 <a
-	class="h-full w-full bg-gray-200 dark:bg-gray-900 backdrop-filter backdrop-blur-lg bg-opacity-80 p-1 rounded md:(max-w-30vw)"
+	class="h-full w-full bg-gray-200 dark:bg-gray-900 backdrop-filter backdrop-blur-lg bg-opacity-80 p-1 rounded md:(max-w-120)"
 	href="/"
 	sveltekit:prefetch
 	aria-current={segment === '' ? 'page' : undefined}
