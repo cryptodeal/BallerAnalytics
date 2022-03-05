@@ -80,9 +80,9 @@
 
 	{#if game.home.score == null && game.home.score == null}
 		<div class="inline-block leading-10 px-2 text-2xl font-normal">
-			{dayjs(game.date).minute() !== 0
-				? dayjs(game.date).format('h:mm A') + ' ET'
-				: dayjs(game.date).format('h A') + ' ET'}
+			{dayjs(game.date).utc().tz('America/New_York').minute() !== 0
+				? dayjs(game.date).utc().tz('America/New_York').format('h:mm A ET')
+				: dayjs(game.date).utc().tz('America/New_York').format('h A ET')}
 		</div>
 	{/if}
 </div>
