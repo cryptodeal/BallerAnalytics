@@ -32,9 +32,15 @@
 						in:draw={{ delay: i * 150, duration: 500 }}
 						d={path}
 						on:introend={() => (done = true)}
+						shape-rendering="crispEdges"
 					/>
 				{/if}
-				<path class:done in:draw={{ delay: i * 150, duration: 500 }} d={path} />
+				<path
+					class:done
+					in:draw={{ delay: i * 150, duration: 500 }}
+					d={path}
+					shape-rendering="crispEdges"
+				/>
 			{/each}
 		</svg>
 	{/if}

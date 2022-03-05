@@ -36,6 +36,7 @@
 			{#each paths as path, i}
 				{#if i === paths.length - 1}
 					<path
+						shape-rendering="crispEdges"
 						class:done
 						class:isCurrent
 						in:draw={{ delay: i * 150, duration: 500 }}
@@ -43,7 +44,13 @@
 						on:introend={() => (done = true)}
 					/>
 				{/if}
-				<path class:isCurrent class:done in:draw={{ delay: i * 150, duration: 500 }} d={path} />
+				<path
+					class:isCurrent
+					class:done
+					in:draw={{ delay: i * 150, duration: 500 }}
+					d={path}
+					shape-rendering="crispEdges"
+				/>
 			{/each}
 		</svg>
 	{/if}

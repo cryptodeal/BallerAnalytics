@@ -54,17 +54,17 @@
 	)}`.substring(-2)} NBA season."
 />
 
-<div class="appContent mb-10">
+<div class="appContent flex flex-col pb-10">
 	{#each teams as { infoCommon, seasons }}
 		<div class="container mx-auto my-4">
 			<a sveltekit:prefetch href="teams/{infoCommon.slug}">
 				<div
-					style="background-color:{getMainColor(infoCommon.nbaAbbreviation)
-						.hex};border-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex};"
-					class="rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
+					style:--teamBg={getMainColor(infoCommon.nbaAbbreviation).hex}
+					style:--teamBorder={getSecondaryColor(infoCommon.nbaAbbreviation).hex}
+					class="teamItem rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
 					<div
-						class="rounded-lg shadow-sm antialiased bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 mx-auto w-1/2 px-2 pb-full md:w-1/8"
+						class="rounded-lg shadow-sm bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 mx-auto w-1/2 px-2 pb-full md:w-1/8"
 					>
 						<TeamLogo {logoModules} slug={infoCommon.slug} />
 					</div>
@@ -72,28 +72,20 @@
 						class="md:(w-7/8 justify-end) w-full mx-auto px-3 flex inline-flex h-auto justify-center"
 					>
 						<div
-							class="rounded-lg backdrop-blur-xl backdrop-filter bg-opacity-40 my-auto p-2 text-center font-semibold pt-3 md:text-right"
-							style="background-color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex ===
-								'#000000' ||
+							style:--backdropBg={getSecondaryColor(infoCommon.nbaAbbreviation).hex === '#000000' ||
 							(getSecondaryColor(infoCommon.nbaAbbreviation).hex !== '#000000' &&
 								getSecondaryColor(infoCommon.nbaAbbreviation).hex !== '#ffffff')
 								? 'rgba(255,255,255,0.35)'
-								: 'rgba(0,0,0,0.35)'}"
+								: 'rgba(0,0,0,0.35)'}
+							style:--fontColor={getSecondaryColor(infoCommon.nbaAbbreviation).hex === '#ffffff'
+								? '#ffffff'
+								: '#000000'}
+							class="teamInfo rounded-lg teamItem backdrop-blur-xl backdrop-filter bg-opacity-40 my-auto p-2 text-center font-semibold pt-3 md:text-right"
 						>
-							<div
-								class="text-2xl leading-tight"
-								style="color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex === '#ffffff'
-									? '#ffffff'
-									: '#000000'}"
-							>
+							<div class="text-2xl leading-tight">
 								{infoCommon.name}
 							</div>
-							<div
-								class="text-normal cursor-pointer"
-								style="color:{getSecondaryColor(infoCommon.nbaAbbreviation).hex === '#ffffff'
-									? '#ffffff'
-									: '#000000'}"
-							>
+							<div class="text-normal cursor-pointer">
 								<span>
 									{seasons.reduce((prev, curr) => {
 										return prev.season < curr.season ? prev : curr;
@@ -109,3 +101,15 @@
 		</div>
 	{/each}
 </div>
+
+<style>
+	.teamItem {
+		background-color: var(--teamBg);
+		border-color: var(--teamBorder);
+	}
+
+	.teamInfo {
+		background-color: var(--backdropBg);
+		color: var(--fontColor);
+	}
+</style>
