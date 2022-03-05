@@ -35,12 +35,9 @@
 		<div class="inline-block leading-10 text-red-600 font-semibold text-2xl px-2">Final</div>
 	{/if}
 	<div
-		class="inline-block leading-10 text-2xl px-2 font-semibold"
-		style="background-color:{getMainColor(game.visitor.infoCommon.nbaAbbreviation)
-			.hex};opacity:100%;color:{invertColor(
-			getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex,
-			true
-		)}"
+		class="teamTickerItem inline-block leading-10 text-2xl px-2 font-semibold"
+		style:--teamBg={getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex}
+		style:--teamColor={invertColor(getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex, true)}
 	>
 		<div
 			class="inline-block w-10 px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-30 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-30)"
@@ -60,12 +57,9 @@
 
 	<div class="inline-block leading-10 text-2xl font-semibold">&nbsp;@&nbsp;</div>
 	<div
-		class="inline-block leading-10 text-2xl px-2 font-semibold"
-		style="background-color:{getMainColor(game.home.infoCommon.nbaAbbreviation)
-			.hex};opacity:100%;color:{invertColor(
-			getMainColor(game.home.infoCommon.nbaAbbreviation).hex,
-			true
-		)}"
+		class="teamTickerItem inline-block leading-10 text-2xl px-2 font-semibold"
+		style:--teamBg={getMainColor(game.home.infoCommon.nbaAbbreviation).hex}
+		style:--teamColor={invertColor(getMainColor(game.home.infoCommon.nbaAbbreviation).hex, true)}
 	>
 		<div
 			class="inline-block w-10 px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-30 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-30)"
@@ -90,3 +84,10 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	.teamTickerItem {
+		background-color: var(--teamBg);
+		color: var(--teamColor);
+	}
+</style>

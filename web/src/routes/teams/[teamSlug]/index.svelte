@@ -124,100 +124,95 @@
 
 <RectBg selectedTeam={teamData} />
 
-<div class="w-full h-full">
-	<div class="appContent mb-2">
-		<div class="w-full h-full p-2">
+<div class="appContent">
+	<div class="p-2">
+		<div
+			class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:(container mx-auto)"
+		>
 			<div
-				class="glassmorphicCard mx-auto flex flex-wrap gap-3 my-3 justify-center text-center opacity-100 items-center min-h-25 sm:max-w-3/4 md:(max-w-1/2) 2xl:max-w-1/4"
+				class="h-30 w-30 md:(h-50 w-50) rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
 			>
-				<div class="shadow-sm antialiased h-30 p-1 md:h-full">
-					<TeamLogo {logoModules} slug={teamData.infoCommon.slug} />
-				</div>
-				<h1 class="text-dark-600 dark:text-light-200">
-					{teamData.infoCommon.name}
-				</h1>
+				<TeamLogo size={'100%'} {logoModules} slug={teamData.infoCommon.slug} />
 			</div>
-			<div class="p-2 md:(container mx-auto)">
-				<div class="glassmorphicCard flex inline-flex items-center px-4 py-2 text-black mb-5">
-					<label class="text-dark-600  dark:text-light-200 text-lg mr-4" for="season-select"
-						>Season:</label
-					>
+			<h1 class="text-dark-600 dark:text-light-200">
+				{teamData.infoCommon.name}
+			</h1>
+		</div>
+		<div class="p-2 md:(container mx-auto)">
+			<div class="glassmorphicCard flex inline-flex items-center px-4 py-2 text-black mb-6">
+				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="season-select"
+					>Season:</label
+				>
 
-					<select
-						type="select"
-						id="season-select"
-						bind:value={seasonYear}
-						on:change={loadRosterData}
-					>
-						{#each seasons as { season }}
-							<option value={season}>{season}</option>
-						{/each}
-					</select>
+				<select type="select" id="season-select" bind:value={seasonYear} on:change={loadRosterData}>
+					{#each seasons as { season }}
+						<option value={season}>{season}</option>
+					{/each}
+				</select>
+			</div>
+			<Tabs>
+				<div class="w-full glassmorphicCard mx-1 px-2 py-1 md:w-auto">
+					<TabList
+						primaryColor={color1}
+						secondaryColor={color2}
+						links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
+					/>
 				</div>
-				<Tabs>
-					<div class="w-full glassmorphicCard mx-1 px-2 py-1 md:w-auto">
-						<TabList
-							primaryColor={color1}
-							secondaryColor={color2}
-							links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
-						/>
-					</div>
 
-					<!-- Schedule Data Tab -->
-					<TabPanel>
-						{#if teamData.seasons[seasonIdx].regularSeason.games.length > 0}
-							<div class="glassmorphicCard px-4 py-2 my-5">
-								<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-									{teamData.seasons[seasonIdx].season} Regular Season:
-								</h2>
-							</div>
-							<div class="my-4">
-								<ScheduleTable
-									{logoModules}
-									schedule={teamData.seasons[seasonIdx].regularSeason.games}
-									teamId={teamData._id}
-								/>
-							</div>
-						{:else}
+				<!-- Schedule Data Tab -->
+				<TabPanel>
+					{#if teamData.seasons[seasonIdx].regularSeason.games.length > 0}
+						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-								No games played in {teamData.seasons[seasonIdx].season}
+								{teamData.seasons[seasonIdx].season} Regular Season:
 							</h2>
-						{/if}
-						{#if teamData.seasons[seasonIdx].postseason.games.length > 0}
-							<div class="glassmorphicCard px-4 py-2 my-5">
-								<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-									{teamData.seasons[seasonIdx].season} Postseason:
-								</h2>
-							</div>
-							<div class="my-4">
-								<ScheduleTable
-									{logoModules}
-									schedule={teamData.seasons[seasonIdx].postseason.games}
-									teamId={teamData._id}
-								/>
-							</div>
-						{/if}
-					</TabPanel>
-
-					<!-- Roster Data Tab -->
-					<TabPanel>
-						<div class="glassmorphicCard px-4 py-2 my-5">
-							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
 						</div>
-						<PlayerRoster roster={teamData.seasons[seasonIdx].roster.players} />
-					</TabPanel>
-
-					<!-- Stats Data Tab -->
-					<TabPanel>
-						<div class="glassmorphicCard px-4 py-2 my-5">
-							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Stats:</h2>
+						<div class="my-4">
+							<ScheduleTable
+								{logoModules}
+								schedule={teamData.seasons[seasonIdx].regularSeason.games}
+								teamId={teamData._id}
+							/>
 						</div>
-						<Table>
-							<THead slot="thead" {colHeaders} />
-						</Table>
-					</TabPanel>
-				</Tabs>
-			</div>
+					{:else}
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+							No games played in {teamData.seasons[seasonIdx].season}
+						</h2>
+					{/if}
+					{#if teamData.seasons[seasonIdx].postseason.games.length > 0}
+						<div class="glassmorphicCard px-4 py-2 my-5">
+							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+								{teamData.seasons[seasonIdx].season} Postseason:
+							</h2>
+						</div>
+						<div class="my-4">
+							<ScheduleTable
+								{logoModules}
+								schedule={teamData.seasons[seasonIdx].postseason.games}
+								teamId={teamData._id}
+							/>
+						</div>
+					{/if}
+				</TabPanel>
+
+				<!-- Roster Data Tab -->
+				<TabPanel>
+					<div class="glassmorphicCard px-4 py-2 my-5">
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
+					</div>
+					<PlayerRoster roster={teamData.seasons[seasonIdx].roster.players} />
+				</TabPanel>
+
+				<!-- Stats Data Tab -->
+				<TabPanel>
+					<div class="glassmorphicCard px-4 py-2 my-5">
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Stats:</h2>
+					</div>
+					<Table>
+						<THead slot="thead" {colHeaders} />
+					</Table>
+				</TabPanel>
+			</Tabs>
 		</div>
 	</div>
 </div>

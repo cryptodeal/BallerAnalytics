@@ -62,7 +62,6 @@
 				let:index
 				let:style
 				{style}
-				sveltekit:prefetch
 				href="/players/{players[index].meta.slug}"
 				class="flex inline-flex max-h-75px h-75px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
 			>

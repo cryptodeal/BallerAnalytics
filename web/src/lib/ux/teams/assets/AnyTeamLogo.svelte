@@ -9,9 +9,7 @@
 {#if logoModules}
 	{#each Object.entries(logoModules) as [key, { default: Logo }]}
 		{#if key.includes(`logo-${slug}.svelte`)}
-			<div class="inline-block">
-				<Logo {size} {isTicker} />
-			</div>
+			<Logo {size} {isTicker} />
 		{/if}
 	{/each}
 {/if}

@@ -14,8 +14,9 @@
 {#if active}
 	<li class="-mb-px mr-1">
 		<span
-			class="inline-block text-dark-600 dark:text-light-200 uppercase border-l backdrop-filter backdrop-blur-lg border-t border-r rounded-t py-2 px-4 font-semibold"
-			style="border-color:rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1);background-color:rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3);"
+			class="tabItem inline-block text-dark-600 dark:text-light-200 uppercase border-l backdrop-filter backdrop-blur-lg border-t border-r rounded-t py-2 px-4 font-semibold"
+			style:--borderColor="rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1)"
+			style:--bgColor="rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3)"
 			on:click={() => selectTab(tab)}
 		>
 			<slot />
@@ -24,11 +25,19 @@
 {:else}
 	<li class="-mb-px mr-1">
 		<button
-			class="inline-block text-dark-600 dark:text-light-200 uppercase py-2 px-4 backdrop-filter backdrop-blur-lg font-semibold"
-			style="border-color:rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1);background-color:rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3);"
+			class="tabItem inline-block text-dark-600 dark:text-light-200 uppercase py-2 px-4 backdrop-filter backdrop-blur-lg font-semibold"
+			style:--borderColor="rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1)"
+			style:--bgColor="rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3)"
 			on:click={() => selectTab(tab)}
 		>
 			<slot />
 		</button>
 	</li>
 {/if}
+
+<style>
+	.tabItem {
+		border-color: var(--borderColor);
+		background-color: var(--bgColor);
+	}
+</style>

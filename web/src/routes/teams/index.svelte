@@ -64,7 +64,7 @@
 					class="teamItem rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
 				>
 					<div
-						class="rounded-lg shadow-sm bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 mx-auto w-1/2 px-2 pb-full md:w-1/8"
+						class="rounded-lg bg-white backdrop-filter backdrop-blur-lg bg-opacity-35 mx-auto w-1/2 px-2 md:w-1/8"
 					>
 						<TeamLogo {logoModules} slug={infoCommon.slug} />
 					</div>

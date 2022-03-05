@@ -3,7 +3,7 @@ import type { Player2Document } from '@balleranalytics/nba-api-ts';
 
 export const getSeasonPlayers = (page: number): Promise<Player2Document[]> => {
 	return Player2.find({ $or: [{ seasons: { $elemMatch: { year: 2022 } } }] })
-		.select('name meta.images meta.slug seasons.teams')
+		.select('name.full meta.images meta.slug')
 		.sort('name.full')
 		.paginate(page)
 		.lean()
