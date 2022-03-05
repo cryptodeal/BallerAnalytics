@@ -10,7 +10,7 @@ importers:
       eslint-config-prettier: ^8.5.0
       eslint-plugin-prettier: ^4.0.0
       husky: ^7.0.4
-      lint-staged: ^12.3.4
+      lint-staged: ^12.3.5
       prettier: ^2.5.1
       tsm: ^2.2.1
       typescript: ^4.6.2
@@ -22,7 +22,7 @@ importers:
       eslint-config-prettier: 8.5.0_eslint@8.10.0
       eslint-plugin-prettier: 4.0.0_f3d13a703a9c1079e3d1af6044603beb
       husky: 7.0.4
-      lint-staged: 12.3.4
+      lint-staged: 12.3.5
       prettier: 2.5.1
       tsm: 2.2.1
       typescript: 4.6.2
@@ -143,7 +143,7 @@ importers:
       unplugin-icons: ^0.13.2
       unplugin-mtl: latest
       unplugin-obj: ^0.1.2
-      vite-plugin-windicss: ^1.8.2
+      vite-plugin-windicss: ^1.8.3
       windicss: ^3.5.1
       yup: ^0.32.11
     devDependencies:
@@ -199,7 +199,7 @@ importers:
       unplugin-icons: 0.13.2
       unplugin-mtl: 0.3.0
       unplugin-obj: 0.1.2
-      vite-plugin-windicss: 1.8.2
+      vite-plugin-windicss: 1.8.3
       windicss: 3.5.1
       yup: 0.32.11
 
@@ -1865,8 +1865,8 @@ packages:
       '@typewriter/delta': 1.0.1
     dev: true
 
-  /@windicss/config/1.8.2:
-    resolution: {integrity: sha512-dGXkzcH1Bnm9716/pE63YSewLQIZXGWerHEotUKf2EMlz/JqsI9Z3yBy/lXVL9HsEoTNpyvMPLk75oquH0vXGg==}
+  /@windicss/config/1.8.3:
+    resolution: {integrity: sha512-1fvfZhRD7WfV/Xh6uIAYKIdbQWrwEgSdkFlHiLPzMDS44KjwNZILDzLAz9Y2W5H2K4MLGgGMnzGS89ECyjc0Ww==}
     dependencies:
       debug: 4.3.3
       jiti: 1.13.0
@@ -1881,11 +1881,11 @@ packages:
       lodash: 4.17.21
     dev: true
 
-  /@windicss/plugin-utils/1.8.2:
-    resolution: {integrity: sha512-UlinWxojyGxWV18AyQ1ISeGvtpbw4ITQpcRe0v4PyuJZHwnrrHmxp8o/pg10oEcDKnsTIbjGeZfW5DC+mkjYYQ==}
+  /@windicss/plugin-utils/1.8.3:
+    resolution: {integrity: sha512-emlMeDt73uNV1ZofLTDogcxqL9aZ5uIRYkjeHlrWiaDozFbX6Jc+a6eRo9Ieaar3JUryl6AnecTPHAiFDl4IXg==}
     dependencies:
       '@antfu/utils': 0.5.0
-      '@windicss/config': 1.8.2
+      '@windicss/config': 1.8.3
       debug: 4.3.3
       fast-glob: 3.2.11
       magic-string: 0.25.9
@@ -4177,8 +4177,8 @@ packages:
       speakingurl: 14.0.1
     dev: false
 
-  /lint-staged/12.3.4:
-    resolution: {integrity: sha512-yv/iK4WwZ7/v0GtVkNb3R82pdL9M+ScpIbJLJNyCXkJ1FGaXvRCOg/SeL59SZtPpqZhE7BD6kPKFLIDUhDx2/w==}
+  /lint-staged/12.3.5:
+    resolution: {integrity: sha512-oOH36RUs1It7b9U/C7Nl/a0sLfoIBcMB8ramiB3nuJ6brBqzsWiUAFSR5DQ3yyP/OR7XKMpijtgKl2DV1lQ3lA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
@@ -6214,12 +6214,12 @@ packages:
       unist-util-stringify-position: 2.0.3
     dev: true
 
-  /vite-plugin-windicss/1.8.2:
-    resolution: {integrity: sha512-tO9bCoqIW945ehwMr9D41YPods8b7HXtVtYVPx62dxadxlbcoD7PQ/8wSvLEiIkMMfuDG5WQ6LZaUdmfALC/vQ==}
+  /vite-plugin-windicss/1.8.3:
+    resolution: {integrity: sha512-RIw2GD6H6cKNE8wZXVOBs4L1uTicVS0FaAkeqXvy1oyuXLC4SXmvnzEuoK0+qFuWJjW0ECNwE8eU+ZZhzNQKUg==}
     peerDependencies:
       vite: ^2.0.1
     dependencies:
-      '@windicss/plugin-utils': 1.8.2
+      '@windicss/plugin-utils': 1.8.3
       debug: 4.3.3
       kolorist: 1.5.1
       windicss: 3.5.1
