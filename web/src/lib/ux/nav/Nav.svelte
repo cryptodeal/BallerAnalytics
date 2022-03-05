@@ -32,9 +32,7 @@
 		<Hamburger />
 	</div>
 	<div class="flex inline-flex items-center w-4/5 px-5 md:(flex justify-start w-1/3 px-1)">
-		<div
-			class="flex inline-flex max-h-41px items-center w-full 2xl:(w-120) bg-gray-500 dark:bg-gray-900 backdrop-filter backdrop-blur-lg bg-opacity-80 p-1 rounded"
-		>
+		<div class="flex inline-flex max-w-120 items-center w-full">
 			<Logo {isVisible} {segment} />
 		</div>
 	</div>

@@ -26,7 +26,7 @@
 </script>
 
 <a
-	class="h-full w-full md:(max-w-30vw)"
+	class="h-full w-full bg-gray-200 dark:bg-gray-900 backdrop-filter backdrop-blur-lg bg-opacity-80 p-1 rounded md:(max-w-30vw)"
 	href="/"
 	sveltekit:prefetch
 	aria-current={segment === '' ? 'page' : undefined}
@@ -59,13 +59,13 @@
 <style>
 	svg path {
 		fill: transparent;
-		stroke: rgba(59, 130, 246, 1);
-		stroke-width: 0.065rem;
+		stroke: rgba(63, 132, 243, 1);
+		stroke-width: 1px;
 		transition: fill 2s;
 	}
 
 	path.done {
-		fill: rgba(59, 130, 246, 1);
+		fill: rgba(63, 132, 243, 1);
 	}
 
 	a[aria-current]::after {
@@ -73,6 +73,6 @@
 	}
 
 	.isCurrent {
-		@apply stroke-amber-300;
+		@apply stroke-amber-400;
 	}
 </style>
