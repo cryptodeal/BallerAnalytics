@@ -1,12 +1,17 @@
 <script lang="ts">
 	import type { MetaGlobImport } from '$lib/types';
-	export let logoModules: MetaGlobImport, slug: string;
+	export let logoModules: MetaGlobImport,
+		slug: string,
+		isTicker = false,
+		size = 200;
 </script>
 
 {#if logoModules}
 	{#each Object.entries(logoModules) as [key, { default: Logo }]}
 		{#if key.includes(`logo-${slug}.svelte`)}
-			<Logo size={200} />
+			<div class="inline-block">
+				<Logo {size} {isTicker} />
+			</div>
 		{/if}
 	{/each}
 {/if}

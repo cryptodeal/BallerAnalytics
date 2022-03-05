@@ -4,11 +4,15 @@
 	import timezone from 'dayjs/plugin/timezone.js';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor } from 'nba-color';
+	import TeamLogo from '../teams/assets/AnyTeamLogo.svelte';
+	const logoModules = import.meta.globEager('../teams/assets/logo-*.svelte');
+
 	import type { DailyGame } from '$lib/data/stores/types';
-	dayjs.extend(utc);
-	dayjs.extend(timezone);
 
 	export let game: DailyGame;
+	const isTicker = true;
+	dayjs.extend(utc);
+	dayjs.extend(timezone);
 </script>
 
 <div class="inline-block mr-50 bg-dark-400 text-white px-2 bg-opacity-40">
@@ -36,6 +40,12 @@
 			true
 		)}"
 	>
+		<div
+			class="inline-block px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-30 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-30)"
+		>
+			<TeamLogo {isTicker} size={32} {logoModules} slug={game.visitor.infoCommon.slug} />
+		</div>
+
 		{game.visitor.infoCommon.nbaAbbreviation}
 	</div>
 	{#if game.visitor.score && game.visitor.score !== null}
@@ -55,6 +65,11 @@
 			true
 		)}"
 	>
+		<div
+			class="inline-block px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-30 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-30)"
+		>
+			<TeamLogo {isTicker} size={32} {logoModules} slug={game.home.infoCommon.slug} />
+		</div>
 		{game.home.infoCommon.nbaAbbreviation}
 	</div>
 	{#if game.home.score && game.home.score !== null}
@@ -66,7 +81,7 @@
 	{/if}
 
 	{#if game.home.score == null && game.home.score == null}
-		<div class="inline block px-2 text-2xl font-normal">
+		<div class="inline-block px-2 text-2xl font-normal">
 			{dayjs(game.date).minute() !== 0
 				? dayjs(game.date).format('h:mm A') + ' ET'
 				: dayjs(game.date).format('h A') + ' ET'}

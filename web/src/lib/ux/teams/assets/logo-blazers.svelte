@@ -1,8 +1,15 @@
 <script lang="ts">
 	export let size: number;
+	export let isTicker: boolean;
 </script>
 
-<svg class="w-full h-full" viewBox="0 0 400 400" width={size} height={size}>
+<svg
+	class:tickerItem={isTicker}
+	class="w-full h-full"
+	viewBox="0 0 400 400"
+	width={size}
+	height={size}
+>
 	<path
 		shape-rendering="crispEdges"
 		d="M261.1 82.9c-2.4-3.6-5.2-7-8.3-10-1.3-1.3-2.7-2.6-4.2-3.8L278.8 39h-87.7l-33.9 33.9-.1.1c-3.1 3.1-5.8 6.4-8.3 10-2.4 3.6-4.5 7.5-6.2 11.5-3.5 8.3-5.3 17.2-5.3 26.3 0 9.1 1.8 18 5.3 26.3 1.7 4 3.8 7.9 6.2 11.5 2.4 3.6 5.2 7 8.3 10 1.3 1.3 2.7 2.6 4.2 3.8l-30.1 30.1h87.7l34-34c3-3 5.8-6.4 8.2-9.9 2.4-3.6 4.5-7.5 6.2-11.5 3.5-8.3 5.3-17.2 5.3-26.3 0-9.1-1.8-18-5.3-26.3-1.6-4.1-3.7-7.9-6.2-11.6"
@@ -26,3 +33,9 @@
 		d="M170.4 230.3v88.9h15.1v-88.9h13v-12.2H149l12.2 12.2zM311.3 263.1l17 56.1H342V218.1h-13.6v56.7l-17.1-56.7h-13.7v101.1h13.7z"
 	/>
 </svg>
+
+<style>
+	.tickerItem {
+		display: inline-block;
+	}
+</style>

@@ -1,8 +1,15 @@
 <script lang="ts">
 	export let size: number;
+	export let isTicker: boolean;
 </script>
 
-<svg class="w-full h-full" width={size} height={size} viewBox="0 0 648 648">
+<svg
+	class:tickerItem={isTicker}
+	class="w-full h-full"
+	width={size}
+	height={size}
+	viewBox="0 0 648 648"
+>
 	<path
 		shape-rendering="crispEdges"
 		style="fill:#12173f;"
@@ -106,3 +113,9 @@
 		shape-rendering="crispEdges"
 	/>
 </svg>
+
+<style>
+	.tickerItem {
+		display: inline-block;
+	}
+</style>
