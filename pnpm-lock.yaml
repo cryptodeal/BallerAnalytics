@@ -53,7 +53,7 @@ importers:
       mongoose-tsgen: ^9.0.1
       nba: ^4.15.0
       sharp: ^0.30.2
-      sportsdataverse: ^1.2.0
+      sportsdataverse: ^1.2.2
       tslib: ^2.3.1
       tsm: ^2.2.1
       typescript: ^4.6.2
@@ -71,7 +71,7 @@ importers:
       mongoose-tsgen: 9.0.1_mongoose@6.2.4+typescript@4.6.2
       nba: 4.15.0
       sharp: 0.30.2
-      sportsdataverse: 1.2.0
+      sportsdataverse: 1.2.2
     devDependencies:
       '@tsconfig/node14': 1.0.1
       '@types/cheerio': 0.22.31
@@ -5523,8 +5523,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /sportsdataverse/1.2.0:
-    resolution: {integrity: sha512-wolZ8sr8nxRilswqNqiZZ0bXUfZVxxlN2+uVnddeUX3Z3utgBg6QmNv+Iaol/+CR8J6VbSzxLvmxXhU3cMSWoQ==}
+  /sportsdataverse/1.2.2:
+    resolution: {integrity: sha512-mkqqSIAdv1dJ8lCUSVxPseXkHuYILRqjfqmnCAs7Z7ld4jWCs0eC16yTGnqzPB0VBz0qLBEI3zxWgbzzr/OAjw==}
     dependencies:
       axios: 0.21.4
       chai: 4.3.6
