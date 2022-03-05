@@ -42,7 +42,7 @@
 		style:--teamColor={invertColor(getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex, true)}
 	>
 		<div
-			class="inline-block w-10 px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-30 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-30)"
+			class="inline-block h-10 w-10 px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-60)"
 		>
 			<TeamLogo {isTicker} size={'2rem'} {logoModules} slug={game.visitor.infoCommon.slug} />
 		</div>
@@ -64,7 +64,7 @@
 		style:--teamColor={invertColor(getMainColor(game.home.infoCommon.nbaAbbreviation).hex, true)}
 	>
 		<div
-			class="inline-block w-10 px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-30 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-30)"
+			class="inline-block h-10 w-10 px-1 bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-60)"
 		>
 			<TeamLogo {isTicker} size={'2rem'} {logoModules} slug={game.home.infoCommon.slug} />
 		</div>

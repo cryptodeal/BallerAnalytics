@@ -2,7 +2,9 @@ import Color from 'color';
 import tinycolor from 'tinycolor2';
 import random from 'random';
 
-export const getBackgroundColors = (colorPalette: string[]): { bgInner: string; bgOuter: string } => {
+export const getBackgroundColors = (
+	colorPalette: string[]
+): { bgInner: string; bgOuter: string } => {
 	const bg = tinycolor.mix(colorPalette[0], colorPalette[1], 50).desaturate(10).toString();
 
 	// Make Lighter version
@@ -10,7 +12,7 @@ export const getBackgroundColors = (colorPalette: string[]): { bgInner: string; 
 	// And darker version
 	const bgOuter: string = tinycolor(bg).darken(10).toString();
 	return { bgInner, bgOuter };
-}
+};
 
 const genPaletteColor = (a: number[], b: number[], fac: number): string => {
 	const ret = [];

@@ -16,15 +16,12 @@ body {
 	flex-grow: 1;
 }
 
-
-
 /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
 @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-  .backdrop-filter {
-    @apply bg-white dark:bg-dark-900 bg-opacity-60;
-  }
+	.backdrop-filter {
+		@apply bg-white dark:bg-dark-900 bg-opacity-60;
+	}
 }
-
 
 .glassmorphicCard {
 	@apply rounded-lg bg-white backdrop-filter backdrop-blur-xl bg-opacity-40 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-40);

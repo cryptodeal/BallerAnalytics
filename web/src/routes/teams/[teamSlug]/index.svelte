@@ -130,9 +130,9 @@
 			class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:(container mx-auto)"
 		>
 			<div
-				class="h-30 w-30 md:(h-50 w-50) rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
+				class="h-50 w-50 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
 			>
-				<TeamLogo size={'100%'} {logoModules} slug={teamData.infoCommon.slug} />
+				<TeamLogo size={'12.5rem'} {logoModules} slug={teamData.infoCommon.slug} />
 			</div>
 			<h1 class="text-dark-600 dark:text-light-200">
 				{teamData.infoCommon.name}
