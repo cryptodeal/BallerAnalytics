@@ -2,7 +2,7 @@
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
-	import advancedFormat from 'dayjs/plugin/advancedFormat';
+	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor } from 'nba-color';
 	import TeamLogo from '../teams/assets/AnyTeamLogo.svelte';
