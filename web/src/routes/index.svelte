@@ -3,7 +3,7 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
-	import Bball from '$lib/ux/animations/BballGltf.svelte';
+	import CanvasWrapper from '$lib/ux/animations/CanvasWrapper.svelte';
 	let isVisible = false;
 	onMount(() => {
 		isVisible = true;
@@ -29,7 +29,7 @@
 				</div>
 				<div class="w-full flex justify-center h-40 md:(w-1/2 justify-start)">
 					<div class="h-full w-full">
-						<Bball />
+						<CanvasWrapper />
 					</div>
 				</div>
 			</div>

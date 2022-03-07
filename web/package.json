@@ -55,6 +55,7 @@
 		"svelte-notifications": "^0.9.93",
 		"svelte-preprocess": "^4.10.4",
 		"svelte-tiny-virtual-list": "^1.1.7",
+		"svelte-trois": "^0.0.1",
 		"three": "^0.138.3",
 		"tinycolor2": "^1.4.2",
 		"tslib": "^2.3.1",

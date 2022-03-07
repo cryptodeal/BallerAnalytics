@@ -134,6 +134,7 @@ importers:
       svelte-notifications: ^0.9.93
       svelte-preprocess: ^4.10.4
       svelte-tiny-virtual-list: ^1.1.7
+      svelte-trois: ^0.0.1
       three: ^0.138.3
       tinycolor2: ^1.4.2
       tslib: ^2.3.1
@@ -190,6 +191,7 @@ importers:
       svelte-notifications: 0.9.93
       svelte-preprocess: 4.10.4_svelte@3.46.4+typescript@4.6.2
       svelte-tiny-virtual-list: 1.1.7
+      svelte-trois: 0.0.1
       three: 0.138.3
       tinycolor2: 1.4.2
       tslib: 2.3.1
@@ -5522,6 +5524,13 @@ packages:
     resolution: {integrity: sha512-8314cmLXOVqIQwSc3NFu8yGU7BdHEJeixrwFirmnMoWl6YNcCq5jVjCKjE3tDNJfUenz1LN5M5YshPt6GcPuww==}
     dev: true
 
+  /svelte-trois/0.0.1:
+    resolution: {integrity: sha512-yIrk6DmAgURKsYW7T7s1sEW3T0+0ROjr08f+sdMiDiIh87pBvxW/nyP/GOWjGVPYFpLfYAeo4NY6MESroiZV4w==}
+    dependencies:
+      svelte-cubed: 0.2.1
+      three: 0.136.0
+    dev: true
+
   /svelte/3.46.4:
     resolution: {integrity: sha512-qKJzw6DpA33CIa+C/rGp4AUdSfii0DOTCzj/2YpSKKayw5WGSS624Et9L1nU1k2OVRS9vaENQXp2CVZNU+xvIg==}
     engines: {node: '>= 8'}
@@ -5563,6 +5572,10 @@ packages:
 
   /text-table/0.2.0:
     resolution: {integrity: sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=}
+    dev: true
+
+  /three/0.136.0:
+    resolution: {integrity: sha512-+fEMX7nYLz2ZesVP/dyifli5Jf8gR3XPAnFJveQ80aMhibFduzrADnjMbARXh8+W9qLK7rshJCjAIL/6cDxC+A==}
     dev: true
 
   /three/0.138.3:
@@ -6015,7 +6028,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}

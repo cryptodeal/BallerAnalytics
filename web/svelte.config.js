@@ -28,6 +28,16 @@ const config = {
 				ObjFileImport(),
 				MtlFileImport()
 			],
+			/* 
+      build: {
+				rollupOptions: {
+					inlineDynamicImports: false,
+					manualChunks: {
+						three: ['three']
+					}
+				}
+			},
+      */
 			resolve: {
 				dedupe: ['mongoose', 'dayjs']
 			}
