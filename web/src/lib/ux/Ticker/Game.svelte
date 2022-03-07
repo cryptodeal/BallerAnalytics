@@ -19,15 +19,7 @@
 	dayjs.tz.setDefault('America/New_York');
 
 	const estDate = dayjs(game.date).tz();
-	$: localTz = dayjs.tz.guess();
-	$: if (game.visitor.infoCommon.nbaAbbreviation === 'SAS') {
-		console.log(estDate.local().format('h A'));
-		console.log(
-			'SAS',
-			estDate.minute() !== 0 ? estDate.local().format('h:mm A') : estDate.local().format('h A')
-		);
-		console.log(game.date);
-	}
+	const localTz = dayjs.tz.guess();
 </script>
 
 <div
