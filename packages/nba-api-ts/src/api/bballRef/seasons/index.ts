@@ -4,6 +4,7 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.tz.setDefault('America/New_York');
 
 export type BballRefSeason = {
 	displaySeason: string;
@@ -272,13 +273,13 @@ const parseSeasonGames = ($: cheerio.Root) => {
 									if (time !== '') {
 										isTime = true;
 										const halfOfDay = time.slice(-1);
-										let hours = parseInt(time.split(':')[0]);
+										let hours = parseInt(time.split(':')[0]) - 1;
 										const minutes = parseInt(time.split(':')[1].slice(0, -1));
 										if (halfOfDay === 'p' && hours !== 12) {
 											hours += 12;
 										}
 										const dateTime = date.set('hour', hours).set('minute', minutes);
-										date = dateTime;
+										date = dayjs(dateTime).tz();
 									}
 								});
 							/** set visitor team abbreviation */
@@ -316,9 +317,7 @@ const parseSeasonGames = ($: cheerio.Root) => {
 								boxScoreUrl = $(row).find('[data-stat=date_game]').first().attr('csk')?.trim();
 								if (!boxScoreUrl) {
 									boxScoreUrl = isTime
-										? dayjs(date).tz('America/New_York').format('YYYYMMDD') +
-										  '0' +
-										  abbreviations.home
+										? dayjs(date).format('YYYYMMDD') + '0' + abbreviations.home
 										: dayjs(date).format('YYYYMMDD') + '0' + abbreviations.home;
 								}
 							}

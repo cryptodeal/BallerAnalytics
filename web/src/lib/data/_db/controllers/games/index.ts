@@ -7,14 +7,12 @@ import type { Game2Object } from '@balleranalytics/nba-api-ts';
 import type { DailyGame, DailyGames } from '$lib/data/stores/types';
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.tz.setDefault('America/New_York');
 
 export const getTodaysGames = async () => {
-	const now =
-		dayjs(dayjs()).tz('America/New_York').hour() < 3
-			? dayjs(dayjs()).tz('America/New_York').subtract(3, 'hour')
-			: dayjs(dayjs()).tz('America/New_York');
-	const endDate = now.endOf('date').toDate();
-	const startDate = now.startOf('date').toDate();
+	const now = dayjs().tz().hour() < 3 ? dayjs().tz().subtract(3, 'hour') : dayjs().tz();
+	const endDate = now.endOf('date').utc().toDate();
+	const startDate = now.startOf('date').utc().toDate();
 	return Game2.getDailyGames(startDate, endDate).then((games: Game2Object[]) => {
 		const parsedGames: DailyGames = {};
 		games.map((g) => {

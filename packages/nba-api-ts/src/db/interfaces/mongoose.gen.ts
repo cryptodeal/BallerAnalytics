@@ -464,7 +464,7 @@ export type Game2 = {
 			clock?: number;
 		};
 		displaySeason: string;
-		league?: League['_id'] | League;
+		league: League['_id'] | League;
 	};
 	date: Date;
 	time?: boolean;
@@ -957,7 +957,7 @@ export type Game2Document = mongoose.Document<mongoose.Types.ObjectId, Game2Quer
 				clock?: number;
 			};
 			displaySeason: string;
-			league?: LeagueDocument['_id'] | LeagueDocument;
+			league: LeagueDocument['_id'] | LeagueDocument;
 		};
 		date: Date;
 		time?: boolean;

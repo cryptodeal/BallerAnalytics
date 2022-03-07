@@ -29,7 +29,7 @@ const config = {
 				MtlFileImport()
 			],
 			resolve: {
-				dedupe: ['mongoose']
+				dedupe: ['mongoose', 'dayjs']
 			}
 		}
 	}

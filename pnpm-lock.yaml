@@ -41,7 +41,7 @@ importers:
       cheerio: ^1.0.0-rc.10
       cron: ^1.8.2
       cross-fetch: ^3.1.5
-      dayjs: ^1.10.8
+      dayjs: 1.10.4
       dotenv: ^16.0.0
       eslint: ^8.10.0
       eslint-config-prettier: ^8.5.0
@@ -63,7 +63,7 @@ importers:
       cheerio: 1.0.0-rc.10
       cron: 1.8.2
       cross-fetch: 3.1.5
-      dayjs: 1.10.8
+      dayjs: 1.10.4
       dotenv: 16.0.0
       iso-3166-1-ts: 0.2.2
       mongoose: 6.2.4
@@ -92,7 +92,7 @@ importers:
   web:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:*
-      '@iconify/json': ^2.1.11
+      '@iconify/json': ^2.1.12
       '@sveltejs/adapter-vercel': next
       '@sveltejs/kit': next
       '@types/color': ^3.0.3
@@ -110,7 +110,7 @@ importers:
       color: ^4.2.1
       cookie: ^0.4.2
       d3-interpolate: ^3.0.1
-      dayjs: ^1.10.8
+      dayjs: 1.10.4
       dotenv: ^16.0.0
       eslint: ^8.10.0
       eslint-config-prettier: ^8.5.0
@@ -148,7 +148,7 @@ importers:
       yup: ^0.32.11
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
-      '@iconify/json': 2.1.11
+      '@iconify/json': 2.1.12
       '@sveltejs/adapter-vercel': 1.0.0-next.46
       '@sveltejs/kit': 1.0.0-next.294_svelte@3.46.4
       '@types/color': 3.0.3
@@ -166,7 +166,7 @@ importers:
       color: 4.2.1
       cookie: 0.4.2
       d3-interpolate: 3.0.1
-      dayjs: 1.10.8
+      dayjs: 1.10.4
       dotenv: 16.0.0
       eslint: 8.10.0
       eslint-config-prettier: 8.5.0_eslint@8.10.0
@@ -1114,8 +1114,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.11:
-    resolution: {integrity: sha512-j1V7051cV4sN5T/tjxt7BHJ7Fn3YaLNa57M2I3KCaSlHayTxHKEE8ftYLjbqoAVIBbRBuHnLofDw9tlPlOjpaw==}
+  /@iconify/json/2.1.12:
+    resolution: {integrity: sha512-oCFP9BElSZwdtB5qPtilUNnl6eAMYrKPKz+UUOcTrYNYxpKmgip9pT3AnsyjQin/DCeOC0/IJ3OaAGr3VIfP4w==}
     dependencies:
       '@iconify/types': 1.0.12
       pathe: 0.0.2
@@ -1643,6 +1643,7 @@ packages:
 
   /@types/node/16.11.26:
     resolution: {integrity: sha512-GZ7bu5A6+4DtG7q9GsoHXy3ALcgeIHP4NnL0Vv2wu0uUB/yQex26v0tf6/na1mm0+bS9Uw+0DFex7aaKr2qawQ==}
+    dev: true
 
   /@types/node/17.0.21:
     resolution: {integrity: sha512-DBZCJbhII3r90XbQxI8Y9IjjiiOGlZ0Hr32omXIZvwwZ7p4DMMXGrKXVyPfuoBOri9XNtL0UK69jYIBIsRX3QQ==}
@@ -1701,7 +1702,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 16.11.26
+      '@types/node': 17.0.21
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.13:
@@ -2537,8 +2538,8 @@ packages:
       mimer: 1.1.1
     dev: true
 
-  /dayjs/1.10.8:
-    resolution: {integrity: sha512-wbNwDfBHHur9UOzNUjeKUOJ0fCb0a52Wx0xInmQ7Y8FstyajiV1NmK1e00cxsr9YrE9r7yAChE0VvpuY5Rnlow==}
+  /dayjs/1.10.4:
+    resolution: {integrity: sha512-RI/Hh4kqRc1UKLOAf/T5zdMMX5DQIlDxwUe3wSyMMnEbGunnpENCdbUgM+dW7kXidZqCttBrmw7BhN4TMddkCw==}
 
   /debug/4.3.3:
     resolution: {integrity: sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==}
@@ -4995,8 +4996,8 @@ packages:
       glob: 7.2.0
     dev: true
 
-  /rollup/2.69.1:
-    resolution: {integrity: sha512-xaQKTomUVZBopk38EIshM/kOoPFkKWisgBV7Emy80coP9MOSLUDrba1jKZhqH0iS5DoGcRbbcuyl/BzblV8w5w==}
+  /rollup/2.69.2:
+    resolution: {integrity: sha512-KghktpWg3Wd+nYCsx3Griidm2/CKIJYG2yyaaKspo0TXSoGdW+0duwzKl4wWIu62oN3mFg3zCDbwVRPwuNPPlA==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -5951,7 +5952,7 @@ packages:
       esbuild: 0.14.25
       postcss: 8.4.7
       resolve: 1.22.0
-      rollup: 2.69.1
+      rollup: 2.69.2
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

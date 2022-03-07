@@ -19,7 +19,7 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 			clock: { type: Number }
 		},
 		displaySeason: { type: String, required: true },
-		league: { type: mongoose.Schema.Types.ObjectId, ref: 'League' }
+		league: { type: mongoose.Schema.Types.ObjectId, ref: 'League', required: true }
 	},
 	date: { type: Date, required: true, index: true },
 	time: { type: Boolean },

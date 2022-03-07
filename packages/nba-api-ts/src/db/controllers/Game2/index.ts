@@ -17,6 +17,8 @@ import { addGameToTeam } from '../Team2';
 import { addOrUpdateSeasons } from '../League';
 import { addGameToOfficial } from '../Official2';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { getNbaBoxscore } from '../../../api/nba/boxscores';
 import type { NbaBoxScoreData } from '../../../api/nba/nba';
 import { getPlayerInfo } from '../../../api/nba/player';
@@ -32,6 +34,8 @@ import type {
 	ParsedEspnBoxscoreTeam,
 	IEspnScheduleGameStatus
 } from '../../../api/espn/types';
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
@@ -378,7 +382,7 @@ export const addOrFindGame = async (
 			displaySeason: `${year - 1}-${year.toString().slice(-2)}`,
 			league: leagueDoc._id
 		},
-		date: game.date.toISOString(),
+		date: game.date.utc().toDate(),
 		time: game.time,
 		home: {
 			team: homeTeam._id

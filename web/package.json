@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
-		"@iconify/json": "^2.1.11",
+		"@iconify/json": "^2.1.12",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@types/color": "^3.0.3",
@@ -31,7 +31,7 @@
 		"color": "^4.2.1",
 		"cookie": "^0.4.2",
 		"d3-interpolate": "^3.0.1",
-		"dayjs": "^1.10.8",
+		"dayjs": "1.10.4",
 		"dotenv": "^16.0.0",
 		"eslint": "^8.10.0",
 		"eslint-config-prettier": "^8.5.0",
