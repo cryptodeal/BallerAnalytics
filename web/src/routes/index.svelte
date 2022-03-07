@@ -3,7 +3,7 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
-	import Bball from '$lib/ux/animations/LowPolyBall.svelte';
+	import Bball from '$lib/ux/animations/BballGltf.svelte';
 	let isVisible = false;
 	onMount(() => {
 		isVisible = true;
