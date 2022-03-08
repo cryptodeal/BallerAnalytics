@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { Clock } from 'three';
-	import AmbientLight from '$lib/svelte-cubed/lights/AmbientLight.svelte';
-	import DirectionalLight from '$lib/svelte-cubed/lights/DirectionalLight.svelte';
-	import Canvas from '$lib/svelte-cubed/Canvas.svelte';
-	import { onFrame } from '$lib/svelte-cubed/utils/lifecycle';
-	import OrbitControls from '$lib/svelte-cubed/controls/OrbitControls.svelte';
-	import PerspectiveCamera from '$lib/svelte-cubed/cameras/PerspectiveCamera.svelte';
-	import Primitive from '$lib/svelte-cubed/objects/Primitive.svelte';
+	import { onMount } from 'svelte';
+	import {
+		AmbientLight,
+		Canvas,
+		DirectionalLight,
+		onFrame,
+		OrbitControls,
+		PerspectiveCamera,
+		Primitive
+	} from 'svelte-cubed';
 	import basketball from '$models/basketball.glb?url';
 	import darkMode from '$lib/data/stores/theme';
-	import { browser } from '$app/env';
-	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-	import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+	import { WebGLRenderer } from 'three';
 
-	let canvasInfo,
-		object,
+	let GLTFLoader, KTX2Loader;
+
+	let object,
 		clock = new Clock(),
 		time = 0,
 		delta = 0,
@@ -22,17 +24,21 @@
 		width = 1,
 		height = 1;
 
-	$: if (canvasInfo && browser) {
-		const ktx2Loader = new KTX2Loader().setTranscoderPath('/scripts/').detectSupport(canvasInfo());
+	onMount(async () => {
+		GLTFLoader = (await import('three/examples/jsm/loaders/GLTFLoader.js')).GLTFLoader;
+		KTX2Loader = (await import('three/examples/jsm/loaders/KTX2Loader.js')).KTX2Loader;
+	});
 
+	async function loadGlb() {
+		const ktx2Loader = new KTX2Loader()
+			.setTranscoderPath('/scripts/')
+			.detectSupport(new WebGLRenderer());
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
-
-		loader.load(basketball, function (gltf) {
-			//console.log(gltf);
-			object = gltf.scene;
-		});
+		const gltf = await loader.loadAsync(basketball);
+		object = gltf.scene;
 	}
+	$: if (GLTFLoader && KTX2Loader) loadGlb();
 
 	onFrame(() => {
 		delta = clock.getDelta();
@@ -44,9 +50,8 @@
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
 	<Canvas
 		physicallyCorrectLights={true}
-		bind:info={canvasInfo}
 		antialias={true}
-		precision={'highp'}
+		precision={'lowp'}
 		alpha={true}
 		background={null}
 		{height}
