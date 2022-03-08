@@ -9,6 +9,7 @@
 		PerspectiveCamera,
 		Primitive
 	} from 'svelte-cubed';
+	import basketball from '$models/basketball.glb?url';
 	import darkMode from '$lib/data/stores/theme';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
@@ -28,7 +29,7 @@
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
 
-		loader.load('models/bball/test.glb', function (gltf) {
+		loader.load(basketball, function (gltf) {
 			//console.log(gltf);
 			object = gltf.scene;
 		});
@@ -37,14 +38,14 @@
 	onFrame(() => {
 		delta = clock.getDelta();
 		time += delta;
-		ballYRotation = time * -1.5;
+		ballYRotation = time * -1.2;
 	});
 </script>
 
-<PerspectiveCamera position={[0, 0, 2.5]} fov={50} />
+<PerspectiveCamera position={[0, 0, 3]} />
 
 <Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
 <AmbientLight intensity={$darkMode ? 1.4 : 2} />
-<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.02} />
+<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} enablePan={false} />
 
 <DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />

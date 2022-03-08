@@ -8,8 +8,9 @@
 
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
 	<Canvas
-		antialias
 		physicallyCorrectLights={true}
+		antialias={true}
+		precision={'highp'}
 		alpha={true}
 		background={null}
 		{height}
