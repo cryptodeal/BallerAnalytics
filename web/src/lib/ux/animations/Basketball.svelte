@@ -1,30 +1,29 @@
 <script lang="ts">
-	import { Clock, WebGLRenderer } from 'three';
-	import type { Group } from 'three';
-	import {
-		AmbientLight,
-		DirectionalLight,
-		onFrame,
-		OrbitControls,
-		PerspectiveCamera,
-		Primitive
-	} from 'svelte-cubed';
+	import { Clock } from 'three';
+	import AmbientLight from '$lib/svelte-cubed/lights/AmbientLight.svelte';
+	import DirectionalLight from '$lib/svelte-cubed/lights/DirectionalLight.svelte';
+	import Canvas from '$lib/svelte-cubed/Canvas.svelte';
+	import { onFrame } from '$lib/svelte-cubed/utils/lifecycle';
+	import OrbitControls from '$lib/svelte-cubed/controls/OrbitControls.svelte';
+	import PerspectiveCamera from '$lib/svelte-cubed/cameras/PerspectiveCamera.svelte';
+	import Primitive from '$lib/svelte-cubed/objects/Primitive.svelte';
 	import basketball from '$models/basketball.glb?url';
 	import darkMode from '$lib/data/stores/theme';
+	import { browser } from '$app/env';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
-	import { onMount } from 'svelte';
 
-	let object: Group,
+	let canvasInfo,
+		object,
 		clock = new Clock(),
 		time = 0,
 		delta = 0,
-		ballYRotation;
+		ballYRotation,
+		width = 1,
+		height = 1;
 
-	onMount(() => {
-		const ktx2Loader = new KTX2Loader()
-			.setTranscoderPath('/scripts/')
-			.detectSupport(new WebGLRenderer());
+	$: if (canvasInfo && browser) {
+		const ktx2Loader = new KTX2Loader().setTranscoderPath('/scripts/').detectSupport(canvasInfo());
 
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
@@ -33,7 +32,7 @@
 			//console.log(gltf);
 			object = gltf.scene;
 		});
-	});
+	}
 
 	onFrame(() => {
 		delta = clock.getDelta();
@@ -42,10 +41,24 @@
 	});
 </script>
 
-<PerspectiveCamera position={[0, 0, 3]} />
+<div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
+	<Canvas
+		physicallyCorrectLights={true}
+		bind:info={canvasInfo}
+		antialias={true}
+		precision={'highp'}
+		alpha={true}
+		background={null}
+		{height}
+		{width}
+		failIfMajorPerformanceCaveat={true}
+	>
+		<PerspectiveCamera position={[0, 0, 3]} />
 
-<Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
-<AmbientLight intensity={$darkMode ? 1.4 : 2} />
-<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} enablePan={false} />
+		<Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
+		<AmbientLight intensity={$darkMode ? 1.4 : 2} />
+		<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} enablePan={false} />
 
-<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />
+		<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />
+	</Canvas>
+</div>

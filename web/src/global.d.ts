@@ -1,6 +1,12 @@
 /// <reference types="@sveltejs/kit" />
 /// <reference types="unplugin-icons/types/svelte" />
 
+declare module '*.svelte' {
+	export { SvelteComponentDev as default } from 'svelte/internal';
+	export const version: string;
+	// ... other stuff
+}
+
 declare namespace NodeJS {
 	interface ProcessEnv {
 		MONGO_URI: string;
