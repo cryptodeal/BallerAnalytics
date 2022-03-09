@@ -7,7 +7,7 @@
 		if (url.searchParams.has('date')) {
 			const date = url.searchParams.get('date');
 			apiUrl += `?date=${date}`;
-		} else console.log('false; no date! :)');
+		}
 
 		const res = await fetch(apiUrl);
 
@@ -54,7 +54,7 @@
 	$: maxDate = new Date(max);
 
 	function loadGames() {
-		const url = `/games.json?date=${dayjs(date).format('YYYY-MM-DD')}`;
+		const url = `/games.json?date=${dayjs(date).tz().format('YYYY-MM-DD')}`;
 		return fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
