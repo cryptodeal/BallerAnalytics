@@ -39,8 +39,8 @@
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
 				{#if !estDate.isBefore(dayjs().tz()) && game.visitor.score}
 					{game.visitor.score}
-				{:else if !estDate.isBefore(dayjs().tz()) && game.visitor.stats.totals.points}
-					{game.visitor.stats.totals.points}
+				{:else if !estDate.isBefore(dayjs().tz()) && game.visitor.stats?.totals?.points}
+					{game.visitor.stats?.totals?.points}
 				{:else if game.home.score}
 					0
 				{/if}
@@ -71,8 +71,8 @@
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
 				{#if !estDate.isBefore(dayjs().tz()) && game.home.score}
 					{game.home.score}
-				{:else if !estDate.isBefore(dayjs().tz()) && game.home.stats.totals.points}
-					{game.home.stats.totals.points}
+				{:else if !estDate.isBefore(dayjs().tz()) && game.home.stats?.totals?.points}
+					{game.home.stats?.totals?.points}
 				{:else if game.visitor.score}
 					0
 				{/if}
