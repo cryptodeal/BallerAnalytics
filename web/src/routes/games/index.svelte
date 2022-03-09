@@ -42,19 +42,19 @@
 	dayjs.extend(timezone);
 	dayjs.tz.setDefault('America/New_York');
 
-	export let games,
-		min: Date,
-		max: Date,
-		estDate = dayjs(games[0].date).tz(),
-		date = estDate.toDate();
+	export let games, min: Date, max: Date;
+
+	let date = dayjs().tz().toDate();
+
+	const closeOnSelection = true;
 
 	const format = 'MM-dd-yyyy';
-	// $: console.log(min, max);
 	$: minDate = new Date(min);
 	$: maxDate = new Date(max);
 
 	function loadGames() {
-		const url = `/games.json?date=${dayjs(date).tz().format('YYYY-MM-DD')}`;
+		const strDate = dayjs(date).tz().format('YYYY-MM-DD');
+		const url = `/games.json?date=${strDate}`;
 		return fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
@@ -62,28 +62,36 @@
 				games = updatedGames;
 			});
 	}
-	// $: console.log(games);
 </script>
 
-<div class="appContent mb-10 h-full w-full">
+<div class="appContent flex flex-col w-full">
 	<div
-		class="flex items-center flex-col gap-4"
+		class="mx-auto flex flex-col items-center gap-4"
 		style:--date-picker-background={$darkMode ? '#1b1e27' : '#ffffff'}
 		style:--date-picker-foreground={$darkMode ? '#f7f7f7' : '#000000'}
 	>
-		<h1 class="text-dark-800 dark:text-light-200">
+		<h1 class="text-dark-800 dark:text-light-200 text-center">
 			Games: {dayjs(date).tz().format('MMM	D, YYYY')}
 		</h1>
 
-		<DateInput min={minDate} max={maxDate} bind:value={date} on:select={loadGames} {format} />
+		<DateInput
+			{closeOnSelection}
+			min={minDate}
+			max={maxDate}
+			bind:value={date}
+			on:select={loadGames}
+			{format}
+		/>
 	</div>
-	{#if games.length}
-		{#each games as game}
-			<GameEvent {game} {logoModules} />
-		{/each}
-	{:else}
-		<div class="flex justify-center">
-			<h1 class="text-dark-800 dark:text-light-200">No games found</h1>
-		</div>
-	{/if}
+	<div class="w-full overflow-scroll flex-grow mb-10">
+		{#if games.length}
+			{#each games as game}
+				<GameEvent {game} {logoModules} />
+			{/each}
+		{:else}
+			<div class="flex justify-center">
+				<h1 class="text-dark-800 dark:text-light-200">No games found</h1>
+			</div>
+		{/if}
+	</div>
 </div>

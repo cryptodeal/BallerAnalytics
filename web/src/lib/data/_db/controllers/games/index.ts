@@ -47,7 +47,7 @@ export const getTodaysGames = async () => {
 
 export const getGamesByDate = async (date: Dayjs): Promise<Game2Object[]> => {
 	return Game2.find({
-		date: { $lte: date.endOf('day').toDate(), $gte: date.startOf('day').toDate() }
+		date: { $lte: date.tz().endOf('day'), $gte: date.tz().startOf('day') }
 	})
 		.select('date home visitor meta')
 		.populateTeams()

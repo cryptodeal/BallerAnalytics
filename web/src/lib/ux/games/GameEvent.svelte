@@ -37,11 +37,11 @@
 			class="flex inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
 		>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
-				{#if !estDate.isBefore(dayjs().tz()) && game.visitor.score}
+				{#if game.visitor.score && game.visitor.score !== null}
 					{game.visitor.score}
-				{:else if !estDate.isBefore(dayjs().tz()) && game.visitor.stats?.totals?.points}
-					{game.visitor.stats?.totals?.points}
-				{:else if game.home.score}
+				{:else if game.visitor.stats.totals?.points && game.visitor.stats.totals.points !== null}
+					{game.visitor.stats.totals.points}
+				{:else if (game.home.score && game.home.score !== null) || (game.home.stats.totals?.points && game.home.stats.totals.points !== null)}
 					0
 				{/if}
 			</div>
@@ -69,11 +69,11 @@
 				{/if}
 			</div>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
-				{#if !estDate.isBefore(dayjs().tz()) && game.home.score}
+				{#if game.home.score && game.home.score !== null}
 					{game.home.score}
-				{:else if !estDate.isBefore(dayjs().tz()) && game.home.stats?.totals?.points}
-					{game.home.stats?.totals?.points}
-				{:else if game.visitor.score}
+				{:else if game.home.stats.totals?.points && game.home.stats.totals.points !== null}
+					{game.home.stats.totals.points}
+				{:else if (game.visitor.score && game.visitor.score !== null) || (game.visitor.stats.totals?.points && game.visitor.stats.totals.points !== null)}
 					0
 				{/if}
 			</div>
