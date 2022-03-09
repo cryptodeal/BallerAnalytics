@@ -28,17 +28,15 @@ const config = {
 				ObjFileImport(),
 				MtlFileImport()
 			],
-
 			build: {
 				rollupOptions: {
 					inlineDynamicImports: false,
 					manualChunks: {
 						GLTFLoader: ['three/examples/jsm/loaders/GLTFLoader.js'],
-						KTX2Loader: ['three/examples/jsm/loaders/KTX2Loader.js'],
+						KTX2Loader: ['three/examples/jsm/loaders/KTX2Loader.js']
 					}
 				}
 			},
-
 			resolve: {
 				dedupe: ['mongoose', 'dayjs']
 			}

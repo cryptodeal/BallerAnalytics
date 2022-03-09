@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Clock } from 'three';
+	import { Clock, WebGLRenderer } from 'three';
 	import { onMount } from 'svelte';
 	import {
 		AmbientLight,
@@ -12,7 +12,6 @@
 	} from 'svelte-cubed';
 	import basketball from '$models/basketball.glb?url';
 	import darkMode from '$lib/data/stores/theme';
-	import { WebGLRenderer } from 'three';
 
 	let GLTFLoader, KTX2Loader;
 

@@ -92,6 +92,7 @@ importers:
   web:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:*
+      '@date-io/dayjs': ^2.13.1
       '@iconify/json': ^2.1.13
       '@sveltejs/adapter-vercel': next
       '@sveltejs/kit': next
@@ -110,6 +111,7 @@ importers:
       color: ^4.2.1
       cookie: ^0.4.2
       d3-interpolate: ^3.0.1
+      date-picker-svelte: ^2.0.0
       dayjs: ^1.10.8
       dotenv: ^16.0.0
       eslint: ^8.10.0
@@ -148,6 +150,7 @@ importers:
       yup: ^0.32.11
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
+      '@date-io/dayjs': 2.13.1_dayjs@1.10.8
       '@iconify/json': 2.1.13
       '@sveltejs/adapter-vercel': 1.0.0-next.46
       '@sveltejs/kit': 1.0.0-next.294_svelte@3.46.4
@@ -166,6 +169,7 @@ importers:
       color: 4.2.1
       cookie: 0.4.2
       d3-interpolate: 3.0.1
+      date-picker-svelte: 2.0.0
       dayjs: 1.10.8
       dotenv: 16.0.0
       eslint: 8.10.0
@@ -1072,6 +1076,22 @@ packages:
 
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+    dev: true
+
+  /@date-io/core/2.13.1:
+    resolution: {integrity: sha512-pVI9nfkf2qClb2Cxdq0Q4zJhdawMG4ybWZUVGifT78FDwzRMX2SwXBb55s5NRJk0HcIicDuxktmCtemZqMH1Zg==}
+    dev: true
+
+  /@date-io/dayjs/2.13.1_dayjs@1.10.8:
+    resolution: {integrity: sha512-5bL4WWWmlI4uGZVScANhHJV7Mjp93ec2gNeUHDqqLaMZhp51S0NgD25oqj/k0LqBn1cdU2MvzNpk/ObMmVv5cQ==}
+    peerDependencies:
+      dayjs: ^1.8.17
+    peerDependenciesMeta:
+      dayjs:
+        optional: true
+    dependencies:
+      '@date-io/core': 2.13.1
+      dayjs: 1.10.8
     dev: true
 
   /@dsherret/to-absolute-glob/2.0.2:
@@ -2536,6 +2556,10 @@ packages:
     dependencies:
       image-size: 0.7.5
       mimer: 1.1.1
+    dev: true
+
+  /date-picker-svelte/2.0.0:
+    resolution: {integrity: sha512-hV1DZj2e31wQ7IpKKAqnp/IwP3ZSKYYQ1IL2jgVeowJEJd3onPics8AA3GUOsaFH49UUPhOvpa6psZujawWG7A==}
     dev: true
 
   /dayjs/1.10.8:
@@ -6015,7 +6039,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}

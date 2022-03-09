@@ -506,6 +506,24 @@ Game2Schema.statics = {
 				}
 			}
 		]);
+	},
+
+	findMinMaxYears(): Promise<
+		{
+			_id: null;
+			max: Date;
+			min: Date;
+		}[]
+	> {
+		return this.aggregate([
+			{
+				$group: {
+					_id: null,
+					max: { $max: '$date' },
+					min: { $min: '$date' }
+				}
+			}
+		]).exec();
 	}
 };
 

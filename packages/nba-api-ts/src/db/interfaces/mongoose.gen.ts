@@ -653,6 +653,7 @@ export type Game2Statics = {
 	findByUrl: (this: Game2Model, url: string) => any;
 	getDailyGames: (this: Game2Model, startDate: Date, endDate: Date) => Promise<Game2Object[]>;
 	getGames: (this: Game2Model, gameUids: Game2Document['_id'][]) => Promise<Game2Object[]>;
+	findMinMaxYears: (this: Game2Model) => Promise<{ _id: null; max: Date; min: Date }[]>;
 };
 
 /**

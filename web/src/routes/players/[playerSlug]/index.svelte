@@ -24,17 +24,18 @@
 	import Headshot from '$lib/ux/img/Headshot.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	export let player: Player2Document;
+	console.log(player);
 </script>
 
 <MetaTags
-	title="{player.name.full} NBA Player Bio & Stats"
+	title="{player.name.full}: Player Bio & Stats"
 	description="{player.name
-		.full} season and historical schedule, basic/advanced statistics, fantasy projections/historical data, and more."
+		.full}'s season and historical schedule, basic/advanced statistics, fantasy projections/historical data, and more."
 />
 
 <div class="h-full appContent w-full px-1 pb-4">
-	<div class="mt-4 mx-auto glassmorphicBg md:container">
-		<div class="flex flex-wrap justify-center text-center opacity-100 items-center">
+	<div class="mt-4 sm:container mx-auto">
+		<div class="text-black glassmorphicBg flex flex-wrap justify-center items-center">
 			<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">
 				<Headshot
 					avif={player.meta.images.headshot.avif}
@@ -43,7 +44,7 @@
 					webp={player.meta.images.headshot.webp}
 				/>
 			</div>
-			<h1>{player.name.full}</h1>
+			<h1 class="text-dark-800 dark:text-light-200">{player.name.full}</h1>
 		</div>
 	</div>
 </div>

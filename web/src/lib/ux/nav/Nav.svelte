@@ -42,11 +42,11 @@
 	>
 		<a
 			sveltekit:prefetch
-			href="/teams"
+			href="/games"
 			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
-			aria-current={segment === 'teams' ? 'page' : undefined}
+			aria-current={segment === 'games' ? 'page' : undefined}
 		>
-			teams
+			games
 		</a>
 		<a
 			sveltekit:prefetch
@@ -55,6 +55,14 @@
 			aria-current={segment === 'players' ? 'page' : undefined}
 		>
 			players
+		</a>
+		<a
+			sveltekit:prefetch
+			href="/teams"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			aria-current={segment === 'teams' ? 'page' : undefined}
+		>
+			teams
 		</a>
 		{#if $session.user}
 			<a
