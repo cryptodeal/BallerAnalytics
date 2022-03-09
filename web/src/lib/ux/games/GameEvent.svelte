@@ -5,7 +5,7 @@
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
-	import type { DailyGame } from '$lib/data/stores/types';
+	// import type { DailyGame } from '$lib/data/stores/types';
 	import type { PopulatedDocument, Game2Document } from '@balleranalytics/nba-api-ts';
 	import type { MetaGlobImport } from '$lib/types';
 
@@ -34,14 +34,45 @@
 			</h6>
 		</div>
 		<div
-			class="flex flex-col items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
+			class="flex inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
 		>
-			<h5 class="text-dark-800 dark:text-light-200">@</h5>
-			<h6 class="text-dark-800 dark:text-light-200">
-				{estDate.minute() !== 0
-					? estDate.tz(localTz).format('h:mm A z')
-					: estDate.tz(localTz).format('h A z')}
-			</h6>
+			<div class="w-1/4 text-dark-800 dark:text-light-200">
+				{#if !estDate.isBefore(dayjs().tz()) && game.visitor.score}
+					{game.visitor.score}
+				{:else if game.home.score}
+					0
+				{/if}
+			</div>
+
+			<div class="flex flex-col w-1/2">
+				<div class="text-dark-800 dark:text-light-200">@</div>
+				{#if !game.meta.helpers.isOver && dayjs().tz().isBefore(estDate)}
+					<div class="text-dark-800 text-lg dark:text-light-200">
+						{estDate.minute() !== 0
+							? estDate.tz(localTz).format('h:mm A z')
+							: estDate.tz(localTz).format('h A z')}
+					</div>
+				{:else if !game.meta.helpers.isOver && (estDate.isBefore(dayjs().tz()) || (game.home.score && game.home.score !== null && game.visitor.score && game.visitor.score !== null))}
+					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
+					{#if game.meta.status.period && game.meta.status.displayClock}
+						<div class="font-semibold px-2">
+							Q{game.meta.status.period}
+							{game.meta.status.displayClock}
+						</div>
+					{/if}
+				{:else}
+					<div class="leading-10 font-semibold px-2 text-dark-800 text-xl dark:text-light-200">
+						Final
+					</div>
+				{/if}
+			</div>
+			<div class="w-1/4 text-dark-800 dark:text-light-200">
+				{#if !estDate.isBefore(dayjs().tz()) && game.home.score}
+					{game.home.score}
+				{:else if game.visitor.score}
+					0
+				{/if}
+			</div>
 		</div>
 		<div class="flex flex-wrap justify-center p-1 h-full w-1/4">
 			<div

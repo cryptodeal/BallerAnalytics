@@ -92,7 +92,6 @@ importers:
   web:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:*
-      '@date-io/dayjs': ^2.13.1
       '@iconify/json': ^2.1.13
       '@sveltejs/adapter-vercel': next
       '@sveltejs/kit': next
@@ -150,7 +149,6 @@ importers:
       yup: ^0.32.11
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
-      '@date-io/dayjs': 2.13.1_dayjs@1.10.8
       '@iconify/json': 2.1.13
       '@sveltejs/adapter-vercel': 1.0.0-next.46
       '@sveltejs/kit': 1.0.0-next.294_svelte@3.46.4
@@ -1076,22 +1074,6 @@ packages:
 
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
-    dev: true
-
-  /@date-io/core/2.13.1:
-    resolution: {integrity: sha512-pVI9nfkf2qClb2Cxdq0Q4zJhdawMG4ybWZUVGifT78FDwzRMX2SwXBb55s5NRJk0HcIicDuxktmCtemZqMH1Zg==}
-    dev: true
-
-  /@date-io/dayjs/2.13.1_dayjs@1.10.8:
-    resolution: {integrity: sha512-5bL4WWWmlI4uGZVScANhHJV7Mjp93ec2gNeUHDqqLaMZhp51S0NgD25oqj/k0LqBn1cdU2MvzNpk/ObMmVv5cQ==}
-    peerDependencies:
-      dayjs: ^1.8.17
-    peerDependenciesMeta:
-      dayjs:
-        optional: true
-    dependencies:
-      '@date-io/core': 2.13.1
-      dayjs: 1.10.8
     dev: true
 
   /@dsherret/to-absolute-glob/2.0.2:
@@ -3937,7 +3919,7 @@ packages:
       debug: 4.3.3_supports-color@9.2.1
       execa: 5.1.1
       lilconfig: 2.0.4
-      listr2: 4.0.4
+      listr2: 4.0.5
       micromatch: 4.0.4
       normalize-path: 3.0.0
       object-inspect: 1.12.0
@@ -3948,8 +3930,8 @@ packages:
       - enquirer
     dev: true
 
-  /listr2/4.0.4:
-    resolution: {integrity: sha512-vJOm5KD6uZXjSsrwajr+mNacIjf87gWvlBEltPWLbTkslUscWAzquyK4xfe9Zd4RDgO5nnwFyV06FC+uVR+5mg==}
+  /listr2/4.0.5:
+    resolution: {integrity: sha512-juGHV1doQdpNT3GSTs9IUN43QJb7KHdF9uqg7Vufs/tG9VTzpFphqF4pm/ICdAABGQxsyNn9CiYA3StkI6jpwA==}
     engines: {node: '>=12'}
     peerDependencies:
       enquirer: '>= 2.3.0 < 3'
@@ -6039,7 +6021,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 4.2.3
+      string-width: 1.0.2
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
