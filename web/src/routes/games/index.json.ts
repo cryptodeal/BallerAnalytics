@@ -8,12 +8,15 @@ dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('America/New_York');
 
 export const get: RequestHandler = async ({ url }) => {
-	const date = dayjs.utc();
-	if (url.searchParams.has('date'))
-		console.log('server url.searchParams', url.searchParams.get('date'));
+	let date = dayjs.utc();
 
 	if (url.searchParams.has('date')) {
-		const dateSplit = url.searchParams.get('date').split('-');
+		const [year, month, day] = url.searchParams.get('date').split('-').map(parseInt);
+		date = dayjs
+			.utc()
+			.set('year', year)
+			.set('month', month - 1)
+			.set('date', day);
 	}
 
 	const games = await getGamesByDate(date);
