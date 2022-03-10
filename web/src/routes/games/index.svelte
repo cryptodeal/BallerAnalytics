@@ -58,7 +58,7 @@
 		min: Date,
 		max: Date;
 
-	let date = dayjs().tz().toDate();
+	let date = dayjs().utc().toDate();
 
 	const closeOnSelection = true;
 
@@ -67,7 +67,7 @@
 	$: maxDate = new Date(max);
 
 	function loadGames() {
-		const strDate = dayjs(date).tz().format('YYYY-MM-DD');
+		const strDate = dayjs(date).utc().format('YYYY-MM-DD');
 		console.log('client', strDate);
 		const url = `/games.json?date=${strDate}`;
 		return fetch(url)
