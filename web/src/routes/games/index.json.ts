@@ -10,16 +10,9 @@ dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('America/New_York');
 
 export const get: RequestHandler = async ({ url }) => {
-	let date = dayjs().tz();
-	if (url.searchParams.has('date')) {
-		const [year, month, day] = url.searchParams.get('date').split('-').map(parseInt);
-		const tempDate = dayjs()
-			.set('year', year)
-			.set('month', month - 1)
-			.set('date', day)
-			.tz();
-		date = tempDate;
-	}
+	const date = url.searchParams.has('date')
+		? dayjs(url.searchParams.get('date'), 'YYYY-MM-DD').tz()
+		: dayjs().tz();
 
 	const games = await getGamesByDate(date);
 	const { min, max } = await getMinMaxDates();

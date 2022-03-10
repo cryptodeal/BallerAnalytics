@@ -20,7 +20,7 @@
 	let localTz;
 	$: if (browser) localTz = dayjs.tz.guess();
 	const estDate = dayjs(game.date).tz();
-	$: console.log(game.date);
+	// $: console.log(game.date);
 </script>
 
 <div class="mx-auto rounded-lg glassmorphicBg h-25 my-6 sm:w-100">
@@ -58,7 +58,7 @@
 					</div>
 				{:else if !game.meta.helpers.isOver && (estDate.isBefore(dayjs().tz()) || (game.home.score && game.home.score !== null && game.visitor.score && game.visitor.score !== null))}
 					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
-					{#if game.meta.status.period && game.meta.status.displayClock}
+					{#if game.meta.status?.period && game.meta.status?.displayClock}
 						<div class="font-semibold px-2">
 							{game.meta.status.period < 5
 								? `Q${game.meta.status.period}`
