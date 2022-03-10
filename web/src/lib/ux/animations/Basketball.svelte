@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Clock, WebGLRenderer } from 'three';
-	import { onMount } from 'svelte';
 	import {
 		AmbientLight,
 		Canvas,
@@ -12,6 +11,7 @@
 	} from 'svelte-cubed';
 	import basketball from '$models/basketball.glb?url';
 	import darkMode from '$lib/data/stores/theme';
+	import { browser } from '$app/env';
 
 	let GLTFLoader, KTX2Loader;
 
@@ -23,21 +23,25 @@
 		width = 1,
 		height = 1;
 
-	onMount(async () => {
+	if (browser) importLoaders();
+
+	$: if (GLTFLoader && KTX2Loader) loadGlb();
+
+	async function importLoaders() {
 		GLTFLoader = (await import('three/examples/jsm/loaders/GLTFLoader.js')).GLTFLoader;
 		KTX2Loader = (await import('three/examples/jsm/loaders/KTX2Loader.js')).KTX2Loader;
-	});
+	}
 
-	async function loadGlb() {
+	function loadGlb() {
 		const ktx2Loader = new KTX2Loader()
 			.setTranscoderPath('/scripts/')
 			.detectSupport(new WebGLRenderer());
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
-		const gltf = await loader.loadAsync(basketball);
-		object = gltf.scene;
+		loader.load(basketball, function (gltf) {
+			object = gltf.scene;
+		});
 	}
-	$: if (GLTFLoader && KTX2Loader) loadGlb();
 
 	onFrame(() => {
 		delta = clock.getDelta();
@@ -47,22 +51,29 @@
 </script>
 
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
-	<Canvas
-		physicallyCorrectLights={true}
-		antialias={true}
-		precision={'lowp'}
-		alpha={true}
-		background={null}
-		{height}
-		{width}
-		failIfMajorPerformanceCaveat={true}
-	>
-		<PerspectiveCamera position={[0, 0, 3]} />
+	{#if object}
+		<Canvas
+			physicallyCorrectLights={true}
+			antialias={true}
+			precision={'lowp'}
+			alpha={true}
+			background={null}
+			{height}
+			{width}
+			failIfMajorPerformanceCaveat={true}
+		>
+			<PerspectiveCamera position={[0, 0, 3]} />
 
-		<Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
-		<AmbientLight intensity={$darkMode ? 1.4 : 2} />
-		<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} enablePan={false} />
+			<Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
+			<AmbientLight intensity={$darkMode ? 1.4 : 2} />
+			<OrbitControls
+				enableZoom={false}
+				enableDamping={true}
+				dampingFactor={0.05}
+				enablePan={false}
+			/>
 
-		<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />
-	</Canvas>
+			<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />
+		</Canvas>
+	{/if}
 </div>
