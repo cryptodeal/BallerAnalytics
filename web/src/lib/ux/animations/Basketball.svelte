@@ -11,7 +11,7 @@
 	} from 'svelte-cubed';
 	import basketball from '$models/basketball.glb?url';
 	import darkMode from '$lib/data/stores/theme';
-	import { browser } from '$app/env';
+	import { onMount } from 'svelte';
 
 	let GLTFLoader, KTX2Loader;
 
@@ -23,7 +23,7 @@
 		width = 1,
 		height = 1;
 
-	if (browser) importLoaders();
+	onMount(importLoaders);
 
 	$: if (GLTFLoader && KTX2Loader) loadGlb();
 
@@ -51,19 +51,18 @@
 </script>
 
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
-	{#if object}
-		<Canvas
-			physicallyCorrectLights={true}
-			antialias={true}
-			precision={'lowp'}
-			alpha={true}
-			background={null}
-			{height}
-			{width}
-			failIfMajorPerformanceCaveat={true}
-		>
-			<PerspectiveCamera position={[0, 0, 3]} />
-
+	<Canvas
+		physicallyCorrectLights={true}
+		antialias={true}
+		precision={'lowp'}
+		alpha={true}
+		background={null}
+		{height}
+		{width}
+		failIfMajorPerformanceCaveat={true}
+	>
+		<PerspectiveCamera position={[0, 0, 3]} />
+		{#if object}
 			<Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
 			<AmbientLight intensity={$darkMode ? 1.4 : 2} />
 			<OrbitControls
@@ -72,8 +71,7 @@
 				dampingFactor={0.05}
 				enablePan={false}
 			/>
-
 			<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />
-		</Canvas>
-	{/if}
+		{/if}
+	</Canvas>
 </div>
