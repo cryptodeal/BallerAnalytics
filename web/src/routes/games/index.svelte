@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { Game2Object } from '@balleranalytics/nba-api-ts';
+	import type { Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
 	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
 	export const load: Load = async ({ fetch, url }) => {
 		let apiUrl = `/games.json`;
@@ -12,7 +12,15 @@
 		const res = await fetch(apiUrl);
 
 		if (res.ok) {
-			const { games, min, max }: { games: Game2Object[]; min: Date; max: Date } = await res.json();
+			const {
+				games,
+				min,
+				max
+			}: {
+				games: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>[];
+				min: Date;
+				max: Date;
+			} = await res.json();
 			return {
 				props: {
 					games,
@@ -37,14 +45,20 @@
 	import GameEvent from '$lib/ux/games/GameEvent.svelte';
 	import { DateInput } from 'date-picker-svelte';
 	import darkMode from '$lib/data/stores/theme';
+	import { MetaTags } from 'svelte-meta-tags';
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
 	dayjs.tz.setDefault('America/New_York');
 
-	export let games, min: Date, max: Date;
+	export let games: PopulatedDocument<
+			PopulatedDocument<Game2Document, 'home.team'>,
+			'visitor.team'
+		>[],
+		min: Date,
+		max: Date;
 
-	let date = dayjs().tz().toDate();
+	let date = dayjs(games[0].date).tz().toDate();
 
 	const closeOnSelection = true;
 
@@ -63,6 +77,11 @@
 			});
 	}
 </script>
+
+<MetaTags
+	title="NBA Games on {dayjs(date).tz().format('MMM	D, YYYY')}"
+	description="Index of NBA Games and boxscore data from {dayjs(date).tz().format('MMM	D, YYYY')}."
+/>
 
 <div class="appContent flex flex-col w-full">
 	<div

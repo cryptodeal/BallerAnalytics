@@ -8,6 +8,7 @@
 	// import type { DailyGame } from '$lib/data/stores/types';
 	import type { PopulatedDocument, Game2Document } from '@balleranalytics/nba-api-ts';
 	import type { MetaGlobImport } from '$lib/types';
+	import { browser } from '$app/env';
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
@@ -16,9 +17,9 @@
 
 	export let game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>;
 	export let logoModules: MetaGlobImport;
-
+	let localTz;
+	$: if (browser) localTz = dayjs.tz.guess();
 	const estDate = dayjs(game.date).tz();
-	const localTz = dayjs.tz.guess();
 </script>
 
 <div class="mx-auto rounded-lg glassmorphicBg h-25 my-6 sm:w-100">
@@ -58,7 +59,9 @@
 					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
 					{#if game.meta.status.period && game.meta.status.displayClock}
 						<div class="font-semibold px-2">
-							Q{game.meta.status.period}
+							{game.meta.status.period < 5
+								? `Q${game.meta.status.period}`
+								: `OT${game.meta.status.period - 4}`}
 							{game.meta.status.displayClock}
 						</div>
 					{/if}

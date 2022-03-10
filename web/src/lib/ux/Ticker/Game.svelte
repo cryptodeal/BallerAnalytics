@@ -9,6 +9,7 @@
 	const logoModules = import.meta.globEager('../teams/assets/logo-*.svelte');
 
 	import type { DailyGame } from '$lib/data/stores/types';
+	import { browser } from '$app/env';
 
 	export let game: DailyGame;
 	const isTicker = true;
@@ -19,7 +20,8 @@
 	dayjs.tz.setDefault('America/New_York');
 
 	const estDate = dayjs(game.date).tz();
-	const localTz = dayjs.tz.guess();
+	let localTz;
+	$: if (browser) localTz = dayjs.tz.guess();
 </script>
 
 <div
@@ -31,7 +33,7 @@
 		</div>
 		{#if game.periodValue && game.displayClock}
 			<div class="inline-block leading-10 font-semibold animate-pulse text-2xl px-2">
-				Q{game.periodValue}
+				{game.periodValue < 5 ? `Q${game.periodValue}` : `OT${game.periodValue - 4}`}
 				{game.displayClock}
 			</div>
 		{/if}
