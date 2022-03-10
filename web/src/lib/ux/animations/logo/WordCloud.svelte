@@ -23,5 +23,7 @@
 	span {
 		margin-top: 1rem;
 		margin-bottom: 1rem;
+		will-change: opacity;
+		will-change: transform;
 	}
 </style>

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import InputField from './InputField.svelte';
 	import { getNotificationsContext } from 'svelte-notifications';
-	import type { mongoose } from '@balleranalytics/nba-api-ts';
+	import type { ObjectId } from 'mongoose';
 	export let active_step: string;
-	export let userId: mongoose.Types.ObjectId;
+	export let userId: ObjectId;
 	export let myForm;
 	export let firstName;
 	export let lastName;

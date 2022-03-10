@@ -62,6 +62,7 @@
 		stroke: rgba(63, 132, 243, 1);
 		stroke-width: 1px;
 		transition: fill 2s;
+		will-change: opacity;
 	}
 
 	path.done {

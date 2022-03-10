@@ -52,10 +52,12 @@
 		stroke: rgba(59, 130, 246, 1);
 		stroke-width: 0.065rem;
 		transition: fill 2s, stroke 0.7s 2s;
+		will-change: opacity;
 	}
 
 	path.done {
 		fill: rgba(59, 130, 246, 1);
 		stroke: transparent;
+		will-change: opacity;
 	}
 </style>

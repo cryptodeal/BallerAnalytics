@@ -23,7 +23,6 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
-	//import { mongoose } from '@balleranalytics/nba-api-ts';
 	import IconCirclePlus from '~icons/fluent/add-circle-24-regular';
 	import IconEdit from '~icons/fluent/document-edit-24-regular';
 	import IconPerson from '~icons/fluent/person-24-regular';

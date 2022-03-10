@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import type { Types } from 'mongoose';
 import type { Writable } from 'svelte/store';
 import type { Team2Document, Game2Document, Player2Document } from '@balleranalytics/nba-api-ts';
 
@@ -53,7 +53,7 @@ export interface PlayerRosterItem {
 	number?: string;
 	position?: string;
 	twoWay: boolean;
-	_id: mongoose.Types.ObjectId;
+	_id: Types.ObjectId;
 }
 
 export type BooleanStore = {
@@ -73,15 +73,15 @@ export interface SeasonList {
 }
 
 export interface NewUserFormData {
-	userId: mongoose.Types.ObjectId;
+	userId: Types.ObjectId;
 	name: {
 		first: string;
 		last: string;
 	};
 	birthdate: Date;
 	subscriptions: {
-		teams: mongoose.Types.Array<ObjectId | Team2Document>;
-		players: mongoose.Types.Array<ObjectId | Player2Document>;
+		teams: Types.Array<Types.ObjectId | Team2Document>;
+		players: Types.Array<Types.ObjectId | Player2Document>;
 	};
 }
 

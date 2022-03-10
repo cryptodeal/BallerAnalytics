@@ -48,7 +48,7 @@ importers:
       eslint-plugin-prettier: ^4.0.0
       husky: ^7.0.4
       iso-3166-1-ts: ^0.2.2
-      mongoose: ^6.2.5
+      mongoose: 6.2.4
       mongoose-slugger-plugin: ^3.0.3
       mongoose-tsgen: ^9.0.1
       nba: ^4.15.0
@@ -66,9 +66,9 @@ importers:
       dayjs: 1.10.8
       dotenv: 16.0.0
       iso-3166-1-ts: 0.2.2
-      mongoose: 6.2.5
-      mongoose-slugger-plugin: 3.0.3_mongoose@6.2.5
-      mongoose-tsgen: 9.0.1_mongoose@6.2.5+typescript@4.6.2
+      mongoose: 6.2.4
+      mongoose-slugger-plugin: 3.0.3_mongoose@6.2.4
+      mongoose-tsgen: 9.0.1_mongoose@6.2.4+typescript@4.6.2
       nba: 4.15.0
       sharp: 0.30.2
       sportsdataverse: 1.2.2
@@ -118,7 +118,7 @@ importers:
       eslint-plugin-svelte3: ^3.4.1
       jsonwebtoken: ^8.5.1
       mdsvex: ^0.10.5
-      mongoose: ^6.2.5
+      mongoose: 6.2.4
       nba-color: ^1.4.1
       nodemailer: ^6.7.2
       prettier: ^2.5.1
@@ -175,7 +175,7 @@ importers:
       eslint-plugin-svelte3: 3.4.1_eslint@8.10.0+svelte@3.46.4
       jsonwebtoken: 8.5.1
       mdsvex: 0.10.5_svelte@3.46.4
-      mongoose: 6.2.5
+      mongoose: 6.2.4
       nba-color: 1.4.1
       nodemailer: 6.7.2
       prettier: 2.5.1
@@ -4395,17 +4395,17 @@ packages:
     optionalDependencies:
       saslprep: 1.0.3
 
-  /mongoose-slugger-plugin/3.0.3_mongoose@6.2.5:
+  /mongoose-slugger-plugin/3.0.3_mongoose@6.2.4:
     resolution: {integrity: sha512-UBsjbWOpWLxs0KEZUBJRUKyW1X+Qos0ErSqh41GktKcihOwCw+kL0RM0COSBVnBdt+W0j9tQVS977AGp9RxkbQ==}
     engines: {node: '>=12'}
     peerDependencies:
       mongoose: ^5.0.0
     dependencies:
       limax: 3.0.0
-      mongoose: 6.2.5
+      mongoose: 6.2.4
     dev: false
 
-  /mongoose-tsgen/9.0.1_mongoose@6.2.5+typescript@4.6.2:
+  /mongoose-tsgen/9.0.1_mongoose@6.2.4+typescript@4.6.2:
     resolution: {integrity: sha512-sP5BUqSnSV/2hkSLtLoChgkMw54wYsuV40FRmG50mHH+KA7WAmceMeo22dSBjZESoLGLNxEckZbJFNjJlSnecg==}
     engines: {node: '>=9.0.0'}
     hasBin: true
@@ -4421,7 +4421,7 @@ packages:
       glob: 7.2.0
       lodash: 4.17.21
       mkdirp: 1.0.4
-      mongoose: 6.2.5
+      mongoose: 6.2.4
       prettier: 2.5.1
       strip-json-comments: 3.1.1
       ts-morph: 9.1.0
@@ -4433,8 +4433,8 @@ packages:
       - supports-color
     dev: false
 
-  /mongoose/6.2.5:
-    resolution: {integrity: sha512-85EVVxv9ml84dLYR9QfULehLMepmaINMcBMVzBszbT5jbKGHkpbgl4lI46uTWqr6CFqirM3/6YLWEyTYm1xQZQ==}
+  /mongoose/6.2.4:
+    resolution: {integrity: sha512-3hA3IGxBzZdlp1+/I9qn53NjEAd01qvKAH2WUCPahjVO8+uAmR0B4m+1bC3x9a4r0ExY8QYQ2ryG3E/v5Tj+jA==}
     engines: {node: '>=12.0.0'}
     dependencies:
       bson: 4.6.1
@@ -6021,7 +6021,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
