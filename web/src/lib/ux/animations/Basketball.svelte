@@ -29,14 +29,15 @@
 		loadGlb(GLTFLoader, KTX2Loader);
 	}
 
-	async function loadGlb(GLTFLoader, KTX2Loader) {
+	function loadGlb(GLTFLoader, KTX2Loader) {
 		const ktx2Loader = new KTX2Loader()
 			.setTranscoderPath('/scripts/')
 			.detectSupport(new WebGLRenderer());
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
-		const gltf = await loader.loadAsync(basketball);
-		object = gltf.scene;
+		loader.load(basketball, function (gltf) {
+			object = gltf.scene;
+		});
 	}
 
 	onFrame(() => {
