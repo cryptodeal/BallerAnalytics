@@ -8,16 +8,15 @@ dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('America/New_York');
 
 export const get: RequestHandler = async ({ url }) => {
-	let date;
+	let date = dayjs().utc();
 	if (url.searchParams.has('date')) {
 		const [year, month, day] = url.searchParams.get('date').split('-').map(parseInt);
-		const tempDate = dayjs
-			.utc()
+		const tempDate = date
 			.set('year', year)
 			.set('month', month - 1)
 			.set('date', day);
 		date = tempDate;
-	} else date = dayjs.utc();
+	}
 
 	const games = await getGamesByDate(date);
 	const { min, max } = await getMinMaxDates();
