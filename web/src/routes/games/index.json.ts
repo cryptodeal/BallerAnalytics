@@ -5,14 +5,16 @@ import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import type { RequestHandler } from '@sveltejs/kit';
 dayjs.extend(utc);
 dayjs.extend(customParseFormat);
+dayjs.tz.setDefault('America/New_York');
 
 export const get: RequestHandler = async ({ url }) => {
+	const date = dayjs.utc();
 	if (url.searchParams.has('date'))
 		console.log('server url.searchParams', url.searchParams.get('date'));
 
-	const date = url.searchParams.has('date')
-		? dayjs(url.searchParams.get('date'), 'YYYY-MM-DD').utc()
-		: dayjs().utc();
+	if (url.searchParams.has('date')) {
+		const dateSplit = url.searchParams.get('date').split('-');
+	}
 
 	const games = await getGamesByDate(date);
 	const { min, max } = await getMinMaxDates();

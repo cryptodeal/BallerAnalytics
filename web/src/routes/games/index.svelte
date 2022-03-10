@@ -58,7 +58,7 @@
 		min: Date,
 		max: Date;
 
-	let date = dayjs().utc().toDate();
+	let date = dayjs.utc().toDate();
 
 	const closeOnSelection = true;
 
@@ -67,7 +67,7 @@
 	$: maxDate = new Date(max);
 
 	function loadGames() {
-		const strDate = dayjs(date).utc().format('YYYY-MM-DD');
+		const strDate = dayjs.utc(date).tz().format('YYYY-MM-DD');
 		console.log('client', strDate);
 		const url = `/games.json?date=${strDate}`;
 		return fetch(url)
@@ -80,8 +80,11 @@
 </script>
 
 <MetaTags
-	title="NBA Games on {dayjs(date).tz().format('MMM	D, YYYY')}"
-	description="Index of NBA Games and boxscore data from {dayjs(date).tz().format('MMM	D, YYYY')}."
+	title="NBA Games on {dayjs.utc(date).tz().format('MMM	D, YYYY')}"
+	description="Index of NBA Games and boxscore data from {dayjs
+		.utc(date)
+		.tz()
+		.format('MMM	D, YYYY')}."
 />
 
 <div class="appContent flex flex-col w-full">
@@ -91,7 +94,7 @@
 		style:--date-picker-foreground={$darkMode ? '#f7f7f7' : '#000000'}
 	>
 		<h1 class="text-dark-800 dark:text-light-200 text-center">
-			Games: {dayjs(date).tz().format('MMM	D, YYYY')}
+			Games: {dayjs.utc(date).tz().format('MMM	D, YYYY')}
 		</h1>
 
 		<DateInput
