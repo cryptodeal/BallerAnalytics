@@ -11,7 +11,7 @@
 	} from 'svelte-cubed';
 	import basketball from '$models/test.glb?url';
 	import darkMode from '$lib/data/stores/theme';
-	import { browser } from '$app/env';
+	import { onMount } from 'svelte';
 
 	let object,
 		clock = new Clock(),
@@ -21,7 +21,7 @@
 		width = 1,
 		height = 1;
 
-	$: if (browser) importLoaders();
+	onMount(importLoaders);
 
 	async function importLoaders() {
 		const GLTFLoader = (await import('three/examples/jsm/loaders/GLTFLoader.js')).GLTFLoader;
