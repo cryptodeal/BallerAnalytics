@@ -14,6 +14,8 @@ export const get: RequestHandler = async ({ url }) => {
 		? dayjs(url.searchParams.get('date'), 'YYYY-MM-DD').tz()
 		: dayjs().tz();
 
+	console.log('server:', date);
+
 	const games = await getGamesByDate(date);
 	const { min, max } = await getMinMaxDates();
 
