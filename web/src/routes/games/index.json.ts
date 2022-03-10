@@ -11,7 +11,7 @@ dayjs.tz.setDefault('America/New_York');
 
 export const get: RequestHandler = async ({ url }) => {
 	const date = url.searchParams.has('date')
-		? dayjs(url.searchParams.get('date')).tz()
+		? dayjs(url.searchParams.get('date'), 'YYYY-MM-DD').tz()
 		: dayjs().tz();
 
 	const games = await getGamesByDate(date);
