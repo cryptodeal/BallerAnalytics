@@ -20,6 +20,7 @@
 	let localTz;
 	$: if (browser) localTz = dayjs.tz.guess();
 	const estDate = dayjs(game.date).tz();
+	$: console.log(game.date);
 </script>
 
 <div class="mx-auto rounded-lg glassmorphicBg h-25 my-6 sm:w-100">

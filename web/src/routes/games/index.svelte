@@ -67,7 +67,8 @@
 	$: maxDate = new Date(max);
 
 	function loadGames() {
-		const strDate = dayjs(date).format('YYYY-MM-DD');
+		const strDate = dayjs(date).tz().format('YYYY-MM-DD');
+		console.log('client', strDate);
 		const url = `/games.json?date=${strDate}`;
 		return fetch(url)
 			.then((res) => res.json())
