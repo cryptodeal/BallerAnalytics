@@ -1,7 +1,7 @@
 import { Game2, serverlessConnect } from '../../../index';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 import { getSeasonGames } from '../../../api/bballRef/seasons';
 // import { importBoxScore } from '../../../db/controllers/Game2';
 import config from '../../../config';
@@ -50,9 +50,11 @@ const fixGameOver = () => {
 				const gameIdx = gameData.findIndex(
 					(g) => g.boxScoreUrl === game.meta.helpers.bballRef.boxScoreUrl
 				);
-				console.log('db date:', game.date);
-				console.log(gameData[gameIdx].date);
+
+				console.log('\ndb date:', game.date);
+				console.log('dayjs', gameData[gameIdx].date);
 				game.date = gameData[gameIdx].date.utc().toDate();
+
 				await game.save();
 			}
 		}

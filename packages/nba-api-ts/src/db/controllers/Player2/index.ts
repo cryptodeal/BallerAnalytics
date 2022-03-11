@@ -1,4 +1,4 @@
-import { Player2, serverlessConnect } from '../../../index';
+import { Player2 } from '../../../index';
 import type { Game2Document, Player2Document } from '../../../index';
 import { BoxScorePlayer } from '../../../api/bballRef/games/utils';
 import type { BballRefPlayerQueryResItem } from '../../../api/bballRef/types';
@@ -7,7 +7,6 @@ import mongoose from 'mongoose';
 import { IStatsPlayerInfo } from '../../../api/nba/nba';
 import type { IEspnTeamPlayersTeamAthlete } from '../../../api/espn/types';
 import dayjs from 'dayjs';
-import config from '../../../config';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isBballRefPlayerQueryItem = (arg: any): arg is BballRefPlayerQueryResItem => {
 	return (

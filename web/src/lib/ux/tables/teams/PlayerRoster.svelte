@@ -4,21 +4,60 @@
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
 	import type { PlayerRosterItem } from '$lib/types';
-	import type { IColHeader } from '../types';
-	export let roster: PlayerRosterItem[];
+	import type { IColHeader, ISortBy } from '../types';
+	export let roster: PlayerRosterItem[], season: number;
+
+	function resolve(path, obj = self, separator = '.') {
+		let properties = Array.isArray(path) ? path : path.split(separator);
+		return properties.reduce((prev, curr) => prev && prev[curr], obj);
+	}
+	let sortBy: ISortBy = { col: 'player.name.full', ascending: true };
+
+	$: if (season) sortBy = { col: 'player.name.full', ascending: true };
 
 	const colHeaders: IColHeader[] = [
-		{ title: 'Name', subtext: '* denotes player on 2-Way contract' },
-		{ title: 'Pos' },
-		{ title: 'Age' },
-		{ title: 'Ht' },
-		{ title: 'Wt' },
-		{ title: 'College' }
+		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'player.name.full' },
+		{ title: 'Pos', key: 'position' },
+		{ title: 'Age', key: 'player.birthDate' },
+		{ title: 'Ht', key: 'player.height' },
+		{ title: 'Wt', key: 'player.weight' },
+		{ title: 'College', key: 'player.college' }
 	];
+
+	$: sort = (column: string) => {
+		if (sortBy.col == column) {
+			sortBy.ascending = !sortBy.ascending;
+		} else {
+			sortBy.col = column;
+			sortBy.ascending = true;
+		}
+		// Modifier to sorting function for ascending or descending
+		let sortModifier = sortBy.ascending ? 1 : -1;
+		let sort = (a, b) => {
+			let itemA = resolve(column, a);
+			let itemB = resolve(column, b);
+			if (column.includes('height') && itemA) {
+				const { feet, inches } = itemA;
+				itemA = feet * 12 + inches;
+			}
+			if (column.includes('height') && itemB) {
+				const { feet, inches } = itemB;
+				itemB = feet * 12 + inches;
+			}
+			if (itemA && itemB) {
+				return itemA < itemB ? -1 * sortModifier : itemA > itemB ? 1 * sortModifier : 0;
+			} else if (!itemA && itemB) {
+				return 1 * sortModifier;
+			} else {
+				return -1 * sortModifier;
+			}
+		};
+		roster = roster.sort(sort);
+	};
 </script>
 
 <Table>
-	<THead slot="thead" {colHeaders} />
+	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
 		{#each roster as { player, number, position, twoWay }, i}
 			<tr>

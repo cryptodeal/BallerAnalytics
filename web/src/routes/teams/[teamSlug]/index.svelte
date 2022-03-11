@@ -200,7 +200,7 @@
 					<div class="glassmorphicCard px-4 py-2 my-5">
 						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
 					</div>
-					<PlayerRoster roster={teamData.seasons[seasonIdx].roster.players} />
+					<PlayerRoster roster={teamData.seasons[seasonIdx].roster.players} season={seasonYear} />
 				</TabPanel>
 
 				<!-- Stats Data Tab -->

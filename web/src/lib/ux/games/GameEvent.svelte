@@ -5,7 +5,7 @@
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
-	// import type { DailyGame } from '$lib/data/stores/types';
+	import { dailyGames } from '$lib/data/stores/games';
 	import type { PopulatedDocument, Game2Document } from '@balleranalytics/nba-api-ts';
 	import type { MetaGlobImport } from '$lib/types';
 	import { browser } from '$app/env';
@@ -20,7 +20,6 @@
 	let localTz;
 	$: if (browser) localTz = dayjs.tz.guess();
 	const estDate = dayjs(game.date).tz();
-	// $: if (game.home.team.infoCommon.slug === 'magic') console.log(game);
 </script>
 
 <div class="mx-auto rounded-lg glassmorphicBg h-25 my-6 sm:w-100">
@@ -39,7 +38,9 @@
 			class="flex inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
 		>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
-				{#if game.visitor.score && game.visitor.score !== null}
+				{#if $dailyGames[game._id.toString()].visitor.score}
+					{$dailyGames[game._id.toString()].visitor.score}
+				{:else if game.visitor.score && game.visitor.score !== null}
 					{game.visitor.score}
 				{:else if game.visitor.stats.totals?.points && game.visitor.stats.totals.points !== null}
 					{game.visitor.stats.totals.points}
@@ -60,7 +61,14 @@
 						.tz()
 						.isBefore(dayjs().tz())) || (!game.meta.helpers.isOver && game.home.stats.totals?.points && game.visitor.stats.totals?.points)}
 					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
-					{#if game.meta.status?.period && game.meta.status?.displayClock}
+					{#if $dailyGames[game._id.toString()].periodValue && $dailyGames[game._id.toString()].displayClock}
+						<div class="font-semibold px-2">
+							{game.meta.status.period < 5
+								? `Q${$dailyGames[game._id.toString()].periodValue}`
+								: `OT${$dailyGames[game._id.toString()].periodValue - 4}`}
+							{$dailyGames[game._id.toString()].displayClock}
+						</div>
+					{:else if game.meta.status?.period && game.meta.status?.displayClock}
 						<div class="font-semibold px-2">
 							{game.meta.status.period < 5
 								? `Q${game.meta.status.period}`
@@ -75,7 +83,9 @@
 				{/if}
 			</div>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
-				{#if game.home.score && game.home.score !== null}
+				{#if $dailyGames[game._id.toString()].home.score}
+					{$dailyGames[game._id.toString()].home.score}
+				{:else if game.visitor.score && game.visitor.score !== null}
 					{game.home.score}
 				{:else if game.home.stats.totals?.points && game.home.stats.totals.points !== null}
 					{game.home.stats.totals.points}

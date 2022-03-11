@@ -1,9 +1,11 @@
 import { loadSeasonsPage, loadSeasonSchedule, loadPlayoffSchedule } from '../fetchers';
-import dayjs, { Dayjs } from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
+import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('America/New_York');
 
 export type BballRefSeason = {
@@ -229,7 +231,7 @@ const parseSeasonMonths = ($: cheerio.Root) => {
 };
 
 export type SeasonGameItem = {
-	date: Dayjs;
+	date: dayjs.Dayjs;
 	time: boolean;
 	boxScoreUrl: string;
 	isBoxscore: boolean;
@@ -258,30 +260,30 @@ const parseSeasonGames = ($: cheerio.Root) => {
 					.find('tr')
 					.each(function (j, row) {
 						if ($(row).attr('class') !== 'thead') {
-							let date = dayjs($(row).find('[data-stat=date_game]').text().trim());
+							const dateStr = $(row)
+								.find('[data-stat=date_game]')
+								.text()
+								.trim()
+								.split(',')
+								.slice(1)
+								.join('');
+							let date;
 							let isTime = false;
 							let isBoxscore = false;
 							const abbreviations = {
 								home: '',
 								visitor: ''
 							};
+
 							/** if start time listed, manipulate date and set game.time = true */
-							$(row)
-								.find('[data-stat=game_start_time]')
-								.each(function (i, t) {
-									const time = $(t).text().trim();
-									if (time !== '') {
-										isTime = true;
-										const halfOfDay = time.slice(-1);
-										let hours = parseInt(time.split(':')[0]) - 1;
-										const minutes = parseInt(time.split(':')[1].slice(0, -1));
-										if (halfOfDay === 'p' && hours !== 12) {
-											hours += 12;
-										}
-										const dateTime = date.set('hour', hours).set('minute', minutes);
-										date = dayjs(dateTime).tz();
-									}
-								});
+							const time = $(row).find('[data-stat=game_start_time]').text().trim();
+							if (time && time !== '') {
+								isTime = true;
+								date = dayjs.tz(dateStr + `${time}m`, 'MMM D YYYY h:ma', 'America/New_York');
+							} else {
+								date = dayjs.tz(dateStr, 'MMM D YYYY', 'America/New_York');
+							}
+
 							/** set visitor team abbreviation */
 							const visitorHref = $(row)
 								.find('[data-stat=visitor_team_name]')
@@ -317,8 +319,8 @@ const parseSeasonGames = ($: cheerio.Root) => {
 								boxScoreUrl = $(row).find('[data-stat=date_game]').first().attr('csk')?.trim();
 								if (!boxScoreUrl) {
 									boxScoreUrl = isTime
-										? dayjs(date).format('YYYYMMDD') + '0' + abbreviations.home
-										: dayjs(date).format('YYYYMMDD') + '0' + abbreviations.home;
+										? date.format('YYYYMMDD') + '0' + abbreviations.home
+										: date.format('YYYYMMDD') + '0' + abbreviations.home;
 								}
 							}
 							if (!boxScoreUrl)

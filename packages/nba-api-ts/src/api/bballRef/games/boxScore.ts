@@ -4,8 +4,8 @@ import cheerio from 'cheerio';
 import { Game2Document, IsPopulated } from '../../../db/interfaces/mongoose.gen';
 import { BoxScore, setPlayerId, setOfficialId } from './utils';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 

@@ -92,7 +92,7 @@ importers:
   web:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:*
-      '@iconify/json': ^2.1.13
+      '@iconify/json': ^2.1.14
       '@sveltejs/adapter-vercel': next
       '@sveltejs/kit': next
       '@types/color': ^3.0.3
@@ -149,7 +149,7 @@ importers:
       yup: ^0.32.11
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
-      '@iconify/json': 2.1.13
+      '@iconify/json': 2.1.14
       '@sveltejs/adapter-vercel': 1.0.0-next.46
       '@sveltejs/kit': 1.0.0-next.295_svelte@3.46.4
       '@types/color': 3.0.3
@@ -1116,8 +1116,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.13:
-    resolution: {integrity: sha512-+riwfBZXVqln166mqylGlOrtsLW/28K4o4E8eKUX85wU67/6/QI8nhvymXcwFmyluROCcMYe2uKSriaQqcGpdQ==}
+  /@iconify/json/2.1.14:
+    resolution: {integrity: sha512-3I+eMDfrofM64GfUMtH1P864u3H/iAMixmgmVJyWk45gIXJgRGVUqSAd+N2eM2/LNAE4SaGoPuipPAewVpUAEw==}
     dependencies:
       '@iconify/types': 1.0.12
       pathe: 0.0.2
