@@ -11,8 +11,8 @@ dayjs.tz.setDefault('America/New_York');
 
 export const get: RequestHandler = async ({ url }) => {
 	const queryDate = url.searchParams.has('date')
-		? dayjs.utc(url.searchParams.get('date'), 'YYYY-MM-DD')
-		: dayjs.utc();
+		? dayjs.tz(url.searchParams.get('date'), 'YYYY-MM-DD', 'America/New_York')
+		: dayjs().tz();
 
 	const games = await getGamesByDate(queryDate);
 	const { min, max } = await getMinMaxDates();
