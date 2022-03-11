@@ -48,7 +48,10 @@ export const getGamesByDate = async (date: Dayjs): Promise<Game2Object[]> => {
 	})
 		.select('date home visitor meta')
 		.populateTeams()
-		.exec();
+		.exec()
+		.then((games) => {
+			return games.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+		});
 };
 
 export const getMinMaxYears = async (): Promise<{
