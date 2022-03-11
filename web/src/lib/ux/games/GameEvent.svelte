@@ -43,7 +43,7 @@
 					{game.visitor.score}
 				{:else if game.visitor.stats.totals?.points && game.visitor.stats.totals.points !== null}
 					{game.visitor.stats.totals.points}
-				{:else if (game.home.score && game.home.score !== null) || (game.home.stats.totals?.points && game.home.stats.totals.points !== null)}
+				{:else if game.home.score || (game.home.stats.totals?.points && game.home.stats.totals.points !== null)}
 					0
 				{/if}
 			</div>
@@ -56,7 +56,7 @@
 							? estDate.tz(localTz).format('h:mm A z')
 							: estDate.tz(localTz).format('h A z')}
 					</div>
-				{:else if !game.meta.helpers.isOver && (estDate.isBefore(dayjs().tz()) || (game.home.score && game.home.score !== null && game.visitor.score && game.visitor.score !== null))}
+				{:else if !game.meta.helpers.isOver && (estDate.isBefore(dayjs().tz()) || (game.home.score && game.visitor.score))}
 					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
 					{#if game.meta.status?.period && game.meta.status?.displayClock}
 						<div class="font-semibold px-2">
