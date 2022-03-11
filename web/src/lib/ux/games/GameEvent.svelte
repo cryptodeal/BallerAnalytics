@@ -20,7 +20,7 @@
 	let localTz;
 	$: if (browser) localTz = dayjs.tz.guess();
 	const estDate = dayjs(game.date).tz();
-	// $: console.log(game.date);
+	// $: if (game.home.team.infoCommon.slug === 'magic') console.log(game);
 </script>
 
 <div class="mx-auto rounded-lg glassmorphicBg h-25 my-6 sm:w-100">
@@ -50,13 +50,15 @@
 
 			<div class="flex flex-col w-1/2">
 				<div class="text-dark-800 dark:text-light-200">@</div>
-				{#if !game.meta.helpers.isOver && dayjs().tz().isBefore(estDate)}
+				{#if !game.meta.helpers.isOver && dayjs().tz().isBefore(dayjs(game.date).tz())}
 					<div class="text-dark-800 text-lg dark:text-light-200">
 						{estDate.minute() !== 0
 							? estDate.tz(localTz).format('h:mm A z')
 							: estDate.tz(localTz).format('h A z')}
 					</div>
-				{:else if !game.meta.helpers.isOver && (estDate.isBefore(dayjs().tz()) || (game.home.score && game.visitor.score))}
+				{:else if (!game.meta.helpers.isOver && dayjs(game.date)
+						.tz()
+						.isBefore(dayjs().tz())) || (!game.meta.helpers.isOver && game.home.stats.totals?.points && game.visitor.stats.totals?.points)}
 					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
 					{#if game.meta.status?.period && game.meta.status?.displayClock}
 						<div class="font-semibold px-2">

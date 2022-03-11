@@ -13,14 +13,6 @@ export const get: RequestHandler = async ({ url }) => {
 	const queryDate = url.searchParams.has('date')
 		? dayjs.utc(url.searchParams.get('date'), 'YYYY-MM-DD')
 		: dayjs.utc();
-	/*if (url.searchParams.has('date')) {
-		const [year, month, date] = url.searchParams.get('date').split('-').map(parseInt);
-		queryDate.set('year', year);
-		queryDate.set('month', month - 1);
-		queryDate.set('date', date);
-	}*/
-
-	// console.log('server:', queryDate)
 
 	const games = await getGamesByDate(queryDate);
 	const { min, max } = await getMinMaxDates();

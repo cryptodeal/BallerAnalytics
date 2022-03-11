@@ -27,7 +27,7 @@
 <div
 	class="inline-block h-10 mr-50 text-white px-2 bg-gray-900 backdrop-filter backdrop-blur-2xl bg-opacity-85"
 >
-	{#if !game.isOver && (estDate.isBefore(dayjs()) || (game.home.score && game.home.score !== null && game.visitor.score && game.visitor.score !== null))}
+	{#if (!game.isOver && estDate.isBefore(dayjs().tz())) || (!game.isOver && game.home.score && game.visitor.score)}
 		<div class="inline-block leading-10 text-red-600 font-semibold animate-pulse text-2xl px-2">
 			Live
 		</div>
