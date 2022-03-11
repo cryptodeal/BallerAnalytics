@@ -38,7 +38,7 @@
 			class="flex inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
 		>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
-				{#if $dailyGames[game._id.toString()].visitor.score}
+				{#if $dailyGames[game._id.toString()] && $dailyGames[game._id.toString()].visitor.score}
 					{$dailyGames[game._id.toString()].visitor.score}
 				{:else if game.visitor.score && game.visitor.score !== null}
 					{game.visitor.score}
@@ -83,7 +83,7 @@
 				{/if}
 			</div>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
-				{#if $dailyGames[game._id.toString()].home.score}
+				{#if $dailyGames[game._id.toString()] && $dailyGames[game._id.toString()].home.score}
 					{$dailyGames[game._id.toString()].home.score}
 				{:else if game.visitor.score && game.visitor.score !== null}
 					{game.home.score}
