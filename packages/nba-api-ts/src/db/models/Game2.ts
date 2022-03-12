@@ -428,7 +428,7 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 
 Game2Schema.query = {
 	populatePlayers() {
-		return this.populate('home.players.player visitor.players.player', 'name.full');
+		return this.populate('home.players.player visitor.players.player', 'name.full meta.images');
 	},
 
 	populateTeams() {

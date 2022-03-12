@@ -1,4 +1,5 @@
 import { Game2 } from '@balleranalytics/nba-api-ts';
+import { getBBallRefAbbrev } from '$lib/functions/helpers';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
@@ -85,7 +86,6 @@ export const loadBoxScore = (
 		'visitor.players.player'
 	>
 > => {
-	const homeAbbrev = matchup.split('@')[1];
-	const boxScoreUrl = date + '0' + homeAbbrev;
+	const boxScoreUrl = date + '0' + getBBallRefAbbrev(matchup.split('@')[1]);
 	return Game2.findByUrl(boxScoreUrl).populateTeams().populatePlayers().lean().exec();
 };

@@ -154,3 +154,173 @@ export const getImgSize = (srcStr: string): number => {
 	const hrefSplit = srcStr.split('/')[srcStr.split('/').length - 1].split('.')[0].split('-');
 	return parseInt(hrefSplit[hrefSplit.length - 1]);
 };
+
+export function resolve(path, obj: typeof self | object = self, separator = '.') {
+	const properties = Array.isArray(path) ? path : path.split(separator);
+	return properties.reduce((prev, curr) => prev && prev[curr], obj);
+}
+
+export const getBBallRefAbbrev = (nbaAbbrev: string): string => {
+	const teamData = [
+		{
+			teamId: 1610612737,
+			nbaAbbrev: 'ATL',
+			bballRefAbbrev: 'ATL'
+		},
+		{
+			teamId: 1610612738,
+			nbaAbbrev: 'BOS',
+			bballRefAbbrev: 'BOS'
+		},
+		{
+			teamId: 1610612751,
+			nbaAbbrev: 'BKN',
+			bballRefAbbrev: 'BRK'
+		},
+		{
+			teamId: 1610612766,
+			nbaAbbrev: 'CHA',
+			bballRefAbbrev: 'CHO'
+		},
+		{
+			teamId: 1610612741,
+			nbaAbbrev: 'CHI',
+			bballRefAbbrev: 'CHI'
+		},
+		{
+			teamId: 1610612739,
+			nbaAbbrev: 'CLE',
+			bballRefAbbrev: 'CLE'
+		},
+		{
+			teamId: 1610612742,
+			nbaAbbrev: 'DAL',
+			bballRefAbbrev: 'DAL'
+		},
+		{
+			teamId: 1610612743,
+			nbaAbbrev: 'DEN',
+			bballRefAbbrev: 'DEN'
+		},
+		{
+			teamId: 1610612765,
+			nbaAbbrev: 'DET',
+			bballRefAbbrev: 'DET'
+		},
+		{
+			teamId: 1610612744,
+			nbaAbbrev: 'GSW',
+			bballRefAbbrev: 'GSW'
+		},
+		{
+			teamId: 1610612745,
+			nbaAbbrev: 'HOU',
+			bballRefAbbrev: 'HOU'
+		},
+		{
+			teamId: 1610612754,
+			nbaAbbrev: 'IND',
+			bballRefAbbrev: 'IND'
+		},
+		{
+			teamId: 1610612746,
+			nbaAbbrev: 'LAC',
+			bballRefAbbrev: 'LAC'
+		},
+		{
+			teamId: 1610612747,
+			nbaAbbrev: 'LAL',
+			bballRefAbbrev: 'LAL'
+		},
+		{
+			teamId: 1610612763,
+			nbaAbbrev: 'MEM',
+			bballRefAbbrev: 'MEM'
+		},
+		{
+			teamId: 1610612748,
+			nbaAbbrev: 'MIA',
+			bballRefAbbrev: 'MIA'
+		},
+		{
+			teamId: 1610612749,
+			nbaAbbrev: 'MIL',
+			bballRefAbbrev: 'MIL'
+		},
+		{
+			teamId: 1610612750,
+			nbaAbbrev: 'MIN',
+			bballRefAbbrev: 'MIN'
+		},
+		{
+			teamId: 1610612740,
+			nbaAbbrev: 'NOP',
+			bballRefAbbrev: 'NOP'
+		},
+		{
+			teamId: 1610612752,
+			nbaAbbrev: 'NYK',
+			bballRefAbbrev: 'NYK'
+		},
+		{
+			teamId: 1610612760,
+			nbaAbbrev: 'OKC',
+			bballRefAbbrev: 'OKC'
+		},
+		{
+			teamId: 1610612753,
+			nbaAbbrev: 'ORL',
+			bballRefAbbrev: 'ORL'
+		},
+		{
+			teamId: 1610612755,
+			nbaAbbrev: 'PHI',
+			bballRefAbbrev: 'PHI'
+		},
+		{
+			teamId: 1610612756,
+			nbaAbbrev: 'PHX',
+			bballRefAbbrev: 'PHO'
+		},
+		{
+			teamId: 1610612757,
+			nbaAbbrev: 'POR',
+			bballRefAbbrev: 'POR'
+		},
+		{
+			teamId: 1610612758,
+			nbaAbbrev: 'SAC',
+			bballRefAbbrev: 'SAC'
+		},
+		{
+			teamId: 1610612759,
+			nbaAbbrev: 'SAS',
+			bballRefAbbrev: 'SAS'
+		},
+		{
+			teamId: 1610612761,
+			nbaAbbrev: 'TOR',
+			bballRefAbbrev: 'TOR'
+		},
+		{
+			teamId: 1610612762,
+			nbaAbbrev: 'UTA',
+			bballRefAbbrev: 'UTA'
+		},
+		{
+			teamId: 1610612764,
+			nbaAbbrev: 'WAS',
+			bballRefAbbrev: 'WAS'
+		}
+	];
+
+	return teamData.find((team) => team.nbaAbbrev === nbaAbbrev).bballRefAbbrev;
+};
+
+export const formatPct = (value, locale = 'en-GB') => {
+	return Intl.NumberFormat(locale, {
+		style: 'percent',
+		minimumFractionDigits: 1,
+		maximumFractionDigits: 2
+	}).format(value);
+};

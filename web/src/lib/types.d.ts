@@ -1,6 +1,11 @@
 import type { Types } from 'mongoose';
 import type { Writable } from 'svelte/store';
-import type { Team2Document, Game2Document, Player2Document } from '@balleranalytics/nba-api-ts';
+import type {
+	Team2Document,
+	Game2Document,
+	Player2Document,
+	PopulatedDocument
+} from '@balleranalytics/nba-api-ts';
 
 export interface ValidatedFormData {
 	valid: boolean;
@@ -92,3 +97,20 @@ export type MetaGlobImport = Record<
 		[key: string]: any;
 	}
 >;
+
+export type BoxScoreLoadParams = {
+	date: string;
+	matchup: string;
+};
+
+export type BoxScoreData = PopulatedDocument<
+	PopulatedDocument<
+		PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+		'home.players.player'
+	>,
+	'visitor.players.player'
+>;
+
+export type BoxScoreBody = {
+	boxscore: BoxScoreData;
+};

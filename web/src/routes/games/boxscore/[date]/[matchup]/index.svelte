@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
-	import type { BoxScoreLoadParams, BoxScoreBody } from './types';
+	import type { BoxScoreLoadParams, BoxScoreBody } from '$lib/types';
 	export const logoModules = import.meta.globEager(
 		'../../../../../lib/ux/teams/assets/logo-*.svelte'
 	);
@@ -31,11 +31,15 @@
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import { browser } from '$app/env';
 	import { dailyGames } from '$lib/data/stores/games';
+	import BoxScoreTable from '$lib/ux/tables/games/Boxscore.svelte';
+	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';
+	import TabList from '$lib/ux/tabs/TabList.svelte';
+	import Tabs from '$lib/ux/tabs/Tabs.svelte';
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
-	import type { BoxScoreData } from './types';
+	import type { BoxScoreData } from '$lib/types';
 
 	export let boxscore: BoxScoreData;
 
@@ -49,8 +53,8 @@
 	const estDate = dayjs(boxscore.date).tz();
 </script>
 
-<div class="appContent w-full">
-	<div class="mx-auto rounded-lg glassmorphicBg md:container">
+<div class="appContent w-screen flex flex-col gap-6">
+	<div class="mx-2 rounded-lg glassmorphicBg lg:(container mx-auto)">
 		<div class="h-25 w-full flex inline-flex items-center ">
 			<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
 				<div
@@ -133,5 +137,40 @@
 				</h6>
 			</div>
 		</div>
+	</div>
+	<div class="w-full mx-2 lg:(container mx-auto)">
+		<Tabs>
+			<div class="w-full glassmorphicCard mx-1 px-2 py-1 md:w-auto">
+				<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />
+			</div>
+
+			<!-- Basic Stats Data Tab -->
+			<TabPanel>
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Home Team Basic Stats:</h2>
+					<BoxScoreTable {boxscore} isHome={true} />
+				</div>
+
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Visitor Team Basic Stats:</h2>
+					<BoxScoreTable {boxscore} isHome={false} />
+				</div>
+			</TabPanel>
+
+			<!-- Advanced Stats Data Tab -->
+			<TabPanel>
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Home Team Advanced Stats:</h2>
+					<BoxScoreTable {boxscore} isHome={true} />
+				</div>
+
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+						Visitor Team Advanced Stats:
+						<BoxScoreTable {boxscore} isHome={false} />
+					</h2>
+				</div>
+			</TabPanel>
+		</Tabs>
 	</div>
 </div>

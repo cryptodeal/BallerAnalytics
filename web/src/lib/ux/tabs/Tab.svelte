@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { TABS } from './Tabs.svelte';
-	export let primaryColor: number[];
-	export let secondaryColor: number[];
+	export let primaryColor: number[] | string;
+	export let secondaryColor: number[] | string;
 	export let active = false;
 
 	const tab = {};
@@ -26,8 +26,12 @@
 	<li class="-mb-px mr-1">
 		<button
 			class="tabItem inline-block text-dark-600 dark:text-light-200 uppercase py-2 px-4 backdrop-filter backdrop-blur-lg font-semibold"
-			style:--borderColor="rgba({secondaryColor[0]}, {secondaryColor[1]}, {secondaryColor[2]}, 1)"
-			style:--bgColor="rgba({primaryColor[0]}, {primaryColor[1]}, {primaryColor[2]}, .3)"
+			style:--borderColor={Array.isArray(secondaryColor)
+				? `rgba(${secondaryColor[0]}, ${secondaryColor[1]}, ${secondaryColor[2]}, 1)`
+				: secondaryColor}
+			style:--bgColor={Array.isArray(primaryColor)
+				? `rgba(${primaryColor[0]}, ${primaryColor[1]}, ${primaryColor[2]}, 1)`
+				: primaryColor}
 			on:click={() => selectTab(tab)}
 		>
 			<slot />

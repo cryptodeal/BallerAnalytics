@@ -17,9 +17,9 @@
 
 	export let game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>;
 	export let logoModules: MetaGlobImport;
-	let localTz;
+	let localTz, estDate;
 	$: if (browser) localTz = dayjs.tz.guess();
-	const estDate = dayjs(game.date).tz();
+	$: if (game) estDate = dayjs(game.date).utc().tz();
 </script>
 
 <div class="mx-auto rounded-lg glassmorphicBg h-35 my-6 sm:w-120">

@@ -131,7 +131,7 @@ importers:
       svelte-forms-lib: ^2.0.1
       svelte-infinite-loading: ^1.3.8
       svelte-mail: ^0.1.1
-      svelte-meta-tags: ^2.3.4
+      svelte-meta-tags: ^2.4.0
       svelte-notifications: ^0.9.93
       svelte-preprocess: ^4.10.4
       svelte-tiny-virtual-list: ^1.1.7
@@ -188,7 +188,7 @@ importers:
       svelte-forms-lib: 2.0.1
       svelte-infinite-loading: 1.3.8
       svelte-mail: 0.1.1
-      svelte-meta-tags: 2.3.4_svelte@3.46.4+typescript@4.6.2
+      svelte-meta-tags: 2.4.0_svelte@3.46.4+typescript@4.6.2
       svelte-notifications: 0.9.93
       svelte-preprocess: 4.10.4_svelte@3.46.4+typescript@4.6.2
       svelte-tiny-virtual-list: 1.1.7
@@ -1473,8 +1473,8 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: false
 
-  /@popperjs/core/2.11.2:
-    resolution: {integrity: sha512-92FRmppjjqz29VMJ2dn+xdyXZBrMlE42AV6Kq6BwjWV7CNUW1hs2FtxSNLQE+gJhaZ6AAmYuO9y8dshhcBl7vA==}
+  /@popperjs/core/2.11.3:
+    resolution: {integrity: sha512-8U7hIl7+30XbIrJ0deQMXpXESM1L4yrt6BHok5hzcR0LivivuNkk+tHU1iRVScOwCmQcrOr6kvtIr29MNbQHqQ==}
     dev: true
 
   /@rollup/pluginutils/4.2.0:
@@ -1645,7 +1645,6 @@ packages:
 
   /@types/node/16.11.26:
     resolution: {integrity: sha512-GZ7bu5A6+4DtG7q9GsoHXy3ALcgeIHP4NnL0Vv2wu0uUB/yQex26v0tf6/na1mm0+bS9Uw+0DFex7aaKr2qawQ==}
-    dev: true
 
   /@types/node/17.0.21:
     resolution: {integrity: sha512-DBZCJbhII3r90XbQxI8Y9IjjiiOGlZ0Hr32omXIZvwwZ7p4DMMXGrKXVyPfuoBOri9XNtL0UK69jYIBIsRX3QQ==}
@@ -1704,7 +1703,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.21
+      '@types/node': 16.11.26
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.13:
@@ -3297,7 +3296,7 @@ packages:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
-      mime-types: 2.1.34
+      mime-types: 2.1.35
     dev: true
 
   /fs-constants/1.0.0:
@@ -4303,16 +4302,16 @@ packages:
       braces: 3.0.2
       picomatch: 2.3.1
 
-  /mime-db/1.51.0:
-    resolution: {integrity: sha512-5y8A56jg7XVQx2mbv1lu49NR4dokRnhZYTtL+KGfaa27uq4pSTXkwQkFJl4pkRMyNFz/EtYDSkiiEHx3F7UN6g==}
+  /mime-db/1.52.0:
+    resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
     dev: true
 
-  /mime-types/2.1.34:
-    resolution: {integrity: sha512-6cP692WwGIs9XXdOO4++N+7qjqv0rqxxVvJ3VHPh/Sc9mVZcQP+ZGhkKiTvWMQRr2tbHkJP/Yn7Y0npb3ZBs4A==}
+  /mime-types/2.1.35:
+    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
     engines: {node: '>= 0.6'}
     dependencies:
-      mime-db: 1.51.0
+      mime-db: 1.52.0
     dev: true
 
   /mimer/1.1.1:
@@ -4928,7 +4927,7 @@ packages:
       is-typedarray: 1.0.0
       isstream: 0.1.2
       json-stringify-safe: 5.0.1
-      mime-types: 2.1.34
+      mime-types: 2.1.35
       oauth-sign: 0.9.0
       performance-now: 2.1.0
       qs: 6.5.3
@@ -5453,8 +5452,8 @@ packages:
       juice: 5.2.0
     dev: true
 
-  /svelte-meta-tags/2.3.4_svelte@3.46.4+typescript@4.6.2:
-    resolution: {integrity: sha512-hfW6vQ3tNL2UPzu2w15mEfEpS56S7PFoSz2hlNSGrKfzBc3EwBOPyGkQP3rIUk0zZqskHu+FEcwvTS2zjER+RQ==}
+  /svelte-meta-tags/2.4.0_svelte@3.46.4+typescript@4.6.2:
+    resolution: {integrity: sha512-UIFsWwj57bzISfPldaGh2FOrb/vDWotL+B8aX9Lm/O98OtXgztxmoogdZZfuoVmB3K073YeAJ6aIF17RoFcnmQ==}
     peerDependencies:
       svelte: ^3.39.0
     dependencies:
@@ -5710,7 +5709,7 @@ packages:
     peerDependencies:
       svelte: 3.x
     dependencies:
-      '@popperjs/core': 2.11.2
+      '@popperjs/core': 2.11.3
       '@typewriter/document': 0.7.0
       svelte: 3.46.4
     dev: true

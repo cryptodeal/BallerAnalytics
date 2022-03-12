@@ -32,7 +32,7 @@
 		.full}'s season and historical schedule, basic/advanced statistics, fantasy projections/historical data, and more."
 />
 
-<div class="h-full appContent w-full px-1 pb-4">
+<div class="appContent min-h-screen flex flex-col w-full">
 	<div class="mt-4 sm:container mx-auto">
 		<div class="text-black glassmorphicBg flex flex-wrap justify-center items-center">
 			<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">

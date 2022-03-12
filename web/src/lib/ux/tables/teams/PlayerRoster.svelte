@@ -3,14 +3,11 @@
 	import { getAge } from '$lib/functions/helpers';
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
+	import { resolve } from '$lib/functions/helpers';
 	import type { PlayerRosterItem } from '$lib/types';
 	import type { IColHeader, ISortBy } from '../types';
 	export let roster: PlayerRosterItem[], season: number;
 
-	function resolve(path, obj = self, separator = '.') {
-		let properties = Array.isArray(path) ? path : path.split(separator);
-		return properties.reduce((prev, curr) => prev && prev[curr], obj);
-	}
 	let sortBy: ISortBy = { col: 'player.name.full', ascending: true };
 
 	$: if (season) sortBy = { col: 'player.name.full', ascending: true };

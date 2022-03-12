@@ -132,7 +132,7 @@
 			<div
 				class="h-50 w-50 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
 			>
-				<TeamLogo size={'12.5rem'} {logoModules} slug={teamData.infoCommon.slug} />
+				<TeamLogo size={200} {logoModules} slug={teamData.infoCommon.slug} />
 			</div>
 			<h1 class="text-dark-600 dark:text-light-200">
 				{teamData.infoCommon.name}

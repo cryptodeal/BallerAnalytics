@@ -4,7 +4,7 @@ import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { BoxScoreLoadParams, BoxScoreBody } from './types';
+import type { BoxScoreLoadParams, BoxScoreBody } from '$lib/types';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
