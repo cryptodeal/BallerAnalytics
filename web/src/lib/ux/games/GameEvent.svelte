@@ -61,9 +61,9 @@
 						.tz()
 						.isBefore(dayjs().tz())) || (!game.meta.helpers.isOver && game.home.stats.totals?.points && game.visitor.stats.totals?.points)}
 					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
-					{#if $dailyGames[game._id.toString()].periodValue && $dailyGames[game._id.toString()].displayClock}
+					{#if $dailyGames[game._id.toString()] && $dailyGames[game._id.toString()].periodValue && $dailyGames[game._id.toString()].displayClock}
 						<div class="font-semibold px-2">
-							{game.meta.status.period < 5
+							{$dailyGames[game._id.toString()].periodValue < 5
 								? `Q${$dailyGames[game._id.toString()].periodValue}`
 								: `OT${$dailyGames[game._id.toString()].periodValue - 4}`}
 							{$dailyGames[game._id.toString()].displayClock}
