@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import { Types } from 'mongoose';
-import type { Game2Object } from '@balleranalytics/nba-api-ts';
+import type { Game2Object, Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
 import type { DailyGame, DailyGames } from '$lib/data/stores/types';
 import type { Dayjs } from 'dayjs';
 dayjs.extend(utc);
@@ -71,4 +71,21 @@ export const getMinMaxDates = async (): Promise<{
 	if (!minGame[0]) throw new Error('Error: could not find minGame');
 	if (!maxGame[0]) throw new Error('Error: could not find maxGame');
 	return { min: minGame[0].date, max: maxGame[0].date };
+};
+
+export const loadBoxScore = (
+	date: string,
+	matchup: string
+): Promise<
+	PopulatedDocument<
+		PopulatedDocument<
+			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+			'home.players.player'
+		>,
+		'visitor.players.player'
+	>
+> => {
+	const homeAbbrev = matchup.split('@')[1];
+	const boxScoreUrl = date + '0' + homeAbbrev;
+	return Game2.findByUrl(boxScoreUrl).populateTeams().populatePlayers().lean().exec();
 };

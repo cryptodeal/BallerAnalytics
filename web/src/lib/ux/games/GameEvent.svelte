@@ -22,8 +22,8 @@
 	const estDate = dayjs(game.date).tz();
 </script>
 
-<div class="mx-auto rounded-lg glassmorphicBg h-25 my-6 sm:w-100">
-	<div class="h-full w-full flex inline-flex items-center ">
+<div class="mx-auto rounded-lg glassmorphicBg h-35 my-6 sm:w-120">
+	<div class="h-25 w-full flex inline-flex items-center ">
 		<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
 			<div
 				class="h-6/10 w-full mb-1 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
@@ -104,5 +104,15 @@
 				{capitalizeFirstLetter(game.home.team.infoCommon.slug)}
 			</h6>
 		</div>
+	</div>
+	<div
+		class="h-10 border-t-1 border-dark-50 flex w-full inline-flex align-middle items-center justify-center"
+	>
+		<a
+			class="text-dark-800 dark:text-light-200"
+			sveltekit:prefetch
+			href="/games/boxscore/{estDate.format('YYYYMMDD')}/{game.visitor.team.infoCommon
+				.nbaAbbreviation}@{game.home.team.infoCommon.nbaAbbreviation}">Boxscore</a
+		>
 	</div>
 </div>

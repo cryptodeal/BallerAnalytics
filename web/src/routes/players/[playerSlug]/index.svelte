@@ -24,7 +24,6 @@
 	import Headshot from '$lib/ux/img/Headshot.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	export let player: Player2Document;
-	console.log(player);
 </script>
 
 <MetaTags
