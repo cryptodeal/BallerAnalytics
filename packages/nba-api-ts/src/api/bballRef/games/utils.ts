@@ -1,7 +1,7 @@
 import { FourFactorData, BoxScoreData, ParsedOfficial } from './boxScore';
 import { addOrFindPlayer } from '../../../db/controllers/Player2';
 import { addOrFindOfficial } from '../../../db/controllers/Official2';
-import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 
 interface InactivePlayer {
 	name: string;
@@ -78,7 +78,7 @@ interface TeamStats {
 
 interface StatLeaders {
 	statValue: number;
-	leader: Types.ObjectId[];
+	leader: mongoose.Types.ObjectId[];
 }
 
 interface BoxScoreTeam2 {
@@ -190,7 +190,7 @@ export class BoxScorePlayer {
 	public isStarter = false;
 	public stats;
 	public inactive = false;
-	public _id?: Types.ObjectId;
+	public _id?: mongoose.Types.ObjectId;
 
 	constructor(
 		basicData: Array<[string[], ...Array<string>]> | InactivePlayer,

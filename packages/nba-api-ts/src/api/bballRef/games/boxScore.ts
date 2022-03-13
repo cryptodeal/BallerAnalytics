@@ -1,5 +1,5 @@
 import { loadBoxScorePage } from '../fetchers';
-import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import cheerio from 'cheerio';
 import { Game2Document, IsPopulated } from '../../../db/interfaces/mongoose.gen';
 import { BoxScore, setPlayerId, setOfficialId } from './utils';
@@ -11,7 +11,7 @@ dayjs.extend(timezone);
 
 /** Useful Interfaces */
 export class ParsedOfficial {
-	public _id?: Types.ObjectId;
+	public _id?: mongoose.Types.ObjectId;
 	constructor(public name: string, public url: string, public jerseyNumber?: string) {
 		this.name = name;
 		this.url = url;

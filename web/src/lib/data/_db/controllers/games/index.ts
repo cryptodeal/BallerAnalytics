@@ -3,7 +3,7 @@ import { getBBallRefAbbrev, resolve } from '$lib/functions/helpers';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
-import { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import type { Game2Object } from '@balleranalytics/nba-api-ts';
 import type { DailyGame, DailyGames } from '$lib/data/stores/types';
 import type { Dayjs } from 'dayjs';
@@ -19,7 +19,10 @@ export const getTodaysGames = async () => {
 	return Game2.getDailyGames(startDate, endDate).then((games: Game2Object[]) => {
 		const parsedGames: DailyGames = {};
 		games.map((g) => {
-			if (!(g.home.team instanceof Types.ObjectId) && !(g.visitor.team instanceof Types.ObjectId)) {
+			if (
+				!(g.home.team instanceof mongoose.Types.ObjectId) &&
+				!(g.visitor.team instanceof mongoose.Types.ObjectId)
+			) {
 				const parsedGame: DailyGame = {
 					date: g.date,
 					isOver: g.meta.helpers.isOver,
