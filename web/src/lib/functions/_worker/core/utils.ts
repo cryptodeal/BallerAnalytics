@@ -65,9 +65,6 @@ export const isMTLOffscreenWorkerResizeEvent = (
 		typeof obj['height'] === 'number' &&
 		'darkMode' in obj &&
 		typeof obj['darkMode'] === 'boolean' &&
-		!('mtl' in obj) &&
-		!('obj' in obj) &&
-		!('extRefHelpers' in obj) &&
 		!('drawingSurface' in obj)
 	);
 };
@@ -82,8 +79,6 @@ export const isMTLOffscreenWorkerEvent = (obj: unknown): obj is MTLOffscreenWork
 		typeof obj['height'] === 'number' &&
 		'darkMode' in obj &&
 		typeof obj['darkMode'] === 'boolean' &&
-		(!('mtl' in obj) || ('mtl' in obj && obj['mtl'] instanceof Uint8Array)) &&
-		(!('obj' in obj) || ('obj' in obj && obj['obj'] instanceof Uint8Array)) &&
 		'drawingSurface' in obj &&
 		obj['drawingSurface'] instanceof OffscreenCanvas
 	);

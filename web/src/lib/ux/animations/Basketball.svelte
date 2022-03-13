@@ -45,7 +45,6 @@
 
 <div class="basicContainer" bind:clientHeight={height} bind:clientWidth={width}>
 	<Canvas
-		physicallyCorrectLights={true}
 		antialias={true}
 		alpha={true}
 		background={null}
@@ -55,8 +54,8 @@
 	>
 		<PerspectiveCamera position={[0, 0, 3]} />
 		<Primitive {object} rotation={[0.025, ballYRotation, 0.025]} />
-		<AmbientLight intensity={$darkMode ? 1.4 : 2} />
+		<AmbientLight intensity={$darkMode ? 0.6 : 1} />
 		<OrbitControls enableZoom={false} enableDamping={true} dampingFactor={0.05} enablePan={false} />
-		<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 4, 2]} />
+		<DirectionalLight intensity={$darkMode ? 0.4 : 0.6} position={[-1, 3, 2]} />
 	</Canvas>
 </div>

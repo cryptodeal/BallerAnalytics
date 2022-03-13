@@ -97,30 +97,31 @@ export interface MTLWorkerListenerEvent extends MessageEvent {
 	data: MTLWorkerListenerEventData;
 }
 
-export interface MTLOffscreenWorkerEventData {
-	mtl?: Uint8Array;
-	obj?: Uint8Array;
-	extRefHelpers?: ExtRefData[];
+export type MTLOffscreenWorkerEventData = {
+	type: WorkerEventType.init;
 	drawingSurface: OffscreenCanvas;
 	darkMode: boolean;
 	width: number;
 	height: number;
 	pixelRatio: number;
-}
+};
 
 export interface MTLOffscreenWorkerEvent extends MessageEvent {
 	data: MTLOffscreenWorkerEventData;
 }
 
-export interface WorkerExtRefHelperEventData {
-	extRefHelpers: ExtRefData[];
+export interface WorkerMouseEventData {
+	type: WorkerEventType.mouse;
+	x: number;
+	y: number;
 }
 
-export interface WorkerExtRefHelperEvent extends MessageEvent {
-	data: WorkerExtRefHelperEventData;
+export interface WorkerMouseEvent extends MessageEvent {
+	data: WorkerMouseEventData;
 }
 
 export interface MTLOffscreenWorkerResizeData {
+	type: WorkerEventType.style;
 	width: number;
 	height: number;
 	darkMode: boolean;
@@ -309,4 +310,10 @@ export interface WorkerLoadedModelData {
 
 export interface MTLWorkerMessageEvent extends MessageEvent {
 	data: WorkerLoadedModelData;
+}
+
+export enum WorkerEventType {
+	init = 'init',
+	style = 'style',
+	mouse = 'mouse'
 }

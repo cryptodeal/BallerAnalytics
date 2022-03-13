@@ -1,20 +1,13 @@
 import {
 	PerspectiveCamera,
 	Scene,
-	// ImageBitmapLoader,
-	// CanvasTexture,
-	// IcosahedronGeometry,
-	// MeshMatcapMaterial,
 	Group,
 	WebGLRenderer,
 	AmbientLight,
 	DirectionalLight
 } from 'three';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-
-import { MTLLoader } from '../TestLoader';
-import type { MTLLoader as threeMTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 let camera: PerspectiveCamera,
 	scene: Scene,
@@ -31,12 +24,8 @@ export function init(
 	height: number,
 	darkMode: boolean,
 	pixelRatio: number,
-	obj?: string,
-	mtl?: string
+	path: string
 ) {
-	camera = new PerspectiveCamera(30, width / height, 1, 1000);
-	camera.position.z = 1.5;
-
 	scene = new Scene();
 	// scene.fog = new Fog(0x444466, 100, 400);
 	// scene.background = new Color(0x444466);
@@ -44,21 +33,33 @@ export function init(
 
 	// orbitControls =  new OrbitControls(camera, renderer.domElement)
 
-	/* parse obj & mtl here */
-	const materials = new MTLLoader().parse(mtl) as unknown as threeMTLLoader.MaterialCreator;
-	materials.preload();
-	group = new OBJLoader().setMaterials(materials).parse(obj);
-	scene.add(group);
-	ambientLight = new AmbientLight(0xffffff, darkMode ? 1.7 : 2.3);
-	scene.add(ambientLight);
-	directionalLight = new DirectionalLight(0xffffff, darkMode ? 0.5 : 0.6);
-	directionalLight.position.x = -2;
-	directionalLight.position.y = 3;
-	scene.add(directionalLight);
+	/* parse glb w KTX2 images here */
+
 	renderer = new WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
 	renderer.setPixelRatio(pixelRatio);
 	renderer.setSize(width, height, false);
-	animate();
+	const ktx2Loader = new KTX2Loader().setTranscoderPath('/scripts/').detectSupport(renderer);
+	const loader = new GLTFLoader();
+	loader.setKTX2Loader(ktx2Loader);
+	loader.load(path, function (gltf) {
+		camera = new PerspectiveCamera(45, width / height, 0.1, 2000);
+		camera.zoom = 1;
+		camera.position.x = 0;
+		camera.position.y = 0;
+		camera.position.z = 3;
+		ambientLight = new AmbientLight(0xffffff, darkMode ? 0.6 : 1);
+		scene.add(ambientLight);
+		directionalLight = new DirectionalLight(0xffffff, darkMode ? 0.4 : 0.6);
+		directionalLight.position.x = -1;
+		directionalLight.position.y = 3;
+		directionalLight.position.z = 2;
+		scene.add(directionalLight);
+		group = gltf.scene;
+		group.rotation.x = 0.025;
+		group.rotation.z = 0.025;
+		scene.add(group);
+		animate();
+	});
 }
 
 function animate() {
@@ -82,11 +83,11 @@ export function updateSize(width: number, height: number, darkMode: boolean) {
 		camera.updateProjectionMatrix();
 	}
 
-	let tempIntensity = darkMode ? 1.7 : 2.3;
+	let tempIntensity = darkMode ? 0.6 : 1;
 	if (ambientLight && ambientLight.intensity !== tempIntensity)
 		ambientLight.intensity = tempIntensity;
 
-	tempIntensity = darkMode ? 0.5 : 0.6;
+	tempIntensity = darkMode ? 0.4 : 0.6;
 	if (directionalLight && directionalLight.intensity !== tempIntensity)
 		directionalLight.intensity = tempIntensity;
 	if (renderer) renderer.setSize(width, height, false);

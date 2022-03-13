@@ -8,7 +8,7 @@
 	let isVisible = false;
 	onMount(async () => {
 		isVisible = true;
-		Basketball = (await import('../lib/ux/animations/Basketball.svelte')).default;
+		Basketball = (await import('../lib/ux/animations/CanvasWrapper.svelte')).default;
 	});
 </script>
 
