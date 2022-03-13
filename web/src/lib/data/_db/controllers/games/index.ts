@@ -1,12 +1,13 @@
 import { Game2 } from '@balleranalytics/nba-api-ts';
-import { getBBallRefAbbrev } from '$lib/functions/helpers';
+import { getBBallRefAbbrev, resolve } from '$lib/functions/helpers';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import { Types } from 'mongoose';
-import type { Game2Object, Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
+import type { Game2Object } from '@balleranalytics/nba-api-ts';
 import type { DailyGame, DailyGames } from '$lib/data/stores/types';
 import type { Dayjs } from 'dayjs';
+import type { BoxScoreData } from '$lib/types';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault('America/New_York');
@@ -74,18 +75,29 @@ export const getMinMaxDates = async (): Promise<{
 	return { min: minGame[0].date, max: maxGame[0].date };
 };
 
-export const loadBoxScore = (
-	date: string,
-	matchup: string
-): Promise<
-	PopulatedDocument<
-		PopulatedDocument<
-			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
-			'home.players.player'
-		>,
-		'visitor.players.player'
-	>
-> => {
+export const loadBoxScore = (date: string, matchup: string): Promise<BoxScoreData> => {
 	const boxScoreUrl = date + '0' + getBBallRefAbbrev(matchup.split('@')[1]);
-	return Game2.findByUrl(boxScoreUrl).populateTeams().populatePlayers().lean().exec();
+	return Game2.findByUrl(boxScoreUrl)
+		.populateTeams()
+		.populatePlayers()
+		.lean()
+		.exec()
+		.then((boxscore: BoxScoreData) => {
+			const minSort = (a, b) => {
+				const itemA = resolve('stats.totals.minutes', a);
+				const itemB = resolve('stats.totals.minutes', b);
+				if (itemA && itemB) {
+					return itemA < itemB ? 1 : itemA > itemB ? -1 : 0;
+				} else if (!itemA && itemB) {
+					return 1;
+				} else if (itemA && !itemB) {
+					return -1;
+				} else {
+					return 0;
+				}
+			};
+			boxscore.home.players.sort(minSort);
+			boxscore.visitor.players.sort(minSort);
+			return boxscore;
+		});
 };

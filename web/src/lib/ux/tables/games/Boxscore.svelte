@@ -8,13 +8,10 @@
 	import type { BoxScoreData } from '$lib/types';
 
 	export let boxscore: BoxScoreData, isHome: boolean;
-	$: basePath = isHome ? 'home.players' : 'visitor.players';
-	let data;
+	$: data = isHome ? boxscore.home.players : boxscore.visitor.players;
 
-	$: if (basePath) data = resolve(basePath, boxscore);
-
-	let sortBy: ISortBy = { col: 'stats.totals.points', ascending: false };
-	$: if (boxscore) sortBy = { col: 'stats.totals.points', ascending: false };
+	let sortBy: ISortBy = { col: 'stats.totals.minutes', ascending: true };
+	$: if (boxscore !== null) sortBy = { col: 'stats.totals.minutes', ascending: true };
 
 	const colHeaders: IColHeader[] = [
 		{ title: 'Name', key: 'player.name.full' },
@@ -62,21 +59,21 @@
 			if (itemA && itemB) {
 				return itemA < itemB ? -1 * sortModifier : itemA > itemB ? 1 * sortModifier : 0;
 			} else if (!itemA && itemB) {
+				return -1 * sortModifier;
+			} else if (itemA && !itemB) {
 				return 1 * sortModifier;
 			} else {
-				return -1 * sortModifier;
+				return 0;
 			}
 		};
 		data = data.sort(sort);
 	};
-
-	// $: console.log(data);
 </script>
 
 <Table>
 	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
-		{#each data as { player, stats, positionShort, jerseyNumber }, i}
+		{#each data as { player, stats, jerseyNumber }, i}
 			<tr>
 				<!-- Display Player Name -->
 				<td

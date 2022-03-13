@@ -54,7 +54,7 @@
 </script>
 
 <div class="appContent w-screen flex flex-col gap-6">
-	<div class="mx-2 rounded-lg glassmorphicBg lg:(container mx-auto)">
+	<div class="mx-2 my-6 rounded-lg glassmorphicBg lg:(container mx-auto)">
 		<div class="h-25 w-full flex inline-flex items-center ">
 			<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
 				<div
@@ -138,37 +138,45 @@
 			</div>
 		</div>
 	</div>
-	<div class="w-full mx-2 lg:(container mx-auto)">
+	<div class="w-full mx-2 glassmorphicCard lg:(container mx-auto)">
 		<Tabs>
-			<div class="w-full glassmorphicCard mx-1 px-2 py-1 md:w-auto">
+			<div class="w-full overflow-hidden">
 				<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />
 			</div>
 
 			<!-- Basic Stats Data Tab -->
 			<TabPanel>
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Home Team Basic Stats:</h2>
-					<BoxScoreTable {boxscore} isHome={true} />
-				</div>
+				<div class="flex flex-col gap-6">
+					<div class="w-full overflow-hidden">
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Home Team Basic Stats:</h2>
+						<BoxScoreTable {boxscore} isHome={true} />
+					</div>
 
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Visitor Team Basic Stats:</h2>
-					<BoxScoreTable {boxscore} isHome={false} />
+					<div class="w-full overflow-hidden">
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+							Visitor Team Basic Stats:
+						</h2>
+						<BoxScoreTable {boxscore} isHome={false} />
+					</div>
 				</div>
 			</TabPanel>
 
 			<!-- Advanced Stats Data Tab -->
 			<TabPanel>
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Home Team Advanced Stats:</h2>
-					<BoxScoreTable {boxscore} isHome={true} />
-				</div>
+				<div class="flex flex-col gap-6">
+					<div class="w-full overflow-hidden">
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+							Home Team Advanced Stats:
+						</h2>
+						<BoxScoreTable {boxscore} isHome={true} />
+					</div>
 
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-						Visitor Team Advanced Stats:
-						<BoxScoreTable {boxscore} isHome={false} />
-					</h2>
+					<div class="w-full overflow-hidden">
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+							Visitor Team Advanced Stats:
+							<BoxScoreTable {boxscore} isHome={false} />
+						</h2>
+					</div>
 				</div>
 			</TabPanel>
 		</Tabs>
