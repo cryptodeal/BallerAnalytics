@@ -3,9 +3,13 @@ import { User } from '@balleranalytics/nba-api-ts';
 import createToken from '$lib/functions/_api/auth/createToken';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { Locals, JWTPayload } from '$lib/types';
+import type { JWTPayload } from '$lib/types';
 
-export const get: RequestHandler<Locals> = async (event) => {
+type VerifyTokenParams = {
+	authToken: string;
+};
+
+export const get: RequestHandler<VerifyTokenParams> = async (event) => {
 	const { authToken } = event.params;
 
 	const hashedToken = crypto.createHash('sha256').update(authToken).digest('hex');

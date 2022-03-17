@@ -1,5 +1,4 @@
-/// <reference types="@types/offscreencanvas" />
-
+import { WorkerMessageType } from './utils';
 export interface MaterialInfo {
 	ks?: number[] | undefined;
 	kd?: number[] | undefined;
@@ -98,30 +97,44 @@ export interface MTLWorkerListenerEvent extends MessageEvent {
 }
 
 export type MTLOffscreenWorkerEventData = {
-	type: WorkerEventType.init;
+	type: WorkerMessageType.CREATE_INIT;
 	drawingSurface: OffscreenCanvas;
 	darkMode: boolean;
 	width: number;
 	height: number;
 	pixelRatio: number;
+	id: string;
 };
+
+export interface WorkerElementData {
+	type: WorkerMessageType.MAKE_ELEMENT;
+	id: string;
+}
+
+export interface WorkerElementMessage extends MessageEvent {
+	data: WorkerElementData;
+}
 
 export interface MTLOffscreenWorkerEvent extends MessageEvent {
 	data: MTLOffscreenWorkerEventData;
 }
 
-export interface WorkerMouseEventData {
-	type: WorkerEventType.mouse;
-	x: number;
-	y: number;
+export interface WorkerEventData {
+	type: WorkerMessageType.EVENT;
+	id: string;
+	event: {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		[key: string]: any;
+		type: string;
+	};
 }
 
-export interface WorkerMouseEvent extends MessageEvent {
+export interface WorkerEventMessage extends MessageEvent {
 	data: WorkerMouseEventData;
 }
 
 export interface MTLOffscreenWorkerResizeData {
-	type: WorkerEventType.style;
+	type: WorkerMessageType.RESTYLE;
 	width: number;
 	height: number;
 	darkMode: boolean;
@@ -310,10 +323,4 @@ export interface WorkerLoadedModelData {
 
 export interface MTLWorkerMessageEvent extends MessageEvent {
 	data: WorkerLoadedModelData;
-}
-
-export enum WorkerEventType {
-	init = 'init',
-	style = 'style',
-	mouse = 'mouse'
 }

@@ -91,3 +91,11 @@ export const loadResource = (src: string): Promise<ArrayBuffer> => {
 			throw new Error(`Error: ${err};\nFailed to load resource: ${src}`);
 		});
 };
+
+export enum WorkerMessageType {
+	MAKE_ELEMENT = 'make_element',
+	CREATE_INIT = 'create_init',
+	RESTYLE = 'restyle',
+	EVENT = 'event',
+	DISPOSE = 'dispose'
+}

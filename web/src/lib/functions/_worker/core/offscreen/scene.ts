@@ -1,3 +1,4 @@
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import {
 	PerspectiveCamera,
 	Scene,
@@ -9,86 +10,102 @@ import {
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
-let camera: PerspectiveCamera,
-	scene: Scene,
-	renderer: WebGLRenderer,
-	group: Group,
-	ambientLight: AmbientLight,
-	directionalLight: DirectionalLight;
-// orbitControls: OrbitControls;
+export class InitScene {
+	public renderer: WebGLRenderer;
+	public camera: PerspectiveCamera;
+	public scene: Scene;
+	public group: Group;
+	public ambientLight: AmbientLight;
+	public directionalLight: DirectionalLight;
+	public animate;
+	canvas: HTMLCanvasElement | OffscreenCanvas;
+	htmlElement: unknown;
 
-/* worker logic */
-export function init(
-	canvas: OffscreenCanvas,
-	width: number,
-	height: number,
-	darkMode: boolean,
-	pixelRatio: number,
-	path: string
-) {
-	scene = new Scene();
-	// scene.fog = new Fog(0x444466, 100, 400);
-	// scene.background = new Color(0x444466);
-	scene.background = null;
-
-	// orbitControls =  new OrbitControls(camera, renderer.domElement)
-
-	/* parse glb w KTX2 images here */
-
-	renderer = new WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
-	renderer.setPixelRatio(pixelRatio);
-	renderer.setSize(width, height, false);
-	const ktx2Loader = new KTX2Loader().setTranscoderPath('/scripts/').detectSupport(renderer);
-	const loader = new GLTFLoader();
-	loader.setKTX2Loader(ktx2Loader);
-	loader.load(path, function (gltf) {
-		camera = new PerspectiveCamera(45, width / height, 0.1, 2000);
-		camera.zoom = 1;
-		camera.position.x = 0;
-		camera.position.y = 0;
-		camera.position.z = 3;
-		ambientLight = new AmbientLight(0xffffff, darkMode ? 0.6 : 1);
-		scene.add(ambientLight);
-		directionalLight = new DirectionalLight(0xffffff, darkMode ? 0.4 : 0.6);
-		directionalLight.position.x = -1;
-		directionalLight.position.y = 3;
-		directionalLight.position.z = 2;
-		scene.add(directionalLight);
-		group = gltf.scene;
+	constructor(
+		canvas: OffscreenCanvas,
+		width: number,
+		height: number,
+		darkMode: boolean,
+		group: Group,
+		renderer: WebGLRenderer,
+		htmlElement: unknown
+	) {
+		this.renderer = renderer;
+		this.canvas = canvas;
+		this.htmlElement = htmlElement;
+		this.scene = new Scene();
+		this.scene.background = null;
+		this.camera = new PerspectiveCamera(45, width / height, 0.1, 2000);
+		this.camera.zoom = 1;
+		this.camera.position.x = 0;
+		this.camera.position.y = 0;
+		this.camera.position.z = 3;
+		// const controls = new OrbitControls(this.camera, htmlElement as HTMLElement)
+		// controls.listenToKeyEvents(htmlElement as HTMLElement)
+		// controls.update()
+		const ambientLight = new AmbientLight(0xffffff, darkMode ? 0.6 : 1);
+		this.ambientLight = ambientLight;
+		this.scene.add(this.ambientLight);
+		this.directionalLight = new DirectionalLight(0xffffff, darkMode ? 0.4 : 0.6);
+		this.directionalLight.position.x = -1;
+		this.directionalLight.position.y = 3;
+		this.directionalLight.position.z = 2;
+		this.scene.add(this.directionalLight);
 		group.rotation.x = 0.025;
 		group.rotation.z = 0.025;
-		scene.add(group);
-		animate();
-	});
-}
+		this.group = group;
+		this.scene.add(this.group);
+		this.animate = () => {
+			if (this.renderer) {
+				this.group.rotation.y = -Date.now() / 900;
+				// orbitControls.update();
 
-function animate() {
-	if (renderer) {
-		group.rotation.y = -Date.now() / 900;
-		// orbitControls.update();
+				this.renderer.render(this.scene, this.camera);
 
-		renderer.render(scene, camera);
+				if (self.requestAnimationFrame) {
+					self.requestAnimationFrame(this.animate);
+				} else {
+					// Firefox
+				}
+			}
+		};
+		this.animate();
+	}
 
-		if (self.requestAnimationFrame) {
-			self.requestAnimationFrame(animate);
-		} else {
-			// Firefox
+	static build(
+		canvas: OffscreenCanvas,
+		width: number,
+		height: number,
+		darkMode: boolean,
+		pixelRatio: number,
+		path: string,
+		htmlElement: unknown
+	) {
+		const renderer = new WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
+		renderer.setPixelRatio(pixelRatio);
+		renderer.setSize(width, height, false);
+		const ktx2Loader = new KTX2Loader().setTranscoderPath('/scripts/').detectSupport(renderer);
+		const loader = new GLTFLoader();
+		loader.setKTX2Loader(ktx2Loader);
+		return loader.loadAsync(path).then((gltf) => {
+			const group = gltf.scene;
+			return new InitScene(canvas, width, height, darkMode, group, renderer, htmlElement);
+		});
+	}
+
+	restyle(width: number, height: number, darkMode: boolean) {
+		if (this.camera) {
+			this.camera.aspect = width / height;
+			this.camera.updateProjectionMatrix();
 		}
+
+		let tempIntensity = darkMode ? 0.6 : 1;
+		if (this.ambientLight && this.ambientLight.intensity !== tempIntensity)
+			this.ambientLight.intensity = tempIntensity;
+
+		tempIntensity = darkMode ? 0.4 : 0.6;
+		if (this.directionalLight && this.directionalLight.intensity !== tempIntensity)
+			this.directionalLight.intensity = tempIntensity;
+		if (this.renderer) this.renderer.setSize(width, height, false);
 	}
-}
-
-export function updateSize(width: number, height: number, darkMode: boolean) {
-	if (camera) {
-		camera.aspect = width / height;
-		camera.updateProjectionMatrix();
-	}
-
-	let tempIntensity = darkMode ? 0.6 : 1;
-	if (ambientLight && ambientLight.intensity !== tempIntensity)
-		ambientLight.intensity = tempIntensity;
-
-	tempIntensity = darkMode ? 0.4 : 0.6;
-	if (directionalLight && directionalLight.intensity !== tempIntensity)
-		directionalLight.intensity = tempIntensity;
-	if (renderer) renderer.setSize(width, height, false);
 }
