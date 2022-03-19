@@ -25,6 +25,7 @@ export function init(data: {
 	controls.enableZoom = false;
 	controls.enablePan = false;
 	controls.enableDamping = true;
+	controls.dampingFactor = 0.05;
 	controls.listenToKeyEvents(inputElement);
 	controls.update();
 
@@ -63,9 +64,8 @@ export function init(data: {
 		return needResize;
 	}
 
-	function render(time: number) {
-		time *= 0.001;
-		if (group) group.rotation.y = time;
+	function render() {
+		if (group) group.rotation.y = -new Date() / 900;
 
 		if (resizeRendererToDisplaySize(renderer)) {
 			camera.aspect = inputElement.clientWidth / inputElement.clientHeight;
