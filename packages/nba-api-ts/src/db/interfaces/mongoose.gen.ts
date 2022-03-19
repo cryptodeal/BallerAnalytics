@@ -644,6 +644,7 @@ export type Game2Query = mongoose.Query<any, Game2Document, Game2Queries> & Game
  */
 export type Game2Queries = {
 	populatePlayers: (this: Game2Query) => Game2Query;
+	populateTeamsBasicInfo: (this: Game2Query) => Game2Query;
 	populateTeams: (this: Game2Query) => Game2Query;
 };
 

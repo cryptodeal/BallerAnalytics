@@ -51,8 +51,11 @@ export const getGamesByDate = async (date: Dayjs): Promise<Game2Object[]> => {
 	return Game2.find({
 		date: { $lte: date.endOf('day').utc().toDate(), $gte: date.startOf('day').utc().toDate() }
 	})
-		.select('date home visitor meta')
-		.populateTeams()
+		.select(
+			'date home.team home.score home.stats.totals.points visitor.team visitor.score visitor.stats.totals.points meta.status.displayClock meta.status.period meta.helpers.isOver'
+		)
+		.populateTeamsBasicInfo()
+		.lean()
 		.exec()
 		.then((games) => {
 			return games.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());

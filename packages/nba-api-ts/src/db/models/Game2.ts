@@ -431,6 +431,10 @@ Game2Schema.query = {
 		return this.populate('home.players.player visitor.players.player', 'name.full meta.images');
 	},
 
+	populateTeamsBasicInfo() {
+		return this.populate('home.team visitor.team', 'infoCommon.nbaAbbreviation infoCommon.slug');
+	},
+
 	populateTeams() {
 		return this.populate(
 			'home.team visitor.team',
