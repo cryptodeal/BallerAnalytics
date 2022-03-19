@@ -6,32 +6,14 @@
 		width: number,
 		canvasVisible = true;
 
-	/*
-  $: if (worker) {
-		handleResize = (e) => {
-			const { width, height, left, top } = canvas.getBoundingClientRect();
-
-			const data = {
-				type: 'size',
-				left: left,
-				top: top,
-				width: width,
-				height: height
-			};
-			worker.postMessage({
-				type: 'event',
-				id: 0,
-				data
-			});
-		};
-	}*/
-
 	onMount(async () => {
 		if ('transferControlToOffscreen' in canvas) {
-			const Worker = (await import('../../functions/_worker/core/offscreen/dev/worker?worker'))
-				.default;
-			const startWorker = (await import('../../functions/_worker/core/offscreen/dev/scene'))
-				.startWorker;
+			const [workerImport, startWorkerImport] = await Promise.all([
+				import('../../functions/_worker/core/offscreen/dev/worker?worker'),
+				import('../../functions/_worker/core/offscreen/dev/scene')
+			]);
+			const { default: Worker } = workerImport;
+			const { startWorker } = startWorkerImport;
 			worker = new Worker();
 			startWorker(canvas, worker, window.devicePixelRatio);
 		} else canvasVisible = false;
