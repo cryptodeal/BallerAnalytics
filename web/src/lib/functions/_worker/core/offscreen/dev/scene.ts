@@ -152,7 +152,6 @@ export function startWorker(canvas: HTMLCanvasElement, worker: Worker, pixelRati
 		},
 		[offscreen]
 	);
-	console.log('using OffscreenCanvas'); /* eslint-disable-line no-console */
 }
 
 export function startMainPage(canvas: HTMLCanvasElement, pixelRatio: number) {

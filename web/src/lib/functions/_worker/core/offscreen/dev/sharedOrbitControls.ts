@@ -26,7 +26,6 @@ export function init(data: {
 	controls.enablePan = false;
 	controls.enableDamping = true;
 	controls.dampingFactor = 0.05;
-	controls.listenToKeyEvents(inputElement);
 	controls.update();
 
 	const scene = new Scene();

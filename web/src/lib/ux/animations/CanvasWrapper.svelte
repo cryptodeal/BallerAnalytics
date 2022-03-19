@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { startWorker } from '$lib/functions/_worker/core/offscreen/dev/scene';
 	let canvas: HTMLCanvasElement,
 		worker: Worker,
 		height: number,
@@ -8,12 +9,8 @@
 
 	onMount(async () => {
 		if ('transferControlToOffscreen' in canvas) {
-			const [workerImport, startWorkerImport] = await Promise.all([
-				import('../../functions/_worker/core/offscreen/dev/worker?worker'),
-				import('../../functions/_worker/core/offscreen/dev/scene')
-			]);
-			const { default: Worker } = workerImport;
-			const { startWorker } = startWorkerImport;
+			const Worker = (await import('../../functions/_worker/core/offscreen/dev/worker?worker'))
+				.default;
 			worker = new Worker();
 			startWorker(canvas, worker, window.devicePixelRatio);
 		} else canvasVisible = false;
