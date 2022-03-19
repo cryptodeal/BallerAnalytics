@@ -1,4 +1,5 @@
 import { ControlsProxy } from './controlsProxy';
+import { WorkerMessageType } from '../utils';
 
 const mouseEventProperties = [
 	'type',
@@ -21,6 +22,20 @@ export class OrbitControlsProxy extends ControlsProxy {
 	constructor(worker: Worker, htmlElement: HTMLElement, elementID = 'element') {
 		super(worker, htmlElement, elementID);
 	}
+
+	handleResize = () => {
+		const rect = this.htmlElement.getBoundingClientRect();
+		console.log(rect);
+		const fictitiousEvent = {
+			type: WorkerMessageType.RESIZE,
+			id: this.elementId,
+			top: rect.top,
+			left: rect.left,
+			width: rect.width,
+			height: rect.height
+		};
+		this.worker.postMessage(fictitiousEvent);
+	};
 
 	handlePointerDown = (event: PointerEvent) => {
 		event.preventDefault();
@@ -92,7 +107,7 @@ export class OrbitControlsProxy extends ControlsProxy {
 		this.sendEventMessage(fictitiousEvent);
 	};
 
-	handleWheelEvent = (event: MouseEvent) => {
+	handleWheelEvent = (event: WheelEvent) => {
 		event.preventDefault();
 
 		const fictitiousEvent = ControlsProxy.copyProperties(event, wheelEventProperties);
@@ -113,12 +128,17 @@ export class OrbitControlsProxy extends ControlsProxy {
 
 		const touches = [];
 		Object.keys(event.touches).forEach((key) => {
-			touches.push(ControlsProxy.copyProperties(key, touchProperties));
+			touches.push(ControlsProxy.copyProperties(event.touches[key], touchProperties));
 		});
 		fictitiousEvent.touches = touches;
 
 		this.sendEventMessage(fictitiousEvent);
 	};
+
+	configEventListeners() {
+		this.handleResize();
+		window.addEventListener('resize', this.handleResize, { capture: true, passive: false });
+	}
 
 	dispose() {
 		super.dispose();

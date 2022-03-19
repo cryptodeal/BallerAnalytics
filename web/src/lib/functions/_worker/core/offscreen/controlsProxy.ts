@@ -12,10 +12,9 @@ export class ControlsProxy {
 				'ControlsProxy: the first parameter "worker" is not assignable to type Worker.'
 			);
 		}
-
 		this.worker = worker;
 		this.htmlElement = htmlElement;
-
+		this.elementId = elementId;
 		if (htmlElement !== null) {
 			if (!(htmlElement instanceof HTMLElement)) {
 				throw new Error(
@@ -28,8 +27,6 @@ export class ControlsProxy {
 				});
 			}
 		}
-		this.worker = worker;
-		this.elementId = elementId;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

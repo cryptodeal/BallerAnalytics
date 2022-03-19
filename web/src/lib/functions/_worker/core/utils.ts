@@ -96,6 +96,7 @@ export enum WorkerMessageType {
 	MAKE_ELEMENT = 'make_element',
 	CREATE_INIT = 'create_init',
 	RESTYLE = 'restyle',
+	RESIZE = 'resize',
 	EVENT = 'event',
 	DISPOSE = 'dispose'
 }

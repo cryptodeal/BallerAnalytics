@@ -36,7 +36,8 @@ const handleEvent = (data: {
 	event: { type: string; [key: string]: any };
 }) => {
 	const element = elementManager.getElement(data.id);
-	element?.dispatchEvent(data.event);
+	console.log(element);
+	element.dispatchEvent(data.event);
 };
 
 ctx.addEventListener(
@@ -72,6 +73,7 @@ ctx.addEventListener(
 			case WorkerMessageType.EVENT: {
 				/* TODO: Add Orbit Controls Event Handler */
 				handleEvent(data);
+				// console.log(data)
 				break;
 			}
 			default: {

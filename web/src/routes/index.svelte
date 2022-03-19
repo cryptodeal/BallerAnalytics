@@ -3,7 +3,6 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
-	//import Bball from '$lib/ux/animations/Basketball.svelte';
 	let Basketball;
 	let isVisible = false;
 	onMount(async () => {
@@ -30,11 +29,9 @@
 					<WordCloud {isVisible} />
 				</div>
 				<div class="w-full flex justify-center h-40 md:(w-1/2 justify-start)">
-					<div class="h-full w-full">
-						{#if Basketball}
-							<svelte:component this={Basketball} />
-						{/if}
-					</div>
+					{#if Basketball}
+						<svelte:component this={Basketball} />
+					{/if}
 				</div>
 			</div>
 		</div>

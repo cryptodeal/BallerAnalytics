@@ -10,6 +10,7 @@ export class Element extends EventDispatcher {
 	public left: number;
 	public width: number;
 	public height: number;
+	public style = {};
 
 	constructor() {
 		super();

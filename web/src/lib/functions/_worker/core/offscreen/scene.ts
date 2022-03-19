@@ -1,4 +1,4 @@
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import {
 	PerspectiveCamera,
 	Scene,
@@ -40,9 +40,11 @@ export class InitScene {
 		this.camera.position.x = 0;
 		this.camera.position.y = 0;
 		this.camera.position.z = 3;
-		// const controls = new OrbitControls(this.camera, htmlElement as HTMLElement)
-		// controls.listenToKeyEvents(htmlElement as HTMLElement)
-		// controls.update()
+		const controls = new OrbitControls(this.camera, this.htmlElement as HTMLElement);
+		controls.enableZoom = false;
+		controls.listenToKeyEvents(this.htmlElement as HTMLElement);
+		controls.update();
+
 		const ambientLight = new AmbientLight(0xffffff, darkMode ? 0.6 : 1);
 		this.ambientLight = ambientLight;
 		this.scene.add(this.ambientLight);
@@ -56,17 +58,15 @@ export class InitScene {
 		this.group = group;
 		this.scene.add(this.group);
 		this.animate = () => {
-			if (this.renderer) {
-				this.group.rotation.y = -Date.now() / 900;
-				// orbitControls.update();
+			this.group.rotation.y = -Date.now() / 900;
+			// orbitControls.update();
 
-				this.renderer.render(this.scene, this.camera);
+			this.renderer.render(this.scene, this.camera);
 
-				if (self.requestAnimationFrame) {
-					self.requestAnimationFrame(this.animate);
-				} else {
-					// Firefox
-				}
+			if (self.requestAnimationFrame) {
+				self.requestAnimationFrame(this.animate);
+			} else {
+				// Firefox
 			}
 		};
 		this.animate();
@@ -93,7 +93,7 @@ export class InitScene {
 		});
 	}
 
-	restyle(width: number, height: number, darkMode: boolean) {
+	restyle(width, height, darkMode) {
 		if (this.camera) {
 			this.camera.aspect = width / height;
 			this.camera.updateProjectionMatrix();
