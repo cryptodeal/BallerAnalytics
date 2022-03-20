@@ -6,13 +6,6 @@
 	$: formattedTitle = title.split(' ').map(capitalizeFirstLetter).join(' ');
 </script>
 
-<div class="bio w-full md:w-2/3 text-dark-800 dark:text-light-200">
-	<h5 class="text-dark-800 dark:text-light-200">{formattedTitle}:</h5>
-	{data}
-</div>
+<div class="font-bold text-dark-800 dark:text-light-200">{formattedTitle}:</div>
 
-<style>
-	.bio {
-		@apply flex justify-evenly items-center;
-	}
-</style>
+<div class="text-dark-800 dark:text-light-200">{data}</div>

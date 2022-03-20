@@ -52,7 +52,7 @@
 		</div>
 
 		<div
-			class="flex flex-col gap-2 p-4 text-black glassmorphicBg flex flex-col justify-center text-center"
+			class="flex flex-col gap-2 p-4 text-black glassmorphicBg flex flex-col sm:(w-1/2 mx-auto) justify-center text-center"
 		>
 			<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
 			<div class="flex inline-flex items-center justify-evenly">
@@ -68,48 +68,53 @@
 				{/if}
 			</div>
 		</div>
-		<div
-			class="flex flex-col gap-2 p-4 text-black glassmorphicBg flex flex-col justify-center text-center"
-		>
-			<h2 class="text-dark-800 dark:text-light-200">Player Bio</h2>
-			<BioItem title={'full name'} data={player.name.full} />
-			{#if player.name.pronunciation}
-				<BioItem title={'pronunciation'} data={player.name.pronunciation} />
-			{/if}
-			{#if player.birthPlace.city && player.birthPlace.state}
+		<div class="p-4 text-black glassmorphicBg flex flex-col sm:(w-1/2 mx-auto) justify-center">
+			<h2 class="text-dark-800 w-full text-center dark:text-light-200">Player Bio</h2>
+			<div class="grid grid-cols-2 gap-2">
+				<BioItem title={'full name'} data={player.name.full} />
+				{#if player.name.pronunciation}
+					<BioItem title={'pronunciation'} data={player.name.pronunciation} />
+				{/if}
+				{#if player.birthPlace.city && player.birthPlace.state}
+					<BioItem
+						title={'born'}
+						data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${
+							player.birthPlace.city
+						}, ${player.birthPlace.state}`}
+					/>
+				{:else if player.birthPlace.city && player.birthPlace.country}
+					<BioItem
+						title={'born'}
+						data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${
+							player.birthPlace.city
+						}, ${player.birthPlace.country}`}
+					/>
+				{:else if player.birthPlace.state && player.birthPlace.country}
+					<BioItem
+						title={'born'}
+						data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${
+							player.birthPlace.state
+						}, ${player.birthPlace.country}`}
+					/>
+				{:else if player.birthPlace.country}
+					<BioItem
+						title={'born'}
+						data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${
+							player.birthPlace.country
+						}`}
+					/>
+				{/if}
 				<BioItem
-					title={'born'}
-					data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${player.birthPlace.city}, ${
-						player.birthPlace.state
-					}`}
+					title={'height'}
+					data={`${player.height.feet}' ${player.height.inches ? player.height.inches : 0}"`}
 				/>
-			{:else if player.birthPlace.city && player.birthPlace.country}
-				<BioItem
-					title={'born'}
-					data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${player.birthPlace.city}, ${
-						player.birthPlace.country
-					}`}
-				/>
-			{:else if player.birthPlace.state && player.birthPlace.country}
-				<BioItem
-					title={'born'}
-					data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${player.birthPlace.state}, ${
-						player.birthPlace.country
-					}`}
-				/>
-			{:else if player.birthPlace.country}
-				<BioItem
-					title={'born'}
-					data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${player.birthPlace.country}`}
-				/>
-			{/if}
-			<BioItem title={'height'} data={`${player.height.feet}' ${player.height.inches}"`} />
-			<BioItem title={'weight'} data={`${player.weight} lbs`} />
-			<BioItem title={'shoots'} data={player.shoots} />
-			<BioItem title={'position'} data={player.position} />
-			{#if player.college}
-				<BioItem title={'college'} data={player.college} />
-			{/if}
+				<BioItem title={'weight'} data={`${player.weight} lbs`} />
+				<BioItem title={'shoots'} data={player.shoots} />
+				<BioItem title={'position'} data={player.position} />
+				{#if player.college}
+					<BioItem title={'college'} data={player.college} />
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
