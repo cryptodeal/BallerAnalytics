@@ -5,10 +5,11 @@ function noop() {}
 
 export class ElementProxyReceiver extends EventDispatcher {
 	public style;
-	public width;
-	public height;
-	public left;
-	public top;
+	public width: number;
+	public height: number;
+	public left: number;
+	public top: number;
+	public darkMode: boolean;
 
 	constructor() {
 		super();
@@ -37,16 +38,20 @@ export class ElementProxyReceiver extends EventDispatcher {
 	}
 
 	handleEvent(data) {
-		if (data.type === 'size') {
-			this.left = data.left;
-			this.top = data.top;
-			this.width = data.width;
-			this.height = data.height;
-			return;
+		switch (data.type) {
+			case 'size':
+				this.left = data.left;
+				this.top = data.top;
+				this.width = data.width;
+				this.height = data.height;
+				this.darkMode = data.darkMode;
+				return;
+			default:
+				data.preventDefault = noop;
+				data.stopPropagation = noop;
+				this.dispatchEvent(data);
+				break;
 		}
-		data.preventDefault = noop;
-		data.stopPropagation = noop;
-		this.dispatchEvent(data);
 	}
 	focus() {
 		// no-op

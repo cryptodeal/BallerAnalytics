@@ -7,14 +7,14 @@ self.document = {} as unknown as Document;
 const ctx: Worker = self as any;
 
 const proxyManager = new ProxyManager();
-
 function start(data) {
 	const proxy = proxyManager.getProxy(data.canvasId);
 	proxy.ownerDocument = proxy; // HACK!
-	init({
+	return init({
 		canvas: data.canvas,
 		inputElement: proxy,
-		pixelRatio: data.pixelRatio
+		pixelRatio: data.pixelRatio,
+		darkMode: data.isDarkMode
 	});
 }
 

@@ -1,6 +1,10 @@
-import { init } from './sharedOrbitControls';
 import { ResizeObserver } from 'resize-observer';
+import darkMode from '$lib/data/stores/theme';
 
+let isDarkMode;
+darkMode.subscribe((value) => {
+	isDarkMode = value;
+});
 const mouseEventHandler = makeSendPropertiesHandler([
 	'ctrlKey',
 	'metaKey',
@@ -116,9 +120,22 @@ class ElementProxy {
 				left: rect.left,
 				top: rect.top,
 				width: element.clientWidth,
-				height: element.clientHeight
+				height: element.clientHeight,
+				darkMode: isDarkMode
 			});
 		}
+
+		darkMode.subscribe((value) => {
+			const rect = element.getBoundingClientRect();
+			sendEvent({
+				type: 'size',
+				left: rect.left,
+				top: rect.top,
+				width: element.clientWidth,
+				height: element.clientHeight,
+				darkMode: value
+			});
+		});
 		const ro = new ResizeObserver(sendSize);
 		ro.observe(element);
 	}
@@ -148,14 +165,11 @@ export function startWorker(canvas: HTMLCanvasElement, worker: Worker, pixelRati
 			type: 'start',
 			canvas: offscreen,
 			canvasId: proxy.id,
-			pixelRatio
+			pixelRatio,
+			darkMode: isDarkMode
 		},
 		[offscreen]
 	);
-}
-
-export function startMainPage(canvas: HTMLCanvasElement, pixelRatio: number) {
-	init({ canvas, inputElement: canvas, pixelRatio });
 }
 
 /* 

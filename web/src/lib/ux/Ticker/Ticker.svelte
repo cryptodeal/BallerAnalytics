@@ -42,7 +42,6 @@
 <svelte:window on:resize={sizing} />
 
 <div
-	class="tickerWrapper"
 	bind:this={self}
 	class:animate
 	class:horizontal

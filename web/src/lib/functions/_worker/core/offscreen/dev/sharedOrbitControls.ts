@@ -1,18 +1,27 @@
 import { Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, AmbientLight } from 'three';
+import type { ElementProxyReceiver } from '../proxy/elementReceiver';
 import basketball from '$models/test.glb?url';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
-export function init(data: {
-	canvas: HTMLCanvasElement | OffscreenCanvas;
+interface initData {
+	canvas: OffscreenCanvas;
 	inputElement: HTMLElement;
 	pixelRatio: number;
-}) {
-	let group;
-	const { canvas, inputElement, pixelRatio } = data;
+	darkMode: boolean;
+}
 
-	const renderer = new WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
+export function init(data: initData) {
+	let group;
+	const { canvas, inputElement, pixelRatio, darkMode } = data;
+
+	const renderer = new WebGLRenderer({
+		antialias: true,
+		canvas: canvas,
+		alpha: true,
+		powerPreference: 'high-performance'
+	});
 	renderer.setPixelRatio(pixelRatio);
 	renderer.setSize(canvas.width, canvas.height, false);
 	const camera = new PerspectiveCamera(45, canvas.width / canvas.height, 0.1, 2000);
@@ -31,7 +40,7 @@ export function init(data: {
 	const scene = new Scene();
 	scene.background = null;
 
-	const ambientLight = new AmbientLight(0xffffff, 0.75);
+	const ambientLight = new AmbientLight(0xffffff, darkMode ? 0.6 : 1);
 	scene.add(ambientLight);
 	const directionalLight = new DirectionalLight(0xffffff, 0.5);
 	directionalLight.position.x = -1;
@@ -65,6 +74,12 @@ export function init(data: {
 
 	function render() {
 		if (group) group.rotation.y = -new Date() / 900;
+		const { darkMode } = inputElement as unknown as ElementProxyReceiver;
+		let tempIntensity = darkMode ? 0.6 : 1;
+		if (ambientLight.intensity !== tempIntensity) ambientLight.intensity = tempIntensity;
+
+		tempIntensity = darkMode ? 0.4 : 0.6;
+		if (directionalLight.intensity !== tempIntensity) directionalLight.intensity = tempIntensity;
 
 		if (resizeRendererToDisplaySize(renderer)) {
 			camera.aspect = inputElement.clientWidth / inputElement.clientHeight;
