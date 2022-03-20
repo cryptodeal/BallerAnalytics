@@ -73,7 +73,9 @@
 		>
 			<h2 class="text-dark-800 dark:text-light-200">Player Bio</h2>
 			<BioItem title={'full name'} data={player.name.full} />
-			<BioItem title={'pronunciation'} data={player.name.pronunciation} />
+			{#if player.name.pronunciation}
+				<BioItem title={'pronunciation'} data={player.name.pronunciation} />
+			{/if}
 			{#if player.birthPlace.city && player.birthPlace.state}
 				<BioItem
 					title={'born'}
@@ -101,7 +103,7 @@
 					data={`${dayjs(player.birthDate).format('MMMM D, YYYY')} in ${player.birthPlace.country}`}
 				/>
 			{/if}
-			<BioItem title={'height'} data={`${player.height.feet}' ${player.height.inches}`} />
+			<BioItem title={'height'} data={`${player.height.feet}' ${player.height.inches}"`} />
 			<BioItem title={'weight'} data={`${player.weight} lbs`} />
 			<BioItem title={'shoots'} data={player.shoots} />
 			<BioItem title={'position'} data={player.position} />
