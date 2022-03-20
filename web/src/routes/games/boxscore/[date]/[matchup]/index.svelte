@@ -53,7 +53,7 @@
 	const estDate = dayjs(boxscore.date).tz();
 </script>
 
-<div class="appContent w-screen flex flex-col gap-6">
+<div class="appContent w-screen flex flex-col gap-6 pb-10">
 	<div class="mx-2 my-6 rounded-lg glassmorphicBg lg:(container mx-auto)">
 		<div class="h-25 w-full flex inline-flex items-center ">
 			<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
