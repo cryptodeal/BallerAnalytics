@@ -111,8 +111,11 @@
 		<a
 			class="text-dark-800 dark:text-light-200"
 			sveltekit:prefetch
-			href="/games/boxscore/{estDate.format('YYYYMMDD')}/{game.visitor.team.infoCommon
-				.nbaAbbreviation}@{game.home.team.infoCommon.nbaAbbreviation}">Boxscore</a
+			href="/games/boxscore/{estDate.format('YYYYMMDD')}/{game.visitor.team.seasons.find(
+				(s) => s.season === game.meta.helpers.bballRef.year
+			).infoCommon.abbreviation}@{game.home.team.seasons.find(
+				(s) => s.season === game.meta.helpers.bballRef.year
+			).infoCommon.abbreviation}">Boxscore</a
 		>
 	</div>
 </div>

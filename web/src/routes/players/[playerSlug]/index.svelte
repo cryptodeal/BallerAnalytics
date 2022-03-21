@@ -38,7 +38,7 @@
 />
 
 <div class="appContent min-h-screen flex flex-col w-full">
-	<div class="mt-4 flex flex-col gap-6 sm:container mx-auto">
+	<div class="mt-4 flex flex-col gap-10 sm:container mx-auto">
 		<div class="text-black glassmorphicBg flex flex-wrap justify-center items-center">
 			<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">
 				<Headshot
@@ -50,27 +50,28 @@
 			</div>
 			<h1 class="text-dark-800 dark:text-light-200">{player.name.full}</h1>
 		</div>
-
-		<div
-			class="flex flex-col gap-2 p-4 text-black glassmorphicBg flex flex-col sm:(w-1/2 mx-auto) justify-center text-center"
-		>
-			<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
-			<div class="flex inline-flex items-center justify-evenly">
-				{#if player.socials.twitter}
-					<a href="https://twitter.com/{player.socials.twitter}" target="_blank">
-						<Twitter class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
-					</a>
-				{/if}
-				{#if player.socials.instagram}
-					<a href="https://www.instagram.com/{player.socials.instagram}" target="_blank">
-						<Insta class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
-					</a>
-				{/if}
+		{#if player.socials?.twitter || player.socials?.instagram}
+			<div
+				class="flex flex-col gap-2 p-4 text-black glassmorphicBg sm:(w-1/3 mx-auto) justify-center text-center"
+			>
+				<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
+				<div class="flex inline-flex items-center justify-evenly">
+					{#if player.socials.twitter}
+						<a href="https://twitter.com/{player.socials.twitter}" target="_blank">
+							<Twitter class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
+						</a>
+					{/if}
+					{#if player.socials.instagram}
+						<a href="https://www.instagram.com/{player.socials.instagram}" target="_blank">
+							<Insta class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
+						</a>
+					{/if}
+				</div>
 			</div>
-		</div>
+		{/if}
 		<div class="p-4 text-black glassmorphicBg flex flex-col sm:(w-1/2 mx-auto) justify-center">
 			<h2 class="text-dark-800 w-full text-center dark:text-light-200">Player Bio</h2>
-			<div class="grid grid-cols-2 gap-2">
+			<div class="grid grid-cols-2 gap-4 p-6">
 				<BioItem title={'full name'} data={player.name.full} />
 				{#if player.name.pronunciation}
 					<BioItem title={'pronunciation'} data={player.name.pronunciation} />

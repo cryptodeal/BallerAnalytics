@@ -1,5 +1,5 @@
 import { Game2 } from '@balleranalytics/nba-api-ts';
-import { getBBallRefAbbrev, resolve } from '$lib/functions/helpers';
+import { resolve } from '$lib/functions/helpers';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 import timezone from 'dayjs/plugin/timezone.js';
@@ -52,7 +52,7 @@ export const getGamesByDate = async (date: Dayjs): Promise<Game2Object[]> => {
 		date: { $lte: date.endOf('day').utc().toDate(), $gte: date.startOf('day').utc().toDate() }
 	})
 		.select(
-			'date home.team home.score home.stats.totals.points visitor.team visitor.score visitor.stats.totals.points meta.status.displayClock meta.status.period meta.helpers.isOver'
+			'date home.team home.score home.stats.totals.points meta.helpers.bballRef.year visitor.team visitor.score visitor.stats.totals.points meta.status.displayClock meta.status.period meta.helpers.isOver'
 		)
 		.populateTeamsBasicInfo()
 		.lean()
@@ -82,7 +82,7 @@ export const getMinMaxDates = async (): Promise<{
 };
 
 export const loadBoxScore = (date: string, matchup: string): Promise<BoxScoreData> => {
-	const boxScoreUrl = date + '0' + getBBallRefAbbrev(matchup.split('@')[1]);
+	const boxScoreUrl = date + '0' + matchup.split('@')[1];
 	return Game2.findByUrl(boxScoreUrl)
 		.populateTeams()
 		.populatePlayers()

@@ -432,7 +432,10 @@ Game2Schema.query = {
 	},
 
 	populateTeamsBasicInfo() {
-		return this.populate('home.team visitor.team', 'infoCommon.nbaAbbreviation infoCommon.slug');
+		return this.populate(
+			'home.team visitor.team',
+			'seasons.season seasons.infoCommon.abbreviation infoCommon.nbaAbbreviation infoCommon.slug'
+		);
 	},
 
 	populateTeams() {
