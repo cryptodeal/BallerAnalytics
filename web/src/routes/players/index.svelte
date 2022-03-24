@@ -28,7 +28,6 @@
 	import VirtualList from 'svelte-tiny-virtual-list';
 	import { MetaTags } from 'svelte-meta-tags';
 	import InfiniteLoading from 'svelte-infinite-loading';
-	import { browser } from '$app/env';
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	import type { Player2Document } from '@balleranalytics/nba-api-ts';
 	export let players: Player2Document[], seasons: number[], query: { year: number };
@@ -36,9 +35,7 @@
 
 	let page = 1,
 		listHeight = 500,
-		seasonYear: number;
-
-	$: if (browser) seasonYear = Math.max(...seasons);
+		seasonYear = Math.max(...seasons);
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
 		fetch(`players.json?page=${page}`)
@@ -64,8 +61,8 @@
 />
 
 <div class="listContainer flex flex-col">
-	<div class="glassmorphicCard h-10 pt-1">
-		<div class="flex inline-flex items-center px-4 py-2 text-black mb-6">
+	<div class="glassmorphicBg p-3 w-full md:(container mx-auto)">
+		<div class="flex inline-flex items-center px-4 py-2 text-black">
 			<div>
 				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="season-select">
 					Season:

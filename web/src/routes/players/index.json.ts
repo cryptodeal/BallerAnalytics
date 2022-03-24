@@ -21,7 +21,6 @@ export const get: RequestHandler<GetPlayerParams, PlayersResponse> = async ({ ur
 
 	if (data) {
 		const [{ players, query }, { min, max }] = data;
-		console.log(min, max);
 		const seasons: number[] = [];
 		for (let i = min; i <= max; i++) seasons.push(i);
 		return {
