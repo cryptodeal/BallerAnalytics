@@ -81,6 +81,27 @@ export const getMinMaxDates = async (): Promise<{
 	return { min: minGame[0].date, max: maxGame[0].date };
 };
 
+export const getMinMaxSeasons = async (): Promise<{
+	min: number;
+	max: number;
+}> => {
+	const minGame = await Game2.find()
+		.sort({ 'meta.helpers.bballRef.year': 1 })
+		.limit(1)
+		.select({ 'meta.helpers.bballRef.year': 1, _id: -1 })
+		.lean()
+		.exec();
+	const maxGame = await Game2.find()
+		.sort({ 'meta.helpers.bballRef.year': -1 })
+		.limit(1)
+		.select({ 'meta.helpers.bballRef.year': 1, _id: -1 })
+		.lean()
+		.exec();
+	if (!minGame[0]) throw new Error('Error: could not find minGame');
+	if (!maxGame[0]) throw new Error('Error: could not find maxGame');
+	return { min: minGame[0].meta.helpers.bballRef.year, max: maxGame[0].meta.helpers.bballRef.year };
+};
+
 export const loadBoxScore = (date: string, matchup: string): Promise<BoxScoreData> => {
 	const boxScoreUrl = date + '0' + matchup.split('@')[1];
 	return Game2.findByUrl(boxScoreUrl)

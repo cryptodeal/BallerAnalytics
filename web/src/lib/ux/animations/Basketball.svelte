@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { Clock, WebGLRenderer } from 'three';
-	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-	import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 	import {
 		AmbientLight,
 		Canvas,
@@ -23,9 +21,13 @@
 		width = 1,
 		height = 1;
 
-	onMount(loadGlb);
+	onMount(async () => {
+		const GLTFLoader = (await import('three/examples/jsm/loaders/GLTFLoader.js')).GLTFLoader;
+		const KTX2Loader = (await import('three/examples/jsm/loaders/KTX2Loader.js')).KTX2Loader;
+		loadGlb(GLTFLoader, KTX2Loader);
+	});
 
-	function loadGlb() {
+	function loadGlb(GLTFLoader, KTX2Loader) {
 		const ktx2Loader = new KTX2Loader()
 			.setTranscoderPath('/scripts/')
 			.detectSupport(new WebGLRenderer());

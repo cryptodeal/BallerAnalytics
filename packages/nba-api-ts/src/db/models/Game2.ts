@@ -8,7 +8,7 @@ const Game2Schema: Game2Schema = new mongoose.Schema({
 			nbaGameId: { type: String },
 			espnGameId: { type: String },
 			bballRef: {
-				year: { type: Number, required: true },
+				year: { type: Number, required: true, index: true },
 				missingData: { type: Boolean, default: false },
 				boxScoreUrl: { type: String, required: true, index: true, unique: true }
 			}

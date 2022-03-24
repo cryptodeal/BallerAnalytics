@@ -1,13 +1,29 @@
 import { Player2 } from '@balleranalytics/nba-api-ts';
+import { getMinMaxSeasons } from '../games';
 import type { Player2Document } from '@balleranalytics/nba-api-ts';
 
-export const getSeasonPlayers = (page: number): Promise<Player2Document[]> => {
-	return Player2.find({ $or: [{ seasons: { $elemMatch: { year: 2022 } } }] })
-		.select('name.full meta.images meta.slug')
-		.sort('name.full')
-		.paginate(page)
-		.lean()
-		.exec();
+export type PlayersQueryRes = {
+	players: Player2Document[];
+	query: {
+		year: number;
+	};
+};
+export const getSeasonPlayers = (
+	page: number,
+	year: number
+): Promise<[PlayersQueryRes, { min: number; max: number }]> => {
+	return Promise.all([
+		Player2.find({ $or: [{ seasons: { $elemMatch: { year: year } } }] })
+			.select('name.full meta.images meta.slug')
+			.sort('name.full')
+			.paginate(page)
+			.lean()
+			.exec()
+			.then((players) => {
+				return { players, query: { year } };
+			}),
+		getMinMaxSeasons()
+	]);
 };
 
 export const getPlayerBySlug = (slug: string): Promise<Player2Document> => {

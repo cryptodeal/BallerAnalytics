@@ -40,7 +40,7 @@
 		"eslint-plugin-svelte3": "^3.4.1",
 		"jsonwebtoken": "^8.5.1",
 		"mdsvex": "^0.10.5",
-		"mongoose": "6.2.4",
+		"mongoose": "6.2.7",
 		"nba-color": "^1.4.1",
 		"nodemailer": "^6.7.3",
 		"prettier": "^2.6.0",
