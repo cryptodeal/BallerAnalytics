@@ -38,7 +38,7 @@
 		seasonYear = Math.max(...seasons);
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
-		fetch(`players.json?page=${page}`)
+		fetch(`players.json?page=${page}&year=${seasonYear}`)
 			.then((response) => response.json())
 			.then((data) => {
 				const { players: newPlayers } = data;
@@ -52,6 +52,20 @@
 				}
 			})
 			.catch(() => error());
+	}
+
+	function loadSeason() {
+		page = 0;
+		fetch(`players.json?page=${page}&year=${seasonYear}`)
+			.then((response) => response.json())
+			.then((data) => {
+				const { players: newPlayers } = data;
+				if (newPlayers.length) {
+					page += 1;
+					players = newPlayers;
+				}
+			})
+			.catch(Error);
 	}
 </script>
 
@@ -68,7 +82,7 @@
 					Season:
 				</label>
 
-				<select type="select" id="season-select" bind:value={seasonYear}>
+				<select type="select" id="season-select" bind:value={seasonYear} on:change={loadSeason}>
 					{#each seasons as season}
 						<option value={season}>{season}</option>
 					{/each}
