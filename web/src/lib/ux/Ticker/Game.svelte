@@ -93,7 +93,9 @@
 	{/if}
 
 	{#if game.home.score == null && game.home.score == null}
-		<div class="inline-block text-light-200 leading-10 px-2 text-2xl font-normal">
+		<div
+			class="inline-block text-dark-800 dark:text-light-200 leading-10 px-2 text-2xl font-normal"
+		>
 			{estDate.minute() !== 0
 				? estDate.tz(localTz).format('h:mm A z')
 				: estDate.tz(localTz).format('h A z')}
