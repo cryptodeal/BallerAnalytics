@@ -30,7 +30,7 @@ body {
 /* if backdrop support: very transparent and blurred */
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
 	.glassmorphicCard {
-		@apply rounded-lg bg-white backdrop-filter backdrop-blur-xl bg-opacity-40 dark:(bg-dark-900 backdrop-filter backdrop-blur-2xl bg-opacity-40);
+		@apply rounded-lg bg-white backdrop-filter backdrop-blur-xl bg-opacity-25 dark:(bg-dark-700 backdrop-filter backdrop-blur-2xl bg-opacity-25);
 	}
 }
 

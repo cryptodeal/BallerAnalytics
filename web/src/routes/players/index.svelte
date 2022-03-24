@@ -7,11 +7,10 @@
 		const res = await fetch(url);
 
 		if (res.ok) {
-			const { players, query, seasons } = (await res.json()) as PlayersResponse;
+			const { players, seasons } = (await res.json()) as PlayersResponse;
 			return {
 				props: {
 					players,
-					query,
 					seasons
 				}
 			};
@@ -30,54 +29,89 @@
 	import InfiniteLoading from 'svelte-infinite-loading';
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	import type { Player2Document } from '@balleranalytics/nba-api-ts';
-	export let players: Player2Document[], seasons: number[], query: { year: number };
-	$: console.log(query);
+	export let players: Player2Document[], seasons: number[];
 
 	let page = 1,
 		listHeight = 500,
-		seasonYear = Math.max(...seasons);
+		seasonYear = Math.max(...seasons),
+		name: string;
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
-		fetch(`players.json?page=${page}&year=${seasonYear}`)
-			.then((response) => response.json())
-			.then((data) => {
-				const { players: newPlayers } = data;
-				if (newPlayers.length) {
-					page += 1;
-					players = [...players, ...newPlayers];
+		if (!name || name === '') {
+			fetch(`players.json?page=${page}&year=${seasonYear}`)
+				.then((response) => response.json())
+				.then((data) => {
+					const { players: newPlayers } = data;
+					if (newPlayers.length) {
+						page += 1;
+						players = [...players, ...newPlayers];
 
-					loaded();
-				} else {
-					complete();
-				}
-			})
-			.catch(() => error());
+						loaded();
+					} else {
+						complete();
+					}
+				})
+				.catch(() => error());
+		} else {
+			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
+				.then((response) => response.json())
+				.then((data) => {
+					const { players: newPlayers } = data;
+					if (newPlayers.length) {
+						page += 1;
+						players = [...players, ...newPlayers];
+
+						loaded();
+					} else {
+						complete();
+					}
+				})
+				.catch(() => error());
+		}
 	}
 
 	function loadSeason() {
 		page = 0;
-		fetch(`players.json?page=${page}&year=${seasonYear}`)
-			.then((response) => response.json())
-			.then((data) => {
-				const { players: newPlayers } = data;
-				if (newPlayers.length) {
-					page += 1;
-					players = newPlayers;
-				}
-			})
-			.catch(Error);
+		if (!name) {
+			fetch(`players.json?page=${page}&year=${seasonYear}`)
+				.then((response) => response.json())
+				.then((data) => {
+					const { players: newPlayers } = data;
+					if (newPlayers.length) {
+						page += 1;
+						players = newPlayers;
+					}
+				})
+				.catch(Error);
+		} else {
+			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
+				.then((response) => response.json())
+				.then((data) => {
+					const { players: newPlayers } = data;
+					if (newPlayers.length) {
+						page += 1;
+						players = newPlayers;
+					}
+				})
+				.catch(Error);
+		}
 	}
 </script>
 
 <MetaTags
-	title="NBA 2021-22 Season Players"
-	description="Index of players from the 2021-22 NBA season."
+	title="NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players"
+	description="Index of players from the {seasonYear - 1}-{seasonYear
+		.toString()
+		.slice(-2)} NBA season."
 />
 
 <div class="listContainer flex flex-col">
-	<div class="glassmorphicBg p-3 w-full md:(container mx-auto)">
-		<div class="flex inline-flex items-center px-4 py-2 text-black">
-			<div>
+	<div class="glassmorphicBg flex flex-col gap-2 p-2 w-full md:(container mx-auto)">
+		<h2 class="text-dark-600 mx-auto dark:text-light-200">
+			NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players
+		</h2>
+		<div class="flex flex-wrap">
+			<div class="flex inline-flex mx-auto items-center px-4 py-2 text-black">
 				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="season-select">
 					Season:
 				</label>
@@ -87,6 +121,14 @@
 						<option value={season}>{season}</option>
 					{/each}
 				</select>
+			</div>
+
+			<div class="flex inline-flex mx-auto items-center px-4 py-2 text-black">
+				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="name-search">
+					Player Name:
+				</label>
+
+				<input type="text" bind:value={name} on:input={loadSeason} />
 			</div>
 		</div>
 	</div>
