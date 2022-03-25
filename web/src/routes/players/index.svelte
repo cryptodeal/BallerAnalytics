@@ -37,7 +37,7 @@
 		name: string;
 
 	function loadPlayers({ detail: { loaded, complete, error } }) {
-		if (!name || name === '') {
+		if (!name || name.length < 2) {
 			fetch(`players.json?page=${page}&year=${seasonYear}`)
 				.then((response) => response.json())
 				.then((data) => {
@@ -72,7 +72,7 @@
 
 	function loadSeason() {
 		page = 0;
-		if (!name) {
+		if (!name || name === '' || name.length < 2) {
 			fetch(`players.json?page=${page}&year=${seasonYear}`)
 				.then((response) => response.json())
 				.then((data) => {
@@ -84,6 +84,33 @@
 				})
 				.catch(Error);
 		} else {
+			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
+				.then((response) => response.json())
+				.then((data) => {
+					const { players: newPlayers } = data;
+					if (newPlayers.length) {
+						page += 1;
+						players = newPlayers;
+					}
+				})
+				.catch(Error);
+		}
+	}
+
+	function nameQuery() {
+		page = 0;
+		if (name === '') {
+			fetch(`players.json?page=${page}&year=${seasonYear}`)
+				.then((response) => response.json())
+				.then((data) => {
+					const { players: newPlayers } = data;
+					if (newPlayers.length) {
+						page += 1;
+						players = newPlayers;
+					}
+				})
+				.catch(Error);
+		} else if (name.length > 2) {
 			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
 				.then((response) => response.json())
 				.then((data) => {
@@ -110,8 +137,8 @@
 		<h2 class="text-dark-600 mx-auto dark:text-light-200">
 			NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players
 		</h2>
-		<div class="flex flex-wrap">
-			<div class="flex inline-flex mx-auto items-center px-4 py-2 text-black">
+		<div class="flex flex-wrap justify-evenly">
+			<div class="flex inline-flex items-center px-4 py-2 text-black">
 				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="season-select">
 					Season:
 				</label>
@@ -122,13 +149,16 @@
 					{/each}
 				</select>
 			</div>
-
-			<div class="flex inline-flex mx-auto items-center px-4 py-2 text-black">
-				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="name-search">
-					Player Name:
-				</label>
-
-				<input type="text" bind:value={name} on:input={loadSeason} />
+			<div class="flex flex-col">
+				<div class="flex inline-flex items-center">
+					<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="name-search">
+						Player Name:
+					</label>
+					<input type="text" id="name-search" bind:value={name} on:input={nameQuery} />
+				</div>
+				<div class="text-sm self-end text-dark-600 dark:text-light-200">
+					Enter at least 3 characters
+				</div>
 			</div>
 		</div>
 	</div>
