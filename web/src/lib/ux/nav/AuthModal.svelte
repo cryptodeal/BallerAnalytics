@@ -41,7 +41,7 @@
 
 <Modal>
 	<div slot="trigger" let:open>
-		<div class="h-full w-full text-center" on:click={open}>login / register</div>
+		<button class="font-medium uppercase md:(w-full ml-2)" on:click={open}>login / register</button>
 	</div>
 
 	<div slot="header" let:store={{ close }}>

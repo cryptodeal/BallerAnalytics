@@ -21,8 +21,8 @@
 </script>
 
 <script lang="ts">
-	import Twitter from '~icons/akar-icons/twitter-fill';
-	import Insta from '~icons/akar-icons/instagram-fill';
+	import Twitter from '$lib/ux/socials/Twitter.svelte';
+	import Insta from '$lib/ux/socials/Instagram.svelte';
 	import Headshot from '$lib/ux/img/Headshot.svelte';
 	import BioItem from '$lib/ux/players/profile/BioItem.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
@@ -39,7 +39,7 @@
 
 <div class="appContent min-h-screen flex flex-col w-full">
 	<div class="mt-4 flex flex-col gap-10 sm:container mx-auto">
-		<div class="text-black glassmorphicBg flex flex-wrap justify-center items-center">
+		<div class="text-black glassmorphicBg rounded-lg flex flex-wrap justify-center items-center">
 			<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">
 				<Headshot
 					avif={player.meta.images.headshot.avif}
@@ -52,26 +52,22 @@
 		</div>
 		{#if player.socials?.twitter || player.socials?.instagram}
 			<div
-				class="flex flex-col gap-2 p-4 text-black glassmorphicBg sm:(w-1/3 mx-auto) justify-center text-center"
+				class="flex flex-col gap-1 py-3 px-10 text-black rounded-lg glassmorphicBg sm:mx-auto justify-center text-center"
 			>
 				<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
 				<div class="flex inline-flex items-center justify-evenly">
 					{#if player.socials.twitter}
-						<a href="https://twitter.com/{player.socials.twitter}" target="_blank">
-							<Twitter class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
-						</a>
+						<Twitter handle={player.socials.twitter} />
 					{/if}
 					{#if player.socials.instagram}
-						<a href="https://www.instagram.com/{player.socials.instagram}" target="_blank">
-							<Insta class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
-						</a>
+						<Insta handle={player.socials.instagram} />
 					{/if}
 				</div>
 			</div>
 		{/if}
-		<div class="p-4 text-black glassmorphicBg flex flex-col sm:(w-1/2 mx-auto) justify-center">
-			<h2 class="text-dark-800 w-full text-center dark:text-light-200">Player Bio</h2>
-			<div class="grid grid-cols-2 gap-4 p-6">
+		<div class="p-4 text-black rounded-lg glassmorphicBg flex flex-col sm:mx-auto justify-center">
+			<h2 class="text-dark-800 mb-6 text-center dark:text-light-200">Bio</h2>
+			<div class="grid grid-cols-2 gap-2 px-4">
 				<BioItem title={'full name'} data={player.name.full} />
 				{#if player.name.pronunciation}
 					<BioItem title={'pronunciation'} data={player.name.pronunciation} />

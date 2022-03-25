@@ -77,7 +77,7 @@
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
-					if (newPlayers.length) {
+					if (newPlayers) {
 						page += 1;
 						players = newPlayers;
 					}
@@ -88,7 +88,7 @@
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
-					if (newPlayers.length) {
+					if (newPlayers) {
 						page += 1;
 						players = newPlayers;
 					}
@@ -104,7 +104,7 @@
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
-					if (newPlayers.length) {
+					if (newPlayers) {
 						page += 1;
 						players = newPlayers;
 					}
@@ -115,7 +115,7 @@
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
-					if (newPlayers.length) {
+					if (newPlayers) {
 						page += 1;
 						players = newPlayers;
 					}
@@ -132,14 +132,14 @@
 		.slice(-2)} NBA season."
 />
 
-<div class="listContainer flex flex-col">
-	<div class="glassmorphicBg flex flex-col gap-2 p-2 w-full md:(container mx-auto)">
-		<h2 class="text-dark-600 mx-auto dark:text-light-200">
+<div class="listContainer flex flex-col gap-2">
+	<div class="glassmorphicBg rounded-lg flex flex-col gap-2 p-2 w-full md:(container mx-auto)">
+		<h2 class="text-dark-600 text-center dark:text-light-200">
 			NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players
 		</h2>
-		<div class="flex flex-wrap justify-evenly">
-			<div class="flex inline-flex items-center px-4 py-2 text-black">
-				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="season-select">
+		<div class="flex flex-wrap gap-4 justify-start sm:justify-evenly">
+			<div class="flex inline-flex items-center text-black gap-4">
+				<label class="text-dark-600 dark:text-light-200 text-lg" for="season-select">
 					Season:
 				</label>
 
@@ -150,8 +150,8 @@
 				</select>
 			</div>
 			<div class="flex flex-col">
-				<div class="flex inline-flex items-center">
-					<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="name-search">
+				<div class="flex inline-flex gap-4 items-center">
+					<label class="text-dark-600 dark:text-light-200 text-lg" for="name-search">
 						Player Name:
 					</label>
 					<input type="text" id="name-search" bind:value={name} on:input={nameQuery} />
@@ -162,22 +162,26 @@
 			</div>
 		</div>
 	</div>
-	<div class="list h-9/10 w-full sm:(list container mx-auto)" bind:clientHeight={listHeight}>
-		<VirtualList overscanCount={20} height={listHeight} itemCount={players.length} itemSize={75}>
-			<a
-				slot="item"
-				let:index
-				let:style
-				{style}
-				href="/players/{players[index].meta.slug}"
-				class="flex inline-flex max-h-75px h-75px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
-			>
-				<PlayerListItem player={players[index]} />
-			</a>
+	{#if players.length}
+		<div class="list h-9/10 w-full sm:(container mx-auto)" bind:clientHeight={listHeight}>
+			<VirtualList overscanCount={20} height={listHeight} itemCount={players.length} itemSize={75}>
+				<a
+					slot="item"
+					let:index
+					let:style
+					{style}
+					href="/players/{players[index].meta.slug}"
+					class="flex inline-flex max-h-75px h-75px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+				>
+					<PlayerListItem player={players[index]} />
+				</a>
 
-			<div slot="footer">
-				<InfiniteLoading distance={300} on:infinite={loadPlayers} />
-			</div>
-		</VirtualList>
-	</div>
+				<div slot="footer">
+					<InfiniteLoading distance={300} on:infinite={loadPlayers} />
+				</div>
+			</VirtualList>
+		</div>
+	{:else}
+		<h4 class="text-dark-600 m-10 text-center dark:text-light-200">No Results Found</h4>
+	{/if}
 </div>
