@@ -513,12 +513,12 @@ export const importLatestGames = () => {
 			const { year } = league.seasons[i];
 			const games = await getSeasonGames(name, year);
 			const playoffGames = (await getPlayoffGames(name, year)).filter(
-				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
+				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(3, 'month'))
 			);
 			const regularSeasonGames = games.filter(
 				(g) =>
 					g.date.isBefore(dayjs()) &&
-					g.date.isAfter(dayjs().subtract(7, 'day')) &&
+					g.date.isAfter(dayjs().subtract(3, 'month')) &&
 					playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
 			);
 			console.log(regularSeasonGames.length);
