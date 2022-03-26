@@ -1451,6 +1451,164 @@ export type Player2SeasonTeam = {
 };
 
 /**
+ * Lean version of Player2SeasonPreseasonStatDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
+ * ```
+ * const player2seasonObject = player2season.toObject();
+ * ```
+ */
+export type Player2SeasonPreseasonStat = {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
+ * Lean version of Player2SeasonRegularSeasonStatsTotalDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
+ * ```
+ * const player2seasonObject = player2season.toObject();
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTotal = {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
+ * Lean version of Player2SeasonRegularSeasonStatsTeamSplitTotalDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonRegularSeasonStatsTeamSplitDocument.toObject()`.
+ * ```
+ * const player2seasonregularseasonstatsteamsplitObject = player2seasonregularseasonstatsteamsplit.toObject();
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTeamSplitTotal = {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
+ * Lean version of Player2SeasonRegularSeasonStatsTeamSplitDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
+ * ```
+ * const player2seasonObject = player2season.toObject();
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTeamSplit = {
+	team: Team2['_id'] | Team2;
+	_id: mongoose.Types.ObjectId;
+	totals: Player2SeasonRegularSeasonStatsTeamSplitTotal;
+};
+
+/**
+ * Lean version of Player2SeasonPostseasonStatDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
+ * ```
+ * const player2seasonObject = player2season.toObject();
+ * ```
+ */
+export type Player2SeasonPostseasonStat = {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
  * Lean version of Player2SeasonDocument
  *
  * This has all Mongoose getters & functions removed. This type will be returned from `Player2Document.toObject()`.
@@ -1465,95 +1623,20 @@ export type Player2Season = {
 	preseason: {
 		exists: boolean;
 		games: (Game2['_id'] | Game2)[];
-		stats: {
-			games?: number;
-			gamesStarted?: number;
-			minutes?: number;
-			fieldGoalsMade?: number;
-			fieldGoalsAttempted?: number;
-			fieldGoalsPct?: number;
-			threePointersMade?: number;
-			threePointersAttempted?: number;
-			threePointersPct?: number;
-			twoPointFGMade?: number;
-			twoPointFGAttempted?: number;
-			twoPointFGPct?: number;
-			effectiveFieldGoalPct?: number;
-			freeThrowsMade?: number;
-			freeThrowsAttempted?: number;
-			freeThrowsPct?: number;
-			offReb?: number;
-			defReb?: number;
-			totalReb?: number;
-			assists?: number;
-			steals?: number;
-			blocks?: number;
-			turnovers?: number;
-			personalFouls?: number;
-			points?: number;
-		};
+		stats?: Player2SeasonPostseasonStat;
 	};
 	regularSeason: {
 		exists: boolean;
 		games: (Game2['_id'] | Game2)[];
 		stats: {
-			games?: number;
-			gamesStarted?: number;
-			minutes?: number;
-			fieldGoalsMade?: number;
-			fieldGoalsAttempted?: number;
-			fieldGoalsPct?: number;
-			threePointersMade?: number;
-			threePointersAttempted?: number;
-			threePointersPct?: number;
-			twoPointFGMade?: number;
-			twoPointFGAttempted?: number;
-			twoPointFGPct?: number;
-			effectiveFieldGoalPct?: number;
-			freeThrowsMade?: number;
-			freeThrowsAttempted?: number;
-			freeThrowsPct?: number;
-			offReb?: number;
-			defReb?: number;
-			totalReb?: number;
-			assists?: number;
-			steals?: number;
-			blocks?: number;
-			turnovers?: number;
-			personalFouls?: number;
-			points?: number;
+			teamSplits: Player2SeasonRegularSeasonStatsTeamSplit[];
+			totals?: Player2SeasonPostseasonStat;
 		};
 	};
 	postseason: {
 		exists: boolean;
 		games: (Game2['_id'] | Game2)[];
-		stats: {
-			games?: number;
-			gamesStarted?: number;
-			minutes?: number;
-			fieldGoalsMade?: number;
-			fieldGoalsAttempted?: number;
-			fieldGoalsPct?: number;
-			threePointersMade?: number;
-			threePointersAttempted?: number;
-			threePointersPct?: number;
-			twoPointFGMade?: number;
-			twoPointFGAttempted?: number;
-			twoPointFGPct?: number;
-			effectiveFieldGoalPct?: number;
-			freeThrowsMade?: number;
-			freeThrowsAttempted?: number;
-			freeThrowsPct?: number;
-			offReb?: number;
-			defReb?: number;
-			totalReb?: number;
-			assists?: number;
-			steals?: number;
-			blocks?: number;
-			turnovers?: number;
-			personalFouls?: number;
-			points?: number;
-		};
+		stats?: Player2SeasonPostseasonStat;
 	};
 	_id: mongoose.Types.ObjectId;
 };
@@ -1569,6 +1652,7 @@ export type Player2Season = {
 export type Player2 = {
 	meta: {
 		helpers: {
+			missingData?: boolean;
 			espnPlayerId?: number;
 			nbaPlayerId?: number;
 			bballRef: {
@@ -1690,6 +1774,163 @@ export type Player2SeasonTeamDocument = mongoose.Types.Subdocument & {
 };
 
 /**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const Player2Season = mongoose.model<Player2SeasonDocument, Player2SeasonModel>("Player2Season", Player2SeasonSchema);
+ * ```
+ */
+export type Player2SeasonPreseasonStatDocument = mongoose.Document<mongoose.Types.ObjectId> & {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const Player2Season = mongoose.model<Player2SeasonDocument, Player2SeasonModel>("Player2Season", Player2SeasonSchema);
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTotalDocument =
+	mongoose.Document<mongoose.Types.ObjectId> & {
+		games?: number;
+		gamesStarted?: number;
+		minutes?: number;
+		fieldGoalsMade?: number;
+		fieldGoalsAttempted?: number;
+		fieldGoalsPct?: number;
+		threePointersMade?: number;
+		threePointersAttempted?: number;
+		threePointersPct?: number;
+		twoPointFGMade?: number;
+		twoPointFGAttempted?: number;
+		twoPointFGPct?: number;
+		effectiveFieldGoalPct?: number;
+		freeThrowsMade?: number;
+		freeThrowsAttempted?: number;
+		freeThrowsPct?: number;
+		offReb?: number;
+		defReb?: number;
+		totalReb?: number;
+		assists?: number;
+		steals?: number;
+		blocks?: number;
+		turnovers?: number;
+		personalFouls?: number;
+		points?: number;
+	};
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const Player2SeasonRegularSeasonStatsTeamSplit = mongoose.model<Player2SeasonRegularSeasonStatsTeamSplitDocument, Player2SeasonRegularSeasonStatsTeamSplitModel>("Player2SeasonRegularSeasonStatsTeamSplit", Player2SeasonRegularSeasonStatsTeamSplitSchema);
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTeamSplitTotalDocument =
+	mongoose.Document<mongoose.Types.ObjectId> & {
+		games?: number;
+		gamesStarted?: number;
+		minutes?: number;
+		fieldGoalsMade?: number;
+		fieldGoalsAttempted?: number;
+		fieldGoalsPct?: number;
+		threePointersMade?: number;
+		threePointersAttempted?: number;
+		threePointersPct?: number;
+		twoPointFGMade?: number;
+		twoPointFGAttempted?: number;
+		twoPointFGPct?: number;
+		effectiveFieldGoalPct?: number;
+		freeThrowsMade?: number;
+		freeThrowsAttempted?: number;
+		freeThrowsPct?: number;
+		offReb?: number;
+		defReb?: number;
+		totalReb?: number;
+		assists?: number;
+		steals?: number;
+		blocks?: number;
+		turnovers?: number;
+		personalFouls?: number;
+		points?: number;
+	};
+
+/**
+ * Mongoose Subdocument type
+ *
+ * Type of `Player2SeasonDocument["regularSeason.stats.teamSplits"]` element.
+ */
+export type Player2SeasonRegularSeasonStatsTeamSplitDocument = mongoose.Types.Subdocument & {
+	team: Team2Document['_id'] | Team2Document;
+	_id: mongoose.Types.ObjectId;
+	totals: Player2SeasonRegularSeasonStatsTeamSplitTotalDocument;
+};
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const Player2Season = mongoose.model<Player2SeasonDocument, Player2SeasonModel>("Player2Season", Player2SeasonSchema);
+ * ```
+ */
+export type Player2SeasonPostseasonStatDocument = mongoose.Document<mongoose.Types.ObjectId> & {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
  * Mongoose Subdocument type
  *
  * Type of `Player2Document["seasons"]` element.
@@ -1701,95 +1942,20 @@ export type Player2SeasonDocument = mongoose.Types.Subdocument & {
 	preseason: {
 		exists: boolean;
 		games: mongoose.Types.Array<Game2Document['_id'] | Game2Document>;
-		stats: {
-			games?: number;
-			gamesStarted?: number;
-			minutes?: number;
-			fieldGoalsMade?: number;
-			fieldGoalsAttempted?: number;
-			fieldGoalsPct?: number;
-			threePointersMade?: number;
-			threePointersAttempted?: number;
-			threePointersPct?: number;
-			twoPointFGMade?: number;
-			twoPointFGAttempted?: number;
-			twoPointFGPct?: number;
-			effectiveFieldGoalPct?: number;
-			freeThrowsMade?: number;
-			freeThrowsAttempted?: number;
-			freeThrowsPct?: number;
-			offReb?: number;
-			defReb?: number;
-			totalReb?: number;
-			assists?: number;
-			steals?: number;
-			blocks?: number;
-			turnovers?: number;
-			personalFouls?: number;
-			points?: number;
-		};
+		stats?: Player2SeasonPostseasonStatDocument;
 	};
 	regularSeason: {
 		exists: boolean;
 		games: mongoose.Types.Array<Game2Document['_id'] | Game2Document>;
 		stats: {
-			games?: number;
-			gamesStarted?: number;
-			minutes?: number;
-			fieldGoalsMade?: number;
-			fieldGoalsAttempted?: number;
-			fieldGoalsPct?: number;
-			threePointersMade?: number;
-			threePointersAttempted?: number;
-			threePointersPct?: number;
-			twoPointFGMade?: number;
-			twoPointFGAttempted?: number;
-			twoPointFGPct?: number;
-			effectiveFieldGoalPct?: number;
-			freeThrowsMade?: number;
-			freeThrowsAttempted?: number;
-			freeThrowsPct?: number;
-			offReb?: number;
-			defReb?: number;
-			totalReb?: number;
-			assists?: number;
-			steals?: number;
-			blocks?: number;
-			turnovers?: number;
-			personalFouls?: number;
-			points?: number;
+			teamSplits: mongoose.Types.DocumentArray<Player2SeasonRegularSeasonStatsTeamSplitDocument>;
+			totals?: Player2SeasonPostseasonStatDocument;
 		};
 	};
 	postseason: {
 		exists: boolean;
 		games: mongoose.Types.Array<Game2Document['_id'] | Game2Document>;
-		stats: {
-			games?: number;
-			gamesStarted?: number;
-			minutes?: number;
-			fieldGoalsMade?: number;
-			fieldGoalsAttempted?: number;
-			fieldGoalsPct?: number;
-			threePointersMade?: number;
-			threePointersAttempted?: number;
-			threePointersPct?: number;
-			twoPointFGMade?: number;
-			twoPointFGAttempted?: number;
-			twoPointFGPct?: number;
-			effectiveFieldGoalPct?: number;
-			freeThrowsMade?: number;
-			freeThrowsAttempted?: number;
-			freeThrowsPct?: number;
-			offReb?: number;
-			defReb?: number;
-			totalReb?: number;
-			assists?: number;
-			steals?: number;
-			blocks?: number;
-			turnovers?: number;
-			personalFouls?: number;
-			points?: number;
-		};
+		stats?: Player2SeasonPostseasonStatDocument;
 	};
 	_id: mongoose.Types.ObjectId;
 };
@@ -1806,6 +1972,7 @@ export type Player2Document = mongoose.Document<mongoose.Types.ObjectId, Player2
 	Player2Methods & {
 		meta: {
 			helpers: {
+				missingData?: boolean;
 				espnPlayerId?: number;
 				nbaPlayerId?: number;
 				bballRef: {
@@ -2248,6 +2415,7 @@ export type Team2Methods = {};
 
 export type Team2Statics = {
 	findByName: (this: Team2Model, name: string) => any;
+	findByAbbrev: (this: Team2Model, abbrev: string, season: number) => any;
 	getAllTeams: (this: Team2Model) => Promise<Team2Object[]>;
 };
 

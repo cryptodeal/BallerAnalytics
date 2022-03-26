@@ -342,6 +342,19 @@ Team2Schema.statics = {
 		}).exec();
 	},
 
+	findByAbbrev(abbrev: string, season: number) {
+		return this.findOne({
+			seasons: {
+				$elemMatch: {
+					'infoCommon.abbreviation': abbrev,
+					season
+				}
+			}
+		})
+			.select('_id')
+			.exec();
+	},
+
 	getAllTeams(): Promise<Team2Object[]> {
 		return this.aggregate([
 			{

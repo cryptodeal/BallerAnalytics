@@ -7,9 +7,41 @@ import {
 	Player2Object
 } from '../interfaces/mongoose.gen';
 
+const statTotalsSchema = new mongoose.Schema(
+	{
+		games: { type: Number },
+		gamesStarted: { type: Number },
+		minutes: { type: Number },
+		fieldGoalsMade: { type: Number },
+		fieldGoalsAttempted: { type: Number },
+		fieldGoalsPct: { type: Number },
+		threePointersMade: { type: Number },
+		threePointersAttempted: { type: Number },
+		threePointersPct: { type: Number },
+		twoPointFGMade: { type: Number },
+		twoPointFGAttempted: { type: Number },
+		twoPointFGPct: { type: Number },
+		effectiveFieldGoalPct: { type: Number },
+		freeThrowsMade: { type: Number },
+		freeThrowsAttempted: { type: Number },
+		freeThrowsPct: { type: Number },
+		offReb: { type: Number },
+		defReb: { type: Number },
+		totalReb: { type: Number },
+		assists: { type: Number },
+		steals: { type: Number },
+		blocks: { type: Number },
+		turnovers: { type: Number },
+		personalFouls: { type: Number },
+		points: { type: Number }
+	},
+	{ _id: false }
+);
+
 const Player2Schema: Player2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
+			missingData: { type: Boolean, default: false },
 			espnPlayerId: { type: Number },
 			nbaPlayerId: { type: Number },
 			bballRef: {
@@ -70,93 +102,32 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
 				stats: {
-					games: { type: Number },
-					gamesStarted: { type: Number },
-					minutes: { type: Number },
-					fieldGoalsMade: { type: Number },
-					fieldGoalsAttempted: { type: Number },
-					fieldGoalsPct: { type: Number },
-					threePointersMade: { type: Number },
-					threePointersAttempted: { type: Number },
-					threePointersPct: { type: Number },
-					twoPointFGMade: { type: Number },
-					twoPointFGAttempted: { type: Number },
-					twoPointFGPct: { type: Number },
-					effectiveFieldGoalPct: { type: Number },
-					freeThrowsMade: { type: Number },
-					freeThrowsAttempted: { type: Number },
-					freeThrowsPct: { type: Number },
-					offReb: { type: Number },
-					defReb: { type: Number },
-					totalReb: { type: Number },
-					assists: { type: Number },
-					steals: { type: Number },
-					blocks: { type: Number },
-					turnovers: { type: Number },
-					personalFouls: { type: Number },
-					points: { type: Number }
+					type: statTotalsSchema
 				}
 			},
 			regularSeason: {
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
 				stats: {
-					games: { type: Number },
-					gamesStarted: { type: Number },
-					minutes: { type: Number },
-					fieldGoalsMade: { type: Number },
-					fieldGoalsAttempted: { type: Number },
-					fieldGoalsPct: { type: Number },
-					threePointersMade: { type: Number },
-					threePointersAttempted: { type: Number },
-					threePointersPct: { type: Number },
-					twoPointFGMade: { type: Number },
-					twoPointFGAttempted: { type: Number },
-					twoPointFGPct: { type: Number },
-					effectiveFieldGoalPct: { type: Number },
-					freeThrowsMade: { type: Number },
-					freeThrowsAttempted: { type: Number },
-					freeThrowsPct: { type: Number },
-					offReb: { type: Number },
-					defReb: { type: Number },
-					totalReb: { type: Number },
-					assists: { type: Number },
-					steals: { type: Number },
-					blocks: { type: Number },
-					turnovers: { type: Number },
-					personalFouls: { type: Number },
-					points: { type: Number }
+					totals: {
+						type: statTotalsSchema
+					},
+					teamSplits: [
+						{
+							team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team2', required: true },
+							totals: {
+								type: statTotalsSchema,
+								required: true
+							}
+						}
+					]
 				}
 			},
 			postseason: {
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
 				stats: {
-					games: { type: Number },
-					gamesStarted: { type: Number },
-					minutes: { type: Number },
-					fieldGoalsMade: { type: Number },
-					fieldGoalsAttempted: { type: Number },
-					fieldGoalsPct: { type: Number },
-					threePointersMade: { type: Number },
-					threePointersAttempted: { type: Number },
-					threePointersPct: { type: Number },
-					twoPointFGMade: { type: Number },
-					twoPointFGAttempted: { type: Number },
-					twoPointFGPct: { type: Number },
-					effectiveFieldGoalPct: { type: Number },
-					freeThrowsMade: { type: Number },
-					freeThrowsAttempted: { type: Number },
-					freeThrowsPct: { type: Number },
-					offReb: { type: Number },
-					defReb: { type: Number },
-					totalReb: { type: Number },
-					assists: { type: Number },
-					steals: { type: Number },
-					blocks: { type: Number },
-					turnovers: { type: Number },
-					personalFouls: { type: Number },
-					points: { type: Number }
+					type: statTotalsSchema
 				}
 			}
 		}

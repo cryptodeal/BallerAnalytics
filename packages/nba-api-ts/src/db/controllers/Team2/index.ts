@@ -135,3 +135,10 @@ export const importCurrentRosters = async (year: number) => {
 	}
 	console.log('Completed updating 2022 team rosters');
 };
+
+export const findTeamAbbrevYear = (abbrev: string, year: number) => {
+	return Team2.findByAbbrev(abbrev, year).then((team) => {
+		if (!team) throw new Error(`Error: no team found\nQuery: season: ${year}, abbrev: ${abbrev}`);
+		return team;
+	});
+};

@@ -1,8 +1,16 @@
 import { Player2 } from '../../../index';
-import type { Game2Document, Player2Document } from '../../../index';
+import type {
+	Game2Document,
+	Player2Document,
+	Player2SeasonPostseasonStatDocument
+} from '../../../index';
 import { BoxScorePlayer } from '../../../api/bballRef/games/utils';
-import type { BballRefPlayerQueryResItem } from '../../../api/bballRef/types';
-import { getPlayerData } from '../../../api/bballRef/player';
+import type {
+	BballRefPlayerQueryResItem,
+	PlayerCareerStatSeason
+} from '../../../api/bballRef/types';
+import { getPlayerData, getPlayerCareerStats } from '../../../api/bballRef/player';
+import { findTeamAbbrevYear } from '../Team2';
 import mongoose from 'mongoose';
 import { IStatsPlayerInfo } from '../../../api/nba/nba';
 import type { IEspnTeamPlayersTeamAthlete } from '../../../api/espn/types';
@@ -177,4 +185,107 @@ export const findMatchingBballRefPlayers = async (
 		players.push(player);
 	}
 	return players;
+};
+
+interface StatTotals {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+}
+
+const formatStatTotals = (stats: PlayerCareerStatSeason): Player2SeasonPostseasonStatDocument => {
+	const totals: StatTotals = {};
+	if (stats.games) totals.games = stats.games;
+	if (stats.gamesStarted) totals.gamesStarted = stats.gamesStarted;
+	if (stats.minPerGame) totals.minutes = stats.minPerGame;
+	if (stats.fgPerGame) totals.fieldGoalsMade = stats.fgPerGame;
+	if (stats.fgaPerGame) totals.fieldGoalsAttempted = stats.fgaPerGame;
+	if (stats.fgPct) totals.fieldGoalsPct = stats.fgPct;
+	if (stats.fg3PerGame) totals.threePointersMade = stats.fg3PerGame;
+	if (stats.fg3aPerGame) totals.threePointersAttempted = stats.fg3aPerGame;
+	if (stats.fg3Pct) totals.threePointersPct = stats.fg3Pct;
+	if (stats.fg2PerGame) totals.twoPointFGMade = stats.fg2PerGame;
+	if (stats.fg2aPerGame) totals.twoPointFGAttempted = stats.fg2aPerGame;
+	if (stats.fg2Pct) totals.twoPointFGPct = stats.fg2Pct;
+	if (stats.efgPct) totals.effectiveFieldGoalPct = stats.efgPct;
+	if (stats.ftPerGame) totals.freeThrowsMade = stats.ftPerGame;
+	if (stats.ftaPerGame) totals.freeThrowsAttempted = stats.ftaPerGame;
+	if (stats.ftPct) totals.freeThrowsPct = stats.ftPct;
+	if (stats.orbPerGame) totals.offReb = stats.orbPerGame;
+	if (stats.drbPerGame) totals.defReb = stats.drbPerGame;
+	if (stats.trbPerGame) totals.totalReb = stats.trbPerGame;
+	if (stats.astPerGame) totals.assists = stats.astPerGame;
+	if (stats.stlPerGame) totals.steals = stats.stlPerGame;
+	if (stats.blkPerGame) totals.blocks = stats.blkPerGame;
+	if (stats.tovPerGame) totals.turnovers = stats.tovPerGame;
+	if (stats.pfPerGame) totals.personalFouls = stats.pfPerGame;
+	if (stats.ptsPerGame) totals.points = stats.ptsPerGame;
+	return totals as unknown as Player2SeasonPostseasonStatDocument;
+};
+
+export const storePlayerRegSeasonStats = async (player: Player2Document) => {
+	const careerStats = await getPlayerCareerStats(player.meta.helpers.bballRef.playerUrl);
+	const seasons = new Set(careerStats.map((s) => s.season));
+
+	seasons.forEach(async (year) => {
+		const filtered = careerStats.filter((s) => s.season === year);
+		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
+		if (!seasonIdx || seasonIdx === -1) {
+			player.meta.helpers.missingData = true;
+		} else {
+			if (filtered.length > 1) {
+				for (let i = 0; i < filtered.length; i++) {
+					const stat: PlayerCareerStatSeason = filtered[i];
+					if (stat.teamAbbrev === 'TOT') {
+						player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(stat);
+					} else {
+						try {
+							const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
+							player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
+								team: _id,
+								totals: formatStatTotals(stat)
+							});
+						} catch (e) {
+							console.log(e);
+							player.meta.helpers.missingData = true;
+						}
+					}
+				}
+			} else {
+				player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(filtered[0]);
+			}
+		}
+	});
+	return player.save();
+};
+
+export const importAllPlayerStats = async () => {
+	let count = await Player2.countDocuments();
+	for (const player of await Player2.find()) {
+		console.log(count);
+		await storePlayerRegSeasonStats(player);
+		count--;
+	}
 };
