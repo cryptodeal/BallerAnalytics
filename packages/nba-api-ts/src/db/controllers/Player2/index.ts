@@ -11,6 +11,7 @@ import type {
 } from '../../../api/bballRef/types';
 import { getPlayerData, getPlayerCareerStats } from '../../../api/bballRef/player';
 import { findTeamAbbrevYear } from '../Team2';
+import { findLatestSeason } from '../Game2';
 import mongoose from 'mongoose';
 import { IStatsPlayerInfo } from '../../../api/nba/nba';
 import type { IEspnTeamPlayersTeamAthlete } from '../../../api/espn/types';
@@ -91,6 +92,13 @@ interface Player2Season {
 	};
 	regularSeason: {
 		games: mongoose.Types.ObjectId[];
+		stats?: {
+			totals?: Player2SeasonPostseasonStatDocument;
+			teamSplits?: Array<{
+				team: mongoose.Types.ObjectId;
+				totals: Player2SeasonPostseasonStatDocument;
+			}>;
+		};
 	};
 	postseason: {
 		games: mongoose.Types.ObjectId[];
@@ -247,45 +255,106 @@ const formatStatTotals = (stats: PlayerCareerStatSeason): Player2SeasonPostseaso
 
 export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 	const careerStats = await getPlayerCareerStats(player.meta.helpers.bballRef.playerUrl);
-	const seasons = new Set(careerStats.map((s) => s.season));
-
+	const seasons: Set<number> = new Set();
+	careerStats.map((s) => {
+		if (!isNaN(s.season)) seasons.add(s.season);
+	});
+	player.meta.helpers.missingData = false;
+	if (!seasons.size) {
+		console.log(`No seasons found for ${player.name}`);
+		return;
+	}
 	seasons.forEach(async (year) => {
 		const filtered = careerStats.filter((s) => s.season === year);
 		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
-		if (!seasonIdx || seasonIdx === -1) {
-			player.meta.helpers.missingData = true;
-		} else {
-			if (filtered.length > 1) {
-				for (let i = 0; i < filtered.length; i++) {
-					const stat: PlayerCareerStatSeason = filtered[i];
-					if (stat.teamAbbrev === 'TOT') {
-						player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(stat);
-					} else {
-						try {
-							const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
-							player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
-								team: _id,
-								totals: formatStatTotals(stat)
-							});
-						} catch (e) {
-							console.log(e);
-							player.meta.helpers.missingData = true;
-						}
+		if (seasonIdx == -1 && filtered.length == 1) {
+			const season: Player2Season = {
+				year,
+				teams: [],
+				preseason: {
+					games: []
+				},
+				regularSeason: {
+					games: [],
+					stats: {
+						totals: formatStatTotals(filtered[0])
+					}
+				},
+				postseason: {
+					games: []
+				}
+			};
+			player.seasons.addToSet(season);
+		} else if (seasonIdx == -1) {
+			const season: Player2Season = {
+				year,
+				teams: [],
+				preseason: {
+					games: []
+				},
+				regularSeason: {
+					games: []
+				},
+				postseason: {
+					games: []
+				}
+			};
+			for (let i = 0; i < filtered.length; i++) {
+				const stat: PlayerCareerStatSeason = filtered[i];
+				if (!season.regularSeason.stats) season.regularSeason.stats = {};
+				if (!season.regularSeason.stats.teamSplits) season.regularSeason.stats.teamSplits = [];
+				if (stat.teamAbbrev === 'TOT') {
+					season.regularSeason.stats.totals = formatStatTotals(stat);
+				} else {
+					try {
+						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
+						season.regularSeason.stats.teamSplits.push({
+							team: _id,
+							totals: formatStatTotals(stat)
+						});
+					} catch (e) {
+						console.log(e);
+						player.meta.helpers.missingData = true;
 					}
 				}
-			} else {
-				player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(filtered[0]);
 			}
+			player.seasons.addToSet(season);
+		} else if (filtered.length > 1) {
+			for (let i = 0; i < filtered.length; i++) {
+				const stat: PlayerCareerStatSeason = filtered[i];
+				if (stat.teamAbbrev === 'TOT') {
+					player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(stat);
+				} else {
+					try {
+						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
+						player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
+							team: _id,
+							totals: formatStatTotals(stat)
+						});
+					} catch (e) {
+						console.log(e);
+						player.meta.helpers.missingData = true;
+					}
+				}
+			}
+		} else {
+			player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(filtered[0]);
 		}
 	});
 	return player.save();
 };
 
-export const importAllPlayerStats = async () => {
-	let count = await Player2.countDocuments();
-	for (const player of await Player2.find()) {
-		console.log(count);
+export const importPlayerStats = async () => {
+	const year = await findLatestSeason();
+	// let count = await Player2.countDocuments({ seasons: { $elemMatch: { year } } });
+	for (const player of await Player2.find({ seasons: { $elemMatch: { year } } })) {
+		// console.log('remaining: ', count--);
 		await storePlayerRegSeasonStats(player);
-		count--;
 	}
+};
+
+export const updateActivePlayersCareerStats = async () => {
+	await importPlayerStats().then(() =>
+		console.log(`Completed syncing active player career stats from basketball reference`)
+	);
 };

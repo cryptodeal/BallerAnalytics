@@ -1618,3 +1618,13 @@ export const syncLiveEspnGameData = async () => {
 		console.log(`Completed syncing live game data from espn api`)
 	);
 };
+
+export const findLatestSeason = async (): Promise<number> => {
+	const game: Game2Document = await Game2.find()
+		.sort({ date: -1 })
+		.limit(1)
+		.select('meta.helpers.bballRef.year')
+		.lean();
+	const { year } = game.meta.helpers.bballRef;
+	return year;
+};

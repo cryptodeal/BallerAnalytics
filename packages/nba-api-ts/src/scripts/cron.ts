@@ -1,5 +1,6 @@
 import { CronJob } from 'cron';
 import { importGamesLastWeek, syncLiveEspnGameData } from '../db/controllers/Game2';
+import { updateActivePlayersCareerStats } from '../db/controllers/Player2';
 import { importCurrentRosters } from '../db/controllers/Team2';
 import { serverlessConnect } from '../db/connect';
 import config from '../config';
@@ -13,6 +14,7 @@ class DataImportScripts {
 				await this.connect();
 				await this.importWeekGames();
 				await this.updateCurrentRosters(year);
+				await this.importActivePlayerStats();
 			} catch (e) {
 				console.error(e);
 			}
@@ -40,6 +42,10 @@ class DataImportScripts {
 
 	private async connect() {
 		await serverlessConnect(config.MONGO_URI);
+	}
+
+	private async importActivePlayerStats() {
+		await updateActivePlayersCareerStats();
 	}
 
 	private async importWeekGames() {
