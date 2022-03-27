@@ -84,7 +84,7 @@ export const addPlayerBasicData = (player: Player2Document): Promise<Player2Docu
 	});
 };
 
-interface Player2Season {
+export interface Player2Season {
 	year: number;
 	teams: mongoose.Types.ObjectId[];
 	preseason: {
@@ -113,7 +113,7 @@ export const addGameToPlayer = async (
 	const { year } = game.meta.helpers.bballRef;
 	const { _id } = game;
 	let seasonIndex = player.seasons.findIndex((s) => s.year == year);
-	if (seasonIndex == -1 && year) {
+	if ((!seasonIndex || seasonIndex == -1) && year) {
 		const season: Player2Season = {
 			year,
 			teams: [],
@@ -149,7 +149,7 @@ export const addGameToPlayer = async (
 			throw Error(`Invalid season stage "${seasonStage}"`);
 		}
 	}
-	return player.save();
+	return await player.save();
 };
 
 export const compareNbaPlayerBday = (
