@@ -113,7 +113,7 @@ export const addGameToPlayer = async (
 	const { year } = game.meta.helpers.bballRef;
 	const { _id } = game;
 	let seasonIndex = player.seasons.findIndex((s) => s.year == year);
-	if ((!seasonIndex || seasonIndex == -1) && year) {
+	if (seasonIndex == -1) {
 		const season: Player2Season = {
 			year,
 			teams: [],
@@ -264,28 +264,10 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 		console.log(`No seasons found for ${player.name}`);
 		return;
 	}
-	seasons.forEach(async (year) => {
+	for (const year of seasons) {
 		const filtered = careerStats.filter((s) => s.season === year);
-		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
-		if (seasonIdx == -1 && filtered.length == 1) {
-			const season: Player2Season = {
-				year,
-				teams: [],
-				preseason: {
-					games: []
-				},
-				regularSeason: {
-					games: [],
-					stats: {
-						totals: formatStatTotals(filtered[0])
-					}
-				},
-				postseason: {
-					games: []
-				}
-			};
-			player.seasons.addToSet(season);
-		} else if (seasonIdx == -1) {
+		const sznCountFix = player.seasons.filter((s) => s.year === year).length;
+		if (!sznCountFix) {
 			const season: Player2Season = {
 				year,
 				teams: [],
@@ -299,27 +281,26 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 					games: []
 				}
 			};
-			for (let i = 0; i < filtered.length; i++) {
-				const stat: PlayerCareerStatSeason = filtered[i];
-				if (!season.regularSeason.stats) season.regularSeason.stats = {};
-				if (!season.regularSeason.stats.teamSplits) season.regularSeason.stats.teamSplits = [];
-				if (stat.teamAbbrev === 'TOT') {
-					season.regularSeason.stats.totals = formatStatTotals(stat);
-				} else {
-					try {
-						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
-						season.regularSeason.stats.teamSplits.push({
-							team: _id,
-							totals: formatStatTotals(stat)
-						});
-					} catch (e) {
-						console.log(e);
-						player.meta.helpers.missingData = true;
-					}
-				}
-			}
 			player.seasons.addToSet(season);
 		} else if (filtered.length > 1) {
+			const removeIdx: number[] = [];
+			let usedIdx;
+			player.seasons.map((s, i) => {
+				if (s.year === year) {
+					if (s.regularSeason.stats.totals && !usedIdx) {
+						usedIdx = i;
+					} else {
+						removeIdx.push(i);
+					}
+				}
+			});
+			removeIdx.map((removeMe) => {
+				player.seasons.splice(removeMe, 1);
+			});
+		}
+		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
+
+		if (filtered.length > 1) {
 			for (let i = 0; i < filtered.length; i++) {
 				const stat: PlayerCareerStatSeason = filtered[i];
 				if (stat.teamAbbrev === 'TOT') {
@@ -340,7 +321,7 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 		} else {
 			player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(filtered[0]);
 		}
-	});
+	}
 	return player.save();
 };
 
@@ -350,6 +331,14 @@ export const importPlayerStats = async () => {
 	for (const player of await Player2.find({ seasons: { $elemMatch: { year } } })) {
 		// console.log('remaining: ', count--);
 		await storePlayerRegSeasonStats(player);
+	}
+};
+
+export const importAllPlayerStats = async () => {
+	let count = await Player2.countDocuments();
+	for (const player of await Player2.find()) {
+		await storePlayerRegSeasonStats(player);
+		console.log('remaining: ', count--);
 	}
 };
 

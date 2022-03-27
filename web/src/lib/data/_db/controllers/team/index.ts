@@ -1,5 +1,5 @@
-import { Team2, type PopulatedDocument } from '@balleranalytics/nba-api-ts';
-import type { Team2Document, Team2Object } from '@balleranalytics/nba-api-ts';
+import { Team2, Player2 } from '@balleranalytics/nba-api-ts';
+import type { Team2Document, PopulatedDocument, Team2Object } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
@@ -30,7 +30,7 @@ export const getTeamBySlug = (
 		.lean()
 		.exec()
 		.then(
-			(
+			async (
 				team: PopulatedDocument<
 					PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
 					'seasons.roster.players.player'
@@ -40,6 +40,14 @@ export const getTeamBySlug = (
 				team.seasons[seasonIdx].regularSeason.games.sort((a, b) =>
 					dayjs(a.date).isBefore(b.date) ? -1 : 1
 				);
+				const playerIds = team.seasons[seasonIdx].roster.players.map((p) => p.player._id);
+				const rosterStats = await Player2.getPlayerSeasonStats(
+					playerIds,
+					team.seasons[seasonIdx].season
+				);
+				rosterStats.map((s, i) => {
+					console.log(`${s.name.full}:`, s.seasons[0].regularSeason);
+				});
 				team.seasons[seasonIdx].roster.players.sort((a, b) =>
 					a.player.name.full > b.player.name.full
 						? 1

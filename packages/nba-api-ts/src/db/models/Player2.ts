@@ -172,6 +172,46 @@ Player2Schema.statics = {
 		]);
 	},
 
+	async getPlayerSeasonStats(
+		playerUids: Player2Document['_id'][],
+		year: number
+	): Promise<Player2Object[]> {
+		return await this.aggregate([
+			{
+				$match: {
+					_id: {
+						$in: playerUids
+					}
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					'meta.images': 1,
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [
+									{
+										$eq: ['$$seasons.year', year]
+									}
+								]
+							}
+						}
+					}
+				}
+			},
+			{
+				$addFields: {
+					stats: '$seasons.regularSeason.stats'
+				}
+			}
+		]);
+	},
+
 	findByNameOrNbaId(name: string | string[], nbaId: string) {
 		return this.findOne({
 			$or: [
