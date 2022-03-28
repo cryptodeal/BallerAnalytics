@@ -112,8 +112,8 @@ export const addGameToPlayer = async (
 ) => {
 	const { year } = game.meta.helpers.bballRef;
 	const { _id } = game;
-	let seasonIndex = player.seasons.findIndex((s) => s.year == year);
-	if (seasonIndex == -1) {
+	const sznCountFix = player.seasons.filter((s) => s.year === year).length;
+	if (!sznCountFix || sznCountFix === 0) {
 		const season: Player2Season = {
 			year,
 			teams: [],
@@ -129,8 +129,8 @@ export const addGameToPlayer = async (
 		};
 		player.seasons.addToSet(season);
 		player = await player.save();
-		seasonIndex = player.seasons.findIndex((s) => s.year == year);
 	}
+	const seasonIndex = player.seasons.findIndex((s) => s.year == year);
 
 	switch (seasonStage) {
 		case 'post': {
@@ -267,7 +267,7 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 	for (const year of seasons) {
 		const filtered = careerStats.filter((s) => s.season === year);
 		const sznCountFix = player.seasons.filter((s) => s.year === year).length;
-		if (!sznCountFix) {
+		if (!sznCountFix || sznCountFix === 0) {
 			const season: Player2Season = {
 				year,
 				teams: [],
@@ -282,7 +282,8 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 				}
 			};
 			player.seasons.addToSet(season);
-		} else if (filtered.length > 1) {
+			player = await player.save();
+		} else if (sznCountFix > 1) {
 			const removeIdx: number[] = [];
 			let usedIdx;
 			player.seasons.map((s, i) => {
@@ -294,9 +295,9 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 					}
 				}
 			});
-			removeIdx.map((removeMe) => {
-				player.seasons.splice(removeMe, 1);
-			});
+			for (const idx of removeIdx) {
+				player.seasons.pull(player.seasons[idx]);
+			}
 		}
 		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
 
@@ -308,10 +309,12 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 				} else {
 					try {
 						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
-						player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
-							team: _id,
-							totals: formatStatTotals(stat)
-						});
+						if (_id && stat) {
+							player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
+								team: _id,
+								totals: formatStatTotals(stat)
+							});
+						}
 					} catch (e) {
 						console.log(e);
 						player.meta.helpers.missingData = true;
@@ -322,6 +325,7 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 			player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(filtered[0]);
 		}
 	}
+	player.seasons.sort(({ year: a }, { year: b }) => a - b);
 	return player.save();
 };
 
@@ -335,8 +339,8 @@ export const importPlayerStats = async () => {
 };
 
 export const importAllPlayerStats = async () => {
-	let count = await Player2.countDocuments();
-	for (const player of await Player2.find()) {
+	let count = await Player2.countDocuments({ $seasons: { $exists: true, $size: 1 } });
+	for (const player of await Player2.find({ $seasons: { $exists: true, $size: 1 } })) {
 		await storePlayerRegSeasonStats(player);
 		console.log('remaining: ', count--);
 	}
