@@ -326,7 +326,15 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 		}
 	}
 	player.seasons.sort(({ year: a }, { year: b }) => a - b);
-	return player.save();
+	if (
+		!player.seasons.filter(
+			(s) =>
+				s.regularSeason.stats.teamSplits &&
+				!s.regularSeason.stats.teamSplits?.filter((t) => !t.totals)
+		)
+	) {
+		return player.save();
+	}
 };
 
 export const importPlayerStats = async () => {

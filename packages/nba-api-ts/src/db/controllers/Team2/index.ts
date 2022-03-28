@@ -137,8 +137,23 @@ export const importCurrentRosters = async (year: number) => {
 };
 
 export const findTeamAbbrevYear = (abbrev: string, year: number) => {
-	return Team2.findByAbbrev(abbrev, year).then((team) => {
-		if (!team) throw new Error(`Error: no team found\nQuery: season: ${year}, abbrev: ${abbrev}`);
+	return Team2.findByAbbrev(abbrev, year).then(async (team) => {
+		if (!team) {
+			return Team2.findOne({
+				seasons: {
+					$elemMatch: {
+						'infoCommon.abbreviation': abbrev
+					}
+				}
+			})
+				.select('_id')
+				.exec()
+				.then((team) => {
+					if (!team)
+						throw new Error(`Error: no team found\nQuery: season: ${year}, abbrev: ${abbrev}`);
+					return team;
+				});
+		}
 		return team;
 	});
 };
