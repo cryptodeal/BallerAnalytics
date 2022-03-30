@@ -5,5 +5,6 @@ export { League } from './db/models/League';
 export { Official2 } from './db/models/Official2';
 export { Coach2 } from './db/models/Coach2';
 export { User } from './db/models/User';
+export type { Player2StatsObject } from './db/models/Player2';
 export * from './db/interfaces/mongoose.gen';
 export { serverlessConnect, initConnect, endConnect } from './db/connect';

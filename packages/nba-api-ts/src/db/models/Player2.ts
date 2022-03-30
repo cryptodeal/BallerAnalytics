@@ -1,11 +1,25 @@
 import mongoose from 'mongoose';
 import * as slugger from 'mongoose-slugger-plugin';
-import {
+import type {
 	Player2Document,
 	Player2Model,
 	Player2Schema,
-	Player2Object
+	Player2Object,
+	Player2SeasonPostseasonStatDocument,
+	Player2SeasonRegularSeasonStatsTeamSplitDocument
 } from '../interfaces/mongoose.gen';
+
+export type Player2StatsObject = Player2Object & {
+	stats: [
+		{
+			teamSplits: mongoose.Types.DocumentArray<Player2SeasonRegularSeasonStatsTeamSplitDocument>;
+			totals?: Player2SeasonPostseasonStatDocument;
+			number?: string;
+			position?: string;
+			twoWay?: boolean;
+		}
+	];
+};
 
 const statTotalsSchema = new mongoose.Schema(
 	{
@@ -175,7 +189,7 @@ Player2Schema.statics = {
 	async getPlayerSeasonStats(
 		playerUids: Player2Document['_id'][],
 		year: number
-	): Promise<Player2Object[]> {
+	): Promise<Player2StatsObject[]> {
 		return await this.aggregate([
 			{
 				$match: {
@@ -207,6 +221,14 @@ Player2Schema.statics = {
 			{
 				$addFields: {
 					stats: '$seasons.regularSeason.stats'
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					'meta.images': 1,
+					stats: 1
 				}
 			}
 		]);

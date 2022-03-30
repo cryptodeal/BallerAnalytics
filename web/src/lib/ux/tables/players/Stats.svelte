@@ -4,9 +4,9 @@
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
 	import { resolve } from '$lib/functions/helpers';
-	import type { Player2StatsObject } from '@balleranalytics/nba-api-ts';
+	import type { PlayerRosterStatItem } from '../teams/types';
 	import type { IColHeader, ISortBy } from '../types';
-	export let roster: Player2StatsObject[], season: number;
+	export let roster: PlayerRosterStatItem[], season: number;
 
 	let sortBy: ISortBy = { col: 'player.name.full', ascending: true };
 
@@ -69,8 +69,7 @@
 <Table>
 	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
-		{#each roster as { birthDate, meta, stats, name }, i}
-			{@const [playerStats] = stats}
+		{#each roster as { player, twoWay }, i}
 			<tr>
 				<!-- Display Player Name -->
 				<td
@@ -79,18 +78,20 @@
 					<div class="flex w-full inline-flex items-center">
 						<div class="flex-shrink-0 w-30 h-20">
 							<Headshot
-								avif={meta.images.headshot.avif}
-								png={meta.images.headshot.png}
-								webp={meta.images.headshot.webp}
-								alt="{name.full} headshot"
+								avif={player.meta.images.headshot.avif}
+								png={player.meta.images.headshot.png}
+								webp={player.meta.images.headshot.webp}
+								alt="{player.name.full} headshot"
 							/>
 						</div>
 
 						<div class="ml-2 w-auto">
 							<div class="text-sm font-medium leading-5 text-gray-900 dark:text-light-200">
-								{name.full}
-								{#if playerStats.twoWay}
-									<span class="text-xs">*</span>
+								{#if player}
+									{player.name.full}
+									{#if twoWay}
+										<span class="text-xs">*</span>
+									{/if}
 								{/if}
 							</div>
 						</div>
@@ -102,8 +103,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if birthDate}
-							{getAge(new Date(birthDate).toString())}
+						{#if player}
+							{getAge(new Date(player.birthDate).toString())}
 						{/if}
 					</div>
 				</td>

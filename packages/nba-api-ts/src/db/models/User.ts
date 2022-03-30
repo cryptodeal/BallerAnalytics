@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { UserDocument, UserModel, UserSchema } from '../interfaces/mongoose.gen';
 import crypto from 'crypto';
+import type { UserDocument, UserModel, UserSchema } from '../interfaces/mongoose.gen';
 
 const validateEmail = (email: string) => {
 	return email.match(

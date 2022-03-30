@@ -6,8 +6,13 @@
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import { tweened } from 'svelte/motion';
 	import darkMode from '$lib/data/stores/theme';
-	import type { Team2Document } from '@balleranalytics/nba-api-ts';
-	export let selectedTeam: Team2Document;
+	import type { Team2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
+	export let selectedTeam:
+		| Team2Document
+		| PopulatedDocument<
+				PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
+				'seasons.roster.players.player'
+		  >;
 
 	let w: number,
 		h: number,

@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
-import { Game2Document, Game2Model, Game2Schema, Game2Object } from '../interfaces/mongoose.gen';
+import type {
+	Game2Document,
+	Game2Model,
+	Game2Schema,
+	Game2Object
+} from '../interfaces/mongoose.gen';
 
 const Game2Schema: Game2Schema = new mongoose.Schema({
 	meta: {
@@ -449,6 +454,51 @@ Game2Schema.query = {
 Game2Schema.statics = {
 	findByUrl(url: string) {
 		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url });
+	},
+
+	async loadBasicData(gameIds: Game2Document['_id'][]) {
+		return await this.aggregate([
+			{
+				$match: {
+					_id: {
+						$in: gameIds
+					}
+				}
+			},
+			{
+				$lookup: {
+					from: 'team2',
+					localField: 'home.team',
+					foreignField: '_id',
+					as: 'home.team'
+				}
+			},
+			{
+				$unwind: '$home.team'
+			},
+			{
+				$lookup: {
+					from: 'team2',
+					localField: 'visitor.team',
+					foreignField: '_id',
+					as: 'visitor.team'
+				}
+			},
+			{
+				$unwind: '$visitor.team'
+			},
+			{
+				$project: {
+					'meta.helpers.isOver': 1,
+					'home.team': 1,
+					'home.stats.totals.points': 1,
+					'visitor.team': 1,
+					'visitor.stats.totals.points': 1,
+					date: 1,
+					time: 1
+				}
+			}
+		]);
 	},
 
 	getDailyGames(startDate: Date, endDate: Date): Promise<Game2Object[]> {

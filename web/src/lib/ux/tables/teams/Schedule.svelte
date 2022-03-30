@@ -5,13 +5,20 @@
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
-	import type { GameScheduleItem, TeamRecord } from '$lib/types';
+	import type { Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
+	import type { TeamRecord } from '$lib/types';
 	import type { MetaGlobImport } from '$lib/types';
 	import type { IColHeader } from '../types';
 	import type { Types } from 'mongoose';
 	export let logoModules: MetaGlobImport;
 	export let teamId: Types.ObjectId;
-	export let schedule: GameScheduleItem[];
+	export let schedule: PopulatedDocument<
+		PopulatedDocument<
+			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+			'home.players.player'
+		>,
+		'visitor.players.player'
+	>[];
 	// $: console.log($dailyGames);
 	const colHeaders: IColHeader[] = [
 		{ title: 'Date/Time (ET)' },
@@ -91,7 +98,7 @@
 						<div
 							class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
 						>
-							{#if !$dailyGames || !$dailyGames[_id]}
+							{#if !$dailyGames || !$dailyGames[_id.toString()]}
 								<div>
 									{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
 										<div class="text-green-700 dark:text-green-500 font-bold mr-2">W</div>
@@ -103,11 +110,11 @@
 								</div>
 							{:else}
 								<div>
-									{#if ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score && $dailyGames[_id].isOver) || ($dailyGames && $dailyGames[_id] && teamId.toString() == $dailyGames[_id].visitor._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score && $dailyGames[_id].isOver)}
+									{#if ($dailyGames && $dailyGames[_id.toString()] && teamId.toString() == $dailyGames[_id.toString()].home._id && $dailyGames[_id.toString()].home.score > $dailyGames[_id.toString()].visitor.score && $dailyGames[_id.toString()].isOver) || ($dailyGames && $dailyGames[_id.toString()] && teamId.toString() == $dailyGames[_id.toString()].visitor._id && $dailyGames[_id.toString()].visitor.score > $dailyGames[_id.toString()].home.score && $dailyGames[_id.toString()].isOver)}
 										<div class="text-green-700 dark:text-green-500 font-bold mr-2">W</div>
-									{:else if $dailyGames && $dailyGames[_id] && $dailyGames[_id].isOver}
+									{:else if $dailyGames && $dailyGames[_id.toString()] && $dailyGames[_id.toString()].isOver}
 										<div class="text-red-700 dark:text-red-500 font-bold mr-2">L</div>
-									{:else if $dailyGames && $dailyGames[_id] && !$dailyGames[_id].isOver && $dailyGames[_id].home.score && $dailyGames[_id].visitor.score}
+									{:else if $dailyGames && $dailyGames[_id.toString()] && !$dailyGames[_id.toString()].isOver && $dailyGames[_id.toString()].home.score && $dailyGames[_id.toString()].visitor.score}
 										<div
 											class="text-red-600 dark:text-red-500 font-bold animate-pulse text-sm mr-2"
 										>
@@ -117,29 +124,31 @@
 								</div>
 							{/if}
 
-							{#if $dailyGames && $dailyGames[_id]}
+							{#if $dailyGames && $dailyGames[_id.toString()]}
 								<div class="flex inline-flex">
-									{#if $dailyGames[_id].home.score === $dailyGames[_id].visitor.score}
-										{$dailyGames[_id].home.score}&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
-									{:else if teamId.toString() == $dailyGames[_id].home._id && $dailyGames[_id].home.score > $dailyGames[_id].visitor.score}
+									{#if $dailyGames[_id.toString()].home.score === $dailyGames[_id.toString()].visitor.score}
+										{$dailyGames[_id.toString()].home.score}&nbsp;-&nbsp;{$dailyGames[
+											_id.toString()
+										].visitor.score}
+									{:else if teamId.toString() == $dailyGames[_id.toString()].home._id && $dailyGames[_id.toString()].home.score > $dailyGames[_id.toString()].visitor.score}
 										<div class="text-green-700 dark:text-green-500 font-semibold">
-											{$dailyGames[_id].home.score}
+											{$dailyGames[_id.toString()].home.score}
 										</div>
-										&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
-									{:else if teamId.toString() == $dailyGames[_id].home._id}
+										&nbsp;-&nbsp;{$dailyGames[_id.toString()].visitor.score}
+									{:else if teamId.toString() == $dailyGames[_id.toString()].home._id}
 										<div class="text-red-700 dark:text-red-500 font-semibold">
-											{$dailyGames[_id].home.score}
+											{$dailyGames[_id.toString()].home.score}
 										</div>
-										&nbsp;-&nbsp;{$dailyGames[_id].visitor.score}
-									{:else if teamId.toString() == $dailyGames[_id].visitor._id && $dailyGames[_id].visitor.score > $dailyGames[_id].home.score}
-										{$dailyGames[_id].home.score}&nbsp;-&nbsp;
+										&nbsp;-&nbsp;{$dailyGames[_id.toString()].visitor.score}
+									{:else if teamId.toString() == $dailyGames[_id.toString()].visitor._id && $dailyGames[_id.toString()].visitor.score > $dailyGames[_id.toString()].home.score}
+										{$dailyGames[_id.toString()].home.score}&nbsp;-&nbsp;
 										<div class="text-green-700 dark:text-green-500 font-semibold">
-											{$dailyGames[_id].visitor.score}
+											{$dailyGames[_id.toString()].visitor.score}
 										</div>
 									{:else}
-										{$dailyGames[_id].home.score}&nbsp;-&nbsp;
+										{$dailyGames[_id.toString()].home.score}&nbsp;-&nbsp;
 										<div class="text-red-700 dark:text-red-500 font-semibold">
-											{$dailyGames[_id].visitor.score}
+											{$dailyGames[_id.toString()].visitor.score}
 										</div>
 									{/if}
 								</div>

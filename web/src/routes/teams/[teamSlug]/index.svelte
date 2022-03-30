@@ -1,28 +1,48 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { SeasonList } from '$lib/types';
+	import type { TeamSlugParams } from './types';
+	import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
+	import type { get } from './index.json';
+
 	export const logoModules = import.meta.globEager('../../../lib/ux/teams/assets/logo-*.svelte');
 
-	export const load: Load = async ({ fetch, params, url }) => {
+	type TeamPageLoadProps = TeamPageInitData & {
+		seasonIdx: number;
+		seasons: SeasonList[];
+		seasonYear: number;
+	};
+
+	type InputProps = NonNullable<Awaited<ReturnType<typeof get>>['body']>;
+
+	type OutputProps = TeamPageLoadProps & InputProps;
+
+	export const load: Load<TeamSlugParams, InputProps, OutputProps> = async ({
+		fetch,
+		params,
+		url
+	}) => {
 		if (url.searchParams.get('seasonIdx')) {
 			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
 				'seasonIdx'
 			)}`;
 			const res = await fetch(apiUrl);
 			if (res.ok) {
-				const { teamData } = await res.json();
-				const seasonIdx = url.searchParams.get('seasonIdx');
+				const { team, players, games } = (await res.json()) as TeamPageInitData;
+				const seasonIdx = parseInt(url.searchParams.get('seasonIdx'));
 				const seasons: SeasonList[] = [];
-				teamData.seasons.map((s) => {
+				team.seasons.map((s) => {
 					const { season } = s;
 					seasons.push({ season });
 				});
 				seasons.sort((a, b) => a.season - b.season);
 				return {
 					props: {
-						teamData,
+						team,
+						players,
+						games,
 						seasonIdx,
-						seasonYear: teamData.seasons[seasonIdx].season,
+						seasonYear: team.seasons[seasonIdx].season,
 						seasons
 					}
 				};
@@ -35,19 +55,21 @@
 			const apiUrl = `/teams/${params.teamSlug}.json`;
 			const res = await fetch(apiUrl);
 			if (res.ok) {
-				const { teamData } = await res.json();
+				const { team, players, games } = (await res.json()) as TeamPageInitData;
 				const seasonIdx = 0;
 				const seasons: SeasonList[] = [];
-				teamData.seasons.map((s) => {
+				team.seasons.map((s) => {
 					const { season } = s;
 					seasons.push({ season });
 				});
 				seasons.sort((a, b) => a.season - b.season);
 				return {
 					props: {
-						teamData,
+						team,
+						players,
+						games,
 						seasonIdx,
-						seasonYear: teamData.seasons[seasonIdx].season,
+						seasonYear: team.seasons[seasonIdx].season,
 						seasons
 					}
 				};
@@ -69,7 +91,12 @@
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import Table from '$lib/ux/tables/core/Table.svelte';
 	import THead from '$lib/ux/tables/core/THead.svelte';
-	import type { Team2Document } from '@balleranalytics/nba-api-ts';
+	import type {
+		Game2Document,
+		Team2Document,
+		PopulatedDocument,
+		Player2StatsObject
+	} from '@balleranalytics/nba-api-ts';
 	import type { TeamColor } from '$lib/types';
 	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';
 	import TabList from '$lib/ux/tabs/TabList.svelte';
@@ -81,7 +108,18 @@
 	import { browser } from '$app/env';
 	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
 	import type { IColHeader } from '$lib/ux/tables/types';
-	export let teamData;
+	export let team: PopulatedDocument<
+		PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
+		'seasons.roster.players.player'
+	>;
+	export let games: PopulatedDocument<
+		PopulatedDocument<
+			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+			'home.players.player'
+		>,
+		'visitor.players.player'
+	>[];
+	export let players: Player2StatsObject[];
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
@@ -95,10 +133,10 @@
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
-		teamData.infoCommon.nbaAbbreviation
+		team.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
-		teamData.infoCommon.nbaAbbreviation
+		team.infoCommon.nbaAbbreviation
 	) as unknown as TeamColor;
 	const colorPalette = genPalette(Color(primaryColor), Color(secondaryColor), 5);
 	if (browser) {
@@ -108,21 +146,27 @@
 	}
 
 	async function loadRosterData() {
-		const seasonIndex = teamData.seasons.findIndex((s) => s.season === seasonYear);
-		const res = await fetch(`/teams/${teamData.infoCommon.slug}.json?seasonIdx=${seasonIndex}`);
-		const { teamData: data }: { teamData: Team2Document } = await res.json();
-		teamData = data;
+		const seasonIndex = team.seasons.findIndex((s) => s.season === seasonYear);
+		const res = await fetch(`/teams/${team.infoCommon.slug}.json?seasonIdx=${seasonIndex}`);
+		const {
+			team: teamData,
+			players: playerData,
+			games: gameData
+		}: TeamPageInitData = await res.json();
+		team = teamData;
+		players = playerData;
+		games = gameData;
 		seasonIdx = seasonIndex;
 	}
 </script>
 
 <MetaTags
-	title="{seasonYear} {teamData.infoCommon.name} Season Basic Info"
-	description="Team Schedule, Roster, and Statistics for the {teamData.infoCommon
+	title="{seasonYear} {team.infoCommon.name} Season Basic Info"
+	description="Team Schedule, Roster, and Statistics for the {team.infoCommon
 		.name}'s {seasonYear} season."
 />
 
-<RectBg selectedTeam={teamData} />
+<RectBg selectedTeam={team} />
 
 <div class="appContent">
 	<div class="p-2">
@@ -132,10 +176,10 @@
 			<div
 				class="h-50 w-50 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
 			>
-				<TeamLogo size={200} {logoModules} slug={teamData.infoCommon.slug} />
+				<TeamLogo size={200} {logoModules} slug={team.infoCommon.slug} />
 			</div>
 			<h1 class="text-dark-600 dark:text-light-200">
-				{teamData.infoCommon.name}
+				{team.infoCommon.name}
 			</h1>
 		</div>
 		<div class="p-2 md:(container mx-auto)">
@@ -161,38 +205,36 @@
 
 				<!-- Schedule Data Tab -->
 				<TabPanel>
-					{#if teamData.seasons[seasonIdx].regularSeason.games.length > 0}
+					{#if team.seasons[seasonIdx].regularSeason.games.length > 0}
 						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-								{teamData.seasons[seasonIdx].season} Regular Season:
+								{team.seasons[seasonIdx].season} Regular Season:
 							</h2>
 						</div>
 						<div class="my-4">
-							<ScheduleTable
-								{logoModules}
-								schedule={teamData.seasons[seasonIdx].regularSeason.games}
-								teamId={teamData._id}
-							/>
+							<ScheduleTable {logoModules} schedule={games} teamId={team._id} />
 						</div>
 					{:else}
 						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-							No games played in {teamData.seasons[seasonIdx].season}
+							No games played in {team.seasons[seasonIdx].season}
 						</h2>
 					{/if}
-					{#if teamData.seasons[seasonIdx].postseason.games.length > 0}
+					<!--
+            {#if team.seasons[seasonIdx].postseason.games.length > 0}
 						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-								{teamData.seasons[seasonIdx].season} Postseason:
+								{team.seasons[seasonIdx].season} Postseason:
 							</h2>
 						</div>
 						<div class="my-4">
 							<ScheduleTable
 								{logoModules}
-								schedule={teamData.seasons[seasonIdx].postseason.games}
-								teamId={teamData._id}
+								schedule={games}
+								teamId={team._id}
 							/>
 						</div>
 					{/if}
+          -->
 				</TabPanel>
 
 				<!-- Roster Data Tab -->
@@ -200,7 +242,7 @@
 					<div class="glassmorphicCard px-4 py-2 my-5">
 						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
 					</div>
-					<PlayerRoster roster={teamData.seasons[seasonIdx].roster.players} season={seasonYear} />
+					<PlayerRoster roster={team.seasons[seasonIdx].roster.players} season={seasonYear} />
 				</TabPanel>
 
 				<!-- Stats Data Tab -->

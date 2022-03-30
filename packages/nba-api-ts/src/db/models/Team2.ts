@@ -1,5 +1,109 @@
 import mongoose from 'mongoose';
-import { Team2Document, Team2Model, Team2Schema, Team2Object } from '../interfaces/mongoose.gen';
+import type {
+	Team2Document,
+	Team2Model,
+	Team2Schema,
+	Team2Object
+} from '../interfaces/mongoose.gen';
+
+/* 
+export interface Team2RosterObject extends Team2Object {
+  stats: [{
+    teamSplits: mongoose.Types.DocumentArray<Player2SeasonRegularSeasonStatsTeamSplitDocument>;
+    totals?: Player2SeasonPostseasonStatDocument;
+  }];
+}
+*/
+
+const teamStatsTotalsSchema = new mongoose.Schema(
+	{
+		fieldGoalsMade: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		fieldGoalsAttempted: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		fieldGoalsPct: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		threePointersMade: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		threePointersAttempted: {
+			value: { type: Number }
+		},
+		threePointersPct: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		twoPointFGMade: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		twoPointFGAttempted: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		twoPointFGPct: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		freeThrowsMade: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		freeThrowsAttempted: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		freeThrowsPct: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		offReb: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		defReb: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		totalReb: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		assists: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		steals: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		blocks: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		turnovers: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		/* TODO: STORE TEAM TURNOVERS AND TOTAL TURNOVERS FROM ESPN */
+		personalFouls: {
+			value: { type: Number },
+			rank: { type: Number }
+		},
+		points: {
+			value: { type: Number },
+			rank: { type: Number }
+		}
+	},
+	{ _id: false }
+);
 
 const Team2Schema: Team2Schema = new mongoose.Schema({
 	meta: {
@@ -24,7 +128,7 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 		conference: { type: String },
 		division: { type: String },
 		code: { type: String, required: true },
-		slug: { type: String, required: true },
+		slug: { type: String, required: true, index: true },
 		minYear: { type: String, required: true },
 		maxYear: { type: String, required: true }
 	},
@@ -62,270 +166,17 @@ const Team2Schema: Team2Schema = new mongoose.Schema({
 			preseason: {
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
-				stats: {
-					fieldGoalsMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					fieldGoalsAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					fieldGoalsPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					threePointersMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					threePointersAttempted: {
-						value: { type: Number }
-					},
-					threePointersPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					offReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					defReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					totalReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					assists: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					steals: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					blocks: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					turnovers: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					/* TODO: STORE TEAM TURNOVERS AND TOTAL TURNOVERS FROM ESPN */
-					personalFouls: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					points: {
-						value: { type: Number },
-						rank: { type: Number }
-					}
-				}
+				stats: teamStatsTotalsSchema
 			},
 			regularSeason: {
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
-				stats: {
-					fieldGoalsMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					fieldGoalsAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					fieldGoalsPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					threePointersMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					threePointersAttempted: {
-						value: { type: Number }
-					},
-					threePointersPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					offReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					defReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					totalReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					assists: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					steals: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					blocks: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					turnovers: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					personalFouls: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					points: {
-						value: { type: Number },
-						rank: { type: Number }
-					}
-				}
+				stats: teamStatsTotalsSchema
 			},
 			postseason: {
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
-				stats: {
-					fieldGoalsMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					fieldGoalsAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					fieldGoalsPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					threePointersMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					threePointersAttempted: {
-						value: { type: Number }
-					},
-					threePointersPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					twoPointFGPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsMade: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsAttempted: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					freeThrowsPct: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					offReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					defReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					totalReb: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					assists: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					steals: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					blocks: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					turnovers: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					personalFouls: {
-						value: { type: Number },
-						rank: { type: Number }
-					},
-					points: {
-						value: { type: Number },
-						rank: { type: Number }
-					}
-				}
+				stats: teamStatsTotalsSchema
 			}
 		}
 	]
@@ -340,6 +191,69 @@ Team2Schema.statics = {
 				{ 'seasons.infoCommon': { $elemMatch: { name: name } } }
 			]
 		}).exec();
+	},
+
+	async loadTeamPage(slug: string, season: number) {
+		return await this.aggregate([
+			{
+				$match: {
+					'infoCommon.slug': slug,
+					seasons: {
+						$elemMatch: {
+							season
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					infoCommon: 1,
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [
+									{
+										$eq: ['$$seasons.season', season]
+									}
+								]
+							}
+						}
+					}
+				}
+			},
+			{
+				$lookup: {
+					from: 'player2',
+					as: 'playerStats',
+					let: { playerId: '$seasons.roster.players.player' },
+					pipeline: [
+						{
+							$match: {
+								$expr: {
+									$and: [{ $eq: ['$_id', '$$playerId'] }]
+								}
+							}
+						},
+						{
+							$project: {
+								name: 1
+							}
+						}
+					]
+
+					// localField: 'seasons.roster.players.player',
+					// foreignField: '_id',
+				}
+			},
+			{
+				$project: {
+					infoCommon: 1,
+					playerStats: 1
+				}
+			}
+		]);
 	},
 
 	findByAbbrev(abbrev: string, season: number) {
@@ -397,7 +311,7 @@ Team2Schema.query = {
 	populateSznPlayers(seasonIndex: number) {
 		return this.populate(
 			`seasons.${seasonIndex}.roster.players.player`,
-			'name birthDate meta.images.headshot height weight college'
+			'name birthDate meta.images.headshot height weight college seasons.regularSeason.stats seasons.year'
 		);
 	}
 };
