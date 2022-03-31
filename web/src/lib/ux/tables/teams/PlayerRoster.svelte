@@ -4,9 +4,9 @@
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
 	import { resolve } from '$lib/functions/helpers';
-	import type { PlayerRosterItem } from '$lib/types';
+	import type { Player2StatsObject } from '@balleranalytics/nba-api-ts';
 	import type { IColHeader, ISortBy } from '../types';
-	export let roster: PlayerRosterItem[], season: number;
+	export let roster: Player2StatsObject[], season: number;
 
 	let sortBy: ISortBy = { col: 'player.name.full', ascending: true };
 
@@ -56,7 +56,9 @@
 <Table>
 	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
-		{#each roster as { player, number, position, twoWay }, i}
+		{#each roster as { birthDate, college, meta, stats: [{ twoWay, position, number }], name, height, weight }, i}
+			{@const { avif, png, webp } = meta.images.headshot}
+			{@const { feet, inches } = height}
 			<tr>
 				<!-- Display Player Name -->
 				<td
@@ -64,21 +66,15 @@
 				>
 					<div class="flex w-full inline-flex items-center">
 						<div class="flex-shrink-0 w-30 h-20">
-							<Headshot
-								avif={player.meta.images.headshot.avif}
-								png={player.meta.images.headshot.png}
-								webp={player.meta.images.headshot.webp}
-								alt="{player.name.full} headshot"
-							/>
+							<Headshot {avif} {png} {webp} alt="{name.full} headshot" />
 						</div>
 
 						<div class="ml-2 w-auto">
 							<div class="text-sm font-medium leading-5 text-gray-900 dark:text-light-200">
-								{#if player}
-									{player.name.full}
-									{#if twoWay}
-										<span class="text-xs">*</span>
-									{/if}
+								{name.full}
+
+								{#if twoWay}
+									<span class="text-xs">*</span>
 								{/if}
 							</div>
 							{#if number}
@@ -106,8 +102,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player}
-							{getAge(new Date(player.birthDate).toString())}
+						{#if birthDate}
+							{getAge(new Date(birthDate).toString())}
 						{/if}
 					</div>
 				</td>
@@ -117,9 +113,9 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.height.feet}
-							{player.height.feet}-{#if player.height.inches}
-								{player.height.inches}
+						{#if feet}
+							{feet}-{#if inches}
+								{inches}
 							{:else}
 								0
 							{/if}
@@ -132,8 +128,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.weight}
-							{player.weight}
+						{#if weight}
+							{weight}
 						{/if}
 					</div>
 				</td>
@@ -143,8 +139,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.college}
-							{player.college}
+						{#if college}
+							{college}
 						{/if}
 					</div>
 				</td>

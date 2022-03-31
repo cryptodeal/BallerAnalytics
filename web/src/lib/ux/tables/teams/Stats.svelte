@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Headshot from '$lib/ux/img/Headshot.svelte';
-	import { getAge } from '$lib/functions/helpers';
+	import { formatPct, getAge } from '$lib/functions/helpers';
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
 	import { resolve } from '$lib/functions/helpers';
@@ -8,38 +8,38 @@
 	import type { IColHeader, ISortBy } from '../types';
 	export let roster: Player2StatsObject[], season: number;
 
-	let sortBy: ISortBy = { col: 'player.name.full', ascending: true };
+	let sortBy: ISortBy = { col: 'name.full', ascending: true };
 
-	$: if (season) sortBy = { col: 'player.name.full', ascending: true };
+	$: if (season) sortBy = { col: 'name.full', ascending: true };
 
 	const colHeaders: IColHeader[] = [
-		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'player.name.full' },
-		{ title: 'Age', key: 'player.birthDate' },
-		{ title: 'G', key: 'player.stats.games' },
-		{ title: 'GS', key: 'player.stats.gamesStarted' },
-		{ title: 'Min', key: 'stats.stats.minutes' },
-		{ title: 'FG', key: 'player.stats.fieldGoalsMade' },
-		{ title: 'FGA', key: 'player.stats.fieldGoalsAttempted' },
-		{ title: 'FG%', key: 'player.stats.fieldGoalsPct' },
-		{ title: '3P', key: 'player.stats.threePointersMade' },
-		{ title: '3PA', key: 'player.stats.threePointersAttempted' },
-		{ title: '3P%', key: 'player.stats.threePointersPct' },
-		{ title: '2P', key: 'player.stats.twoPointFGMade' },
-		{ title: '2PA', key: 'player.stats.twoPointFGAttempted' },
-		{ title: '2P%', key: 'player.stats.twoPointFGPct' },
-		{ title: 'eFG%', key: 'player.stats.effectiveFieldGoalPct' },
-		{ title: 'FT', key: 'player.stats.freeThrowsAttempted' },
-		{ title: 'FTA', key: 'player.stats.freeThrowsMade' },
-		{ title: 'FT%', key: 'player.stats.freeThrowsPct' },
-		{ title: 'ORB', key: 'player.stats.offReb' },
-		{ title: 'DRB', key: 'player.stats.defReb' },
-		{ title: 'TRB', key: 'player.stats.totalReb' },
-		{ title: 'AST', key: 'player.stats.assists' },
-		{ title: 'STL', key: 'player.stats.steals' },
-		{ title: 'BLK', key: 'player.stats.blocks' },
-		{ title: 'TOV', key: 'player.stats.turnovers' },
-		{ title: 'PF', key: 'player.stats.personalFouls' },
-		{ title: 'PTS', key: 'player.stats.points' }
+		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'name.full' },
+		{ title: 'Age', key: 'birthDate' },
+		{ title: 'G', key: 'stats.0.totals.games' },
+		{ title: 'GS', key: 'stats.0.totals.gamesStarted' },
+		{ title: 'Min', key: 'stats.0.totals.minutes' },
+		{ title: 'FG', key: 'stats.0.totals.fieldGoalsMade' },
+		{ title: 'FGA', key: 'stats.0.totals.fieldGoalsAttempted' },
+		{ title: 'FG%', key: 'stats.0.totals.fieldGoalsPct' },
+		{ title: '3P', key: 'stats.0.totals.threePointersMade' },
+		{ title: '3PA', key: 'stats.0.totals.threePointersAttempted' },
+		{ title: '3P%', key: 'stats.0.totals.threePointersPct' },
+		{ title: '2P', key: 'stats.0.totals.twoPointFGMade' },
+		{ title: '2PA', key: 'stats.0.totals.twoPointFGAttempted' },
+		{ title: '2P%', key: 'stats.0.totals.twoPointFGPct' },
+		{ title: 'eFG%', key: 'stats.0.totals.effectiveFieldGoalPct' },
+		{ title: 'FT', key: 'stats.0.totals.freeThrowsAttempted' },
+		{ title: 'FTA', key: 'stats.0.totals.freeThrowsMade' },
+		{ title: 'FT%', key: 'stats.0.totals.freeThrowsPct' },
+		{ title: 'ORB', key: 'stats.0.totals.offReb' },
+		{ title: 'DRB', key: 'stats.0.totals.defReb' },
+		{ title: 'TRB', key: 'stats.0.totals.totalReb' },
+		{ title: 'AST', key: 'stats.0.totals.assists' },
+		{ title: 'STL', key: 'stats.0.totals.steals' },
+		{ title: 'BLK', key: 'stats.0.totals.blocks' },
+		{ title: 'TOV', key: 'stats.0.totals.turnovers' },
+		{ title: 'PF', key: 'stats.0.totals.personalFouls' },
+		{ title: 'PTS', key: 'stats.0.totals.points' }
 	];
 
 	$: sort = (column: string) => {
@@ -57,9 +57,11 @@
 			if (itemA && itemB) {
 				return itemA < itemB ? -1 * sortModifier : itemA > itemB ? 1 * sortModifier : 0;
 			} else if (!itemA && itemB) {
+				return -1 * sortModifier;
+			} else if (itemA && !itemB) {
 				return 1 * sortModifier;
 			} else {
-				return -1 * sortModifier;
+				return 0;
 			}
 		};
 		roster = roster.sort(sort);
@@ -69,8 +71,7 @@
 <Table>
 	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
-		{#each roster as { birthDate, meta, stats, name }, i}
-			{@const [playerStats] = stats}
+		{#each roster as { birthDate, meta, stats: [{ totals: { games, gamesStarted, minutes, fieldGoalsMade, fieldGoalsAttempted, fieldGoalsPct, threePointersMade, threePointersAttempted, threePointersPct, twoPointFGMade, twoPointFGAttempted, twoPointFGPct, effectiveFieldGoalPct, freeThrowsMade, freeThrowsAttempted, freeThrowsPct, offReb, defReb, totalReb, assists, steals, blocks, turnovers, personalFouls, points }, twoWay }], name }, i}
 			<tr>
 				<!-- Display Player Name -->
 				<td
@@ -89,7 +90,7 @@
 						<div class="ml-2 w-auto">
 							<div class="text-sm font-medium leading-5 text-gray-900 dark:text-light-200">
 								{name.full}
-								{#if playerStats.twoWay}
+								{#if twoWay}
 									<span class="text-xs">*</span>
 								{/if}
 							</div>
@@ -113,8 +114,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.games}
-							{player.stats.games}
+						{#if games}
+							{games}
+						{:else}
+							0
 						{/if}
 					</div>
 				</td>
@@ -124,8 +127,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.gamesStarted}
-							{player.stats.gamesStarted}
+						{#if gamesStarted}
+							{gamesStarted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -135,8 +140,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.minutes}
-							{player.stats.minutes}
+						{#if minutes}
+							{minutes}
 						{/if}
 					</div>
 				</td>
@@ -146,8 +151,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.fieldGoalsMade}
-							{player.stats.fieldGoalsMade}
+						{#if fieldGoalsMade}
+							{fieldGoalsMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -157,8 +164,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.fieldGoalsAttempted}
-							{player.stats.fieldGoalsAttempted}
+						{#if fieldGoalsAttempted}
+							{fieldGoalsAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -168,8 +177,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.fieldGoalsPct}
-							{player.stats.fieldGoalsPct}
+						{#if fieldGoalsPct}
+							{formatPct(fieldGoalsPct)}
 						{/if}
 					</div>
 				</td>
@@ -179,8 +188,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.threePointersMade}
-							{player.stats.threePointersMade}
+						{#if threePointersMade}
+							{threePointersMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -190,8 +201,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.threePointersAttempted}
-							{player.stats.threePointersAttempted}
+						{#if threePointersAttempted}
+							{threePointersAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -201,8 +214,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.threePointersPct}
-							{player.stats.threePointersPct}
+						{#if threePointersPct}
+							{formatPct(threePointersPct)}
 						{/if}
 					</div>
 				</td>
@@ -212,8 +225,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.twoPointFGMade}
-							{player.stats.twoPointFGMade}
+						{#if twoPointFGMade}
+							{twoPointFGMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -223,8 +238,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.twoPointFGAttempted}
-							{player.stats.twoPointFGAttempted}
+						{#if twoPointFGAttempted}
+							{twoPointFGAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -234,8 +251,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.twoPointFGPct}
-							{player.stats.twoPointFGPct}
+						{#if twoPointFGPct}
+							{formatPct(twoPointFGPct)}
 						{/if}
 					</div>
 				</td>
@@ -245,19 +262,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.effectiveFieldGoalPct}
-							{player.stats.effectiveFieldGoalPct}
-						{/if}
-					</div>
-				</td>
-
-				<!-- Display Player freeThrowsAttempted -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if player.stats.freeThrowsAttempted}
-							{player.stats.freeThrowsAttempted}
+						{#if effectiveFieldGoalPct}
+							{effectiveFieldGoalPct}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -267,8 +275,23 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.freeThrowsMade}
-							{player.stats.freeThrowsMade}
+						{#if freeThrowsMade}
+							{freeThrowsMade}
+						{:else if games && games > 0}
+							0
+						{/if}
+					</div>
+				</td>
+
+				<!-- Display Player freeThrowsAttempted -->
+				<td
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+				>
+					<div class="text-sm font-bold leading-5">
+						{#if freeThrowsAttempted}
+							{freeThrowsAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -278,8 +301,8 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.freeThrowsPct}
-							{player.stats.freeThrowsPct}
+						{#if freeThrowsPct}
+							{formatPct(freeThrowsPct)}
 						{/if}
 					</div>
 				</td>
@@ -289,8 +312,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.offReb}
-							{player.stats.offReb}
+						{#if offReb}
+							{offReb}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -300,8 +325,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.defReb}
-							{player.stats.defReb}
+						{#if defReb}
+							{defReb}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -311,8 +338,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.totalReb}
-							{player.stats.totalReb}
+						{#if totalReb}
+							{totalReb}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -322,8 +351,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.assists}
-							{player.stats.assists}
+						{#if assists}
+							{assists}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -333,8 +364,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.steals}
-							{player.stats.steals}
+						{#if steals}
+							{steals}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -344,8 +377,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.blocks}
-							{player.stats.blocks}
+						{#if blocks}
+							{blocks}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -355,8 +390,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.turnovers}
-							{player.stats.turnovers}
+						{#if turnovers}
+							{turnovers}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -366,8 +403,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.personalFouls}
-							{player.stats.personalFouls}
+						{#if personalFouls}
+							{personalFouls}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -377,8 +416,10 @@
 					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
-						{#if player.stats.points}
-							{player.stats.points}
+						{#if points}
+							{points}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>

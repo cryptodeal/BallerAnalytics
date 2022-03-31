@@ -86,13 +86,11 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import ScheduleTable from '$lib/ux/tables/teams/Schedule.svelte';
 	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
+	import PlayerStats from '$lib/ux/tables/teams/Stats.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import RectBg from '$lib/ux/svg/RectBg.svelte';
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
-	import Table from '$lib/ux/tables/core/Table.svelte';
-	import THead from '$lib/ux/tables/core/THead.svelte';
 	import type {
-		Game2Document,
 		Team2Document,
 		PopulatedDocument,
 		Player2StatsObject
@@ -107,29 +105,17 @@
 	import darkMode from '$lib/data/stores/theme';
 	import { browser } from '$app/env';
 	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
-	import type { IColHeader } from '$lib/ux/tables/types';
+	import type { TeamPageGames } from '$lib/data/_db/controllers/team';
 	export let team: PopulatedDocument<
 		PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
 		'seasons.roster.players.player'
 	>;
-	export let games: PopulatedDocument<
-		PopulatedDocument<
-			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
-			'home.players.player'
-		>,
-		'visitor.players.player'
-	>[];
+	export let games: TeamPageGames;
 	export let players: Player2StatsObject[];
 	export let seasonIdx: number;
 	export let seasonYear: number;
 	export let seasons: SeasonList[];
 
-	const colHeaders: IColHeader[] = [
-		{ title: 'Date/Time (ET)' },
-		{ title: 'Opponent' },
-		{ title: 'Result' },
-		{ title: 'W - L' }
-	];
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
@@ -205,54 +191,50 @@
 
 				<!-- Schedule Data Tab -->
 				<TabPanel>
-					{#if team.seasons[seasonIdx].regularSeason.games.length > 0}
+					{#if games.regularSeason.length}
 						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
 								{team.seasons[seasonIdx].season} Regular Season:
 							</h2>
 						</div>
 						<div class="my-4">
-							<ScheduleTable {logoModules} schedule={games} teamId={team._id} />
+							<ScheduleTable {logoModules} schedule={games.regularSeason} teamId={team._id} />
 						</div>
 					{:else}
 						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
 							No games played in {team.seasons[seasonIdx].season}
 						</h2>
 					{/if}
-					<!--
-            {#if team.seasons[seasonIdx].postseason.games.length > 0}
+					{#if games.postseason.length}
 						<div class="glassmorphicCard px-4 py-2 my-5">
 							<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
 								{team.seasons[seasonIdx].season} Postseason:
 							</h2>
 						</div>
 						<div class="my-4">
-							<ScheduleTable
-								{logoModules}
-								schedule={games}
-								teamId={team._id}
-							/>
+							<ScheduleTable {logoModules} schedule={games.postseason} teamId={team._id} />
 						</div>
 					{/if}
-          -->
 				</TabPanel>
 
 				<!-- Roster Data Tab -->
 				<TabPanel>
 					<div class="glassmorphicCard px-4 py-2 my-5">
-						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Roster:</h2>
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+							{team.seasons[seasonIdx].season} Roster:
+						</h2>
 					</div>
-					<PlayerRoster roster={team.seasons[seasonIdx].roster.players} season={seasonYear} />
+					<PlayerRoster roster={players} season={seasonYear} />
 				</TabPanel>
 
 				<!-- Stats Data Tab -->
 				<TabPanel>
 					<div class="glassmorphicCard px-4 py-2 my-5">
-						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Stats:</h2>
+						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+							{team.seasons[seasonIdx].season} Team Stats:
+						</h2>
 					</div>
-					<Table>
-						<THead slot="thead" {colHeaders} />
-					</Table>
+					<PlayerStats roster={players} season={seasonYear} />
 				</TabPanel>
 			</Tabs>
 		</div>

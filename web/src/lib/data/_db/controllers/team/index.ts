@@ -14,19 +14,33 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
 	});
 };
 
-export type TeamPageInitData = {
-	team: PopulatedDocument<
-		PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
-		'seasons.roster.players.player'
-	>;
-	players: Player2StatsObject[];
-	games: PopulatedDocument<
+export type TeamPageGames = {
+	regularSeason: PopulatedDocument<
 		PopulatedDocument<
 			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
 			'home.players.player'
 		>,
 		'visitor.players.player'
 	>[];
+	postseason: PopulatedDocument<
+		PopulatedDocument<
+			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+			'home.players.player'
+		>,
+		'visitor.players.player'
+	>[];
+};
+
+export type TeamPageInitData = {
+	team: PopulatedDocument<
+		PopulatedDocument<
+			PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
+			'seasons.postseason.games'
+		>,
+		'seasons.roster.players.player'
+	>;
+	players: Player2StatsObject[];
+	games: TeamPageGames;
 };
 
 export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPageInitData> => {
@@ -44,7 +58,10 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPage
 		.then(
 			async (
 				team: PopulatedDocument<
-					PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
+					PopulatedDocument<
+						PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
+						'seasons.postseason.games'
+					>,
 					'seasons.roster.players.player'
 				>
 			) => {
@@ -64,6 +81,12 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPage
 
 				const players = team.seasons[seasonIdx].roster.players.map((p) => {
 					const playerSznIdx = p.player.seasons.findIndex((s) => s.year === season);
+					const { stats } = p.player.seasons[playerSznIdx].regularSeason;
+					const isSplit =
+						stats.teamSplits.findIndex((s) => s.team.toString() === team._id.toString()) === -1
+							? false
+							: stats.teamSplits.findIndex((s) => s.team.toString() === team._id.toString());
+					if (isSplit) stats.totals = stats.teamSplits[isSplit].totals;
 					return {
 						_id: p.player._id,
 						name: p.player.name,
@@ -76,16 +99,26 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPage
 								headshot: p.player.meta.images.headshot
 							}
 						},
-						stats: [p.player.seasons[playerSznIdx].regularSeason.stats]
+						stats: [stats]
 					} as unknown as Player2StatsObject;
 				});
-				const games = team.seasons[seasonIdx].regularSeason.games as unknown as PopulatedDocument<
+				const regularSeason = team.seasons[seasonIdx].regularSeason
+					.games as unknown as PopulatedDocument<
 					PopulatedDocument<
 						PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
 						'home.players.player'
 					>,
 					'visitor.players.player'
 				>[];
+				const postseason = team.seasons[seasonIdx].postseason.games as unknown as PopulatedDocument<
+					PopulatedDocument<
+						PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
+						'home.players.player'
+					>,
+					'visitor.players.player'
+				>[];
+				const games = { regularSeason, postseason };
+
 				return {
 					team,
 					players,
