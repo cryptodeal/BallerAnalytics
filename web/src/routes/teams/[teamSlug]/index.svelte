@@ -22,14 +22,12 @@
 		params,
 		url
 	}) => {
-		if (url.searchParams.get('seasonIdx')) {
-			const apiUrl = `/teams/${params.teamSlug}.json?seasonIdx=${url.searchParams.get(
-				'seasonIdx'
-			)}`;
+		if (url.searchParams.get('i')) {
+			const apiUrl = `/teams/${params.teamSlug}.json?i=${url.searchParams.get('i')}`;
 			const res = await fetch(apiUrl);
 			if (res.ok) {
 				const { team, players, games } = (await res.json()) as TeamPageInitData;
-				const seasonIdx = parseInt(url.searchParams.get('seasonIdx'));
+				const seasonIdx = parseInt(url.searchParams.get('i'));
 				const seasons: SeasonList[] = [];
 				team.seasons.map((s) => {
 					const { season } = s;
@@ -132,8 +130,8 @@
 	}
 
 	async function loadRosterData() {
-		const seasonIndex = team.seasons.findIndex((s) => s.season === seasonYear);
-		const res = await fetch(`/teams/${team.infoCommon.slug}.json?seasonIdx=${seasonIndex}`);
+		let tempIdx = team.seasons.findIndex((s) => s.season === seasonYear);
+		const res = await fetch(`/teams/${team.infoCommon.slug}.json?i=${tempIdx}&year=${seasonYear}`);
 		const {
 			team: teamData,
 			players: playerData,
@@ -142,7 +140,7 @@
 		team = teamData;
 		players = playerData;
 		games = gameData;
-		seasonIdx = seasonIndex;
+		seasonIdx = tempIdx;
 	}
 </script>
 

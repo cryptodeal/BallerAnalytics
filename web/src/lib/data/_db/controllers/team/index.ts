@@ -43,8 +43,15 @@ export type TeamPageInitData = {
 	games: TeamPageGames;
 };
 
-export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPageInitData> => {
-	return Team2.findOne({ 'infoCommon.slug': slug }, [
+export const getTeamBySlug = (
+	slug: string,
+	seasonIdx: number,
+	season?: number
+): Promise<TeamPageInitData> => {
+	const query = season
+		? { 'infoCommon.slug': slug, seasons: { $elemMatch: { season: season } } }
+		: { 'infoCommon.slug': slug };
+	return Team2.findOne(query, [
 		'infoCommon',
 		'seasons.season',
 		'seasons.regularSeason',
@@ -82,10 +89,11 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPage
 				const players = team.seasons[seasonIdx].roster.players.map((p) => {
 					const playerSznIdx = p.player.seasons.findIndex((s) => s.year === season);
 					const { stats } = p.player.seasons[playerSznIdx].regularSeason;
+
 					const isSplit =
-						stats.teamSplits.findIndex((s) => s.team.toString() === team._id.toString()) === -1
+						stats.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString()) === -1
 							? false
-							: stats.teamSplits.findIndex((s) => s.team.toString() === team._id.toString());
+							: stats.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString());
 					if (isSplit) stats.totals = stats.teamSplits[isSplit].totals;
 					return {
 						_id: p.player._id,
@@ -119,11 +127,12 @@ export const getTeamBySlug = (slug: string, seasonIdx: number): Promise<TeamPage
 				>[];
 				const games = { regularSeason, postseason };
 
-				return {
+				const result = {
 					team,
 					players,
 					games
 				};
+				return result;
 			}
 		);
 };
