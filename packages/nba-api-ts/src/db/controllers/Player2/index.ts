@@ -300,7 +300,7 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 			}
 		}
 		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
-		player.seasons[seasonIdx].teams.splice(0);
+		// player.seasons[seasonIdx].teams.splice(0);
 		player = await player.save();
 		if (filtered.length > 1) {
 			for (let i = 0; i < filtered.length; i++) {
