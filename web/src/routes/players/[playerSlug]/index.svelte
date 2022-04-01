@@ -114,7 +114,11 @@
 				{/if}
 			</div>
 		</div>
-
-		<PlayerStats {player} />
+		<div
+			class="p-4 text-black rounded-lg glassmorphicBg flex flex-col md:(container mx-auto) justify-center"
+		>
+			<h2 class="text-dark-800 mb-6 text-center dark:text-light-200">Career Stats:</h2>
+			<PlayerStats {player} />
+		</div>
 	</div>
 </div>

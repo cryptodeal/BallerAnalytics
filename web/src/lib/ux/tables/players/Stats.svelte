@@ -8,7 +8,7 @@
 	export let player: PopulatedDocument<Player2Document, 'seasons.teams.id'>;
 
 	const colHeaders: IColHeader[] = [
-		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'name.full' },
+		{ title: 'Season', key: 'name.full' },
 		{ title: 'Age', key: 'birthDate' },
 		{ title: 'Teams', key: 'seasons.teams' },
 		{ title: 'G', key: 'stats.0.totals.games' },
@@ -79,9 +79,6 @@
 						{:else}
 							{teams[0].id.infoCommon.nbaAbbreviation}
 						{/if}
-						{#if age}
-							{age}
-						{/if}
 					</div>
 				</td>
 
@@ -125,6 +122,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if fieldGoalsMade}
 							{fieldGoalsMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -136,6 +135,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if fieldGoalsAttempted}
 							{fieldGoalsAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -158,6 +159,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if threePointersMade}
 							{threePointersMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -169,6 +172,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if threePointersAttempted}
 							{threePointersAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -191,6 +196,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if twoPointFGMade}
 							{twoPointFGMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -202,6 +209,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if twoPointFGAttempted}
 							{twoPointFGAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -233,6 +242,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if freeThrowsMade}
 							{freeThrowsMade}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -243,6 +254,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if freeThrowsAttempted}
 							{freeThrowsAttempted}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -265,6 +278,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if offReb}
 							{offReb}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -276,6 +291,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if defReb}
 							{defReb}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -287,6 +304,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if totalReb}
 							{totalReb}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -298,6 +317,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if assists}
 							{assists}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -309,6 +330,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if steals}
 							{steals}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -320,6 +343,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if blocks}
 							{blocks}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -331,6 +356,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if turnovers}
 							{turnovers}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -342,6 +369,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if personalFouls}
 							{personalFouls}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>
@@ -353,6 +382,8 @@
 					<div class="text-sm font-bold leading-5">
 						{#if points}
 							{points}
+						{:else if games && games > 0}
+							0
 						{/if}
 					</div>
 				</td>

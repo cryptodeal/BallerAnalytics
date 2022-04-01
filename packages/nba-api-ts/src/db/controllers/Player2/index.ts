@@ -300,8 +300,9 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 			}
 		}
 		const seasonIdx = player.seasons.findIndex((s) => s.year === year);
-		// player.seasons[seasonIdx].teams.splice(0);
-		player = await player.save();
+		player.seasons[seasonIdx].teams.splice(0);
+		player.seasons[seasonIdx].regularSeason.stats.teamSplits.splice(0);
+
 		if (filtered.length > 1) {
 			for (let i = 0; i < filtered.length; i++) {
 				const stat: PlayerCareerStatSeason = filtered[i];
@@ -312,10 +313,20 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
 						if (_id && stat) {
 							player.seasons[seasonIdx].teams.addToSet({ id: _id });
-							player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
-								team: _id,
-								totals: formatStatTotals(stat)
-							});
+							const teamSplitIdx = player.seasons[
+								seasonIdx
+							].regularSeason.stats.teamSplits.findIndex(
+								(s) => s.team.toString() === _id.toString()
+							);
+							if (teamSplitIdx === -1) {
+								player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
+									team: _id,
+									totals: formatStatTotals(stat)
+								});
+							} else {
+								player.seasons[seasonIdx].regularSeason.stats.teamSplits[teamSplitIdx].totals =
+									formatStatTotals(stat);
+							}
 						}
 					} catch (e) {
 						console.log(e);

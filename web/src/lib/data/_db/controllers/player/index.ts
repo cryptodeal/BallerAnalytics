@@ -52,11 +52,12 @@ export const getSeasonPlayers = (
 
 export const getPlayerBySlug = (slug: string): Promise<Player2Document> => {
 	return Player2.findBySlug(slug)
+		.populatSznTeams()
 		.lean()
 		.exec()
 		.then((player: Player2Document | null) => {
 			if (!player) throw new Error(`Player with slug ${slug} not found`);
-			player.seasons.sort((a, b) => b.year - a.year);
+			player.seasons.sort((a, b) => a.year - b.year);
 			return player;
 		});
 };
