@@ -136,8 +136,8 @@ export const importCurrentRosters = async (year: number) => {
 	console.log('Completed updating 2022 team rosters');
 };
 
-export const findTeamAbbrevYear = (abbrev: string, year: number) => {
-	return Team2.findByAbbrev(abbrev, year).then(async (team) => {
+export const findTeamAbbrevYear = (abbrev: string, year: number): Promise<Team2Document> => {
+	return Team2.findByAbbrev(abbrev, year).then(async (team: Team2Document) => {
 		if (!team) {
 			return Team2.findOne({
 				seasons: {
@@ -148,7 +148,7 @@ export const findTeamAbbrevYear = (abbrev: string, year: number) => {
 			})
 				.select('_id')
 				.exec()
-				.then((team) => {
+				.then((team: Team2Document | null) => {
 					if (!team)
 						throw new Error(`Error: no team found\nQuery: season: ${year}, abbrev: ${abbrev}`);
 					return team;

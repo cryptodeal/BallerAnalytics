@@ -1730,6 +1730,7 @@ export type Player2Query = mongoose.Query<any, Player2Document, Player2Queries> 
  */
 export type Player2Queries = {
 	paginate: (this: Player2Query, ...args: any[]) => Player2Query;
+	populatSznTeams: (this: Player2Query, ...args: any[]) => Player2Query;
 };
 
 export type Player2Methods = {};

@@ -1,7 +1,5 @@
-import { serverlessConnect, Player2, Game2, endConnect } from '../../../index';
+import { serverlessConnect, Player2, endConnect } from '../../../index';
 import config from '../../../config';
-import type { Game2Document, Player2Document } from '../../../index';
-import type { Player2Season } from '../../../db/controllers/Player2';
 
 const fixSeasons = async () => {
 	let playerCount = await Player2.countDocuments();

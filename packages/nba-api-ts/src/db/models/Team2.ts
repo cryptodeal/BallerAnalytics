@@ -261,7 +261,7 @@ Team2Schema.statics = {
 			seasons: {
 				$elemMatch: {
 					'infoCommon.abbreviation': abbrev,
-					season
+					season: season
 				}
 			}
 		})

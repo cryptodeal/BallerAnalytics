@@ -25,6 +25,7 @@
 	import Insta from '$lib/ux/socials/Instagram.svelte';
 	import Headshot from '$lib/ux/img/Headshot.svelte';
 	import BioItem from '$lib/ux/players/profile/BioItem.svelte';
+	import PlayerStats from '$lib/ux/tables/players/Stats.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import dayjs from 'dayjs';
 	export let player: Player2Document;
@@ -113,5 +114,7 @@
 				{/if}
 			</div>
 		</div>
+
+		<PlayerStats {player} />
 	</div>
 </div>

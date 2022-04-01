@@ -258,6 +258,13 @@ Player2Schema.statics = {
 Player2Schema.query = {
 	paginate(page = 0, limit = 75) {
 		return this.limit(limit).skip(page * limit);
+	},
+
+	populatSznTeams() {
+		return this.populate(
+			`seasons.teams.id`,
+			'infoCommon.name infoCommon.slug infoCommon.nbaAbbreviation'
+		);
 	}
 };
 

@@ -1,7 +1,6 @@
 import type { ValidatedFormData, NewUserFormData } from '$lib/types';
 
-export const getAge = (dateString: string): number => {
-	const today = new Date();
+export const getAge = (dateString: string, today = new Date()): number => {
 	const birthDate = new Date(dateString);
 	let age = today.getFullYear() - birthDate.getFullYear();
 	const m = today.getMonth() - birthDate.getMonth();
