@@ -29,7 +29,7 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import dayjs from 'dayjs';
 	export let player: Player2Document;
-	$: console.log(player);
+	// $: console.log(player);
 </script>
 
 <MetaTags

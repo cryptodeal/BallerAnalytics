@@ -61,6 +61,11 @@ export interface PlayerRosterItem {
 	_id: Types.ObjectId;
 }
 
+export type IRowKeyData = {
+  'id': string;
+  'rowKey': string;
+}
+
 export type BooleanStore = {
 	isOpen: Writable<boolean>;
 	open: () => void;

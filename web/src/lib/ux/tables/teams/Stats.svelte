@@ -179,6 +179,10 @@
 					<div class="text-sm font-bold leading-5">
 						{#if fieldGoalsPct}
 							{formatPct(fieldGoalsPct)}
+						{:else if fieldGoalsAttempted && fieldGoalsMade}
+							{formatPct(fieldGoalsMade / freeThrowsAttempted)}
+						{:else if fieldGoalsAttempted && !fieldGoalsMade}
+							{formatPct(0)}
 						{/if}
 					</div>
 				</td>
@@ -216,6 +220,10 @@
 					<div class="text-sm font-bold leading-5">
 						{#if threePointersPct}
 							{formatPct(threePointersPct)}
+						{:else if threePointersAttempted && threePointersMade}
+							{formatPct(threePointersMade / threePointersAttempted)}
+						{:else if threePointersAttempted && !threePointersMade}
+							{formatPct(0)}
 						{/if}
 					</div>
 				</td>
@@ -253,6 +261,10 @@
 					<div class="text-sm font-bold leading-5">
 						{#if twoPointFGPct}
 							{formatPct(twoPointFGPct)}
+						{:else if twoPointFGAttempted && twoPointFGMade}
+							{formatPct(twoPointFGMade / twoPointFGAttempted)}
+						{:else if twoPointFGAttempted && !twoPointFGMade}
+							{formatPct(0)}
 						{/if}
 					</div>
 				</td>
@@ -264,8 +276,10 @@
 					<div class="text-sm font-bold leading-5">
 						{#if effectiveFieldGoalPct}
 							{effectiveFieldGoalPct}
-						{:else if games && games > 0}
-							0
+						{:else if fieldGoalsMade && threePointersMade && fieldGoalsAttempted}
+							{formatPct((fieldGoalsMade + 0.5 * threePointersMade) / fieldGoalsAttempted)}
+						{:else if !fieldGoalsMade || (!threePointersMade && fieldGoalsAttempted && fieldGoalsAttempted > 0)}
+							{formatPct(0)}
 						{/if}
 					</div>
 				</td>
@@ -303,6 +317,10 @@
 					<div class="text-sm font-bold leading-5">
 						{#if freeThrowsPct}
 							{formatPct(freeThrowsPct)}
+						{:else if freeThrowsAttempted && freeThrowsMade}
+							{formatPct(freeThrowsMade / freeThrowsAttempted)}
+						{:else if freeThrowsAttempted && !freeThrowsMade}
+							{formatPct(0)}
 						{/if}
 					</div>
 				</td>
