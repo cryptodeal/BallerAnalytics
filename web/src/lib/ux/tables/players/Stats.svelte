@@ -42,7 +42,39 @@
 <Table>
 	<THead slot="thead" {colHeaders} />
 	<svelte:fragment slot="tbody">
-		{#each player.seasons as { year, teams, regularSeason: { stats: { totals, teamSplits } } }, i}
+		{#each player.seasons as { year, teams, regularSeason: { stats } }, i}
+			{@const { totals, teamSplits } = stats
+				? stats
+				: {
+						totals: {
+							games: undefined,
+							gamesStarted: undefined,
+							minutes: undefined,
+							fieldGoalsMade: undefined,
+							fieldGoalsAttempted: undefined,
+							fieldGoalsPct: undefined,
+							threePointersMade: undefined,
+							threePointersAttempted: undefined,
+							threePointersPct: undefined,
+							twoPointFGMade: undefined,
+							twoPointFGAttempted: undefined,
+							twoPointFGPct: undefined,
+							effectiveFieldGoalPct: undefined,
+							freeThrowsMade: undefined,
+							freeThrowsAttempted: undefined,
+							freeThrowsPct: undefined,
+							offReb: undefined,
+							defReb: undefined,
+							totalReb: undefined,
+							assists: undefined,
+							steals: undefined,
+							blocks: undefined,
+							turnovers: undefined,
+							personalFouls: undefined,
+							points: undefined
+						},
+						teamSplits: []
+				  }}
 			{@const {
 				games,
 				gamesStarted,
@@ -69,35 +101,7 @@
 				turnovers,
 				personalFouls,
 				points
-			} = totals
-				? totals
-				: {
-						games: undefined,
-						gamesStarted: undefined,
-						minutes: undefined,
-						fieldGoalsMade: undefined,
-						fieldGoalsAttempted: undefined,
-						fieldGoalsPct: undefined,
-						threePointersMade: undefined,
-						threePointersAttempted: undefined,
-						threePointersPct: undefined,
-						twoPointFGMade: undefined,
-						twoPointFGAttempted: undefined,
-						twoPointFGPct: undefined,
-						effectiveFieldGoalPct: undefined,
-						freeThrowsMade: undefined,
-						freeThrowsAttempted: undefined,
-						freeThrowsPct: undefined,
-						offReb: undefined,
-						defReb: undefined,
-						totalReb: undefined,
-						assists: undefined,
-						steals: undefined,
-						blocks: undefined,
-						turnovers: undefined,
-						personalFouls: undefined,
-						points: undefined
-				  }}
+			} = totals}
 			{@const birthDate = new Date(player.birthDate)}
 			{@const sznBday = dayjs(birthDate).year(year).toDate()}
 			{@const age = getAge(birthDate.toString(), sznBday)}
@@ -132,7 +136,7 @@
 						<div class="text-sm font-bold leading-5">
 							{#if teamSplits.length}
 								TOT
-							{:else}
+							{:else if teams.length}
 								{teams[0].id.infoCommon.nbaAbbreviation}
 							{/if}
 						</div>
@@ -468,7 +472,39 @@
 				</tr>
 			{/if}
 			{#if teamSplits.length}
-				{#each teamSplits as { team, totals }, i}
+				{#each teamSplits as split, i}
+					{@const { team, totals } = split
+						? split
+						: {
+								totals: {
+									games: undefined,
+									gamesStarted: undefined,
+									minutes: undefined,
+									fieldGoalsMade: undefined,
+									fieldGoalsAttempted: undefined,
+									fieldGoalsPct: undefined,
+									threePointersMade: undefined,
+									threePointersAttempted: undefined,
+									threePointersPct: undefined,
+									twoPointFGMade: undefined,
+									twoPointFGAttempted: undefined,
+									twoPointFGPct: undefined,
+									effectiveFieldGoalPct: undefined,
+									freeThrowsMade: undefined,
+									freeThrowsAttempted: undefined,
+									freeThrowsPct: undefined,
+									offReb: undefined,
+									defReb: undefined,
+									totalReb: undefined,
+									assists: undefined,
+									steals: undefined,
+									blocks: undefined,
+									turnovers: undefined,
+									personalFouls: undefined,
+									points: undefined
+								},
+								team: undefined
+						  }}
 					{@const {
 						games,
 						gamesStarted,
@@ -495,35 +531,7 @@
 						turnovers,
 						personalFouls,
 						points
-					} = totals
-						? totals
-						: {
-								games: undefined,
-								gamesStarted: undefined,
-								minutes: undefined,
-								fieldGoalsMade: undefined,
-								fieldGoalsAttempted: undefined,
-								fieldGoalsPct: undefined,
-								threePointersMade: undefined,
-								threePointersAttempted: undefined,
-								threePointersPct: undefined,
-								twoPointFGMade: undefined,
-								twoPointFGAttempted: undefined,
-								twoPointFGPct: undefined,
-								effectiveFieldGoalPct: undefined,
-								freeThrowsMade: undefined,
-								freeThrowsAttempted: undefined,
-								freeThrowsPct: undefined,
-								offReb: undefined,
-								defReb: undefined,
-								totalReb: undefined,
-								assists: undefined,
-								steals: undefined,
-								blocks: undefined,
-								turnovers: undefined,
-								personalFouls: undefined,
-								points: undefined
-						  }}
+					} = totals}
 					{#if totals}
 						<tr>
 							<!-- Display Season Year -->

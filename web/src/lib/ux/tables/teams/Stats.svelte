@@ -71,7 +71,72 @@
 <Table>
 	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
-		{#each roster as { birthDate, meta, stats: [{ totals: { games, gamesStarted, minutes, fieldGoalsMade, fieldGoalsAttempted, fieldGoalsPct, threePointersMade, threePointersAttempted, threePointersPct, twoPointFGMade, twoPointFGAttempted, twoPointFGPct, effectiveFieldGoalPct, freeThrowsMade, freeThrowsAttempted, freeThrowsPct, offReb, defReb, totalReb, assists, steals, blocks, turnovers, personalFouls, points }, twoWay }], name }, i}
+		{#each roster as { birthDate, meta, stats, name }, i}
+			{@const [
+				{
+					totals: {
+						games,
+						gamesStarted,
+						minutes,
+						fieldGoalsMade,
+						fieldGoalsAttempted,
+						fieldGoalsPct,
+						threePointersMade,
+						threePointersAttempted,
+						threePointersPct,
+						twoPointFGMade,
+						twoPointFGAttempted,
+						twoPointFGPct,
+						effectiveFieldGoalPct,
+						freeThrowsMade,
+						freeThrowsAttempted,
+						freeThrowsPct,
+						offReb,
+						defReb,
+						totalReb,
+						assists,
+						steals,
+						blocks,
+						turnovers,
+						personalFouls,
+						points
+					},
+					twoWay
+				}
+			] = stats
+				? stats
+				: [
+						{
+							totals: {
+								games: undefined,
+								gamesStarted: undefined,
+								minutes: undefined,
+								fieldGoalsMade: undefined,
+								fieldGoalsAttempted: undefined,
+								fieldGoalsPct: undefined,
+								threePointersMade: undefined,
+								threePointersAttempted: undefined,
+								threePointersPct: undefined,
+								twoPointFGMade: undefined,
+								twoPointFGAttempted: undefined,
+								twoPointFGPct: undefined,
+								effectiveFieldGoalPct: undefined,
+								freeThrowsMade: undefined,
+								freeThrowsAttempted: undefined,
+								freeThrowsPct: undefined,
+								offReb: undefined,
+								defReb: undefined,
+								totalReb: undefined,
+								assists: undefined,
+								steals: undefined,
+								blocks: undefined,
+								turnovers: undefined,
+								personalFouls: undefined,
+								points: undefined
+							},
+							twoWay: false
+						}
+				  ]}
 			<tr>
 				<!-- Display Player Name -->
 				<td
