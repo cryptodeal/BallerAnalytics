@@ -304,7 +304,7 @@
 								{formatPct(effectiveFieldGoalPct)}
 							{:else if fieldGoalsMade && threePointersMade && fieldGoalsAttempted}
 								{formatPct((fieldGoalsMade + 0.5 * threePointersMade) / fieldGoalsAttempted)}
-							{:else if !fieldGoalsMade || (!threePointersMade && fieldGoalsAttempted && fieldGoalsAttempted > 0)}
+							{:else if (!fieldGoalsMade || !threePointersMade) && fieldGoalsAttempted && fieldGoalsAttempted > 0}
 								{formatPct(0)}
 							{/if}
 						</div>

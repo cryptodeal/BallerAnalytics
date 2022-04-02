@@ -39,8 +39,10 @@
 />
 
 <div class="appContent min-h-screen flex flex-col w-full">
-	<div class="mt-4 flex flex-col gap-10 sm:container mx-auto">
-		<div class="text-black glassmorphicBg rounded-lg flex flex-wrap justify-center items-center">
+	<div class="mt-4 grid grid-cols-1 gap-10 sm:(container mx-auto grid grid-cols-2)">
+		<div
+			class="text-black glassmorphicBg rounded-lg flex flex-wrap justify-center items-center sm:(col-span-2)"
+		>
 			<div class="w-25 md:w-30 lg:w-35 xl:w-40 2xl:w-45">
 				<Headshot
 					avif={player.meta.images.headshot.avif}
@@ -51,22 +53,11 @@
 			</div>
 			<h1 class="text-dark-800 dark:text-light-200">{player.name.full}</h1>
 		</div>
-		{#if player.socials?.twitter || player.socials?.instagram}
-			<div
-				class="flex flex-col gap-1 py-3 px-10 text-black rounded-lg glassmorphicBg sm:mx-auto justify-center text-center"
-			>
-				<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
-				<div class="flex inline-flex items-center justify-evenly">
-					{#if player.socials.twitter}
-						<Twitter handle={player.socials.twitter} />
-					{/if}
-					{#if player.socials.instagram}
-						<Insta handle={player.socials.instagram} />
-					{/if}
-				</div>
-			</div>
-		{/if}
-		<div class="p-4 text-black rounded-lg glassmorphicBg flex flex-col sm:mx-auto justify-center">
+
+		<!--Player Bio-->
+		<div
+			class="p-4 text-black rounded-lg glassmorphicBg flex flex-col gap-2 sm:m-auto justify-center"
+		>
 			<h2 class="text-dark-800 mb-6 text-center dark:text-light-200">Bio</h2>
 			<div class="grid grid-cols-2 gap-2 px-4">
 				<BioItem title={'full name'} data={player.name.full} />
@@ -114,8 +105,23 @@
 				{/if}
 			</div>
 		</div>
+		{#if player.socials?.twitter || player.socials?.instagram}
+			<div
+				class="flex flex-col gap-1 py-10 px-10 text-black rounded-lg glassmorphicBg sm:(m-auto) justify-center text-center"
+			>
+				<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
+				<div class="flex inline-flex items-center justify-evenly">
+					{#if player.socials.twitter}
+						<Twitter handle={player.socials.twitter} />
+					{/if}
+					{#if player.socials.instagram}
+						<Insta handle={player.socials.instagram} />
+					{/if}
+				</div>
+			</div>
+		{/if}
 		<div
-			class="p-4 text-black rounded-lg glassmorphicBg flex flex-col md:(container mx-auto) justify-center"
+			class="p-4 text-black rounded-lg glassmorphicBg flex flex-col sm:(container mx-auto col-span-2) justify-center"
 		>
 			<h2 class="text-dark-800 mb-6 text-center dark:text-light-200">Career Stats:</h2>
 			<PlayerStats {player} />
