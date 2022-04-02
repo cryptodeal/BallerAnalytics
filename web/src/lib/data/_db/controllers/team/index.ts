@@ -123,9 +123,9 @@ export const getTeamBySlug = (
 							  };
 
 					const isSplit =
-						stats.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString()) === -1
+						stats?.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString()) === -1
 							? false
-							: stats.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString());
+							: stats?.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString());
 					if (isSplit) stats.totals = stats.teamSplits[isSplit].totals;
 					return {
 						_id: p.player._id,
