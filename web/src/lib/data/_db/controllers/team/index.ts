@@ -88,7 +88,39 @@ export const getTeamBySlug = (
 
 				const players = team.seasons[seasonIdx].roster.players.map((p) => {
 					const playerSznIdx = p.player.seasons.findIndex((s) => s.year === season);
-					const { stats } = p.player.seasons[playerSznIdx].regularSeason;
+					const stats =
+						playerSznIdx !== -1
+							? p.player.seasons[playerSznIdx].regularSeason.stats
+							: {
+									totals: {
+										games: undefined,
+										gamesStarted: undefined,
+										minutes: undefined,
+										fieldGoalsMade: undefined,
+										fieldGoalsAttempted: undefined,
+										fieldGoalsPct: undefined,
+										threePointersMade: undefined,
+										threePointersAttempted: undefined,
+										threePointersPct: undefined,
+										twoPointFGMade: undefined,
+										twoPointFGAttempted: undefined,
+										twoPointFGPct: undefined,
+										effectiveFieldGoalPct: undefined,
+										freeThrowsMade: undefined,
+										freeThrowsAttempted: undefined,
+										freeThrowsPct: undefined,
+										offReb: undefined,
+										defReb: undefined,
+										totalReb: undefined,
+										assists: undefined,
+										steals: undefined,
+										blocks: undefined,
+										turnovers: undefined,
+										personalFouls: undefined,
+										points: undefined
+									},
+									teamSplits: []
+							  };
 
 					const isSplit =
 						stats.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString()) === -1
