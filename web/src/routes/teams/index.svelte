@@ -1,33 +1,11 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import type { Team2Object } from '@balleranalytics/nba-api-ts';
-	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
-	export const load: Load = async ({ fetch }) => {
-		const url = `/teams.json`;
-		const res = await fetch(url);
-
-		if (res.ok) {
-			const { teams }: { teams: Team2Object[] } = await res.json();
-			return {
-				props: {
-					teams
-				}
-			};
-		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`)
-		};
-	};
-</script>
-
 <script lang="ts">
+	const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import tinycolor from 'tinycolor2';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
+	import type { Team2Object } from '@balleranalytics/nba-api-ts';
 	export let teams: Team2Object[];
 </script>
 

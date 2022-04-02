@@ -43,7 +43,7 @@
 		"mongoose": "6.2.7",
 		"nba-color": "^1.4.1",
 		"nodemailer": "^6.7.3",
-		"prettier": "^2.6.1",
+		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.6.0",
 		"random": "^3.0.6",
 		"resize-observer": "^1.0.4",

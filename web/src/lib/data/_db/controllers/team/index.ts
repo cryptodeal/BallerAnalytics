@@ -2,8 +2,13 @@ import { Team2, type Game2Document } from '@balleranalytics/nba-api-ts';
 import type {
 	Team2Document,
 	Player2StatsObject,
+	Player2Object,
+	Player2Stats,
 	PopulatedDocument,
-	Team2Object
+	Team2Object,
+	Player2SeasonPostseasonStatDocument,
+	Player2SeasonDocument,
+	Team2SeasonRosterPlayer
 } from '@balleranalytics/nba-api-ts';
 import dayjs from 'dayjs';
 
@@ -85,61 +90,89 @@ export const getTeamBySlug = (
 						? -1
 						: 0
 				);
+				type PopTeam2SeasonRosterPlayer = Team2SeasonRosterPlayer & {
+					player: Player2Object;
+				};
+				const formatPlayerStats = (
+					sznIdx: number,
+					seasons: Player2SeasonDocument[],
+					rosterData: PopTeam2SeasonRosterPlayer
+				): Player2Stats => {
+					/* If player was on roster, but didn't play populate totals w undefined */
+					const totals = {
+						games: undefined,
+						gamesStarted: undefined,
+						minutes: undefined,
+						fieldGoalsMade: undefined,
+						fieldGoalsAttempted: undefined,
+						fieldGoalsPct: undefined,
+						threePointersMade: undefined,
+						threePointersAttempted: undefined,
+						threePointersPct: undefined,
+						twoPointFGMade: undefined,
+						twoPointFGAttempted: undefined,
+						twoPointFGPct: undefined,
+						effectiveFieldGoalPct: undefined,
+						freeThrowsMade: undefined,
+						freeThrowsAttempted: undefined,
+						freeThrowsPct: undefined,
+						offReb: undefined,
+						defReb: undefined,
+						totalReb: undefined,
+						assists: undefined,
+						steals: undefined,
+						blocks: undefined,
+						turnovers: undefined,
+						personalFouls: undefined,
+						points: undefined
+					} as Player2SeasonPostseasonStatDocument;
 
-				const players = team.seasons[seasonIdx].roster.players.map((p) => {
-					const playerSznIdx = p.player.seasons.findIndex((s) => s.year === season);
-					const stats =
-						playerSznIdx !== -1
-							? p.player.seasons[playerSznIdx].regularSeason.stats
+					let stats: Player2Stats;
+					if (sznIdx !== -1) {
+						stats = seasons[sznIdx].regularSeason.stats
+							? seasons[sznIdx].regularSeason.stats
 							: {
-									totals: {
-										games: undefined,
-										gamesStarted: undefined,
-										minutes: undefined,
-										fieldGoalsMade: undefined,
-										fieldGoalsAttempted: undefined,
-										fieldGoalsPct: undefined,
-										threePointersMade: undefined,
-										threePointersAttempted: undefined,
-										threePointersPct: undefined,
-										twoPointFGMade: undefined,
-										twoPointFGAttempted: undefined,
-										twoPointFGPct: undefined,
-										effectiveFieldGoalPct: undefined,
-										freeThrowsMade: undefined,
-										freeThrowsAttempted: undefined,
-										freeThrowsPct: undefined,
-										offReb: undefined,
-										defReb: undefined,
-										totalReb: undefined,
-										assists: undefined,
-										steals: undefined,
-										blocks: undefined,
-										turnovers: undefined,
-										personalFouls: undefined,
-										points: undefined
-									},
+									totals,
 									teamSplits: []
 							  };
+						const isSplit =
+							stats?.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString()) === -1
+								? false
+								: stats?.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString());
+						if (isSplit) stats.totals = stats.teamSplits[isSplit].totals;
+					} else {
+						stats = {
+							totals,
+							teamSplits: []
+						};
+					}
 
-					const isSplit =
-						stats?.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString()) === -1
-							? false
-							: stats?.teamSplits?.findIndex((s) => s.team.toString() === team._id.toString());
-					if (isSplit) stats.totals = stats.teamSplits[isSplit].totals;
+					/* set player position, number, and twoWay on stats object */
+					const { number, position, twoWay } = rosterData;
+					stats.position = position ? position : undefined;
+					stats.number = number ? number : undefined;
+					stats.twoWay = twoWay ? twoWay : undefined;
+					return stats;
+				};
+
+				const players = team.seasons[seasonIdx].roster.players.map(({ player }, i) => {
+					const playerSznIdx = player.seasons.findIndex((s) => s.year === season);
+					const rosterData = team.seasons[seasonIdx].roster.players[
+						i
+					] as PopTeam2SeasonRosterPlayer;
 					return {
-						_id: p.player._id,
-						name: p.player.name,
-						birthDate: p.player.birthDate,
-						height: p.player.height,
-						weight: p.player.weight,
-						college: p.player.college,
+						_id: player._id,
+						name: player.name,
+						birthDate: player.birthDate,
+						height: player.height,
+						weight: player.weight,
+						college: player.college,
 						meta: {
 							images: {
-								headshot: p.player.meta.images.headshot
+								headshot: player.meta.images.headshot
 							}
 						},
-						stats: [stats]
+						stats: [formatPlayerStats(playerSznIdx, player.seasons, rosterData)]
 					} as unknown as Player2StatsObject;
 				});
 				const regularSeason = team.seasons[seasonIdx].regularSeason

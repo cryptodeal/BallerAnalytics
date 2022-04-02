@@ -13,33 +13,33 @@
 	$: if (season) sortBy = { col: 'name.full', ascending: true };
 
 	const colHeaders: IColHeader[] = [
-		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'name.full' },
-		{ title: 'Age', key: 'birthDate' },
-		{ title: 'G', key: 'stats.0.totals.games' },
-		{ title: 'GS', key: 'stats.0.totals.gamesStarted' },
-		{ title: 'Min', key: 'stats.0.totals.minutes' },
-		{ title: 'FG', key: 'stats.0.totals.fieldGoalsMade' },
-		{ title: 'FGA', key: 'stats.0.totals.fieldGoalsAttempted' },
-		{ title: 'FG%', key: 'stats.0.totals.fieldGoalsPct' },
-		{ title: '3P', key: 'stats.0.totals.threePointersMade' },
-		{ title: '3PA', key: 'stats.0.totals.threePointersAttempted' },
-		{ title: '3P%', key: 'stats.0.totals.threePointersPct' },
-		{ title: '2P', key: 'stats.0.totals.twoPointFGMade' },
-		{ title: '2PA', key: 'stats.0.totals.twoPointFGAttempted' },
-		{ title: '2P%', key: 'stats.0.totals.twoPointFGPct' },
-		{ title: 'eFG%', key: 'stats.0.totals.effectiveFieldGoalPct' },
-		{ title: 'FT', key: 'stats.0.totals.freeThrowsAttempted' },
-		{ title: 'FTA', key: 'stats.0.totals.freeThrowsMade' },
-		{ title: 'FT%', key: 'stats.0.totals.freeThrowsPct' },
-		{ title: 'ORB', key: 'stats.0.totals.offReb' },
-		{ title: 'DRB', key: 'stats.0.totals.defReb' },
-		{ title: 'TRB', key: 'stats.0.totals.totalReb' },
-		{ title: 'AST', key: 'stats.0.totals.assists' },
-		{ title: 'STL', key: 'stats.0.totals.steals' },
-		{ title: 'BLK', key: 'stats.0.totals.blocks' },
-		{ title: 'TOV', key: 'stats.0.totals.turnovers' },
-		{ title: 'PF', key: 'stats.0.totals.personalFouls' },
-		{ title: 'PTS', key: 'stats.0.totals.points' }
+		{ title: 'Name', subtext: '* denotes player on 2-Way contract' },
+		{ title: 'Age' },
+		{ title: 'G' },
+		{ title: 'GS' },
+		{ title: 'Min' },
+		{ title: 'FG' },
+		{ title: 'FGA' },
+		{ title: 'FG%' },
+		{ title: '3P' },
+		{ title: '3PA' },
+		{ title: '3P%' },
+		{ title: '2P' },
+		{ title: '2PA' },
+		{ title: '2P%' },
+		{ title: 'eFG%' },
+		{ title: 'FT' },
+		{ title: 'FTA' },
+		{ title: 'FT%' },
+		{ title: 'ORB' },
+		{ title: 'DRB' },
+		{ title: 'TRB' },
+		{ title: 'AST' },
+		{ title: 'STL' },
+		{ title: 'BLK' },
+		{ title: 'TOV' },
+		{ title: 'PF' },
+		{ title: 'PTS' }
 	];
 
 	$: sort = (column: string) => {
@@ -103,44 +103,11 @@
 					},
 					twoWay
 				}
-			] = stats
-				? stats
-				: [
-						{
-							totals: {
-								games: undefined,
-								gamesStarted: undefined,
-								minutes: undefined,
-								fieldGoalsMade: undefined,
-								fieldGoalsAttempted: undefined,
-								fieldGoalsPct: undefined,
-								threePointersMade: undefined,
-								threePointersAttempted: undefined,
-								threePointersPct: undefined,
-								twoPointFGMade: undefined,
-								twoPointFGAttempted: undefined,
-								twoPointFGPct: undefined,
-								effectiveFieldGoalPct: undefined,
-								freeThrowsMade: undefined,
-								freeThrowsAttempted: undefined,
-								freeThrowsPct: undefined,
-								offReb: undefined,
-								defReb: undefined,
-								totalReb: undefined,
-								assists: undefined,
-								steals: undefined,
-								blocks: undefined,
-								turnovers: undefined,
-								personalFouls: undefined,
-								points: undefined
-							},
-							twoWay: false
-						}
-				  ]}
+			] = stats}
 			<tr>
 				<!-- Display Player Name -->
 				<td
-					class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
+					class="py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
 				>
 					<div class="flex w-full inline-flex items-center">
 						<div class="flex-shrink-0 w-30 h-20">

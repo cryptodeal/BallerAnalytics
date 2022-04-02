@@ -9,16 +9,16 @@ import type {
 	Player2SeasonRegularSeasonStatsTeamSplitDocument
 } from '../interfaces/mongoose.gen';
 
+export type Player2Stats = {
+	teamSplits: Player2SeasonRegularSeasonStatsTeamSplitDocument[];
+	totals?: Player2SeasonPostseasonStatDocument;
+	number?: string;
+	position?: string;
+	twoWay?: boolean;
+};
+
 export type Player2StatsObject = Player2Object & {
-	stats: [
-		{
-			teamSplits: mongoose.Types.DocumentArray<Player2SeasonRegularSeasonStatsTeamSplitDocument>;
-			totals?: Player2SeasonPostseasonStatDocument;
-			number?: string;
-			position?: string;
-			twoWay?: boolean;
-		}
-	];
+	stats: [Player2Stats];
 };
 
 const statTotalsSchema = new mongoose.Schema(
