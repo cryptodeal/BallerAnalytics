@@ -1,3 +1,4 @@
 packages:
   - "packages/nba-api-ts"
+  - "packages/tf-neat"
   - "web"

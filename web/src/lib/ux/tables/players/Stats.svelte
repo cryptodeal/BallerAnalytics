@@ -43,7 +43,7 @@
 <Table>
 	<THead slot="thead" {colHeaders} />
 	<svelte:fragment slot="tbody">
-		{#each player.seasons as { year, teams, regularSeason: { stats } }, i}
+		{#each player.seasons.filter((s) => s.regularSeason.stats.totals.games) as { year, teams, regularSeason: { stats } }, i}
 			{@const {
 				totals: {
 					games,

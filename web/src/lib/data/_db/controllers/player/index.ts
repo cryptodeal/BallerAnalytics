@@ -122,7 +122,9 @@ export const getPlayerBySlug = (slug: string): Promise<Player2Document> => {
 				});
 				return s;
 			});
-			player.seasons.sort((a, b) => a.year - b.year);
+			player.seasons
+				.filter(({ regularSeason: { stats: games } }) => games)
+				.sort((a, b) => a.year - b.year);
 			return player;
 		});
 };
