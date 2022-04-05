@@ -4,10 +4,11 @@
   "description": "implementation of neural network and neuroevolution tactics using tensorflow.js",
   "main": "./dist/index.js",
   "scripts": {
-		"lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
-		"lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
-		"test": "uvu -r tsm tests",
-		"test:coverage": "c8 pnpm test"  },
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
+    "test": "uvu -r tsm tests",
+    "test:coverage": "c8 pnpm test"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/cryptodeal/BallerAnalytics/packages/tf-neat"
@@ -24,8 +25,8 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "c8": "^7.11.0",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",

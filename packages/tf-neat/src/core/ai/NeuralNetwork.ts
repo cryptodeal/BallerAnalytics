@@ -10,20 +10,22 @@ export class NeuralNetwork {
 	public output_nodes: number;
 	public input_weights: Tensor;
 	public output_weights: Tensor;
-	constructor(input_nodes, hidden_nodes, output_nodes) {
-		// The number of inputs (eg: player y position, height of next block etc..)
+	constructor(input_nodes: number, hidden_nodes: number, output_nodes: number) {
+		/* Set # of input nodes used in the NeuralNet */
 		this.input_nodes = input_nodes;
-		// Amount of hidden nodes within the Neural Network)
+
+		/* Set # of hidden nodes used in the NeuralNet */
 		this.hidden_nodes = hidden_nodes;
-		// The amount of outputs, we will use 2 (will be needed for level 3)
+
+		/* Set # of output nodes used in the NeuralNet */
 		this.output_nodes = output_nodes;
 
-		// Initialize random weights
+		/* Initialize NeuralNet w random weights */
 		this.input_weights = randomNormal([this.input_nodes, this.hidden_nodes]);
 		this.output_weights = randomNormal([this.hidden_nodes, this.output_nodes]);
 	}
 
-	/* input 1D array and feeds forward through network */
+	/* Feeds inputted 1D forward array through network */
 	predict(user_input: number[]) {
 		let output;
 		tidy(() => {
@@ -35,7 +37,7 @@ export class NeuralNetwork {
 		return output;
 	}
 
-	/* returns a new network with the same weights as original */
+	/* Returns a new network with the same weights as original */
 	clone(): NeuralNetwork {
 		return tidy(() => {
 			const cloned = new NeuralNetwork(this.input_nodes, this.hidden_nodes, this.output_nodes);
@@ -46,22 +48,22 @@ export class NeuralNetwork {
 		}) as unknown as NeuralNetwork;
 	}
 
-	/* Dispose the input and output weights from the memory */
+	/* Dispose of input & output weights from  memory */
 	dispose() {
 		this.input_weights.dispose();
 		this.output_weights.dispose();
 	}
 
-	stringify() {
-		const neuralNetworkToSave = {
+	stringify(): string {
+		const neuralNetJson = {
 			input_weights: this.input_weights.arraySync(),
 			output_weights: this.output_weights.arraySync()
 		};
 
-		return JSON.stringify(neuralNetworkToSave);
+		return JSON.stringify(neuralNetJson);
 	}
 
-	save(key) {
+	save(key: string) {
 		localStorage.setItem(key, this.stringify());
 	}
 }
