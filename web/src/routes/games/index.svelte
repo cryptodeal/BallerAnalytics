@@ -57,7 +57,7 @@
 		min: Date,
 		max: Date;
 
-	let date = dayjs(games[0].date).tz().toDate();
+	let date = games.length ? dayjs(games[0].date).tz().toDate() : dayjs().tz().toDate();
 
 	const closeOnSelection = true;
 

@@ -186,6 +186,55 @@ Player2Schema.statics = {
 		]);
 	},
 
+	async fantasyData(year: number): Promise<Player2StatsObject[]> {
+		return await this.aggregate([
+			{
+				$match: {
+					'seasons.year': year
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [
+									{
+										$lte: ['$$seasons.year', year]
+									}
+								]
+							}
+						}
+					}
+				}
+			},
+			// TODO: use $lookup and $filter to only return total stats for the player for a game
+			/*
+        {
+          $lookup: {
+            from: 'game2',
+            localField: 'seasons.regularSeason.games',
+            foreignField: '_id',
+            as: 'seasons.regularSeason.games'
+          }
+        },
+        {
+          $unwind: '$seasons.regularSeason.games'
+        },
+      */
+			{
+				$project: {
+					birthDate: 1,
+					'seasons.regularSeason.games': 1
+				}
+			}
+		]);
+	},
+
 	async getPlayerSeasonStats(
 		playerUids: Player2Document['_id'][],
 		year: number

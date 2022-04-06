@@ -1739,6 +1739,7 @@ export type Player2Statics = {
 	findByPlayerUrl: (this: Player2Model, ...args: any[]) => any;
 	findBySlug: (this: Player2Model, ...args: any[]) => any;
 	getPlayers: (this: Player2Model, ...args: any[]) => any;
+	fantasyData: (this: Player2Model, ...args: any[]) => any;
 	getPlayerSeasonStats: (this: Player2Model, ...args: any[]) => any;
 	findByNameOrNbaId: (this: Player2Model, ...args: any[]) => any;
 	findByNameOrEspnId: (this: Player2Model, ...args: any[]) => any;

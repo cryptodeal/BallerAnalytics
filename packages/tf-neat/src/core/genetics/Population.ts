@@ -1,5 +1,6 @@
 import { NeuralNetwork } from '../ai/NeuralNetwork';
 import { ModelApiType } from './models';
+import { map } from '../../utils';
 import type { IModel } from '../ai/types';
 
 /* Class that evaluates a population (default 9 genomes per population) */
@@ -89,47 +90,47 @@ export class Population {
 	}
 
 	/* Gets inputs from the modelApi, and makes a prediction to jump or not to jump */
-	think(game) {
-		const inputs = [];
-		const inputsNormalised = [];
+	think(model: IModel) {
+		const inputs: number[] = [];
+		const inputsNormalised: number[] = [];
 
 		// Player y
-		inputs[0] = game.modelApi.getPlayerY();
-		inputsNormalised[0] = map(inputs[0], 0, game.modelApi.getHeight(), 0, 1);
+		inputs[0] = model.modelApi.getPlayerY();
+		inputsNormalised[0] = map(inputs[0], 0, model.modelApi.getHeight(), 0, 1);
 
 		// Player x
-		inputs[1] = game.modelApi.getPlayerX();
-		inputsNormalised[1] = map(inputs[1], inputs[1], game.modelApi.getWidth(), 0, 1);
+		inputs[1] = model.modelApi.getPlayerX();
+		inputsNormalised[1] = map(inputs[1], inputs[1], model.modelApi.getWidth(), 0, 1);
 
-		let section = game.modelApi.getSectionFromPlayer(this._sectionsToSeeAhead);
+		let section = model.modelApi.getSectionFromPlayer(this._sectionsToSeeAhead);
 
 		// 2nd closest section x
 		inputs[2] = section.x + section.width;
-		inputsNormalised[2] = map(inputs[2], inputs[1], game.modelApi.getWidth(), 0, 1);
+		inputsNormalised[2] = map(inputs[2], inputs[1], model.modelApi.getWidth(), 0, 1);
 
 		// 2nd closest section y
 		inputs[3] = section.y;
-		inputsNormalised[3] = map(inputs[3], 0, game.modelApi.getHeight(), 0, 1);
+		inputsNormalised[3] = map(inputs[3], 0, model.modelApi.getHeight(), 0, 1);
 
 		// 2nd closest section y base
 		inputs[4] = section.y + section.height;
-		inputsNormalised[4] = map(inputs[4], 0, game.modelApi.getHeight(), 0, 1);
+		inputsNormalised[4] = map(inputs[4], 0, model.modelApi.getHeight(), 0, 1);
 
-		section = game.modelApi.getSectionFromPlayer(this._sectionsToSeeAhead + 1);
+		section = model.modelApi.getSectionFromPlayer(this._sectionsToSeeAhead + 1);
 
 		// Is player jumping
-		inputs[5] = game.modelApi.isPlayerJumping() ? 1 : 0;
+		inputs[5] = model.modelApi.isPlayerJumping() ? 1 : 0;
 		inputsNormalised[5] = map(inputs[5], 0, 1, 0, 1);
 
 		// Player velocity
-		inputs[6] = game.modelApi.getPlayerVelocity() ? 1 : 0;
+		inputs[6] = model.modelApi.getPlayerVelocity() ? 1 : 0;
 		inputsNormalised[6] = map(inputs[6], -1.1, 1.1, 0, 1);
 
 		// Can play jump?
-		inputs[7] = game.modelApi.canPlayerJump() ? 1 : 0;
+		inputs[7] = model.modelApi.canPlayerJump() ? 1 : 0;
 		inputsNormalised[7] = map(inputs[7], 0, 1, 0, 1);
 
-		game.modelApi.setDebugPoints([
+		model.modelApi.setDebugPoints([
 			{
 				x: 0,
 				y: inputs[0]
@@ -152,10 +153,10 @@ export class Population {
 			}
 		]);
 
-		const outputs = game.neuralNetwork.predict(inputsNormalised);
+		const outputs = model.neuralNetwork.predict(inputsNormalised);
 
 		if (outputs[0] > 0.5 || outputs[1] > 0.5) {
-			game.modelApi.jump();
+			model.modelApi.jump();
 		}
 	}
 

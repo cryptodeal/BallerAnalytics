@@ -113,6 +113,7 @@ export const getPlayerBySlug = (slug: string): Promise<Player2Document> => {
 
 				return stats;
 			};
+
 			player.seasons.map((s, i) => {
 				const { teamSplits, totals } = formatPlayerStats(i, player.seasons);
 				if (!s.regularSeason.stats.totals) s.regularSeason.stats.totals = totals;
