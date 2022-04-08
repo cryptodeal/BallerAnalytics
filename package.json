@@ -17,7 +17,7 @@
     "data:import:playerData": "pnpm recursive run data:import:playerData",
     "data:cleanup:Game2:clearReferences": "pnpm recursive run data:cleanup:Game2:clearReferences",
     "data:cleanup:Game2:fixTeamPeriodStats": "pnpm recursive run data:cleanup:Game2:fixTeamPeriodStats",
-    "test": "pnpm recursive run test --stream",
+    "test": "uvu -r tsm packages tests",
     "test:coverage": "pnpm recursive run test:coverage --stream"
   },
   "husky": {

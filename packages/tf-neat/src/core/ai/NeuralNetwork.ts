@@ -64,6 +64,8 @@ export class NeuralNetwork {
 	}
 
 	save(key: string) {
-		localStorage.setItem(key, this.stringify());
+		if (typeof window !== 'undefined') {
+			localStorage.setItem(key, this.stringify());
+		}
 	}
 }

@@ -13,7 +13,6 @@ export class Population {
 	public _models: IModel[] = [];
 	public _modelsRunning = 0;
 	public _sectionsToSeeAhead = 1;
-	public _forceDrawGameLeftCount = 3;
 	public _timeTakenDateStart?: Date;
 	public _completeCallback?: (models: IModel[], time: number) => void;
 
@@ -56,20 +55,20 @@ export class Population {
 			this._models[i].modelApi.start();
 
 			this._models[i].interval = setInterval(
-				this.checkGame.bind(null, this, this._models, this._models[i]),
+				this.checkModel.bind(null, this, this._models, this._models[i]),
 				50
 			);
 		}
 	}
 
-	checkGame(pop: Population, models: IModel[], model: IModel) {
+	checkModel(pop: Population, models: IModel[], model: IModel) {
 		if (model.modelApi.isOver() && pop._timeTakenDateStart) {
 			if (model.interval) clearInterval(model.interval);
 
 			pop._modelsRunning--;
 			pop._populationProgress = models.length - pop._modelsRunning + ' / ' + models.length;
 
-			if (pop.areAllGamesOver(models) && 0 == pop._modelsRunning) {
+			if (pop.allModelsDone(models) && 0 == pop._modelsRunning) {
 				const timeTakenDateComplete = new Date();
 				const timeTaken =
 					(timeTakenDateComplete.valueOf() - pop._timeTakenDateStart.valueOf()) / 1000;
@@ -79,12 +78,6 @@ export class Population {
 		} else {
 			if (model.modelApi.isSetup()) {
 				pop.think(model);
-				// TODO: Determine if this needs to be reworked to new codebase
-				/*
-        if (pop._modelsRunning <= pop._forceDrawGameLeftCount) {
-					enableDrawOverride = true;
-				}
-        */
 			}
 		}
 	}
@@ -160,9 +153,9 @@ export class Population {
 		}
 	}
 
-	areAllGamesOver(games) {
+	allModelsDone(models: IModel[]): boolean {
 		for (let i = 0; i < this._populationSize; i++) {
-			if (false == games[i].modelApi.isOver()) {
+			if (false == models[i].modelApi.isOver()) {
 				return false;
 			}
 		}
@@ -170,7 +163,7 @@ export class Population {
 		return true;
 	}
 
-	get totalGames() {
+	get populationSize() {
 		return this._populationSize;
 	}
 

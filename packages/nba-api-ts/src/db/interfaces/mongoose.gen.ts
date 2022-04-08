@@ -89,7 +89,7 @@ export type Coach2Queries = {};
 export type Coach2Methods = {};
 
 export type Coach2Statics = {
-	findByUrl: (this: Coach2Model, url: string) => any;
+	findByUrl: (this: Coach2Model, ...args: any[]) => any;
 };
 
 /**
@@ -643,19 +643,19 @@ export type Game2Query = mongoose.Query<any, Game2Document, Game2Queries> & Game
  * This type represents `Game2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Game2Queries = {
-	populatePlayers: (this: Game2Query) => Game2Query;
-	populateTeamsBasicInfo: (this: Game2Query) => Game2Query;
-	populateTeams: (this: Game2Query) => Game2Query;
+	populatePlayers: (this: Game2Query, ...args: any[]) => Game2Query;
+	populateTeamsBasicInfo: (this: Game2Query, ...args: any[]) => Game2Query;
+	populateTeams: (this: Game2Query, ...args: any[]) => Game2Query;
 };
 
 export type Game2Methods = {};
 
 export type Game2Statics = {
-	findByUrl: (this: Game2Model, url: string) => any;
-	loadBasicData: (this: Game2Model, gameIds: Game2Document['_id'][]) => Promise<any>;
-	getDailyGames: (this: Game2Model, startDate: Date, endDate: Date) => Promise<Game2Object[]>;
-	getGames: (this: Game2Model, gameUids: Game2Document['_id'][]) => Promise<Game2Object[]>;
-	findMinMaxYears: (this: Game2Model) => Promise<{ _id: null; max: Date; min: Date }[]>;
+	findByUrl: (this: Game2Model, ...args: any[]) => any;
+	loadBasicData: (this: Game2Model, ...args: any[]) => any;
+	getDailyGames: (this: Game2Model, ...args: any[]) => any;
+	getGames: (this: Game2Model, ...args: any[]) => any;
+	findMinMaxYears: (this: Game2Model, ...args: any[]) => any;
 };
 
 /**
@@ -1363,9 +1363,9 @@ export type Official2Queries = {};
 export type Official2Methods = {};
 
 export type Official2Statics = {
-	findByUrl: (this: Official2Model, url: string) => any;
-	findByName: (this: Official2Model, name: string | string[]) => any;
-	findByNameOrNbaId: (this: Official2Model, name: string | string[], nbaId: string) => any;
+	findByUrl: (this: Official2Model, ...args: any[]) => any;
+	findByName: (this: Official2Model, ...args: any[]) => any;
+	findByNameOrNbaId: (this: Official2Model, ...args: any[]) => any;
 };
 
 /**
@@ -2441,17 +2441,17 @@ export type Team2Query = mongoose.Query<any, Team2Document, Team2Queries> & Team
  * This type represents `Team2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Team2Queries = {
-	populateSznGames: (this: Team2Query, seasonIndex: number) => Team2Query;
-	populateSznPlayers: (this: Team2Query, seasonIndex: number) => Team2Query;
+	populateSznGames: (this: Team2Query, ...args: any[]) => Team2Query;
+	populateSznPlayers: (this: Team2Query, ...args: any[]) => Team2Query;
 };
 
 export type Team2Methods = {};
 
 export type Team2Statics = {
-	findByName: (this: Team2Model, name: string) => any;
-	loadTeamPage: (this: Team2Model, slug: string, season: number) => Promise<any>;
-	findByAbbrev: (this: Team2Model, abbrev: string, season: number) => any;
-	getAllTeams: (this: Team2Model) => Promise<Team2Object[]>;
+	findByName: (this: Team2Model, ...args: any[]) => any;
+	loadTeamPage: (this: Team2Model, ...args: any[]) => any;
+	findByAbbrev: (this: Team2Model, ...args: any[]) => any;
+	getAllTeams: (this: Team2Model, ...args: any[]) => any;
 };
 
 /**
@@ -3060,7 +3060,7 @@ export type UserQuery = mongoose.Query<any, UserDocument, UserQueries> & UserQue
 export type UserQueries = {};
 
 export type UserMethods = {
-	createAuthToken: (this: UserDocument) => any;
+	createAuthToken: (this: UserDocument, ...args: any[]) => any;
 };
 
 export type UserStatics = {};

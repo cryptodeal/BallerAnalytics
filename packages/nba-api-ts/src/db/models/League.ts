@@ -43,7 +43,6 @@ const LeagueSchema: LeagueSchema = new mongoose.Schema({
 	]
 });
 
-export const League: LeagueModel = mongoose.model<LeagueDocument, LeagueModel>(
-	'League',
-	LeagueSchema
-);
+export const League: LeagueModel =
+	(mongoose.models.League as LeagueModel) ||
+	mongoose.model<LeagueDocument, LeagueModel>('League', LeagueSchema);

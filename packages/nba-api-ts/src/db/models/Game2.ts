@@ -584,4 +584,6 @@ Game2Schema.statics = {
 	}
 };
 
-export const Game2: Game2Model = mongoose.model<Game2Document, Game2Model>('Game2', Game2Schema);
+export const Game2: Game2Model =
+	(mongoose.models.Game2 as Game2Model) ||
+	mongoose.model<Game2Document, Game2Model>('Game2', Game2Schema);

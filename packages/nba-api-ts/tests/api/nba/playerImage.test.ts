@@ -18,7 +18,7 @@ PlayerImageTest.after(async () => {
 
 PlayerImageTest('find playerWPic: instance of Player2', async () => {
 	/** Player2 is James Harden; Expect a headshot exists */
-	playerWPic = await Player2.findOne({ 'meta.helpers.nbaPlayerId': '201935' });
+	playerWPic = await Player2.findOne({ 'meta.images.headshot.avif.0': { $exists: true } });
 	assert.instance(playerWPic, Player2);
 });
 
@@ -34,4 +34,4 @@ PlayerImageTest('test storing player image: string[]', async () => {
 	}
 });
 
-PlayerImageTest.run();
+// PlayerImageTest.run();

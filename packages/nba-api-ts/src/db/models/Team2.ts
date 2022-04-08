@@ -316,4 +316,6 @@ Team2Schema.query = {
 	}
 };
 
-export const Team2: Team2Model = mongoose.model<Team2Document, Team2Model>('Team2', Team2Schema);
+export const Team2: Team2Model =
+	(mongoose.models.Team2 as Team2Model) ||
+	mongoose.model<Team2Document, Team2Model>('Team2', Team2Schema);

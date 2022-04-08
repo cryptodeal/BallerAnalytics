@@ -95,4 +95,6 @@ UserSchema.methods = {
 	}
 };
 
-export const User: UserModel = mongoose.model<UserDocument, UserModel>('User', UserSchema);
+export const User: UserModel =
+	(mongoose.models.User as UserModel) ||
+	mongoose.model<UserDocument, UserModel>('User', UserSchema);

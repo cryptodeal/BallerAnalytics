@@ -33,7 +33,7 @@ const getPlayerImage = async (playerId: string) => {
 	return fetch(
 		`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/${playerId}.png`
 	).then((res) => {
-		if (res.status !== 403) return res.arrayBuffer();
+		if (res.status === 200) return res.arrayBuffer();
 		throw new Error('Image does not exist');
 	});
 };
@@ -101,26 +101,24 @@ const transformImage = async (image: ArrayBuffer, slug: string) => {
 
 export const storePlayerImage = (player: Player2Document) => {
 	if (player.meta.helpers.nbaPlayerId) {
-		return getPlayerImage(`${player.meta.helpers.nbaPlayerId}`)
-			.then((image) => {
-				if (image) {
-					return transformImage(image, player.meta.slug).then((images) => {
-						images
-							.filter((i) => i.includes('.avif'))
-							.map((i) => player.meta.images.headshot.avif.addToSet(i));
+		return getPlayerImage(`${player.meta.helpers.nbaPlayerId}`).then((image) => {
+			if (image) {
+				return transformImage(image, player.meta.slug).then((images) => {
+					images
+						.filter((i) => i.includes('.avif'))
+						.map((i) => player.meta.images.headshot.avif.addToSet(i));
 
-						images
-							.filter((i) => i.includes('.webp'))
-							.map((i) => player.meta.images.headshot.webp.addToSet(i));
+					images
+						.filter((i) => i.includes('.webp'))
+						.map((i) => player.meta.images.headshot.webp.addToSet(i));
 
-						images
-							.filter((i) => i.includes('.png'))
-							.map((i) => player.meta.images.headshot.png.addToSet(i));
+					images
+						.filter((i) => i.includes('.png'))
+						.map((i) => player.meta.images.headshot.png.addToSet(i));
 
-						return player.save();
-					});
-				}
-			})
-			.catch(console.log);
+					return player.save();
+				});
+			}
+		});
 	}
 };

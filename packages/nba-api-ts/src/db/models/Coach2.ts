@@ -41,7 +41,6 @@ Coach2Schema.statics = {
 	}
 };
 
-export const Coach2: Coach2Model = mongoose.model<Coach2Document, Coach2Model>(
-	'Coach2',
-	Coach2Schema
-);
+export const Coach2: Coach2Model =
+	(mongoose.models.Coach2 as Coach2Model) ||
+	mongoose.model<Coach2Document, Coach2Model>('Coach2', Coach2Schema);

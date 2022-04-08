@@ -57,7 +57,6 @@ Official2Schema.statics = {
 	}
 };
 
-export const Official2: Official2Model = mongoose.model<Official2Document, Official2Model>(
-	'Official2',
-	Official2Schema
-);
+export const Official2: Official2Model =
+	(mongoose.models.Official2 as Official2Model) ||
+	mongoose.model<Official2Document, Official2Model>('Official2', Official2Schema);

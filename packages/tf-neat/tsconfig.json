@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node14/tsconfig.json",
 	"compilerOptions": {
+    "lib": ["dom"],
     "declaration": true,
 		"importHelpers": true,
 		"target": "ESNext",
@@ -12,7 +13,10 @@
 		"rootDir": "src",
 		"composite": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"]
+		},
 	},
 	"include": ["src/**/*", "src/global.d.ts"],
 	"exclude": ["./node_modules", "dist"]

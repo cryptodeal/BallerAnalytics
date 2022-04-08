@@ -1,78 +1,77 @@
 import { random, randomGaussian } from '../../utils';
-import { NeuralNetwork } from '../models/NeuralNetwork';
-import { Ai } from '../models/Ai';
+import { NeuralNetwork } from '../ai/NeuralNetwork';
+import { Population } from './Population';
+import { ModelApiType } from './models';
 import { tensor } from '@tensorflow/tfjs';
 /* Runs multiple generations of AI, breeding the best models from each generation until the training ends */
 export class NeuroEvolution {
     _discountRate = 0.95;
     _learningRate = 0.05;
-    // public _neuroEvolutionChart = new NeuroEvolutionChart();
-    _bestScores;
-    _bestGames = [];
+    _bestModels = [];
     _generation = 1;
     _maxGenerations = 1500;
-    _pausedGames = [];
+    _pausedModels = [];
     _pausedBestNeuralNetworksByFitness = [];
     _pauseBeforeNextGeneration = false;
     _enableMlVision = false;
     _useImageRecognition = false;
-    constructor() {
-        this._bestScores = document.querySelector('_best-scores');
-    }
-    calculateFitness(games) {
-        for (let i = 0; i < games.length; i++) {
-            const game = games[i];
-            games[i].fitness = game.gameApi.getProgress() / 100;
-            games[i].score = game.gameApi.getScore();
-            games[i].progress = game.gameApi.getProgress();
+    calcFitness(models) {
+        for (let i = 0; i < models.length; i++) {
+            const model = models[i];
+            models[i].fitness = model.modelApi.getProgress() / 100;
+            models[i].score = model.modelApi.getScore();
+            models[i].progress = model.modelApi.getProgress();
         }
-        // Now make the better progressed games have a higher fitness so they have a higher chance of being selected for next generation
-        games.sort(this.sortByFitness);
-        games.reverse();
+        /* Slightly skew higher fitness of best models; increases odds best perf are selected for next generation */
+        models.sort(NeuroEvolution.sortByFitness);
+        models.reverse();
         let prev = 0;
-        for (let i = 0; i < games.length; i++) {
-            games[i].fitness = this._discountRate * prev + games[i].fitness;
-            prev = games[i].fitness;
+        for (let i = 0; i < models.length; i++) {
+            models[i].fitness = this._discountRate * prev + models[i].fitness;
+            prev = models[i].fitness;
         }
-        games.sort(this.sortByFitness);
-        return games;
+        models.sort(NeuroEvolution.sortByFitness);
+        return models;
     }
-    pickBestGameFromFitnessPool(games) {
-        let index = 0;
+    getBestModelInFitnessPool(models) {
+        let i = 0;
         let r = random(1);
         while (r > 0) {
-            if (undefined !== games[index]) {
-                r = r - games[index].fitness;
-                index++;
+            if (models[i] !== null) {
+                const tempCalc = r - models[i].fitness;
+                r = r - tempCalc;
+                i++;
             }
             else {
                 r = 0;
             }
         }
-        index--;
-        const game = games[index];
-        return game;
+        i--;
+        return models[i];
     }
-    pickBestGameByActualFitness(games) {
-        let game;
+    getBestModelByTrueFitness(models) {
+        let model = undefined;
         let prevFitness = 0;
-        for (let i = 0; i < games.length; i++) {
-            if (games[i].fitness > prevFitness) {
-                game = games[i];
-                prevFitness = game.fitness;
+        for (let i = 0; i < models.length; i++) {
+            const tempModel = models[i];
+            if (tempModel.fitness > prevFitness) {
+                model = tempModel;
+                prevFitness = tempModel.fitness;
             }
         }
-        return game;
+        if (!model)
+            throw new Error(`No model found with model.fitness > ${prevFitness}`);
+        return model;
     }
-    didAtLeastOneGameCompleteLevel(games) {
-        for (let i = 0; i < games.length; i++) {
-            if (games[i].gameApi.isLevelPassed()) {
-                return games[i];
+    minOneModelComplete(models) {
+        for (let i = 0; i < models.length; i++) {
+            if (models[i].modelApi.isLevelPassed()) {
+                return models[i];
             }
         }
         return false;
     }
-    sortByFitness = (a, b) => {
+    static sortByFitness = (a, b) => {
         let comparison = 0;
         if (a.fitness < b.fitness) {
             comparison = 1;
@@ -82,7 +81,7 @@ export class NeuroEvolution {
         }
         return comparison;
     };
-    mutateNeuralNetwork(b) {
+    static mutateNeuralNetwork(b) {
         function fn(x) {
             if (random(1) < 0.05) {
                 const offset = randomGaussian() * 0.5;
@@ -102,11 +101,11 @@ export class NeuroEvolution {
         neuralNetwork.output_weights = tensor(ho, ho_shape);
         return neuralNetwork;
     }
-    crossoverNeuralNetwork(neuralNetworkOne, neuralNetworkTwo) {
-        const parentA_in_dna = neuralNetworkOne.input_weights.dataSync();
-        const parentA_out_dna = neuralNetworkOne.output_weights.dataSync();
-        const parentB_in_dna = neuralNetworkTwo.input_weights.dataSync();
-        const parentB_out_dna = neuralNetworkTwo.output_weights.dataSync();
+    static crossoverNeuralNet(neuralNetOne, neuralNetTwo) {
+        const parentA_in_dna = neuralNetOne.input_weights.dataSync();
+        const parentA_out_dna = neuralNetOne.output_weights.dataSync();
+        const parentB_in_dna = neuralNetTwo.input_weights.dataSync();
+        const parentB_out_dna = neuralNetTwo.output_weights.dataSync();
         const mid = Math.floor(Math.random() * parentA_in_dna.length);
         const child_in_dna = [
             ...parentA_in_dna.slice(0, mid),
@@ -116,124 +115,80 @@ export class NeuroEvolution {
             ...parentA_out_dna.slice(0, mid),
             ...parentB_out_dna.slice(mid, parentB_out_dna.length)
         ];
-        const child = neuralNetworkOne.clone();
-        const input_shape = neuralNetworkOne.input_weights.shape;
-        const output_shape = neuralNetworkOne.output_weights.shape;
+        const child = neuralNetOne.clone();
+        const input_shape = neuralNetOne.input_weights.shape;
+        const output_shape = neuralNetOne.output_weights.shape;
         child.dispose();
         child.input_weights = tensor(child_in_dna, input_shape);
         child.output_weights = tensor(child_out_dna, output_shape);
         return child;
     }
-    start(games, bestPlayerBrainsByFitness) {
-        this.updateUIRoundInformation();
-        if (this._generation < this._maxGenerations) {
-            if (false == this._pauseBeforeNextGeneration) {
-                for (let i = 0; i < games.length; i++) {
-                    games[i].gameApi.remove();
-                }
-                games = undefined;
-                this._pausedGames = [];
-                this._pausedBestNeuralNetworksByFitness = [];
-                this._generation++;
-                const ai = new Ai(this.finishGeneration.bind(this));
-                ai.start(this._useImageRecognition, bestPlayerBrainsByFitness);
+    start(models, bestPlayerBrainsByFitness) {
+        if (false == this._pauseBeforeNextGeneration) {
+            for (let i = 0; i < models.length; i++) {
+                models[i].modelApi.remove();
             }
-            else {
-                this._pausedGames = games;
-                this._pausedBestNeuralNetworksByFitness = bestPlayerBrainsByFitness;
-                for (let i = 0; i < games.length; i++) {
-                    games[i].gameApi.show();
-                }
-            }
+            models = [];
+            this._pausedModels = [];
+            this._pausedBestNeuralNetworksByFitness = [];
+            this._generation++;
+            const ai = new Population(this.finishGeneration.bind(this));
+            ai.start(ModelApiType.DRAFT, bestPlayerBrainsByFitness);
         }
         else {
-            this.enableSpeedInput();
+            this._pausedModels = models;
+            this._pausedBestNeuralNetworksByFitness = bestPlayerBrainsByFitness;
+            for (let i = 0; i < models.length; i++) {
+                models[i].modelApi.show();
+            }
         }
     }
-    finishGeneration(games, timeTaken) {
-        games = this.calculateFitness(games);
-        // Did one of the games finish?
-        const gamePassedLevel = this.didAtLeastOneGameCompleteLevel(games);
-        let bestPlayerByFitness = gamePassedLevel;
+    finishGeneration(models /*, timeTaken?: number*/) {
+        models = this.calcFitness(models);
+        /* Check if any models have finished */
+        const modelDone = this.minOneModelComplete(models);
+        let bestModelByFitness = modelDone;
         const bestPlayerBrainsByFitness = [];
-        if (false === bestPlayerByFitness) {
-            bestPlayerByFitness = this.pickBestGameByActualFitness(games);
+        if (false === bestModelByFitness) {
+            bestModelByFitness = this.getBestModelByTrueFitness(models);
         }
-        this._bestGames.push(bestPlayerByFitness);
-        this._bestGames.sort(this.sortByFitness);
-        // Only keep top 5 best scores
-        if (this._bestGames.length > 5) {
-            this._bestGames = this._bestGames.slice(0, 5);
+        this._bestModels.push(bestModelByFitness);
+        this._bestModels.sort(NeuroEvolution.sortByFitness);
+        /* Only keep 5 best models */
+        if (this._bestModels.length > 5) {
+            this._bestModels = this._bestModels.slice(0, 5);
         }
-        // Update UI - Chart
-        // this._neuroEvolutionChart.update(bestPlayerByFitness.progress, bestPlayerByFitness.score);
-        // Update UI
-        this.updateUIaddBestGenerationToBestScore(bestPlayerByFitness, timeTaken);
-        this.updateUIBestPlayerScore(this._bestGames[0]);
-        this.updateUIRoundInformation();
-        if (false != gamePassedLevel) {
-            for (let i = 0; i < games.length; i++) {
-                if (games[i].gameApi.isLevelPassed()) {
-                    games[i].neuralNetwork.save('neuralNetwork');
-                    for (let ii = 0; ii < games.length; ii++) {
-                        bestPlayerBrainsByFitness.push(games[i].neuralNetwork.clone());
+        if (false != modelDone) {
+            for (let i = 0; i < models.length; i++) {
+                if (models[i].modelApi.isLevelPassed()) {
+                    models[i].neuralNetwork.save('neuralNetwork');
+                    for (let ii = 0; ii < models.length; ii++) {
+                        bestPlayerBrainsByFitness.push(models[i].neuralNetwork.clone());
                     }
                 }
             }
-            console.log('Level Passed:', this._bestGames[0], this._bestGames.length, this._bestGames);
-            this.start(games, bestPlayerBrainsByFitness);
+            console.log('Level Passed:', this._bestModels[0], this._bestModels.length, this._bestModels);
+            this.start(models, bestPlayerBrainsByFitness);
         }
         else {
-            // Breeding
-            for (let i = 0; i < games.length; i++) {
-                const bestPlayerA = this.pickBestGameFromFitnessPool(games);
-                const bestPlayerB = this.pickBestGameFromFitnessPool(games);
-                const bestPlayerC = this._bestGames[0];
+            /* Breed the best performers for use in next generation */
+            for (let i = 0; i < models.length; i++) {
+                const bestModelA = this.getBestModelInFitnessPool(models);
+                const bestModelB = this.getBestModelInFitnessPool(models);
+                const bestModelC = this._bestModels[0];
                 let child;
                 if (random(1) < 0.1) {
-                    const ai = new Ai();
-                    const bestPlayerD = new NeuralNetwork(ai.inputs, ai.neurons, ai.outputs);
-                    child = this.mutateNeuralNetwork(this.crossoverNeuralNetwork(bestPlayerC.neuralNetwork.clone(), bestPlayerD));
+                    const ai = new Population();
+                    const bestModelD = new NeuralNetwork(ai.inputs, ai.neurons, ai.outputs);
+                    child = NeuroEvolution.mutateNeuralNetwork(NeuroEvolution.crossoverNeuralNet(bestModelC.neuralNetwork.clone(), bestModelD));
                 }
                 else {
-                    child = this.mutateNeuralNetwork(this.crossoverNeuralNetwork(bestPlayerA.neuralNetwork.clone(), bestPlayerB.neuralNetwork.clone()));
+                    child = NeuroEvolution.mutateNeuralNetwork(NeuroEvolution.crossoverNeuralNet(bestModelA.neuralNetwork.clone(), bestModelB.neuralNetwork.clone()));
                 }
                 bestPlayerBrainsByFitness.push(child);
             }
-            this.start(games, bestPlayerBrainsByFitness);
+            this.start(models, bestPlayerBrainsByFitness);
         }
-    }
-    updateUIaddBestGenerationToBestScore(pickBestPlayerByFitness, timeTaken) {
-        const bestScore = document.createElement('li');
-        bestScore.innerHTML =
-            pickBestPlayerByFitness.score +
-                ' (' +
-                pickBestPlayerByFitness.progress.toFixed(1) +
-                '%) (' +
-                pickBestPlayerByFitness.fitness.toFixed(3) +
-                ') (' +
-                timeTaken +
-                's)';
-        this._bestScores.insertBefore(bestScore, document.querySelector('li:first-child'));
-    }
-    updateUIRoundInformation() {
-        document.querySelector('_round-current').innerHTML =
-            this._generation.toString();
-        document.querySelector('_round-total').innerHTML =
-            this._maxGenerations.toString();
-        document.querySelector('_round-progress').style.width = '0%';
-        document.querySelector('_generation-progress').style.width =
-            (this._generation / this._maxGenerations) * 100 + '%';
-    }
-    updateUIBestPlayerScore(bestGame) {
-        document.querySelector('_best-player-score').innerHTML =
-            bestGame.score + ' points (' + bestGame.progress.toFixed(1) + '%)';
-    }
-    enableSpeedInput() {
-        document.querySelector('_btn-speed').disabled = false;
-    }
-    disableSpeedInput() {
-        document.querySelector('_btn-speed').disabled = true;
     }
     get pauseBeforeNextGeneration() {
         return this._pauseBeforeNextGeneration;
@@ -241,14 +196,14 @@ export class NeuroEvolution {
     set pauseBeforeNextGeneration(pauseBeforeNextGeneration) {
         this._pauseBeforeNextGeneration = pauseBeforeNextGeneration;
     }
-    get pausedGames() {
-        return this._pausedGames;
+    get pausedModels() {
+        return this._pausedModels;
     }
     get pausedBestNeuralNetworksByFitness() {
         return this._pausedBestNeuralNetworksByFitness;
     }
-    get bestGames() {
-        return this._bestGames;
+    get bestModels() {
+        return this._bestModels;
     }
     set useImageRecognition(useImageRecognition) {
         this._useImageRecognition = useImageRecognition;
@@ -257,9 +212,9 @@ export class NeuroEvolution {
         this._enableMlVision = enableMlVision;
     }
     reset() {
-        this._bestGames = [];
+        this._bestModels = [];
         this._generation = 1;
-        this._pausedGames = [];
+        this._pausedModels = [];
         this._pausedBestNeuralNetworksByFitness = [];
         this._pauseBeforeNextGeneration = false;
     }

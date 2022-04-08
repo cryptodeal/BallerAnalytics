@@ -1,0 +1,31 @@
+import { NeuralNetwork } from '../ai/NeuralNetwork';
+import type { IModel, IModelFitness } from '../ai/types';
+export declare class NeuroEvolution {
+    _discountRate: number;
+    _learningRate: number;
+    _bestModels: IModelFitness[];
+    _generation: number;
+    _maxGenerations: number;
+    _pausedModels: IModel[];
+    _pausedBestNeuralNetworksByFitness: IModel[];
+    _pauseBeforeNextGeneration: boolean;
+    _enableMlVision: boolean;
+    _useImageRecognition: boolean;
+    calcFitness(models: IModel[]): IModelFitness[];
+    getBestModelInFitnessPool(models: IModelFitness[]): IModelFitness;
+    getBestModelByTrueFitness(models: IModelFitness[]): IModelFitness;
+    minOneModelComplete(models: IModel[]): false | IModel;
+    static sortByFitness: (a: IModelFitness, b: IModelFitness) => number;
+    static mutateNeuralNetwork(b: NeuralNetwork): NeuralNetwork;
+    static crossoverNeuralNet(neuralNetOne: NeuralNetwork, neuralNetTwo: NeuralNetwork): NeuralNetwork;
+    start(models: IModel[], bestPlayerBrainsByFitness: any): void;
+    finishGeneration(models: IModel[]): void;
+    get pauseBeforeNextGeneration(): boolean;
+    set pauseBeforeNextGeneration(pauseBeforeNextGeneration: boolean);
+    get pausedModels(): IModel[];
+    get pausedBestNeuralNetworksByFitness(): IModel[];
+    get bestModels(): IModelFitness[];
+    set useImageRecognition(useImageRecognition: any);
+    set enableMlVision(enableMlVision: any);
+    reset(): void;
+}

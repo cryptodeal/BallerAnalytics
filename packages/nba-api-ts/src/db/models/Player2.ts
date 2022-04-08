@@ -186,7 +186,7 @@ Player2Schema.statics = {
 		]);
 	},
 
-	async fantasyData(year: number): Promise<Player2StatsObject[]> {
+	async fantasyData(year: number): Promise<Player2Object[]> {
 		return await this.aggregate([
 			{
 				$match: {
@@ -228,6 +228,7 @@ Player2Schema.statics = {
       */
 			{
 				$project: {
+					name: 1,
 					birthDate: 1,
 					'seasons.regularSeason.games': 1
 				}
@@ -331,6 +332,8 @@ Player2Schema.plugin(
 	})
 );
 
-let Player2: Player2Model = mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema);
+let Player2: Player2Model =
+	(mongoose.models.Player2 as Player2Model) ||
+	mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema);
 Player2 = slugger.wrap(Player2);
 export { Player2 };

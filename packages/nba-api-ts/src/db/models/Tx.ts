@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import type { TxModel, TxSchema } from '../interfaces/mongoose.gen';
 
 const TxSchema = new mongoose.Schema({
 	date: { type: Date, required: true },
@@ -20,4 +21,4 @@ const TxSchema = new mongoose.Schema({
 	]
 });
 
-export const Tx = mongoose.model('Tx', TxSchema);
+export const Tx: TxModel = (mongoose.models.Tx as TxModel) || mongoose.model('Tx', TxSchema);

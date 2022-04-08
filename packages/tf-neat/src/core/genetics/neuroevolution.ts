@@ -18,7 +18,7 @@ export class NeuroEvolution {
 	public _enableMlVision = false;
 	public _useImageRecognition = false;
 
-	calculateFitness(models: IModel[]): IModelFitness[] {
+	calcFitness(models: IModel[]): IModelFitness[] {
 		for (let i = 0; i < models.length; i++) {
 			const model = models[i];
 			models[i].fitness = model.modelApi.getProgress() / 100;
@@ -41,7 +41,7 @@ export class NeuroEvolution {
 		return models as IModelFitness[];
 	}
 
-	pickBestGameFromFitnessPool(models: IModelFitness[]): IModelFitness {
+	getBestModelInFitnessPool(models: IModelFitness[]): IModelFitness {
 		let i = 0;
 		let r = random(1);
 
@@ -59,7 +59,7 @@ export class NeuroEvolution {
 		return models[i];
 	}
 
-	pickBestGameByActualFitness(models: IModelFitness[]): IModelFitness {
+	getBestModelByTrueFitness(models: IModelFitness[]): IModelFitness {
 		let model: IModelFitness | undefined = undefined;
 		let prevFitness = 0;
 		for (let i = 0; i < models.length; i++) {
@@ -174,7 +174,7 @@ export class NeuroEvolution {
 	}
 
 	finishGeneration(models: IModel[] /*, timeTaken?: number*/) {
-		models = this.calculateFitness(models);
+		models = this.calcFitness(models);
 
 		/* Check if any models have finished */
 		const modelDone = this.minOneModelComplete(models);
@@ -183,7 +183,7 @@ export class NeuroEvolution {
 		const bestPlayerBrainsByFitness: IModelFitness[] = [];
 
 		if (false === bestModelByFitness) {
-			bestModelByFitness = this.pickBestGameByActualFitness(models as IModelFitness[]);
+			bestModelByFitness = this.getBestModelByTrueFitness(models as IModelFitness[]);
 		}
 
 		this._bestModels.push(bestModelByFitness as IModelFitness);
@@ -209,8 +209,8 @@ export class NeuroEvolution {
 		} else {
 			/* Breed the best performers for use in next generation */
 			for (let i = 0; i < models.length; i++) {
-				const bestModelA = this.pickBestGameFromFitnessPool(models as IModelFitness[]);
-				const bestModelB = this.pickBestGameFromFitnessPool(models as IModelFitness[]);
+				const bestModelA = this.getBestModelInFitnessPool(models as IModelFitness[]);
+				const bestModelB = this.getBestModelInFitnessPool(models as IModelFitness[]);
 				const bestModelC = this._bestModels[0];
 				let child;
 

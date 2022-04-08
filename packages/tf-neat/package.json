@@ -4,6 +4,7 @@
   "description": "implementation of neural network and neuroevolution tactics using tensorflow.js",
   "main": "./dist/index.js",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
     "test": "uvu -r tsm tests",
