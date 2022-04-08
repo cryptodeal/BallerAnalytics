@@ -180,7 +180,7 @@ export class NeuroEvolution {
 		const modelDone = this.minOneModelComplete(models);
 
 		let bestModelByFitness = modelDone;
-		const bestPlayerBrainsByFitness: IModelFitness[] = [];
+		const bestPlayerBrainsByFitness: NeuralNetwork[] = [];
 
 		if (false === bestModelByFitness) {
 			bestModelByFitness = this.getBestModelByTrueFitness(models as IModelFitness[]);

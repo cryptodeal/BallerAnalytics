@@ -1,4 +1,4 @@
-import type { NeuralNetwork } from './NeuralNetworkwork';
+import type { NeuralNetwork } from './NeuralNetwork';
 
 export interface IModel {
 	modelApi: ModelApi;
