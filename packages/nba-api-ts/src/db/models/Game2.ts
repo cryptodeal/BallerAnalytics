@@ -3,7 +3,8 @@ import type {
 	Game2Document,
 	Game2Model,
 	Game2Schema,
-	Game2Object
+	Game2Object,
+	Player2Document
 } from '../interfaces/mongoose.gen';
 
 const Game2Schema: Game2Schema = new mongoose.Schema({
@@ -454,6 +455,63 @@ Game2Schema.query = {
 Game2Schema.statics = {
 	findByUrl(url: string) {
 		return this.findOne({ 'meta.helpers.bballRef.boxScoreUrl': url });
+	},
+
+	async getFantasyGames(
+		playerId: Player2Document['_id'],
+		gameIds: Game2Document['_id'][]
+	): Promise<Game2Object[]> {
+		return await this.aggregate([
+			{
+				$match: {
+					_id: {
+						$in: gameIds
+					}
+				}
+			},
+			{
+				$project: {
+					date: 1,
+					home: {
+						players: {
+							$filter: {
+								input: '$home.players',
+								as: 'players',
+								cond: {
+									$and: [
+										{
+											$eq: ['$$players.player', playerId]
+										}
+									]
+								}
+							}
+						}
+					},
+					visitor: {
+						players: {
+							$filter: {
+								input: '$visitor.players',
+								as: 'players',
+								cond: {
+									$and: [
+										{
+											$eq: ['$$players.player', playerId]
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					date: 1,
+					'home.players': 1,
+					'visitor.players': 1
+				}
+			}
+		]);
 	},
 
 	async loadBasicData(gameIds: Game2Document['_id'][]) {

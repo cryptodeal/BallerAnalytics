@@ -189,6 +189,9 @@ Player2Schema.statics = {
 	async fantasyData(year: number): Promise<Player2Object[]> {
 		return await this.aggregate([
 			{
+				$limit: 150
+			},
+			{
 				$match: {
 					'seasons.year': year
 				}
@@ -202,11 +205,7 @@ Player2Schema.statics = {
 							input: '$seasons',
 							as: 'seasons',
 							cond: {
-								$and: [
-									{
-										$lte: ['$$seasons.year', year]
-									}
-								]
+								$lte: ['$$seasons.year', year]
 							}
 						}
 					}
@@ -230,6 +229,7 @@ Player2Schema.statics = {
 				$project: {
 					name: 1,
 					birthDate: 1,
+					'seasons.year': 1,
 					'seasons.regularSeason.games': 1
 				}
 			}

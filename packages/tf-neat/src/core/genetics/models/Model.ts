@@ -1,5 +1,5 @@
 import { ModelApiType } from '../models';
-import { Draft } from '../../../base/Draft';
+import { Draft } from '../../../base/TeamRoster';
 import type { ModelApi } from './ModelApi';
 
 /* Controller for each individual Model of a given population */

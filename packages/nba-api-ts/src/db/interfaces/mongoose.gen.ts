@@ -652,6 +652,7 @@ export type Game2Methods = {};
 
 export type Game2Statics = {
 	findByUrl: (this: Game2Model, ...args: any[]) => any;
+	getFantasyGames: (this: Game2Model, ...args: any[]) => any;
 	loadBasicData: (this: Game2Model, ...args: any[]) => any;
 	getDailyGames: (this: Game2Model, ...args: any[]) => any;
 	getGames: (this: Game2Model, ...args: any[]) => any;

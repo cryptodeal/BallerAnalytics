@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { EspnScoring } from '../core/genetics/models';
-import type { Game2HomePlayer, Game2VisitorPlayer } from '@balleranalytics/nba-api-ts';
+import type { PlayerStatTotals } from '../core/data/types';
 
 /** Credit p5.org:
  *  Random # generator
@@ -85,23 +85,38 @@ export const randomGaussian = (mean?: number, sd = 1) => {
 	return y1 * s + m;
 };
 
-export const calcFantasyPoints = (
-	playerGameStats: Game2HomePlayer | Game2VisitorPlayer
-): number => {
-	const { totals } = playerGameStats.stats;
+export const calcFantasyPoints = (playerGameStats: PlayerStatTotals): number => {
+	const {
+		points,
+		threePointersMade,
+		fieldGoalsAttempted,
+		freeThrowsAttempted,
+		freeThrowsMade,
+		fieldGoalsMade,
+		totalReb,
+		offReb,
+		defReb,
+		assists,
+		steals,
+		blocks,
+		turnovers
+	} = playerGameStats;
 	let fantasyPoints = 0;
-	if (!totals) return fantasyPoints;
-	if (totals.points) fantasyPoints += totals.points * EspnScoring.POINT;
-	if (totals.threePointersMade) fantasyPoints += totals.threePointersMade * EspnScoring.THREEPM;
-	if (totals.fieldGoalsAttempted) fantasyPoints -= totals.fieldGoalsAttempted * EspnScoring.FGA;
-	if (totals.fieldGoalsMade) fantasyPoints += totals.fieldGoalsMade * EspnScoring.FGM;
-	if (totals.freeThrowsAttempted) fantasyPoints += totals.freeThrowsAttempted * EspnScoring.FTA;
-	if (totals.freeThrowsMade) fantasyPoints += totals.freeThrowsMade * EspnScoring.FTM;
-	if (totals.totalReb) fantasyPoints += totals.totalReb * EspnScoring.REB;
-	if (totals.assists) fantasyPoints += totals.assists * EspnScoring.AST;
-	if (totals.steals) fantasyPoints += totals.steals * EspnScoring.STL;
-	if (totals.blocks) fantasyPoints += totals.blocks * EspnScoring.BLK;
-	if (totals.turnovers) fantasyPoints -= totals.turnovers * EspnScoring.TOV;
-
+	if (points) fantasyPoints += points * EspnScoring.POINT;
+	if (threePointersMade) fantasyPoints += threePointersMade * EspnScoring.THREEPM;
+	if (fieldGoalsAttempted) fantasyPoints += fieldGoalsAttempted * EspnScoring.FGA;
+	if (fieldGoalsMade) fantasyPoints += fieldGoalsMade * EspnScoring.FGM;
+	if (freeThrowsAttempted) fantasyPoints += freeThrowsAttempted * EspnScoring.FTA;
+	if (freeThrowsMade) fantasyPoints += freeThrowsMade * EspnScoring.FTM;
+	if (totalReb) {
+		fantasyPoints += totalReb * EspnScoring.REB;
+	} else {
+		if (offReb) fantasyPoints += offReb * EspnScoring.REB;
+		if (defReb) fantasyPoints += defReb * EspnScoring.REB;
+	}
+	if (assists) fantasyPoints += assists * EspnScoring.AST;
+	if (steals) fantasyPoints += steals * EspnScoring.STL;
+	if (blocks) fantasyPoints += blocks * EspnScoring.BLK;
+	if (turnovers) fantasyPoints += turnovers * EspnScoring.TOV;
 	return fantasyPoints;
 };
