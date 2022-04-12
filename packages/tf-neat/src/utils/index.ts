@@ -120,3 +120,10 @@ export const calcFantasyPoints = (playerGameStats: PlayerStatTotals): number => 
 	if (turnovers) fantasyPoints += turnovers * EspnScoring.TOV;
 	return fantasyPoints;
 };
+
+export const getDateStr = () => {
+	const now = new Date();
+	return `${now.getMonth() + 1}-${now.getDate()}-${now.getFullYear()}_${
+		now.getHours() + ':' + now.getMinutes()
+	}`;
+};

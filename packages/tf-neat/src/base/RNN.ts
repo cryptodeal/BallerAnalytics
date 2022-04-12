@@ -9,11 +9,12 @@ import {
 	scalar,
 	util
 } from '@tensorflow/tfjs-node';
+import { ModelType } from '.';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
-import { LSTMCell } from '.pnpm/@tensorflow+tfjs-layers@3.15.0_@tensorflow+tfjs-core@3.15.0/node_modules/@tensorflow/tfjs-layers/dist/layers/recurrent';
 import { BaseInputs } from './types';
 
 export class RNN extends Base {
+	public type = ModelType.RNN;
 	public hiddenLayers = 5;
 	public epochs = 10;
 	/* create a sequential model */
@@ -41,7 +42,7 @@ export class RNN extends Base {
 
 		// model.add(layers.reshape({ targetShape: rnn_input_shape }));
 
-		const lstmCells: LSTMCell[] = [];
+		const lstmCells: any[] = [];
 		for (let i = 0; i < this.hiddenLayers; i++) {
 			const tempCell = layers.lstmCell({ units: rnn_output_neurons });
 			lstmCells.push(tempCell);
@@ -104,28 +105,6 @@ export class RNN extends Base {
 			loss: 'meanSquaredError'
 		});
 
-		// include tfvis callback if turned on
-		const callbacks = {
-			onTrainBegin: async () => {
-				console.log('onTrainBegin');
-			},
-			onTrainEnd: async (logs) => {
-				console.log('onTrainEnd' + JSON.stringify(logs));
-			},
-			onEpochBegin: async (epoch, logs) => {
-				console.log('onEpochBegin' + epoch + JSON.stringify(logs));
-			},
-			onEpochEnd: async (epoch, logs) => {
-				console.log('onEpochEnd' + epoch + JSON.stringify(logs));
-			},
-			onBatchBegin: async (epoch, logs) => {
-				console.log('onBatchBegin' + epoch + JSON.stringify(logs));
-			},
-			onBatchEnd: async (epoch, logs) => {
-				console.log('onBatchEnd' + epoch + JSON.stringify(logs));
-			}
-		};
-
 		/* train the model */
 		return await this.model.fit(inputs, labels, {
 			batchSize: 15,
@@ -148,12 +127,5 @@ export class RNN extends Base {
 		});
 
 		return preds[0];
-	}
-
-	async init(year: number) {
-		await this.getData(year);
-		this.createModel();
-		this.dataToTensors();
-		await this.train();
 	}
 }

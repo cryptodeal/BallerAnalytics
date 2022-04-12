@@ -103,7 +103,7 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 	draftNumber: { type: String },
 	seasons: [
 		{
-			year: { type: Number, required: true },
+			year: { type: Number, required: true, index: true },
 			teams: [
 				{
 					id: { type: mongoose.Schema.Types.ObjectId, ref: 'Team2', index: true },
@@ -189,11 +189,11 @@ Player2Schema.statics = {
 	async fantasyData(year: number): Promise<Player2Object[]> {
 		return await this.aggregate([
 			{
-				$limit: 150
-			},
-			{
 				$match: {
-					'seasons.year': year
+					'seasons.year': {
+						$lte: year,
+						$gte: 2005
+					}
 				}
 			},
 			{
@@ -205,7 +205,7 @@ Player2Schema.statics = {
 							input: '$seasons',
 							as: 'seasons',
 							cond: {
-								$lte: ['$$seasons.year', year]
+								$and: [{ $gte: ['$$seasons.year', 2005] }, { $lte: ['$$seasons.year', year] }]
 							}
 						}
 					}

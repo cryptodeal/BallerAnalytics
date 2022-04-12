@@ -207,13 +207,19 @@ export class Player {
 			if (labelKeys.includes((parseFloat(inputKeys[i]) + 1).toString()) && labelAvgFppg !== 0) {
 				const { fppg } = this.calcAverages(this._playerData[maxYear.toString()]);
 				/*
-          only add inputs and corresponding labels if player averages 10+ fppg
-          in next season (i.e. not useful if not on a roster in fantasy league)
+          only add pairs of inputs and labels if player averages 15+ fppg
+          in next season (i.e. only use relevant data) & if inputs have
+          fewer than 2 NaN values (replace NaN => 0) else discard
         */
-				if (fppg >= 10 && !Number.isNaN(tempInputs[2]) && !Number.isNaN(tempInputs[3])) {
+				if (
+					fppg >= 14 &&
+					!Number.isNaN(tempInputs[2]) &&
+					!Number.isNaN(tempInputs[3]) &&
+					!tempInputs.filter((i) => Number.isNaN(i)).length
+				) {
 					this.rawData.push({
 						labels: [fppg],
-						inputs: tempInputs.map((i) => (Number.isNaN(i) ? 0 : i)) as BaseInputs
+						inputs: tempInputs
 					});
 				}
 			}

@@ -20,25 +20,25 @@ NeuralNetTest.after(async () => {
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const params = { batchSize: 10, epochs: 20000 };
+	const params = { batchSize: 10, epochs: 10000 };
 	model = new NeuralNetwork(params);
 	await model.init(2021);
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const tempPlayer = await Player2.findOne({ 'name.full': 'James Harden' });
+	const tempPlayer = await Player2.findOne();
 	if (!tempPlayer) throw new Error('No players found');
-	const sznIdz = tempPlayer.seasons.findIndex((s) => s.year === 2022);
-	tempPlayer.seasons.splice(sznIdz, 1);
 	const playerRes = await loadPlayerSznGames(tempPlayer);
 	if (!playerRes) throw new Error('No player data found');
 	player = playerRes;
 });
 
 NeuralNetTest('test output on model', async () => {
-	player.processData();
-	console.log(`calculated avgFppg: ${player.labels[0]}`);
-	prediction = model.predict(player.inputs);
+	player.processSznData();
+	const [calcFppgRes] = player.rawData[player.rawData.length - 1].labels;
+	console.log(`calculated avgFppg: ${calcFppgRes}`);
+	const pInputs = player.rawData[player.rawData.length - 1].inputs;
+	prediction = model.predict(pInputs);
 	console.log(`Projected avgFppg: ${prediction}`);
 });
 

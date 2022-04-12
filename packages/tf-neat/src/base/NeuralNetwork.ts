@@ -1,18 +1,23 @@
 import { Base } from './Base';
 import { sequential, layers, tidy, train, losses, tensor } from '@tensorflow/tfjs-node';
+import { ModelType } from '.';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
 import type { BaseInputs } from './types';
 
 export class NeuralNetwork extends Base {
+	public type = ModelType.NN;
 	/* create a sequential model */
 	createModel() {
 		const model = sequential({
 			layers: [
-				layers.dense({ units: 15, inputShape: [15], activation: 'sigmoid' }),
+				/* relu activated input layer w 15 neurons */
 				layers.dense({ units: 100, inputShape: [15], activation: 'relu' }),
+				/* sigmoid activation effective w 100 neurons on input layer */
+				layers.dense({ units: 100, activation: 'sigmoid' }),
+				/* relu effective w 100 neuron dense layer */
 				layers.dense({ units: 100, activation: 'relu' }),
-				layers.dense({ units: 100, activation: 'relu' }),
-				layers.dense({ units: 1, activation: 'softsign' })
+				/* softplus tests effective on output layer */
+				layers.dense({ units: 1, activation: 'softplus' })
 			]
 		});
 
@@ -24,7 +29,7 @@ export class NeuralNetwork extends Base {
 
 		/* prepare the model for training */
 		this.model.compile({
-			optimizer: train.adam(),
+			optimizer: train.adam(0.01),
 			loss: losses.meanSquaredError,
 			metrics: ['mse']
 		});
@@ -32,10 +37,10 @@ export class NeuralNetwork extends Base {
 		/* train model */
 		return await this.model.fit(inputs, labels, {
 			epochs: this.epochs,
-			validationSplit: 0.2,
 			batchSize: this.batchSize,
-			shuffle: true
-			// callbacks: callbacks
+			shuffle: true,
+			validationSplit: 0.1,
+			callbacks: this.callbacks
 		});
 	}
 
@@ -51,12 +56,5 @@ export class NeuralNetwork extends Base {
 		});
 
 		return preds[0];
-	}
-
-	async init(year: number) {
-		await this.getData(year);
-		this.createModel();
-		this.dataToTensors();
-		await this.train();
 	}
 }

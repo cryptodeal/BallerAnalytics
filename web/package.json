@@ -13,9 +13,11 @@
 	},
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
-		"@iconify/json": "^2.1.26",
+		"@balleranalytics/tf-neat": "workspace:*",
+		"@iconify/json": "^2.1.27",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
+		"@sveltejs/pancake": "^0.0.18",
 		"@types/color": "^3.0.3",
 		"@types/cookie": "^0.4.1",
 		"@types/jsonwebtoken": "^8.5.8",
@@ -26,8 +28,8 @@
 		"@types/tinycolor2": "^1.4.3",
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/yup": "^0.29.13",
-		"@typescript-eslint/eslint-plugin": "^5.18.0",
-		"@typescript-eslint/parser": "^5.18.0",
+		"@typescript-eslint/eslint-plugin": "^5.19.0",
+		"@typescript-eslint/parser": "^5.19.0",
 		"@windicss/plugin-heropatterns": "^0.0.8",
 		"color": "^4.2.3",
 		"cookie": "^0.4.2",
@@ -69,6 +71,7 @@
 		"unplugin-obj": "^0.1.2",
 		"vite-plugin-windicss": "^1.8.3",
 		"windicss": "^3.5.1",
+		"yootils": "^0.3.1",
 		"yup": "^0.32.11"
 	},
 	"type": "module"

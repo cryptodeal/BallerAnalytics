@@ -1,12 +1,20 @@
-import { sequential, layers, tidy, train, losses, tensor, util } from '@tensorflow/tfjs-node';
-import { Player } from './utils/Player';
-import { loadSeasonPlayers } from '../core/data';
+import {
+	sequential,
+	layers,
+	tidy,
+	train,
+	losses,
+	tensor,
+	util,
+	loadLayersModel
+} from '@tensorflow/tfjs';
+import { Player } from '../base/utils/Player';
 import { getDateStr } from '../utils';
-import type { IBaseConfig, BaseInputs, RawData } from './types';
-import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs-node';
-import { ModelType } from '.';
+import { ModelType } from '../base';
+import type { IBaseConfig, BaseInputs, RawData } from '../base/types';
+import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
 
-export class Base {
+export class BaseModel {
 	public callbacks = {
 		onEpochEnd: async (epoch: number, logs) => {
 			const { val_loss, val_mse, mse, loss } = logs as unknown as {
@@ -51,22 +59,6 @@ export class Base {
 
 		/* TODO: show tfvis plots? */
 		tfvis !== undefined ? (this.tfvis = true) : (this.tfvis = false);
-	}
-
-	async getData(year: number) {
-		const tempPlayers = (await loadSeasonPlayers(year)).filter(
-			(p) => p.playerBirthDate && p.playerData && Object.keys(p.playerData).length > 2
-		);
-
-		tempPlayers.map((p) => {
-			if (Object.keys(p.playerData).length > 1) {
-				p.processSznData();
-				for (let i = 0; i < p.rawData.length; i++) {
-					this.rawData.push(p.rawData[i]);
-				}
-			}
-		});
-		console.log(this.rawData.length);
 	}
 
 	minMaxNormalizer = (tensor: Tensor, xMin: Tensor<Rank>, xMax: Tensor<Rank>) => {
@@ -175,11 +167,13 @@ export class Base {
 			.then(() => console.log(`🟢  Model saved!`));
 	}
 
-	async init(year: number) {
-		await this.getData(year);
-		this.createModel();
-		this.dataToTensors();
-		await this.train();
-		await this.saveModel();
+	async loadModel(path: string) {
+		this.model = (await loadLayersModel(
+			'http://model-server.domain/download/model.json'
+		)) as Sequential;
+	}
+
+	async init(path: string) {
+		await this.loadModel(path);
 	}
 }
