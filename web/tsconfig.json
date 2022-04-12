@@ -28,7 +28,7 @@
 			"$lib/*": ["src/lib/*"],
 			"$models": ["src/models"],
 			"$models/*": ["src/models/*"],
-			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts"]
+			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"]
 		},
 		"types": ["unplugin-obj/obj", "unplugin-mtl/mtl", "@types/offscreencanvas"]
 	},
