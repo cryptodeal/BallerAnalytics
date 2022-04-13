@@ -8,3 +8,7 @@ export { User } from './db/models/User';
 export type { Player2StatsObject, Player2Stats } from './db/models/Player2';
 export * from './db/interfaces/mongoose.gen';
 export { serverlessConnect, initConnect, endConnect } from './db/connect';
+
+/* new exports to be used for data pipeline from db to tfjs */
+export * from './db/controllers/ml';
+export * from './db/controllers/ml/types.d';

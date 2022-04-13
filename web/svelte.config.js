@@ -18,7 +18,7 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter({ external: ['@napi-rs/*'] }),
+		adapter: adapter({ external: ['@napi-rs*', '@napi-rs/*', '@napi-rs/pinyin-darwin-arm64'] }),
 		vite: {
 			plugins: [
 				WindiCSS(),
@@ -47,12 +47,16 @@ const config = {
 if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve.alias = {
 		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src'),
-		$models: path.resolve('src/models')
+		'@balleranalytics/tf-neat': path.resolve('../packages/tf-neat/src'),
+		$models: path.resolve('src/models'),
+		$ml: path.resolve('src/ml')
 	};
 } else {
 	config.kit.vite.resolve.alias = {
 		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src'),
-		$models: path.resolve('src/models')
+		'@balleranalytics/tf-neat': path.resolve('../packages/tf-neat/src'),
+		$models: path.resolve('src/models'),
+		$ml: path.resolve('src/ml')
 	};
 }
 

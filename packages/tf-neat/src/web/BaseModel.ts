@@ -8,7 +8,6 @@ import {
 	util,
 	loadLayersModel
 } from '@tensorflow/tfjs';
-import { Player } from '../base/utils/Player';
 import { getDateStr } from '../utils';
 import { ModelType } from '../base';
 import type { IBaseConfig, BaseInputs, RawData } from '../base/types';
@@ -35,10 +34,9 @@ export class BaseModel {
 	public loss: number[] = [];
 	public type = ModelType.BASE;
 	public hiddenLayers!: number;
-	public rawPlayerData!: Player[];
 	public rawData: RawData = [];
-	public batchSize: number;
-	public epochs: number;
+	public batchSize = 10;
+	public epochs = 1000;
 	public tfvis = false;
 	public model!: Sequential;
 	public tensorData!: {
@@ -50,15 +48,20 @@ export class BaseModel {
 		labelMin: Tensor<Rank>;
 	};
 
-	constructor(config: IBaseConfig) {
-		const { batchSize, epochs, tfvis } = config;
+	constructor(config?: IBaseConfig) {
+		if (config) {
+			const { batchSize, epochs, tfvis } = config;
 
-		/* model config */
-		batchSize !== undefined ? (this.batchSize = batchSize) : (this.batchSize = 32);
-		epochs !== undefined ? (this.epochs = epochs) : (this.epochs = 50);
+			/* model config */
+			if (batchSize) this.batchSize = batchSize;
+			if (epochs) this.epochs = epochs;
+		}
+	}
 
-		/* TODO: show tfvis plots? */
-		tfvis !== undefined ? (this.tfvis = true) : (this.tfvis = false);
+	loadData(path: string) {
+		return fetch(path)
+			.then((res) => res.json())
+			.then((data) => (this.rawData = data));
 	}
 
 	minMaxNormalizer = (tensor: Tensor, xMin: Tensor<Rank>, xMax: Tensor<Rank>) => {
@@ -136,7 +139,7 @@ export class BaseModel {
 		/* train model */
 		return await this.model.fit(inputs, labels, {
 			epochs: this.epochs,
-			validationSplit: 0.1,
+			validationSplit: 0.25,
 			batchSize: this.batchSize,
 			shuffle: true,
 			callbacks: this.callbacks
@@ -168,12 +171,6 @@ export class BaseModel {
 	}
 
 	async loadModel(path: string) {
-		this.model = (await loadLayersModel(
-			'http://model-server.domain/download/model.json'
-		)) as Sequential;
-	}
-
-	async init(path: string) {
-		await this.loadModel(path);
+		this.model = (await loadLayersModel(path)) as Sequential;
 	}
 }

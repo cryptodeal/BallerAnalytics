@@ -7,7 +7,7 @@ import type { PlayerStatTotals } from '../core/data/types';
  * Also selects random element from array of elements
  */
 
-export const random = (min?: number | any[], max?: number) => {
+export const random = (min?: number | number[], max?: number) => {
 	const rand = Math.random();
 
 	if (typeof min === undefined || !min) {

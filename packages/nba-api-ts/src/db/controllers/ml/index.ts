@@ -1,7 +1,71 @@
+import { Player2, Game2 } from '../../..';
 import dayjs from 'dayjs';
-import type { Player2Object } from '@balleranalytics/nba-api-ts';
-import type { PlayerData, ParsedGame } from '../../core/data/types';
-import type { BaseInputs, RawData } from '../types';
+import type { Player2Object, Game2Object, Player2Document, Game2Document } from '../../..';
+import type {
+	SznGames,
+	ParsedGame,
+	PlayerData,
+	PlayerStatTotals,
+	BaseInputs,
+	RawData
+} from './types';
+
+export enum EspnScoring {
+	POINT = 1,
+	THREEPM = 1,
+	FGA = -1,
+	FGM = 2,
+	FTA = -1,
+	FTM = 1,
+	REB = 1,
+	AST = 2,
+	STL = 4,
+	BLK = 4,
+	TOV = -2
+}
+
+export const calcFantasyPoints = (playerGameStats: PlayerStatTotals): number => {
+	const {
+		points,
+		threePointersMade,
+		fieldGoalsAttempted,
+		freeThrowsAttempted,
+		freeThrowsMade,
+		fieldGoalsMade,
+		totalReb,
+		offReb,
+		defReb,
+		assists,
+		steals,
+		blocks,
+		turnovers
+	} = playerGameStats;
+	let fantasyPoints = 0;
+	if (points) fantasyPoints += points * EspnScoring.POINT;
+	if (threePointersMade) fantasyPoints += threePointersMade * EspnScoring.THREEPM;
+	if (fieldGoalsAttempted) fantasyPoints += fieldGoalsAttempted * EspnScoring.FGA;
+	if (fieldGoalsMade) fantasyPoints += fieldGoalsMade * EspnScoring.FGM;
+	if (freeThrowsAttempted) fantasyPoints += freeThrowsAttempted * EspnScoring.FTA;
+	if (freeThrowsMade) fantasyPoints += freeThrowsMade * EspnScoring.FTM;
+	if (totalReb) {
+		fantasyPoints += totalReb * EspnScoring.REB;
+	} else {
+		if (offReb) fantasyPoints += offReb * EspnScoring.REB;
+		if (defReb) fantasyPoints += defReb * EspnScoring.REB;
+	}
+	if (assists) fantasyPoints += assists * EspnScoring.AST;
+	if (steals) fantasyPoints += steals * EspnScoring.STL;
+	if (blocks) fantasyPoints += blocks * EspnScoring.BLK;
+	if (turnovers) fantasyPoints += turnovers * EspnScoring.TOV;
+	return fantasyPoints;
+};
+
+export const getDateStr = () => {
+	const now = new Date();
+	return `${now.getMonth() + 1}-${now.getDate()}-${now.getFullYear()}_${
+		now.getHours() + ':' + now.getMinutes()
+	}`;
+};
 
 export class Player {
 	public _playerId: Player2Object['_id'];
@@ -226,3 +290,66 @@ export class Player {
 		}
 	}
 }
+
+const loadSznGames = async (
+	playerId: Player2Document['_id'],
+	games: Game2Document['_id'][],
+	year: number
+): Promise<SznGames> => {
+	const filteredGameStats: Game2Object[] = await Game2.getFantasyGames(playerId, games);
+	const resGames = filteredGameStats
+		.map((g) => {
+			const { date, home, visitor } = g;
+
+			if (!home.players.length) {
+				const [{ stats }] = visitor.players;
+				const totals = stats.totals;
+				const parsedGame: ParsedGame = {
+					date,
+					stats: totals
+				};
+				return parsedGame;
+			}
+			const [{ stats }] = home.players;
+			const totals = stats.totals;
+			const parsedGame: ParsedGame = {
+				date,
+				stats: totals
+			};
+			return parsedGame;
+		})
+		.filter((g) => g.stats?.minutes !== undefined);
+	resGames.map((g) => {
+		g.stats.fantasyPts = calcFantasyPoints(g.stats);
+		return g;
+	});
+
+	return { year: year, games: resGames };
+};
+
+export const loadPlayerSznGames = async (player: Player2Object): Promise<Player | void> => {
+	const promises: Promise<SznGames>[] = [];
+	for (let i = 0; i < player.seasons.length; i++) {
+		const { year, regularSeason } = player.seasons[i];
+		const { games } = regularSeason;
+		if (!games) continue;
+		promises.push(loadSznGames(player._id, games as Game2Document['_id'][], year));
+	}
+	const sznGames = await Promise.all(promises);
+	sznGames.sort((a, b) => a.year - b.year);
+	const playerData: PlayerData = {};
+	const resPlayer = new Player(player._id, sznGames[0].year, player.birthDate);
+	for (let i = 0; i < sznGames.length; i++) {
+		const { year, games } = sznGames[i];
+		playerData[year] = games;
+	}
+	resPlayer.startSeason = sznGames[0].year;
+	resPlayer.playerData = playerData;
+	return resPlayer;
+};
+
+export const loadSeasonPlayers = async (season: number): Promise<Player[]> => {
+	return Player2.fantasyData(season).then((players) => {
+		return Promise.all(players.map(loadPlayerSznGames));
+	});
+};

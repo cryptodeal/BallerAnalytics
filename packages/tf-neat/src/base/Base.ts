@@ -1,6 +1,6 @@
 import { sequential, layers, tidy, train, losses, tensor, util } from '@tensorflow/tfjs-node';
-import { Player } from './utils/Player';
-import { loadSeasonPlayers } from '../core/data';
+import { writeFile } from 'fs';
+import type { Player } from '@balleranalytics/nba-api-ts';
 import { getDateStr } from '../utils';
 import type { IBaseConfig, BaseInputs, RawData } from './types';
 import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs-node';
@@ -53,8 +53,8 @@ export class Base {
 		tfvis !== undefined ? (this.tfvis = true) : (this.tfvis = false);
 	}
 
-	async getData(year: number) {
-		const tempPlayers = (await loadSeasonPlayers(year)).filter(
+	async addData(data: Player[]) {
+		const tempPlayers = data.filter(
 			(p) => p.playerBirthDate && p.playerData && Object.keys(p.playerData).length > 2
 		);
 
@@ -66,7 +66,13 @@ export class Base {
 				}
 			}
 		});
-		console.log(this.rawData.length);
+
+		writeFile(`${process.cwd()}/data/models/basic.json`, JSON.stringify(this.rawData), (err) => {
+			if (err) {
+				throw err;
+			}
+			console.log(`🟢  raw data saved!`);
+		});
 	}
 
 	minMaxNormalizer = (tensor: Tensor, xMin: Tensor<Rank>, xMax: Tensor<Rank>) => {
@@ -166,17 +172,30 @@ export class Base {
 	}
 
 	saveModel() {
-		return this.model
-			.save(
-				`file://${process.cwd()}/data/models/${this.type}/val_mse_${
-					this.val_mse[this.val_mse.length - 1]
-				}-${getDateStr()}`
-			)
-			.then(() => console.log(`🟢  Model saved!`));
+		const filePath = `${process.cwd()}/data/models/${this.type}/val_mse_${
+			this.val_mse[this.val_mse.length - 1]
+		}-${getDateStr()}`;
+		return this.model.save('file://' + filePath).then(() => {
+			writeFile(
+				filePath + `/training.json`,
+				JSON.stringify({
+					val_mse: this.val_mse,
+					val_loss: this.val_loss,
+					mse: this.mse,
+					loss: this.loss
+				}),
+				(err) => {
+					if (err) {
+						throw err;
+					}
+					console.log(`🟢  Model saved!`);
+				}
+			);
+		});
 	}
 
-	async init(year: number) {
-		await this.getData(year);
+	async init(data: Player[]) {
+		await this.addData(data);
 		this.createModel();
 		this.dataToTensors();
 		await this.train();

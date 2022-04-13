@@ -1,6 +1,5 @@
-import { Player2, Game2 } from '@balleranalytics/nba-api-ts';
+import { Player2, Game2, Player } from '@balleranalytics/nba-api-ts';
 import { calcFantasyPoints } from '../../utils';
-import { Player } from '../../base/utils/Player';
 import type {
 	Player2Object,
 	Game2Object,

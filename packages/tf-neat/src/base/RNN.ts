@@ -110,8 +110,8 @@ export class RNN extends Base {
 			batchSize: 15,
 			epochs: this.epochs,
 			validationSplit: 0.2,
-			shuffle: true
-			// callbacks: callbacks
+			shuffle: true,
+			callbacks: this.callbacks
 		});
 	}
 

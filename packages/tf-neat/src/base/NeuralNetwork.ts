@@ -39,7 +39,7 @@ export class NeuralNetwork extends Base {
 			epochs: this.epochs,
 			batchSize: this.batchSize,
 			shuffle: true,
-			validationSplit: 0.1,
+			validationSplit: 0.25,
 			callbacks: this.callbacks
 		});
 	}

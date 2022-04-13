@@ -1,9 +1,14 @@
 import { suite } from 'uvu';
 import { NeuralNetwork } from '../src/base/NeuralNetwork';
 import type { Base } from '../src/base/Base';
-import { loadPlayerSznGames } from '../src/core/data';
+import { loadPlayerSznGames } from '@balleranalytics/nba-api-ts';
 import config from '../src/config';
-import { endConnect, Player2, serverlessConnect } from '@balleranalytics/nba-api-ts';
+import {
+	endConnect,
+	Player2,
+	serverlessConnect,
+	loadSeasonPlayers
+} from '@balleranalytics/nba-api-ts';
 import { Player } from '../src/base/utils/Player';
 
 const NeuralNetTest = suite('neuralNetTest');
@@ -20,13 +25,13 @@ NeuralNetTest.after(async () => {
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const params = { batchSize: 10, epochs: 10000 };
+	const params = { batchSize: 10, epochs: 100 };
 	model = new NeuralNetwork(params);
-	await model.init(2021);
+	await model.init(await loadSeasonPlayers(2021));
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const tempPlayer = await Player2.findOne();
+	const tempPlayer = await Player2.findOne({ 'name.full': 'Jaylen Brown' });
 	if (!tempPlayer) throw new Error('No players found');
 	const playerRes = await loadPlayerSznGames(tempPlayer);
 	if (!playerRes) throw new Error('No player data found');
