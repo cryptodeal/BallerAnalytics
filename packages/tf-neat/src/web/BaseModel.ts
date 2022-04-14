@@ -14,6 +14,10 @@ import type { IBaseConfig, BaseInputs, RawData } from '../base/types';
 import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
 
 export class BaseModel {
+	public val_mse: number[] = [];
+	public val_loss: number[] = [];
+	public mse: number[] = [];
+	public loss: number[] = [];
 	public callbacks = {
 		onEpochEnd: async (epoch: number, logs) => {
 			const { val_loss, val_mse, mse, loss } = logs as unknown as {
@@ -28,15 +32,11 @@ export class BaseModel {
 			this.loss.push(loss);
 		}
 	};
-	public val_mse: number[] = [];
-	public val_loss: number[] = [];
-	public mse: number[] = [];
-	public loss: number[] = [];
 	public type = ModelType.BASE;
 	public hiddenLayers!: number;
 	public rawData: RawData = [];
-	public batchSize = 10;
-	public epochs = 1000;
+	public batchSize = 100;
+	public epochs = 10;
 	public tfvis = false;
 	public model!: Sequential;
 	public tensorData!: {
@@ -50,18 +50,17 @@ export class BaseModel {
 
 	constructor(config?: IBaseConfig) {
 		if (config) {
-			const { batchSize, epochs, tfvis } = config;
+			const { batchSize, epochs, callbacks } = config;
 
 			/* model config */
 			if (batchSize) this.batchSize = batchSize;
 			if (epochs) this.epochs = epochs;
+			if (callbacks) this.callbacks = callbacks;
 		}
 	}
 
-	loadData(path: string) {
-		return fetch(path)
-			.then((res) => res.json())
-			.then((data) => (this.rawData = data));
+	loadData(data: RawData) {
+		this.rawData = data;
 	}
 
 	minMaxNormalizer = (tensor: Tensor, xMin: Tensor<Rank>, xMax: Tensor<Rank>) => {
@@ -172,5 +171,12 @@ export class BaseModel {
 
 	async loadModel(path: string) {
 		this.model = (await loadLayersModel(path)) as Sequential;
+	}
+
+	async init(data: RawData) {
+		this.loadData(data);
+		this.createModel();
+		this.dataToTensors();
+		await this.train();
 	}
 }

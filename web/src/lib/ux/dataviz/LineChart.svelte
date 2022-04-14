@@ -1,13 +1,16 @@
 <script lang="ts">
 	import * as Pancake from '@sveltejs/pancake/index.mjs';
-	export let data: { x: number; y: number }[];
-	export let label: string;
+	// import Circle from '$lib/ux/loading/Circle.svelte';
+	export let data: { x: number; y: number }[] = [],
+		yLabel = '',
+		xLabel = '',
+		title = '';
 	let closest: { x: number; y: number };
 	let x1 = Infinity;
 	let x2 = -Infinity;
 	let y1 = Infinity;
 	let y2 = -Infinity;
-	data.forEach((d) => {
+	$: data.forEach((d) => {
 		if (d.x < x1) x1 = d.x;
 		if (d.x > x2) x2 = d.x;
 		if (d.y < y1) y1 = d.y;
@@ -15,61 +18,68 @@
 	});
 
 	const format_y = (y: number) => {
-		return y.toFixed();
+		return y.toFixed(2);
 	};
-	//$: console.log(data)
 </script>
 
-<div class="chart">
-	<Pancake.Chart {x1} {x2} {y1} {y2}>
-		<Pancake.Grid horizontal count={2} let:value let:first>
-			<div class="grid-line horizontal">
-				<span class:first>{format_y(value)}</span>
-			</div>
-		</Pancake.Grid>
+{#if data.length > 2}
+	<div class="w-full h-full flex flex-col items-center">
+		<h3 class="text-dark-800 dark:text-light-200">{title}</h3>
+		<div class="chart">
+			<Pancake.Chart {x1} {x2} {y1} {y2}>
+				<Pancake.Grid horizontal count={4} let:value>
+					<div class="grid-line horizontal">
+						<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} MSE</span>
+					</div>
+				</Pancake.Grid>
 
-		<Pancake.Grid vertical count={3} let:value>
-			<span class="x-label">{value}</span>
-		</Pancake.Grid>
-
-		<Pancake.Svg>
-			<Pancake.SvgLine {data} let:d>
-				{#if d}
-					<path class="data stroke-gray-800 dark:stroke-light-100" {d} />
+				<Pancake.Grid vertical count={4} let:value let:first>
+					<span class="x-label text-xs text-dark-800 dark:text-light-200" class:first
+						>{xLabel} {value}</span
+					>
+				</Pancake.Grid>
+				<Pancake.Svg>
+					<Pancake.SvgLine {data} let:d>
+						<path class="data stroke-gray-800 dark:stroke-light-200" {d} />
+					</Pancake.SvgLine>
+				</Pancake.Svg>
+				{#if closest}
+					<Pancake.Point x={closest.x} y={closest.y}>
+						<span class="annotation-point" />
+						<div
+							class="rounded-lg glassmorphicCard annotation navButton {y2 - closest.y >=
+							closest.y - y1
+								? 'locBottom'
+								: 'locTop'}"
+							style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0);"
+						>
+							<strong class="text-dark-800 dark:text-light-200">{xLabel}: {closest.x}</strong>
+							<span class="text-dark-800 dark:text-light-200">{yLabel}: {format_y(closest.y)}</span>
+						</div>
+					</Pancake.Point>
 				{/if}
-			</Pancake.SvgLine>
-		</Pancake.Svg>
 
-		{#if closest}
-			<Pancake.Point x={closest.x} y={closest.y}>
-				<span class="annotation-point" />
-				<div
-					class="annotation navButton {y2 - closest.y >= closest.y - y1 ? 'locBottom' : 'locTop'}"
-					style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0);"
-				>
-					<strong>{closest.x}</strong>
-					<span>{label}: {format_y(closest.y)}</span>
-				</div>
-			</Pancake.Point>
-		{/if}
-
-		<Pancake.Quadtree {data} bind:closest />
-	</Pancake.Chart>
-</div>
+				<Pancake.Quadtree {data} bind:closest />
+			</Pancake.Chart>
+		</div>
+	</div>
+{/if}
 
 <style>
 	.chart {
 		height: 100%;
-		padding: 1em 1.75em 3em 4em;
+		width: 100%;
+		padding: 2em 2em 2em 4em;
 		margin: 0 0 36px 0;
 		overflow: hidden;
 		position: relative;
 	}
 	.grid-line {
-		position: relative;
+		position: absolute;
 		display: block;
 	}
-	span.first {
+
+	.first {
 		display: none;
 	}
 	.grid-line span {
@@ -81,7 +91,7 @@
 	}
 	.x-label {
 		position: absolute;
-		width: 4em;
+		width: 5em;
 		left: -2em;
 		bottom: -22px;
 		font-family: sans-serif;

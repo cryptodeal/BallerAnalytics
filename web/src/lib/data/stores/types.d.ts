@@ -71,3 +71,24 @@ export type DailyGame = {
 export type DailyGames = { [key: string]: DailyGame };
 
 export type Typify<T> = { [K in keyof T]: Typify<T[K]> };
+
+export type GraphPoint = {
+	x: number;
+	y: number;
+};
+
+export type GraphData = GraphPoint[];
+
+export type TFJSTrainingData = {
+	val_mse: GraphData;
+	val_loss: GraphData;
+	mse: GraphData;
+	loss: GraphData;
+};
+
+export type TFJSEpochData = {
+	val_loss: number;
+	val_mse: number;
+	mse: number;
+	loss: number;
+};
