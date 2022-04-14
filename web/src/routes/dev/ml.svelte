@@ -1,13 +1,17 @@
 <script lang="ts">
-	import { NeuralNetwork } from '@balleranalytics/tf-neat';
 	import { onMount } from 'svelte';
 	import dataPath from '$ml/basic.json?url';
-	import { tfjs } from '$lib/data/stores/tfjs';
+	import { trainingData, tfjs } from '$lib/data/stores/tfjs';
 	import type { GraphData } from '$lib/data/stores/types';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
-	let mse: GraphData, val_mse: GraphData, loss: GraphData, val_loss: GraphData;
+	import { browser } from '$app/env';
+	let mse: GraphData,
+		val_mse: GraphData,
+		loss: GraphData,
+		val_loss: GraphData,
+		model = tfjs;
 
-	tfjs.subscribe((value) => {
+	trainingData.subscribe((value) => {
 		const { mse: tMse, val_mse: vMse, loss: tLoss, val_loss: vLoss } = value;
 		mse = tMse;
 		val_mse = vMse;
@@ -15,53 +19,111 @@
 		val_loss = vLoss;
 	});
 
-	const model = new NeuralNetwork({
-		epochs: 100,
-		batchSize: 10,
-		callbacks: {
-			onEpochEnd: async (epoch, logs) => {
-				return tfjs.update((d) => {
-					const { val_loss, val_mse, mse, loss } = logs;
-					d.val_mse.push({ x: epoch, y: val_mse });
-					d.val_loss.push({ x: epoch, y: val_loss });
-					d.mse.push({ x: epoch, y: mse });
-					d.loss.push({ x: epoch, y: loss });
-					return d;
-				});
-			}
-		}
-	});
-
 	onMount(async () => {
-		tfjs.set({
-			val_mse: [],
-			val_loss: [],
-			mse: [],
-			loss: []
-		});
 		const data = await fetch(dataPath).then((res) => res.json());
-		model.init(data);
+		model.subscribe((v) => v.init(data));
 	});
 </script>
 
 <div class="w-screen min-h-screen bg-hero-circuit-board-blue-30">
 	<div class="appContent w-full">
-		<div class="w-full p-2 grid grid-cols-1 gap-4 md:(grid-cols-2 gap-10)">
-			<div class="mt-10 col-span-1 w-full items-center mx-auto p-2 h-100 rounded-lg glassmorphicBg">
-				<LineChart data={mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd MSE" />
-			</div>
+		<article class="glassmorphicBg mx-1 rounded-md sm:(mx-auto p-10) p-2 prose lg:prose-xl">
+			<h1>TensorFlow.js Meets Fantasy Basketball</h1>
+			<h2>By: James Deal</h2>
 
-			<div class="mt-10 col-span-1 w-full items-center mx-auto p-2 h-100 rounded-lg glassmorphicBg">
-				<LineChart data={val_mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd Val. MSE" />
-			</div>
+			<p>
+				Using historical fantasy stats, we can train a machine learning model to predict a player's
+				average fantasy points per game using their season averages from the preceding year.
+			</p>
 
-			<div class="mt-10 col-span-1 w-full items-center mx-auto p-2 h-100 rounded-lg glassmorphicBg">
-				<LineChart data={loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Loss" />
-			</div>
+			<p>
+				We can leverage this wealth of historical data to provide users with unparalled insight into
+				their fantasy basketball lineups/rosters as well as providing additional tips for
+				transactions, trades, etc.
+			</p>
 
-			<div class="mt-10 col-span-1 w-full items-center mx-auto p-2 h-100 rounded-lg glassmorphicBg">
-				<LineChart data={val_loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Val. Loss" />
+			<p>
+				This enables users to continually optimize their lineups with the latest data and AI models
+				in near real time.
+			</p>
+
+			<p>Watch as a basic model is trained using an abbreviated dataset in real time below.</p>
+
+			<div class="w-full flex flex-col">
+				{#if browser}
+					<div class="col-span-1 w-full items-center p-2 h-120">
+						<LineChart data={mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd MSE" />
+					</div>
+
+					<p>
+						The above chart plots the Mean Squared Error (MSE) at the end of each training Epoch
+						(round).
+					</p>
+
+					<p>
+						While MSE provides some insight into how the model more closely fits our dataset with
+						time, it doesn't show the whole picture as it's not representing the accuracy of the
+						model when used to predict an outcome from data it hasn't previously encountered.
+					</p>
+
+					<p>
+						When training a model, we split the dataset into a training set and a validation set.
+						The validation set is used as a baseline for comparison for the model to make
+						adjustments between each training Epoch.
+					</p>
+
+					<div class="col-span-1 w-full items-center p-2 h-120">
+						<LineChart data={val_mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd Val. MSE" />
+					</div>
+
+					<p>
+						The above chart plots the Mean Squared Error (MSE) at the end of each training Epoch for
+						the Validation Dataset.
+					</p>
+
+					<p>
+						In Machine Learning, Loss is a metric used to provide a measure of how bad the model's
+						prediction was on a single example. If the model's prediction is perfect, the loss is
+						zero; the further from perfect, the further the loss is from zero.
+					</p>
+
+					<div class="col-span-1 w-full items-center mx-auto p-2 h-120">
+						<LineChart data={loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Loss" />
+					</div>
+
+					<p>The above chart plots the Loss at the end of each training Epoch.</p>
+
+					<p>
+						While Loss provides insight into the how bad any given prediction of model is, this
+						isn't representative of the accuracy of the model as it's this loss value is calculated
+						from the dataset used to train the model.
+					</p>
+
+					<p>
+						We can plot the loss over time from the validation dataset in order to get a better idea
+						of how bad (or, conversely, how good) each prediction of a model is.
+					</p>
+
+					<div class="col-span-1 w-full items-center mx-auto p-2 h-120">
+						<LineChart data={val_loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Val. Loss" />
+					</div>
+				{/if}
 			</div>
-		</div>
+			<p>
+				The above chart plots the Loss at the end of each training Epoch for the Validation Dataset.
+			</p>
+
+			<p>
+				Ultimately, we can make improvements to the model by adjusting the data inputted to the
+				model, the structure of the neural network itself, or by hypertuning the training parameters
+				used by the model.
+			</p>
+
+			<p>
+				N.B. the model running for this demo is a simplified version of the proprietary
+				model/algorithm used by our premium subscribers and is not intended to produce lossless
+				results, but demonstrate the technologies employed.
+			</p>
+		</article>
 	</div>
 </div>

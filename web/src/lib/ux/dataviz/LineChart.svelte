@@ -6,9 +6,9 @@
 		xLabel = '',
 		title = '';
 	let closest: { x: number; y: number };
-	let x1 = Infinity;
+	let x1 = 0;
 	let x2 = -Infinity;
-	let y1 = Infinity;
+	let y1 = 0;
 	let y2 = -Infinity;
 	$: data.forEach((d) => {
 		if (d.x < x1) x1 = d.x;
@@ -22,54 +22,54 @@
 	};
 </script>
 
-{#if data.length > 2}
-	<div class="w-full h-full flex flex-col items-center">
-		<h3 class="text-dark-800 dark:text-light-200">{title}</h3>
-		<div class="chart">
-			<Pancake.Chart {x1} {x2} {y1} {y2}>
-				<Pancake.Grid horizontal count={4} let:value>
-					<div class="grid-line horizontal">
-						<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} MSE</span>
-					</div>
-				</Pancake.Grid>
+<div class="w-full h-full flex flex-col items-center">
+	<h3>{title}</h3>
+	<div class="chart">
+		<Pancake.Chart {x1} {x2} {y1} {y2}>
+			<Pancake.Grid horizontal count={4} let:value>
+				<div class="grid-line horizontal">
+					<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} MSE</span>
+				</div>
+			</Pancake.Grid>
 
-				<Pancake.Grid vertical count={4} let:value let:first>
-					<span class="x-label text-xs text-dark-800 dark:text-light-200" class:first
-						>{xLabel} {value}</span
-					>
-				</Pancake.Grid>
-				<Pancake.Svg>
-					<Pancake.SvgLine {data} let:d>
+			<Pancake.Grid vertical count={4} let:value let:first>
+				<span class="x-label text-xs text-dark-800 dark:text-light-200" class:first
+					>{xLabel} {value}</span
+				>
+			</Pancake.Grid>
+			<Pancake.Svg>
+				<Pancake.SvgLine {data} let:d>
+					{#if data.length > 3}
 						<path class="data stroke-gray-800 dark:stroke-light-200" {d} />
-					</Pancake.SvgLine>
-				</Pancake.Svg>
-				{#if closest}
-					<Pancake.Point x={closest.x} y={closest.y}>
-						<span class="annotation-point" />
-						<div
-							class="rounded-lg glassmorphicCard annotation navButton {y2 - closest.y >=
-							closest.y - y1
-								? 'locBottom'
-								: 'locTop'}"
-							style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0);"
-						>
-							<strong class="text-dark-800 dark:text-light-200">{xLabel}: {closest.x}</strong>
-							<span class="text-dark-800 dark:text-light-200">{yLabel}: {format_y(closest.y)}</span>
-						</div>
-					</Pancake.Point>
-				{/if}
+					{/if}
+				</Pancake.SvgLine>
+			</Pancake.Svg>
+			{#if closest}
+				<Pancake.Point x={closest.x} y={closest.y}>
+					<span class="annotation-point" />
+					<div
+						class="rounded-lg glassmorphicCard annotation navButton {y2 - closest.y >=
+						closest.y - y1
+							? 'locBottom'
+							: 'locTop'}"
+						style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0);"
+					>
+						<strong class="text-dark-800 dark:text-light-200">{xLabel}: {closest.x}</strong>
+						<span class="text-dark-800 dark:text-light-200">{yLabel}: {format_y(closest.y)}</span>
+					</div>
+				</Pancake.Point>
+			{/if}
 
-				<Pancake.Quadtree {data} bind:closest />
-			</Pancake.Chart>
-		</div>
+			<Pancake.Quadtree {data} bind:closest />
+		</Pancake.Chart>
 	</div>
-{/if}
+</div>
 
 <style>
 	.chart {
 		height: 100%;
 		width: 100%;
-		padding: 2em 2em 2em 4em;
+		padding: 1em 2em 1em 4em;
 		margin: 0 0 36px 0;
 		overflow: hidden;
 		position: relative;

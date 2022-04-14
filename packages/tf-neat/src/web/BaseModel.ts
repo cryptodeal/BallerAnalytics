@@ -1,4 +1,5 @@
 import {
+	disposeVariables,
 	sequential,
 	layers,
 	tidy,
@@ -14,10 +15,10 @@ import type { IBaseConfig, BaseInputs, RawData } from '../base/types';
 import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
 
 export class BaseModel {
-	public val_mse: number[] = [];
-	public val_loss: number[] = [];
-	public mse: number[] = [];
-	public loss: number[] = [];
+	public val_mse: { x: number; y: number }[] = [];
+	public val_loss: { x: number; y: number }[] = [];
+	public mse: { x: number; y: number }[] = [];
+	public loss: { x: number; y: number }[] = [];
 	public callbacks = {
 		onEpochEnd: async (epoch: number, logs) => {
 			const { val_loss, val_mse, mse, loss } = logs as unknown as {
@@ -26,10 +27,10 @@ export class BaseModel {
 				mse: number;
 				loss: number;
 			};
-			this.val_mse.push(val_mse);
-			this.val_loss.push(val_loss);
-			this.mse.push(mse);
-			this.loss.push(loss);
+			this.val_mse.push({ x: epoch, y: val_mse });
+			this.val_loss.push({ x: epoch, y: val_loss });
+			this.mse.push({ x: epoch, y: mse });
+			this.loss.push({ x: epoch, y: loss });
 		}
 	};
 	public type = ModelType.BASE;
@@ -178,5 +179,10 @@ export class BaseModel {
 		this.createModel();
 		this.dataToTensors();
 		await this.train();
+	}
+
+	dispose() {
+		this.model.dispose();
+		disposeVariables();
 	}
 }

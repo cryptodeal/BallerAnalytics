@@ -10,56 +10,68 @@ export default defineConfig({
 	},
 	theme: {
 		extend: {
-			/*typography: {
+			typography: {
 				DEFAULT: {
 					css: {
-						color: '#27272a',
+						color: '#000000',
 						a: {
+							color: '#60A5fA',
 							textDecoration: 'underline',
-							color: '#991b1b',
 							'&:hover': {
-								color: '#7f1d1d'
+								color: '#1D4ED8'
 							}
 						},
 						h1: {
-							color: '#991b1b'
+							color: '#60A5fA'
 						},
 						h2: {
-							color: '#991b1b'
+							color: '#60A5fA'
 						},
 						h3: {
-							color: '#991b1b'
+							color: '#60A5fA'
 						},
 						h4: {
-							color: '#991b1b'
+							color: '#60A5fA'
+						},
+						h5: {
+							color: '#60A5fA'
+						},
+						h6: {
+							color: '#60A5fA'
 						}
 					}
 				},
 				dark: {
 					css: {
-						color: '#e4e4e7',
+						color: '#FAFAFA',
 						a: {
+							color: '#60A5fA',
 							textDecoration: 'underline',
-							color: '#34d399',
 							'&:hover': {
-								color: '#86efac'
+								color: '#1D4ED8'
 							}
 						},
 						h1: {
-							color: '#34d399'
+							color: '#60A5fA'
 						},
 						h2: {
-							color: '#34d399'
+							color: '#60A5fA'
 						},
 						h3: {
-							color: '#34d399'
+							color: '#60A5fA'
 						},
 						h4: {
-							color: '#34d399'
+							color: '#60A5fA'
+						},
+						h5: {
+							color: '#60A5fA'
+						},
+						h6: {
+							color: '#60A5fA'
 						}
 					}
 				}
-			}*/
+			}
 		},
 		boxShadow: {
 			animate:
