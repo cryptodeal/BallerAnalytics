@@ -28,7 +28,7 @@
 		<Pancake.Chart {x1} {x2} {y1} {y2}>
 			<Pancake.Grid horizontal count={4} let:value>
 				<div class="grid-line horizontal">
-					<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} MSE</span>
+					<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} {yLabel}</span>
 				</div>
 			</Pancake.Grid>
 
@@ -69,7 +69,7 @@
 	.chart {
 		height: 100%;
 		width: 100%;
-		padding: 1em 2em 1em 4em;
+		padding: 1em 2em 1.5em 4em;
 		margin: 0 0 36px 0;
 		overflow: hidden;
 		position: relative;
@@ -87,15 +87,15 @@
 		left: -4em;
 		bottom: -11px;
 		font-family: sans-serif;
-		font-size: 14px;
+		font-size: 12px;
 	}
 	.x-label {
 		position: absolute;
-		width: 5em;
+		width: 4em;
 		left: -2em;
 		bottom: -22px;
 		font-family: sans-serif;
-		font-size: 14px;
+		font-size: 12px;
 		text-align: center;
 	}
 	path.data {

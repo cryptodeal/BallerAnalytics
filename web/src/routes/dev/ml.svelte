@@ -51,7 +51,7 @@
 
 			<div class="w-full flex flex-col">
 				{#if browser}
-					<div class="col-span-1 w-full items-center p-2 h-120">
+					<div class="col-span-1 w-full items-center py-2 h-120">
 						<LineChart data={mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd MSE" />
 					</div>
 
@@ -72,7 +72,7 @@
 						adjustments between each training Epoch.
 					</p>
 
-					<div class="col-span-1 w-full items-center p-2 h-120">
+					<div class="col-span-1 w-full items-center py-2 h-120">
 						<LineChart data={val_mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd Val. MSE" />
 					</div>
 
@@ -87,7 +87,7 @@
 						zero; the further from perfect, the further the loss is from zero.
 					</p>
 
-					<div class="col-span-1 w-full items-center mx-auto p-2 h-120">
+					<div class="col-span-1 w-full items-center mx-auto py-2 h-120">
 						<LineChart data={loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Loss" />
 					</div>
 
@@ -104,7 +104,7 @@
 						of how bad (or, conversely, how good) each prediction of a model is.
 					</p>
 
-					<div class="col-span-1 w-full items-center mx-auto p-2 h-120">
+					<div class="col-span-1 w-full items-center mx-auto py-2 h-120">
 						<LineChart data={val_loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Val. Loss" />
 					</div>
 				{/if}

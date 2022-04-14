@@ -1,0 +1,9 @@
+{
+  "kernels": ["Max", "Min", "Sub", "RealDiv", "Slice"],
+  "backends": [
+      "webgl"
+  ],
+  "models": [],
+  "outputPath": "./tfjs-custom",
+  "forwardModeOnly": true
+}

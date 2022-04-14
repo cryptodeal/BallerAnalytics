@@ -8,11 +8,11 @@ import {
 	tensor,
 	util,
 	loadLayersModel
-} from '@tensorflow/tfjs';
+} from '../../tfjs-custom/custom_tfjs.js';
 import { getDateStr } from '../utils';
 import { ModelType } from '../base';
 import type { IBaseConfig, BaseInputs, RawData } from '../base/types';
-import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
+import type { Sequential, Tensor, Rank } from '../../tfjs-custom/custom_tfjs.js';
 
 export class BaseModel {
 	public val_mse: { x: number; y: number }[] = [];
