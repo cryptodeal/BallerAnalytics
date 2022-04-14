@@ -40,7 +40,7 @@
 			<Pancake.Svg>
 				<Pancake.SvgLine {data} let:d>
 					{#if data.length > 3}
-						<path class="data stroke-gray-800 dark:stroke-light-200" {d} />
+						<path class="data stroke-blue-400" {d} />
 					{/if}
 				</Pancake.SvgLine>
 			</Pancake.Svg>
