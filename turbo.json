@@ -6,6 +6,11 @@
 			"inputs": ["src/**"],
 			"outputs": ["files/**", "dist/**", ".svelte-kit/**", ".vercel_build_output/**"]
 		},
+    "@balleranalytics/nba-api-ts#build": {
+			"dependsOn": ["^build"],
+			"inputs": [ "src/**"],
+			"outputs": ["dist/**"]
+		},
     "@balleranalytics/tf-neat#build": {
 			"dependsOn": ["^build"],
 			"inputs": [ "src/**"],

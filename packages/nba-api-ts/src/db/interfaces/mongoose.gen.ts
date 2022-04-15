@@ -1730,20 +1730,27 @@ export type Player2Query = mongoose.Query<any, Player2Document, Player2Queries> 
  * This type represents `Player2Schema.query`. For most use cases, you should not need to use this type explicitly.
  */
 export type Player2Queries = {
-	paginate: (this: Player2Query, ...args: any[]) => Player2Query;
-	populatSznTeams: (this: Player2Query, ...args: any[]) => Player2Query;
+	paginate: (this: Player2Query, page?: number, limit?: number) => Player2Query;
+	populatSznTeams: (this: Player2Query) => Player2Query;
 };
 
 export type Player2Methods = {};
 
 export type Player2Statics = {
-	findByPlayerUrl: (this: Player2Model, ...args: any[]) => any;
-	findBySlug: (this: Player2Model, ...args: any[]) => any;
-	getPlayers: (this: Player2Model, ...args: any[]) => any;
-	fantasyData: (this: Player2Model, ...args: any[]) => any;
-	getPlayerSeasonStats: (this: Player2Model, ...args: any[]) => any;
-	findByNameOrNbaId: (this: Player2Model, ...args: any[]) => any;
-	findByNameOrEspnId: (this: Player2Model, ...args: any[]) => any;
+	findByPlayerUrl: (this: Player2Model, playerUrl: string) => any;
+	findBySlug: (this: Player2Model, slug: string) => any;
+	getPlayers: (
+		this: Player2Model,
+		playerUids: Player2Document['_id'][]
+	) => Promise<Player2Object[]>;
+	fantasyData: (this: Player2Model, year: number) => Promise<Player2Object[]>;
+	getPlayerSeasonStats: (
+		this: Player2Model,
+		playerUids: Player2Document['_id'][],
+		year: number
+	) => Promise<Player2StatsObject[]>;
+	findByNameOrNbaId: (this: Player2Model, name: string | string[], nbaId: string) => any;
+	findByNameOrEspnId: (this: Player2Model, name: string | string[], espnId: number) => any;
 };
 
 /**

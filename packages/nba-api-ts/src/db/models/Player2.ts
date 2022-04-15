@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as slugger from 'mongoose-slugger-plugin';
+import { wrap, plugin, SluggerOptions } from 'mongoose-slugger-plugin';
 import type {
 	Player2Document,
 	Player2Model,
@@ -321,19 +321,15 @@ Player2Schema.query = {
 Player2Schema.index({ 'meta.slug': 1 }, { name: 'slug', unique: true });
 
 Player2Schema.plugin(
-	slugger.plugin,
-	new slugger.SluggerOptions({
-		// the property path which stores the slug value
+	plugin,
+	new SluggerOptions({
 		slugPath: 'meta.slug',
-		// specify the properties which will be used for generating the slug
 		generateFrom: ['name.full'],
-		// the unique index, see above
 		index: 'slug'
 	})
 );
 
-let Player2: Player2Model =
+export const Player2: Player2Model = wrap(
 	(mongoose.models.Player2 as Player2Model) ||
-	mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema);
-Player2 = slugger.wrap(Player2);
-export { Player2 };
+		mongoose.model<Player2Document, Player2Model>('Player2', Player2Schema)
+);
