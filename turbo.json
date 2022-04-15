@@ -3,18 +3,23 @@
 	"pipeline": {
 		"@balleranalytics/nba-api-ts#build": {
 			"dependsOn": ["^build"],
-			"inputs": ["src/*.ts", "src/**/*.ts"],
+			"inputs": ["src/**"],
 			"outputs": ["dist/**"]
 		},
     "@balleranalytics/tf-neat#build": {
 			"dependsOn": ["^build"],
-			"inputs": ["src/*.ts", "src/**/*.ts"],
+			"inputs": [ "src/**"],
 			"outputs": ["dist/**"]
 		},
-		"build": {
+		"@balleranalytics/web#build": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/**"],
 			"outputs": [".vercel_build_output/**"]
+		},
+    "build": {
+			"dependsOn": ["^build"],
+			"inputs": ["src/**"],
+			"outputs": ["files/**", "dist/**", ".svelte-kit/**", ".vercel_build_output/**"]
 		},
 		"check": {
 			"outputs": []
