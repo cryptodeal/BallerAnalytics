@@ -18,7 +18,7 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter({ external: ['@napi-rs/*', 'mongoose-slugger-plugin'] }),
+		adapter: adapter({ external: ['@napi-rs/*'] }),
 		vite: {
 			plugins: [
 				WindiCSS(),
