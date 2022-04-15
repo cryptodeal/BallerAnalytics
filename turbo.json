@@ -19,7 +19,7 @@
 		"@balleranalytics/web#build": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/**"],
-			"outputs": [".vercel_build_output/**"]
+			"outputs": [".svelte-kit/**", ".vercel_build_output/**"]
 		},
 		"check": {
 			"outputs": []
@@ -32,5 +32,6 @@
 		"dev": {
 			"cache": false
 		}
-	}
+	},
+  "globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json"]
 }

@@ -7,18 +7,18 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "format": "pnpm recursive run format",
-    "lint": "pnpm recursive run lint",
-    "mtgen": "pnpm recursive run mtgen",
-    "preview": "pnpm recursive run preview",
-    "data:cleanup:sortSeasons": "pnpm recursive run data:cleanup:sortSeasons",
-    "data:import:boxscores": "pnpm recursive run data:import:boxscores",
-    "data:import:teamRosters": "pnpm recursive run data:import:teamRosters",
-    "data:import:playerData": "pnpm recursive run data:import:playerData",
-    "data:cleanup:Game2:clearReferences": "pnpm recursive run data:cleanup:Game2:clearReferences",
-    "data:cleanup:Game2:fixTeamPeriodStats": "pnpm recursive run data:cleanup:Game2:fixTeamPeriodStats",
+    "format": "turbo run format",
+    "lint": "turbo run lint",
+    "mtgen": "pnpm -r mtgen",
+    "preview": "pnpm -r preview",
+    "data:cleanup:sortSeasons": "pnpm -r data:cleanup:sortSeasons",
+    "data:import:boxscores": "pnpm -r data:import:boxscores",
+    "data:import:teamRosters": "pnpm -r data:import:teamRosters",
+    "data:import:playerData": "pnpm -r data:import:playerData",
+    "data:cleanup:Game2:clearReferences": "pnpm -r data:cleanup:Game2:clearReferences",
+    "data:cleanup:Game2:fixTeamPeriodStats": "pnpm -r data:cleanup:Game2:fixTeamPeriodStats",
     "test": "uvu -r tsm packages tests",
-    "test:coverage": "pnpm recursive run test:coverage --stream"
+    "test:coverage": "pnpm -r test:coverage --stream"
   },
   "husky": {
     "hooks": {
