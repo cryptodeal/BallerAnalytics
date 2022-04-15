@@ -55,7 +55,7 @@ importers:
       iso-3166-1-ts: ^0.2.2
       mongoose: 6.2.7
       mongoose-slugger-plugin: ^3.0.3
-      mongoose-tsgen: ^9.0.4
+      mongoose-tsgen: ^9.0.5
       nba: ^4.15.0
       sharp: ^0.30.3
       sportsdataverse: ^1.2.3
@@ -74,7 +74,7 @@ importers:
       iso-3166-1-ts: 0.2.2
       mongoose: 6.2.7
       mongoose-slugger-plugin: 3.0.3_mongoose@6.2.7
-      mongoose-tsgen: 9.0.4_mongoose@6.2.7+typescript@4.6.3
+      mongoose-tsgen: 9.0.5_mongoose@6.2.7+typescript@4.6.3
       nba: 4.15.0
       sharp: 0.30.3
       sportsdataverse: 1.2.3
@@ -4881,8 +4881,8 @@ packages:
       mongoose: 6.2.7
     dev: false
 
-  /mongoose-tsgen/9.0.4_mongoose@6.2.7+typescript@4.6.3:
-    resolution: {integrity: sha512-W/oHvgaWlO4dMINqXwLj9zmdImId287ffAKFhJoFLoHNjnPL1+FlTBE2NYfbU+QajKj4JkoIn5rqyRTnOzZ3vg==}
+  /mongoose-tsgen/9.0.5_mongoose@6.2.7+typescript@4.6.3:
+    resolution: {integrity: sha512-f6wnf36RH6bI6P6Zx1o/h4OlkqEFBVQYpGbuZnuvDbBWneQodpH6GxyELmAEQBwbghk8Km4qLFWMrfw1Jq+y0w==}
     engines: {node: '>=9.0.0'}
     hasBin: true
     peerDependencies:
@@ -6757,7 +6757,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 4.2.3
+      string-width: 1.0.2
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
