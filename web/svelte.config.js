@@ -46,11 +46,15 @@ const config = {
 
 if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	config.kit.vite.resolve.alias = {
+		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/dist'),
+		'@balleranalytics/tf-neat': path.resolve('../packages/tf-neat/dist'),
 		$models: path.resolve('src/models'),
 		$ml: path.resolve('src/ml')
 	};
 } else {
 	config.kit.vite.resolve.alias = {
+		'@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/dist'),
+		'@balleranalytics/tf-neat': path.resolve('../packages/tf-neat/dist'),
 		$models: path.resolve('src/models'),
 		$ml: path.resolve('src/ml')
 	};
