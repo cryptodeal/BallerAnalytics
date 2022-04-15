@@ -4,7 +4,7 @@
     "build": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/**"],
-			"outputs": ["files/**", "dist/**", ".svelte-kit/**", ".vercel_build_output/**"]
+			"outputs": ["dist/**", ".svelte-kit/**", ".vercel_build_output/**"]
 		},
     "@balleranalytics/nba-api-ts#build": {
 			"dependsOn": ["^build"],
@@ -19,7 +19,7 @@
 		"@balleranalytics/web#build": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/**"],
-			"outputs": [".svelte-kit/**", ".vercel_build_output/**"]
+			"outputs": [".vercel_build_output/**"]
 		},
 		"check": {
 			"outputs": []

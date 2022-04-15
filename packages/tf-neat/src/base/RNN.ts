@@ -33,7 +33,7 @@ export class RNN extends Base {
 
 		// model.add(layers.reshape({ targetShape: rnn_input_shape }));
 
-		const lstmCells: any[] = [];
+		const lstmCells: unknown[] = [];
 		for (let i = 0; i < this.hiddenLayers; i++) {
 			const tempCell = layers.lstmCell({ units: rnn_output_neurons });
 			lstmCells.push(tempCell);
