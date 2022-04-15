@@ -1,5 +1,5 @@
-import { tensor, randomNormal, tidy, clone } from '@tensorflow/tfjs-node';
-import type { Tensor, TensorContainer } from '@tensorflow/tfjs-node';
+import { tensor, randomNormal, tidy, clone } from '@tensorflow/tfjs';
+import type { Tensor, TensorContainer } from '@tensorflow/tfjs';
 /*
  *  Basic neural network; inspired by: https://github.com/llSourcell/Modeling_Evolution_with_TensorflowJS/blob/master/Docs/NeuroEvolution_nn.js.html
  *  and https://github.com/dionbeetson/neuroevolution-experiment/blob/master/js/ai/NeuralNetwork.js

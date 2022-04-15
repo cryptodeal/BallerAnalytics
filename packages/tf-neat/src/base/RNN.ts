@@ -1,17 +1,8 @@
 import { Base } from './Base';
-import {
-	sequential,
-	layers,
-	tidy,
-	train,
-	tensor,
-	tensor2d,
-	scalar,
-	util
-} from '@tensorflow/tfjs-node';
+import { sequential, layers, tidy, train, tensor, tensor2d, scalar, util } from '@tensorflow/tfjs';
 import { ModelType } from '.';
-import type { Tensor, Rank } from '@tensorflow/tfjs-node';
-import { BaseInputs } from './types';
+import type { Tensor, Rank } from '@tensorflow/tfjs';
+import type { BaseInputs } from './types';
 
 export class RNN extends Base {
 	public type = ModelType.RNN;

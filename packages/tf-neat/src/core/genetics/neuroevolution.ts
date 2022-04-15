@@ -2,7 +2,7 @@ import { random, randomGaussian } from '../../utils';
 import { NeuralNetwork } from '../ai/NeuralNetwork';
 import { Population } from './Population';
 import { ModelApiType } from './models';
-import { tensor } from '@tensorflow/tfjs-node';
+import { tensor } from '@tensorflow/tfjs';
 import type { IModel, IModelFitness } from '../ai/types';
 
 /* Runs multiple generations of AI, breeding the best models from each generation until the training ends */

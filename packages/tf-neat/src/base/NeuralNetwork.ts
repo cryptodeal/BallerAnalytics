@@ -1,7 +1,7 @@
 import { Base } from './Base';
-import { sequential, layers, tidy, train, losses, tensor } from '@tensorflow/tfjs-node';
+import { sequential, layers, tidy, train, losses, tensor } from '@tensorflow/tfjs';
 import { ModelType } from '.';
-import type { Tensor, Rank } from '@tensorflow/tfjs-node';
+import type { Tensor, Rank } from '@tensorflow/tfjs';
 import type { BaseInputs } from './types';
 
 export class NeuralNetwork extends Base {

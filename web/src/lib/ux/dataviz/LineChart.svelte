@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Pancake from '@sveltejs/pancake/index.mjs';
+	import { Chart, Grid, Svg, Quadtree, SvgLine, Point } from '@sveltejs/pancake/index.mjs';
 	// import Circle from '$lib/ux/loading/Circle.svelte';
 	export let data: { x: number; y: number }[] = [],
 		yLabel = '',
@@ -25,27 +25,27 @@
 <div class="w-full h-full flex flex-col items-center">
 	<h3>{title}</h3>
 	<div class="chart">
-		<Pancake.Chart {x1} {x2} {y1} {y2}>
-			<Pancake.Grid horizontal count={4} let:value>
+		<Chart {x1} {x2} {y1} {y2}>
+			<Grid horizontal count={4} let:value>
 				<div class="grid-line horizontal">
 					<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} {yLabel}</span>
 				</div>
-			</Pancake.Grid>
+			</Grid>
 
-			<Pancake.Grid vertical count={4} let:value let:first>
+			<Grid vertical count={4} let:value let:first>
 				<span class="x-label text-xs text-dark-800 dark:text-light-200" class:first
 					>{xLabel} {value}</span
 				>
-			</Pancake.Grid>
-			<Pancake.Svg>
-				<Pancake.SvgLine {data} let:d>
+			</Grid>
+			<Svg>
+				<SvgLine {data} let:d>
 					{#if data.length > 3}
 						<path class="data stroke-blue-400" {d} />
 					{/if}
-				</Pancake.SvgLine>
-			</Pancake.Svg>
+				</SvgLine>
+			</Svg>
 			{#if closest}
-				<Pancake.Point x={closest.x} y={closest.y}>
+				<Point x={closest.x} y={closest.y}>
 					<span class="annotation-point" />
 					<div
 						class="rounded-lg glassmorphicCard annotation navButton {y2 - closest.y >=
@@ -57,11 +57,11 @@
 						<strong class="text-dark-800 dark:text-light-200">{xLabel}: {closest.x}</strong>
 						<span class="text-dark-800 dark:text-light-200">{yLabel}: {format_y(closest.y)}</span>
 					</div>
-				</Pancake.Point>
+				</Point>
 			{/if}
 
-			<Pancake.Quadtree {data} bind:closest />
-		</Pancake.Chart>
+			<Quadtree {data} bind:closest />
+		</Chart>
 	</div>
 </div>
 

@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "paths": {
-			"@balleranalytics/nba-api-ts": ["../nba-api-ts/src"],
+      "@tensorflow/tfjs": ["./tfjs-custom/custom_tfjs.js"],
+      "@tensorflow/tfjs-core": ["./tfjs-custom/custom_tfjs_core.js"]
 		}
 	},
 	"include": ["src/**/*", "src/global.d.ts"],

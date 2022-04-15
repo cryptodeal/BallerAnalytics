@@ -13,10 +13,6 @@
 			"require": "./dist/index.js",
 			"import": "./dist/index.mjs"
 		},
-		"./types": {
-			"require": "./dist/types.js",
-			"import": "./dist/types.mjs"
-		},
 		"./*": "./*"
 	},
 	"main": "dist/index.js",

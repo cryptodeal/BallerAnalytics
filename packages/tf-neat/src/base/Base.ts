@@ -1,9 +1,9 @@
-import { sequential, layers, tidy, train, losses, tensor, util } from '@tensorflow/tfjs-node';
+import { sequential, layers, tidy, train, losses, tensor, util } from '@tensorflow/tfjs';
 import { writeFile } from 'fs';
 import type { Player } from '@balleranalytics/nba-api-ts';
 import { getDateStr } from '../utils';
 import type { IBaseConfig, BaseInputs, RawData } from './types';
-import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs-node';
+import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
 import { ModelType } from '.';
 
 export class Base {

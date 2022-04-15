@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import dataPath from '$ml/basic.json?url';
+	import paths from '$ml/basic.json?url';
 	import { trainingData, tfjs } from '$lib/data/stores/tfjs';
 	import type { GraphData } from '$lib/data/stores/types';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
-	import { browser } from '$app/env';
+	import LoaderWorker from '$lib/functions/_worker/loader?worker';
+	import type { AssetLoaderMessage } from '$lib/functions/_worker/types';
 	let mse: GraphData,
 		val_mse: GraphData,
 		loss: GraphData,
@@ -20,8 +21,14 @@
 	});
 
 	onMount(async () => {
-		const data = await fetch(dataPath).then((res) => res.json());
-		model.subscribe((v) => v.init(data));
+		const worker = new LoaderWorker();
+
+		worker.postMessage({ paths });
+		worker.onmessage = (event: AssetLoaderMessage) => {
+			const { data } = event;
+
+			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
+		};
 	});
 </script>
 
@@ -50,64 +57,62 @@
 			<p>Watch as a basic model is trained using an abbreviated dataset in real time below.</p>
 
 			<div class="w-full flex flex-col">
-				{#if browser}
-					<div class="col-span-1 w-full items-center py-2 h-120">
-						<LineChart data={mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd MSE" />
-					</div>
+				<div class="col-span-1 w-full items-center py-2 h-120">
+					<LineChart data={mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd MSE" />
+				</div>
 
-					<p>
-						The above chart plots the Mean Squared Error (MSE) at the end of each training Epoch
-						(round).
-					</p>
+				<p>
+					The above chart plots the Mean Squared Error (MSE) at the end of each training Epoch
+					(round).
+				</p>
 
-					<p>
-						While MSE provides some insight into how the model more closely fits our dataset with
-						time, it doesn't show the whole picture as it's not representing the accuracy of the
-						model when used to predict an outcome from data it hasn't previously encountered.
-					</p>
+				<p>
+					While MSE provides some insight into how the model more closely fits our dataset with
+					time, it doesn't show the whole picture as it's not representing the accuracy of the model
+					when used to predict an outcome from data it hasn't previously encountered.
+				</p>
 
-					<p>
-						When training a model, we split the dataset into a training set and a validation set.
-						The validation set is used as a baseline for comparison for the model to make
-						adjustments between each training Epoch.
-					</p>
+				<p>
+					When training a model, we split the dataset into a training set and a validation set. The
+					validation set is used as a baseline for comparison for the model to make adjustments
+					between each training Epoch.
+				</p>
 
-					<div class="col-span-1 w-full items-center py-2 h-120">
-						<LineChart data={val_mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd Val. MSE" />
-					</div>
+				<div class="col-span-1 w-full items-center py-2 h-120">
+					<LineChart data={val_mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd Val. MSE" />
+				</div>
 
-					<p>
-						The above chart plots the Mean Squared Error (MSE) at the end of each training Epoch for
-						the Validation Dataset.
-					</p>
+				<p>
+					The above chart plots the Mean Squared Error (MSE) at the end of each training Epoch for
+					the Validation Dataset.
+				</p>
 
-					<p>
-						In Machine Learning, Loss is a metric used to provide a measure of how bad the model's
-						prediction was on a single example. If the model's prediction is perfect, the loss is
-						zero; the further from perfect, the further the loss is from zero.
-					</p>
+				<p>
+					In Machine Learning, Loss is a metric used to provide a measure of how bad the model's
+					prediction was on a single example. If the model's prediction is perfect, the loss is
+					zero; the further from perfect, the further the loss is from zero.
+				</p>
 
-					<div class="col-span-1 w-full items-center mx-auto py-2 h-120">
-						<LineChart data={loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Loss" />
-					</div>
+				<div class="col-span-1 w-full items-center mx-auto py-2 h-120">
+					<LineChart data={loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Loss" />
+				</div>
 
-					<p>The above chart plots the Loss at the end of each training Epoch.</p>
+				<p>The above chart plots the Loss at the end of each training Epoch.</p>
 
-					<p>
-						While Loss provides insight into the how bad any given prediction of model is, this
-						isn't representative of the accuracy of the model as it's this loss value is calculated
-						from the dataset used to train the model.
-					</p>
+				<p>
+					While Loss provides insight into the how bad any given prediction of model is, this isn't
+					representative of the accuracy of the model as it's this loss value is calculated from the
+					dataset used to train the model.
+				</p>
 
-					<p>
-						We can plot the loss over time from the validation dataset in order to get a better idea
-						of how bad (or, conversely, how good) each prediction of a model is.
-					</p>
+				<p>
+					We can plot the loss over time from the validation dataset in order to get a better idea
+					of how bad (or, conversely, how good) each prediction of a model is.
+				</p>
 
-					<div class="col-span-1 w-full items-center mx-auto py-2 h-120">
-						<LineChart data={val_loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Val. Loss" />
-					</div>
-				{/if}
+				<div class="col-span-1 w-full items-center mx-auto py-2 h-120">
+					<LineChart data={val_loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Val. Loss" />
+				</div>
 			</div>
 			<p>
 				The above chart plots the Loss at the end of each training Epoch for the Validation Dataset.
