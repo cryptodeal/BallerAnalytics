@@ -1,0 +1,32 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"pipeline": {
+		"@balleranalytics/nba-api-ts#build": {
+			"dependsOn": ["^build"],
+			"inputs": ["src/*.ts", "src/**/*.ts"],
+			"outputs": ["dist/**"]
+		},
+    "@balleranalytics/tf-neat#build": {
+			"dependsOn": ["^build"],
+			"inputs": ["src/*.ts", "src/**/*.ts"],
+			"outputs": ["dist/**"]
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["src/**"],
+			"outputs": [".vercel_build_output/**"]
+		},
+		"check": {
+			"outputs": []
+		},
+		"format": {},
+		"lint": {
+			"dependsOn": ["format"],
+			"outputs": []
+		},
+		"dev": {
+			"cache": false
+		}
+	},
+	"globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json"]
+}

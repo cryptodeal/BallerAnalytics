@@ -1,0 +1,169 @@
+[35m@balleranalytics/nba-api-ts:build: [0mcache hit, replaying output [2m1249cf9c2b3101dd[0m
+[35m@balleranalytics/nba-api-ts:build: [0m
+[35m@balleranalytics/nba-api-ts:build: [0m> @balleranalytics/nba-api-ts@0.1.0 build /Users/cryptodeal/BallerAnalytics/packages/nba-api-ts
+[35m@balleranalytics/nba-api-ts:build: [0m> mtgen --output ./src/db/interfaces ./src/db/models && tsup
+[35m@balleranalytics/nba-api-ts:build: [0m
+[35m@balleranalytics/nba-api-ts:build: [0mGenerating mongoose typescript definitions... done
+[35m@balleranalytics/nba-api-ts:build: [0mWriting interfaces to src/db/interfaces/mongoose.gen.ts
+[35m@balleranalytics/nba-api-ts:build: [0mWriting complete 🐒
+[35m@balleranalytics/nba-api-ts:build: [0mCLI Building entry: src/config.ts, src/global.d.ts, src/index.ts, src/db/connect.ts, src/scripts/cron.ts, src/api/bballRef/fetchers.ts, src/api/bballRef/types.d.ts, src/api/espn/fetchers.ts, src/api/espn/index.ts, src/api/espn/types.d.ts, src/api/nba/nba.d.ts, src/db/interfaces/mongoose.gen.ts, src/db/models/Coach2.ts, src/db/models/Game2.ts, src/db/models/League.ts, src/db/models/Official2.ts, src/db/models/Player2.ts, src/db/models/Team2.ts, src/db/models/Tx.ts, src/db/models/User.ts, src/scripts/cleanup/sortSeasons.ts, src/scripts/import/boxscores.ts, src/scripts/import/headshot.ts, src/scripts/import/playerData.ts, src/scripts/import/teamrosters.ts, src/api/bballRef/games/boxScore.ts, src/api/bballRef/games/index.ts, src/api/bballRef/games/utils.ts, src/api/bballRef/player/index.ts, src/api/bballRef/seasons/index.ts, src/api/bballRef/teams/index.ts, src/api/bballRef/tx/index.ts, src/api/nba/boxscores/index.ts, src/api/nba/player/images.ts, src/api/nba/player/index.ts, src/db/controllers/Game2/index.ts, src/db/controllers/League/index.ts, src/db/controllers/Official2/index.ts, src/db/controllers/Player2/index.ts, src/db/controllers/Team2/index.ts, src/db/controllers/ml/index.ts, src/db/controllers/ml/types.d.ts, src/scripts/cleanup/Game2/clearReferences.ts, src/scripts/cleanup/Game2/fixTeamPeriodStats.ts, src/scripts/cleanup/Game2/gameOver.ts, src/scripts/cleanup/Player2/fixSeasons.ts, src/scripts/cleanup/Player2/index.ts, src/scripts/cleanup/Player2/updateStats.ts
+[35m@balleranalytics/nba-api-ts:build: [0mCLI Using tsconfig: tsconfig.json
+[35m@balleranalytics/nba-api-ts:build: [0mCLI tsup v5.12.5
+[35m@balleranalytics/nba-api-ts:build: [0mCLI Using tsup config: /Users/cryptodeal/BallerAnalytics/packages/nba-api-ts/tsup.config.ts
+[35m@balleranalytics/nba-api-ts:build: [0mCLI Target: node12
+[35m@balleranalytics/nba-api-ts:build: [0mCLI Cleaning output folder
+[35m@balleranalytics/nba-api-ts:build: [0mCJS Build start
+[35m@balleranalytics/nba-api-ts:build: [0mESM Build start
+[35m@balleranalytics/nba-api-ts:build: [0mESM ⚡️ Build success in 42ms
+[35m@balleranalytics/nba-api-ts:build: [0mCJS ⚡️ Build success in 45ms
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/nba/nba.d.mjs                            0 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/espn/types.d.mjs                         0 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/global.d.mjs                                 0 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-O272Q33G.mjs                           0 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/types.d.mjs                     0 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/ml/types.d.mjs                38.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/Player2/index.mjs            2.49 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/Player2/updateStats.mjs      1.17 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/Game2/gameOver.mjs           2.05 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/nba/player/images.mjs                    135.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/Official2/index.mjs           597.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/nba/player/index.mjs                     91.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/Game2/index.mjs               1.19 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/Player2/index.mjs             1.36 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/import/teamrosters.mjs               785.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/Game2/clearReferences.mjs    2.05 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/games/boxScore.mjs              980.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/Team2/index.mjs               835.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/games/utils.mjs                 1017.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/games/index.mjs                 948.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/tx/index.mjs                    2.08 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/League/index.mjs              557.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/Team2.mjs                          72.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/seasons/index.mjs               197.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/Tx.mjs                             818.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/import/boxscores.mjs                 1022.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/Player2.mjs                        76.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/sortSeasons.mjs              1.18 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/User.mjs                           70.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/import/headshot.mjs                  1.03 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-Y22LCXFG.mjs                           3.02 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/import/playerData.mjs                1.13 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/interfaces/mongoose.gen.mjs               84.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/player/index.mjs                213.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/Coach2.mjs                         74.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/espn/index.mjs                           210.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/Game2.mjs                          72.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/League.mjs                         74.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/index.mjs                                    939.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cron.mjs                             2.07 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/models/Official2.mjs                      80.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/connect.mjs                               183.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-B6SIJWTD.mjs                           2.63 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-NSY7S6DU.mjs                           1.67 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-ZAP4ZBK7.mjs                           5.41 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-W3UHL332.mjs                           167.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-IN3SSDVE.mjs                           113.24 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-L2AS5T5L.mjs                           4.44 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-FQ4FWT2C.mjs                           10.07 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-LUBCLJNN.mjs                           7.26 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-ANTKJDQL.mjs                           6.09 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-5MREEBMJ.mjs                           9.53 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-Z6CGUUS5.mjs                           7.29 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-FKBO433V.mjs                           2.02 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-KDBJEE3J.mjs                           6.96 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-6ZL54PUL.mjs                           170.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-KOY4UYZT.mjs                           18.96 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-GPPOK2GA.mjs                           1.17 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/config.mjs                                   97.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-CGECANQC.mjs                           2.32 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-NUX6RW7F.mjs                           1.81 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/espn/fetchers.mjs                        366.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/Player2/fixSeasons.mjs       1.29 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-W3CIOC32.mjs                           3.63 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/fetchers.mjs                    422.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-ZUFR5FU2.mjs                           1.60 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-3SQWLGYG.mjs                           879.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/chunk-PXCTTW7D.mjs                           1.70 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/nba/boxscores/index.mjs                  175.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/api/bballRef/teams/index.mjs                 129.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/scripts/cleanup/Game2/fixTeamPeriodStats.mjs 1.90 KB
+[35m@balleranalytics/nba-api-ts:build: [0mESM dist/db/controllers/ml/index.mjs                  681.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/Game2/clearReferences.js    2.24 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/Game2/fixTeamPeriodStats.js 2.00 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/ml/index.js                  916.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/Player2/fixSeasons.js       1.40 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/Game2/gameOver.js           2.48 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/Player2/index.js            2.63 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/nba/boxscores/index.js                  327.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/Player2/updateStats.js      1.28 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/League/index.js              673.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/nba/player/index.js                     195.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/nba/player/images.js                    240.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/import/teamrosters.js               876.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/Game2/index.js               1.47 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/Team2/index.js               1.03 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/Official2/index.js           737.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/ml/types.d.js                52.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/games/boxScore.js              1.08 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/player/index.js                366.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/teams/index.js                 234.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/seasons/index.js               350.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/Team2.js                          176.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/games/utils.js                 1.19 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/controllers/Player2/index.js             1.69 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/Player2.js                        180.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/tx/index.js                    2.41 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/Tx.js                             1.10 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/User.js                           174.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cleanup/sortSeasons.js              1.33 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/import/headshot.js                  1.16 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-HPMYASMZ.js                           3.42 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/espn/index.js                           386.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/espn/types.d.js                         13.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/interfaces/mongoose.gen.js               188.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/Coach2.js                         178.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/Game2.js                          176.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/config.js                                   183.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/import/boxscores.js                 1.10 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/League.js                         178.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/models/Official2.js                      184.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/global.d.js                                 13.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/cron.js                             2.19 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/db/connect.js                               336.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/index.js                                    1.54 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-CZW5RGWS.js                           3.08 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-R72BR4ZZ.js                           5.77 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-52R476NK.js                           116.03 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-76LDR5VX.js                           405.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-HMENM2KU.js                           7.51 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-LC2UCZWY.js                           1.83 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-2T5RWWLS.js                           4.81 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-3DTNQM43.js                           10.70 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-N5KK46RF.js                           2.46 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-3LLFULGV.js                           7.97 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-2LDDZEHS.js                           10.08 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-YH4BAQXD.js                           6.49 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-NB2O7UB7.js                           13.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-XKDPVTJH.js                           7.27 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-SBCDPFM6.js                           2.38 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-MLYLS66U.js                           416.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-Q4Q2RLVU.js                           2.17 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-HR3IE5V4.js                           2.20 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-4RA5VJYP.js                           1.45 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/fetchers.js                    742.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-F3PYVVL6.js                           19.33 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-VYJAYXLW.js                           1.89 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-6ANTAJZK.js                           4.52 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/types.d.js                     13.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/espn/fetchers.js                        642.00 B
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/chunk-SGSML666.js                           1.10 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/scripts/import/playerData.js                1.24 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/bballRef/games/index.js                 1.03 KB
+[35m@balleranalytics/nba-api-ts:build: [0mCJS dist/api/nba/nba.d.js                            13.00 B
+[35m@balleranalytics/nba-api-ts:build: [0m
+[35m@balleranalytics/nba-api-ts:build: [0m> @balleranalytics/nba-api-ts@0.1.0 build:fix
+[35m@balleranalytics/nba-api-ts:build: [0m> esno scripts/postbuild.ts
+[35m@balleranalytics/nba-api-ts:build: [0m
+[35m@balleranalytics/nba-api-ts:build: [0m POST  Fix config.js
+[35m@balleranalytics/nba-api-ts:build: [0m POST  Fix global.d.js
+[35m@balleranalytics/nba-api-ts:build: [0m POST  Fix index.js

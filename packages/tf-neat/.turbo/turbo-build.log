@@ -1,0 +1,79 @@
+[32m@balleranalytics/tf-neat:build: [0mcache hit, replaying output [2me92a171a125dbf04[0m
+[32m@balleranalytics/tf-neat:build: [0m
+[32m@balleranalytics/tf-neat:build: [0m> @balleranalytics/tf-neat@0.0.1 build /Users/cryptodeal/BallerAnalytics/packages/tf-neat
+[32m@balleranalytics/tf-neat:build: [0m> tsup
+[32m@balleranalytics/tf-neat:build: [0m
+[32m@balleranalytics/tf-neat:build: [0mCLI Building entry: src/config.ts, src/global.d.ts, src/index.ts, src/base/Base.ts, src/base/NeuralNetwork.ts, src/base/RNN.ts, src/base/index.ts, src/base/types.d.ts, src/utils/index.ts, src/web/BaseModel.ts, src/web/NeuralNetwork.ts, src/base/utils/Player.ts, src/core/genetics/NeuroEvolution.ts, src/core/genetics/Population.ts, src/core/ai/NeuralNetwork.ts, src/core/ai/types.d.ts, src/core/data/index.ts, src/core/data/types.d.ts, src/core/genetics/models/Model.ts, src/core/genetics/models/ModelApi.ts, src/core/genetics/models/index.ts, src/core/genetics/models/controllers/Controller.ts
+[32m@balleranalytics/tf-neat:build: [0mCLI Using tsconfig: tsconfig.json
+[32m@balleranalytics/tf-neat:build: [0mCLI tsup v5.12.5
+[32m@balleranalytics/tf-neat:build: [0mCLI Using tsup config: /Users/cryptodeal/BallerAnalytics/packages/tf-neat/tsup.config.ts
+[32m@balleranalytics/tf-neat:build: [0mCLI Target: node12
+[32m@balleranalytics/tf-neat:build: [0mCLI Cleaning output folder
+[32m@balleranalytics/tf-neat:build: [0mCJS Build start
+[32m@balleranalytics/tf-neat:build: [0mESM Build start
+[32m@balleranalytics/tf-neat:build: [0mESM ⚡️ Build success in 17ms
+[32m@balleranalytics/tf-neat:build: [0mCJS ⚡️ Build success in 19ms
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/genetics/models/ModelApi.js               283.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/genetics/models/Model.js                  323.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/utils/index.js                                 541.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/genetics/models/index.js                  286.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/web/BaseModel.js                               313.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/web/NeuralNetwork.js                           354.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/base/utils/Player.js                           214.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/data/types.d.js                           151.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/genetics/models/controllers/Controller.js 306.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/data/index.js                             2.21 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-AROZVOPY.js                              4.38 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/genetics/NeuroEvolution.js                7.80 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/genetics/Population.js                    330.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-SO7NADG4.js                              1.81 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/ai/NeuralNetwork.js                       228.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/index.js                                       538.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/core/ai/types.d.js                             149.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-YZ4JMKVA.js                              3.87 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/config.js                                      4.01 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/global.d.js                                    138.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/base/Base.js                                   303.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-UBHA4QMR.js                              1.64 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/base/NeuralNetwork.js                          1.73 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-MZH244M6.js                              16.43 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/base/RNN.js                                    3.35 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/base/index.js                                  214.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-URBUVHLV.js                              4.46 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-JAZDHT6V.js                              3.58 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/base/types.d.js                                143.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-3KXS7RNF.js                              425.00 B
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-HLLTISOX.js                              1.06 KB
+[32m@balleranalytics/tf-neat:build: [0mCJS dist/chunk-NAWXSFL7.js                              1.92 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/utils/index.mjs                                 291.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/genetics/models/controllers/Controller.mjs 193.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/web/NeuralNetwork.mjs                           245.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/genetics/models/ModelApi.mjs               172.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/web/BaseModel.mjs                               205.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/genetics/NeuroEvolution.mjs                7.43 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/data/index.mjs                             2.02 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-XL4EEPMZ.mjs                              1.59 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/ai/NeuralNetwork.mjs                       123.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/genetics/Population.mjs                    222.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/base/utils/Player.mjs                           109.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/config.mjs                                      3.77 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-QP6NNX5T.mjs                              3.99 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/global.d.mjs                                    95.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/ai/types.d.mjs                             106.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-Y7772FAY.mjs                              4.21 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-TLS26S7P.mjs                              3.64 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-EIAXOYZN.mjs                              1.45 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/index.mjs                                       359.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-UGF2ZKDE.mjs                              16.26 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/base/RNN.mjs                                    3.09 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-E4R3VHAM.mjs                              313.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/base/NeuralNetwork.mjs                          1.54 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-MDGSCHSC.mjs                              3.20 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/genetics/models/Model.mjs                  215.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/base/types.d.mjs                                100.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/base/index.mjs                                  109.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-Q3NG4X6Y.mjs                              952.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/base/Base.mjs                                   195.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/chunk-2RXES5DY.mjs                              1.78 KB
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/genetics/models/index.mjs                  157.00 B
+[32m@balleranalytics/tf-neat:build: [0mESM dist/core/data/types.d.mjs                           108.00 B

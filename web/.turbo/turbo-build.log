@@ -1,0 +1,138 @@
+[33m@depth/web:build: [0mcache hit, replaying output [2m8016c1e7f2a43a3a[0m
+[33m@depth/web:build: [0m
+[33m@depth/web:build: [0m> @depth/web@0.1.0 build /Users/cryptodeal/BallerAnalytics/web
+[33m@depth/web:build: [0m> svelte-kit build
+[33m@depth/web:build: [0m
+[33m@depth/web:build: [0mvite v2.9.5 building for production...
+[33m@depth/web:build: [0mtransforming...
+[33m@depth/web:build: [0mtransforming...
+[33m@depth/web:build: [0m✓ 3 modules transformed.
+[33m@depth/web:build: [0mrendering chunks...
+[33m@depth/web:build: [0m✓ 13 modules transformed.
+[33m@depth/web:build: [0m✓ 2262 modules transformed.
+[33m@depth/web:build: [0mThe emitted file "assets/test-e7577bb0.glb" overwrites a previously emitted file of the same name.
+[33m@depth/web:build: [0mrendering chunks...
+[33m@depth/web:build: [0mThe emitted file "manifest.json" overwrites a previously emitted file of the same name.
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/basic-a2fb9cf9.json                                       356.97 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/manifest.json                                                    11.53 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/loader.b662b380.js                                        0.33 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/test-e7577bb0.glb                                         1302.12 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/worker.4fa00e9f.js                                        590.02 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/api/auth/verify/_authToken_.svelte-14329ee5.js             0.42 KiB / gzip: 0.32 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/__error.svelte-573ece32.js                                 0.99 KiB / gzip: 0.60 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/start-03a525db.js                                                26.59 KiB / gzip: 9.12 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/logout.svelte-58b47735.js                                  0.50 KiB / gzip: 0.34 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/games/boxscore/_date_/_matchup_/index.svelte-25b6057d.js   35.30 KiB / gzip: 8.91 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/index.svelte-232315ee.js                                   12.02 KiB / gzip: 4.64 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/games/index.svelte-52db2066.js                             36.43 KiB / gzip: 11.29 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/players/index.svelte-da4f3b1d.js                           30.73 KiB / gzip: 10.08 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/teams/index.svelte-5766af8f.js                             6.79 KiB / gzip: 2.52 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/profile/index.svelte-4b6f1449.js                           39.12 KiB / gzip: 12.31 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/KTX2Loader-f2ac03ce.js                                    8.42 KiB / gzip: 3.12 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/players/_playerSlug_/index.svelte-2c676ada.js              63.93 KiB / gzip: 14.42 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/singletons-d1fb5791.js                                    0.05 KiB / gzip: 0.07 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/index-6bb48244.js                                         0.80 KiB / gzip: 0.49 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/preload-helper-e4860ae8.js                                0.55 KiB / gzip: 0.39 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/stores-2273acb6.js                                        0.60 KiB / gzip: 0.32 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/games-112b4979.js                                         0.41 KiB / gzip: 0.26 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/person-24-regular-67bbc51c.js                             2.32 KiB / gzip: 1.26 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/dayjs.min-8a546fca.js                                     6.35 KiB / gzip: 2.86 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/helpers-4a120ded.js                                       1.25 KiB / gzip: 0.71 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/index-f703b180.js                                         14.71 KiB / gzip: 6.14 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/index-8a6101f8.js                                         0.92 KiB / gzip: 0.49 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/advancedFormat-f20d9d7d.js                                5.07 KiB / gzip: 2.13 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/theme-f693f26b.js                                         0.34 KiB / gzip: 0.21 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/_commonjsHelpers-c771f69b.js                              0.42 KiB / gzip: 0.25 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/TabList-18c8f28e.js                                       7.15 KiB / gzip: 2.67 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/THead-fc96fa0a.js                                         6.98 KiB / gzip: 2.72 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/Headshot-6c6312e2.js                                      5.90 KiB / gzip: 2.43 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/tinycolor-062ea312.js                                     14.35 KiB / gzip: 5.08 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/MetaTags-876c6833.js                                      34.53 KiB / gzip: 6.31 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/nba-color-9194792a.js                                     53.14 KiB / gzip: 15.51 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/CanvasWrapper-9ac068ef.js                                 8.05 KiB / gzip: 3.19 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/worker-d12b635a.js                                        0.10 KiB / gzip: 0.12 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/AnyTeamLogo-efd22f61.css                                  0.05 KiB / gzip: 0.07 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/Headshot-64994073.css                                     0.48 KiB / gzip: 0.19 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/person-24-regular-c330630a.css                            2.18 KiB / gzip: 0.57 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/profile/index.svelte-b75e0af2.css                   0.53 KiB / gzip: 0.31 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/teams/_teamSlug_/index.svelte-51f4cb6e.css          0.25 KiB / gzip: 0.21 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/TabList-e14be124.css                                      0.22 KiB / gzip: 0.13 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/index.svelte-760d3871.css                           0.30 KiB / gzip: 0.17 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/Basketball-feb84fa1.css                                   0.10 KiB / gzip: 0.10 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/dev/ml.svelte-0c732095.css                          1.61 KiB / gzip: 0.57 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/teams/index.svelte-16f05f8b.css                     2.27 KiB / gzip: 0.32 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/games/index.svelte-d4398550.css                     4.15 KiB / gzip: 1.05 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/players/index.svelte-a3562af5.css                   7.88 KiB / gzip: 1.20 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/Basketball-b3d9afc5.js                                    26.59 KiB / gzip: 8.82 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/assets/pages/__layout.svelte-6ca96a4d.css                        50.53 KiB / gzip: 10.34 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/teams/_teamSlug_/index.svelte-d2d9bab6.js                  102.28 KiB / gzip: 28.08 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/__layout.svelte-b173541b.js                                110.16 KiB / gzip: 38.48 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/AnyTeamLogo-f99afa5e.js                                   423.46 KiB / gzip: 122.06 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/chunks/GLTFLoader-8f805e04.js                                    569.60 KiB / gzip: 144.08 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/client/_app/pages/dev/ml.svelte-f484ffaf.js                                  1536.11 KiB / gzip: 242.70 KiB
+[33m@depth/web:build: [0m
+[33m@depth/web:build: [0m(!) Some chunks are larger than 500 KiB after minification. Consider:
+[33m@depth/web:build: [0m- Using dynamic import() to code-split the application
+[33m@depth/web:build: [0m- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/guide/en/#outputmanualchunks
+[33m@depth/web:build: [0m- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+[33m@depth/web:build: [0mvite v2.9.5 building SSR bundle for production...
+[33m@depth/web:build: [0msvelte-notifications doesn't appear to be written in CJS, but also doesn't appear to be a valid ES module (i.e. it doesn't have "type": "module" or an .mjs extension for the entry point). Please contact the package author to fix.
+[33m@depth/web:build: [0mtransforming...
+[33m@depth/web:build: [0mtransforming...
+[33m@depth/web:build: [0m✓ 3 modules transformed.
+[33m@depth/web:build: [0mrendering chunks...
+[33m@depth/web:build: [0m✓ 13 modules transformed.
+[33m@depth/web:build: [0m✓ 324 modules transformed.
+[33m@depth/web:build: [0mGenerated an empty chunk: "entries/endpoints/teams/_teamSlug_/types.d.ts"
+[33m@depth/web:build: [0mrendering chunks...
+[33m@depth/web:build: [0m.svelte-kit/output/server/manifest.json                                                        10.78 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/index.js                                                             65.77 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/profile/index.json.ts.js                           2.15 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/players/index.json.ts.js                           1.03 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/games/index.json.ts.js                             1.01 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/teams/index.ts.js                                  0.44 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/api/auth/index.json.ts.js                          9.13 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/api/games/today.ts.js                              0.56 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/api/auth/logout.json.ts.js                         1.10 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/api/auth/verify/_authToken_.json.ts.js             2.14 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/games/boxscore/_date_/_matchup_/index.json.ts.js   0.84 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/teams/_teamSlug_/index.json.ts.js                  0.64 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/players/_playerSlug_/index.json.ts.js              0.66 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/endpoints/teams/_teamSlug_/types.d.ts.js                     0.00 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/__layout.svelte.js                                     51.36 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/__error.svelte.js                                      0.76 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/api/auth/verify/_authToken_.svelte.js                  0.47 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/dev/ml.svelte.js                                       27.72 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/games/boxscore/_date_/_matchup_/index.svelte.js        19.22 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/games/index.svelte.js                                  31.09 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/index.svelte.js                                        8.17 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/logout.svelte.js                                       0.35 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/players/_playerSlug_/index.svelte.js                   28.46 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/players/index.svelte.js                                34.18 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/profile/index.svelte.js                                25.78 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/teams/_teamSlug_/index.svelte.js                       41.12 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/entries/pages/teams/index.svelte.js                                  7.86 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/GLTFLoader-16ca0db0.js                                        0.02 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/KTX2Loader-398d9563.js                                        0.02 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/connect-af6c1aff.js                                           40.96 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/_config-8d98547c.js                                           0.65 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/index-7f6c5531.js                                             9.84 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/helpers-2e91f0e4.js                                           3.27 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/index-87e93b89.js                                             3.09 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/index-8e592bed.js                                             3.77 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/index-0221a30f.js                                             3.63 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/signToken-51d5a70e.js                                         0.46 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/games-5871471b.js                                             0.60 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/person-24-regular-6e895949.js                                 2.70 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/index-2021ebf3.js                                             2.27 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/AnyTeamLogo-30292db8.js                                       395.95 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/TabList-b0bb1664.js                                           6.14 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/THead-0ccfc409.js                                             2.86 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/Headshot-23d9290b.js                                          6.31 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/MetaTags-42109476.js                                          13.21 KiB
+[33m@depth/web:build: [0m.svelte-kit/output/server/chunks/hooks-28dd1eed.js                                             1.83 KiB
+[33m@depth/web:build: [0m
+[33m@depth/web:build: [0mRun npm run preview to preview your production build locally.
+[33m@depth/web:build: [0m
+[33m@depth/web:build: [0m> Using @sveltejs/adapter-vercel
+[33m@depth/web:build: [0m  ✔ done

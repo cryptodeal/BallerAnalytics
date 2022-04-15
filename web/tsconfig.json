@@ -29,9 +29,7 @@
 			"$models": ["src/models"],
 			"$models/*": ["src/models/*"],
 			"$ml": ["src/ml"],
-			"$ml/*": ["src/ml/*"],
-			"@balleranalytics/nba-api-ts": ["../packages/nba-api-ts/src"],
-			"@balleranalytics/tf-neat": ["../packages/tf-neat/src"]
+			"$ml/*": ["src/ml/*"]
 		},
 		"types": ["unplugin-obj/obj", "unplugin-mtl/mtl", "@types/offscreencanvas"]
 	},
