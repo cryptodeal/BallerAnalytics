@@ -18,7 +18,7 @@ const config = {
 	preprocess: [preprocess(), mdsvex(mdsvexConfig)],
 
 	kit: {
-		adapter: adapter({ external: ['@napi-rs*', '@napi-rs/*', '@napi-rs/pinyin-darwin-arm64'] }),
+		adapter: adapter({ external: ['@napi-rs/*', 'mongoose-slugger-plugin'] }),
 		vite: {
 			plugins: [
 				WindiCSS(),
