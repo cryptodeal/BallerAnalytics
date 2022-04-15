@@ -17,7 +17,7 @@
 			"outputs": ["dist/**"]
 		},
 		"@balleranalytics/web#build": {
-			"dependsOn": ["^build"],
+			"dependsOn": ["^build", "$VERCEL"],
 			"inputs": ["src/**"],
 			"outputs": [".vercel_build_output/**"]
 		},
