@@ -1,22 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import paths from '$ml/basic.json?url';
-	import { trainingData, tfjs as model } from '$lib/data/stores/tfjs';
 	import type { GraphData } from '$lib/data/stores/types';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
 	import LoaderWorker from '$lib/functions/_worker/loader?worker';
 	import type { AssetLoaderMessage } from '$lib/functions/_worker/types';
 	let mse: GraphData, val_mse: GraphData, loss: GraphData, val_loss: GraphData, worker: Worker;
 
-	$: if (worker)
-		worker.onmessage = (event: AssetLoaderMessage) => {
-			const { data } = event;
-
-			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
-			worker.terminate();
-		};
-
 	onMount(async () => {
+		const { trainingData, tfjs: model } = await import('$lib/data/stores/tfjs');
 		trainingData.subscribe((value) => {
 			const { mse: tMse, val_mse: vMse, loss: tLoss, val_loss: vLoss } = value;
 			mse = tMse;
@@ -27,6 +19,13 @@
 		worker = new LoaderWorker();
 
 		worker.postMessage({ paths });
+
+		worker.onmessage = (event: AssetLoaderMessage) => {
+			const { data } = event;
+
+			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
+			worker.terminate();
+		};
 	});
 </script>
 
