@@ -14,8 +14,8 @@ export const tfjs = readable<NeuralNetwork>(new NeuralNetwork(), (set) => {
 	if (!browser) return;
 
 	const model = new NeuralNetwork({
-		epochs: 100,
-		batchSize: 5,
+		epochs: 10,
+		batchSize: 20,
 		callbacks: {
 			onEpochEnd: async (epoch, logs) => {
 				trainingData.update((d) => {
