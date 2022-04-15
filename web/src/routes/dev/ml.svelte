@@ -28,6 +28,7 @@
 			const { data } = event;
 
 			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
+			worker.terminate();
 		};
 	});
 </script>
