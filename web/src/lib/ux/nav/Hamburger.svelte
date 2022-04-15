@@ -17,11 +17,13 @@
 
 <style>
 	svg {
+		will-change: transform;
 		min-height: 18px;
 		transition: transform 0.3s ease-in-out;
 	}
 
 	svg line {
+		will-change: transform;
 		stroke: currentColor;
 		stroke-width: 3;
 		transition: transform 0.3s ease-in-out;
@@ -36,6 +38,7 @@
 	}
 
 	.open #top {
+		will-change: transform;
 		transform: translate(4.5px, 0px) rotate(45deg);
 	}
 
@@ -44,6 +47,7 @@
 	}
 
 	.open #bottom {
+		will-change: transform;
 		transform: translate(-9px, 6.75px) rotate(-45deg);
 	}
 </style>
