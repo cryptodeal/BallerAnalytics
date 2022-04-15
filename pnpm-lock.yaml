@@ -183,6 +183,7 @@ importers:
       jsonwebtoken: ^8.5.1
       mdsvex: ^0.10.5
       mongoose: 6.2.7
+      mongoose-slugger-plugin: ^3.0.3
       nba-color: ^1.4.1
       nodemailer: ^6.7.3
       prettier: ^2.6.2
@@ -245,6 +246,7 @@ importers:
       jsonwebtoken: 8.5.1
       mdsvex: 0.10.5_svelte@3.47.0
       mongoose: 6.2.7
+      mongoose-slugger-plugin: 3.0.3_mongoose@6.2.7
       nba-color: 1.4.1
       nodemailer: 6.7.3
       prettier: 2.6.2
@@ -1246,7 +1248,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-android-arm64/1.7.0:
@@ -1255,7 +1256,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-darwin-arm64/1.7.0:
@@ -1264,7 +1264,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-darwin-x64/1.7.0:
@@ -1273,7 +1272,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-freebsd-x64/1.7.0:
@@ -1282,7 +1280,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-linux-arm-gnueabihf/1.7.0:
@@ -1291,7 +1288,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-linux-arm64-gnu/1.7.0:
@@ -1300,7 +1296,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-linux-arm64-musl/1.7.0:
@@ -1309,7 +1304,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-linux-x64-gnu/1.7.0:
@@ -1318,7 +1312,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-linux-x64-musl/1.7.0:
@@ -1327,7 +1320,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-win32-arm64-msvc/1.7.0:
@@ -1336,7 +1328,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-win32-ia32-msvc/1.7.0:
@@ -1345,7 +1336,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin-win32-x64-msvc/1.7.0:
@@ -1354,7 +1344,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@napi-rs/pinyin/1.7.0:
@@ -1377,11 +1366,9 @@ packages:
       '@napi-rs/pinyin-win32-arm64-msvc': 1.7.0
       '@napi-rs/pinyin-win32-ia32-msvc': 1.7.0
       '@napi-rs/pinyin-win32-x64-msvc': 1.7.0
-    dev: false
 
   /@napi-rs/triples/1.1.0:
     resolution: {integrity: sha512-XQr74QaLeMiqhStEhLn1im9EOMnkypp7MZOwQhGzqp2Weu5eQJbpPxWxixxlYRKWPOmJjsk6qYfYH9kq43yc2w==}
-    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2395,7 +2382,6 @@ packages:
 
   /bulk-replace/0.0.1:
     resolution: {integrity: sha1-8JVoKolqvUs9ngjeQJzCIuIT+d0=}
-    dev: false
 
   /bundle-require/3.0.4_esbuild@0.14.36:
     resolution: {integrity: sha512-VXG6epB1yrLAvWVQpl92qF347/UXmncQj7J3U8kZEbdVZ1ZkQyr4hYeL/9RvcE8vVVdp53dY78Fd/3pqfRqI1A==}
@@ -3884,7 +3870,6 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       bulk-replace: 0.0.1
-    dev: false
 
   /html-escaper/2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
@@ -4337,7 +4322,6 @@ packages:
       '@napi-rs/pinyin': 1.7.0
       hepburn: 1.2.0
       speakingurl: 14.0.1
-    dev: false
 
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
@@ -4879,7 +4863,6 @@ packages:
     dependencies:
       limax: 3.0.0
       mongoose: 6.2.7
-    dev: false
 
   /mongoose-tsgen/9.0.4_mongoose@6.2.7+typescript@4.6.3:
     resolution: {integrity: sha512-W/oHvgaWlO4dMINqXwLj9zmdImId287ffAKFhJoFLoHNjnPL1+FlTBE2NYfbU+QajKj4JkoIn5rqyRTnOzZ3vg==}
@@ -5764,7 +5747,6 @@ packages:
   /speakingurl/14.0.1:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /sportsdataverse/1.2.3:
     resolution: {integrity: sha512-pYJ+u9kMGx1FKviSdvFpe25GaX468Ebej4eSgZxpEEXuTysaQ4yATyZzR3JkSUlM7pjim6KFkW94va5/8117MA==}
@@ -6757,7 +6739,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
