@@ -1,10 +1,10 @@
 {
 	"$schema": "https://turborepo.org/schema.json",
 	"pipeline": {
-		"@balleranalytics/nba-api-ts#build": {
+    "build": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/**"],
-			"outputs": ["dist/**"]
+			"outputs": ["files/**", "dist/**", ".svelte-kit/**", ".vercel_build_output/**"]
 		},
     "@balleranalytics/tf-neat#build": {
 			"dependsOn": ["^build"],
@@ -15,11 +15,6 @@
 			"dependsOn": ["^build"],
 			"inputs": ["src/**"],
 			"outputs": [".vercel_build_output/**"]
-		},
-    "build": {
-			"dependsOn": ["^build"],
-			"inputs": ["src/**"],
-			"outputs": ["files/**", "dist/**", ".svelte-kit/**", ".vercel_build_output/**"]
 		},
 		"check": {
 			"outputs": []
