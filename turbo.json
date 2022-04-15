@@ -32,6 +32,5 @@
 		"dev": {
 			"cache": false
 		}
-	},
-	"globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json"]
+	}
 }
