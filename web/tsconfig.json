@@ -29,7 +29,9 @@
 			"$models": ["src/models"],
 			"$models/*": ["src/models/*"],
 			"$ml": ["src/ml"],
-			"$ml/*": ["src/ml/*"]
+			"$ml/*": ["src/ml/*"],
+			"$lexical": ["src/lexical"],
+			"$lexical/*": ["src/lexical/*"]
 		},
 		"types": ["unplugin-obj/obj", "unplugin-mtl/mtl", "@types/offscreencanvas"]
 	},

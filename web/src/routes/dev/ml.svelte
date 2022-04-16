@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import paths from '$ml/basic.json?url';
-	import type { GraphData } from '$lib/data/stores/types';
+	import { trainingData } from '$lib/data/stores/trainingData';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
 	import LoaderWorker from '$lib/functions/_worker/loader?worker';
 	import type { AssetLoaderMessage } from '$lib/functions/_worker/types';
+	import type { GraphData } from '$lib/data/stores/types';
 	import type { Readable } from 'svelte/store';
 	import type { NeuralNetwork } from '@balleranalytics/tf-neat';
+	import { browser } from '$app/env';
 	let mse: GraphData,
 		val_mse: GraphData,
 		loss: GraphData,
@@ -15,9 +17,27 @@
 		data: ArrayBuffer,
 		model: Readable<NeuralNetwork>;
 
+	const resetData = () =>
+		trainingData.set({
+			mse: [],
+			val_mse: [],
+			loss: [],
+			val_loss: []
+		});
+
+	if (browser) {
+		resetData();
+		trainingData.subscribe((value) => {
+			const { mse: tMse, val_mse: vMse, loss: tLoss, val_loss: vLoss } = value;
+			mse = tMse;
+			val_mse = vMse;
+			loss = tLoss;
+			val_loss = vLoss;
+		});
+	}
+
 	onMount(async () => {
-		const { trainingData, tfjs: tempModel } = await import('$lib/data/stores/tfjs');
-		model = tempModel;
+		resetData();
 		trainingData.subscribe((value) => {
 			const { mse: tMse, val_mse: vMse, loss: tLoss, val_loss: vLoss } = value;
 			mse = tMse;
@@ -26,20 +46,17 @@
 			val_loss = vLoss;
 		});
 		worker = new LoaderWorker();
-
-		worker.postMessage({ paths });
-
 		worker.onmessage = (event: AssetLoaderMessage) => {
 			const { data: tempData } = event;
 			data = tempData;
 			worker.terminate();
 		};
+		worker.postMessage({ paths });
+		model = (await import('$lib/data/stores/model')).tfjs;
 	});
 
-	function startDemo() {
+	$: if (data !== undefined && model !== undefined)
 		model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
-	}
-	$: if (data && model) startDemo();
 </script>
 
 <div class="appContent flex bg-hero-circuit-board-blue-30">

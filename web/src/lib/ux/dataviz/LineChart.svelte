@@ -38,13 +38,13 @@
 				>
 			</Grid>
 			<Svg>
-				<SvgLine {data} let:d>
-					{#if data.length > 1}
+				{#if data.length > 2}
+					<SvgLine {data} let:d>
 						<path class="data stroke-blue-400" {d} />
-					{/if}
-				</SvgLine>
+					</SvgLine>
+				{/if}
 			</Svg>
-			{#if closest && data.length > 1}
+			{#if closest && data.length > 2}
 				<Point x={closest.x} y={closest.y}>
 					<span class="annotation-point" />
 					<div

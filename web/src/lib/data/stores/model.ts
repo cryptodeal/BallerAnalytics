@@ -1,17 +1,10 @@
-import { readable, writable } from 'svelte/store';
+import { readable } from 'svelte/store';
+import { trainingData } from './trainingData';
 import { browser } from '$app/env';
 import { NeuralNetwork } from '@balleranalytics/tf-neat';
 import wasmSimdPath from '@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm-simd.wasm?url';
 import wasmSimdThreadedPath from '@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm-threaded-simd.wasm?url';
 import wasmPath from '@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm.wasm?url';
-import type { TFJSTrainingData } from './types';
-
-export const trainingData = writable<TFJSTrainingData>({
-	val_mse: [],
-	val_loss: [],
-	mse: [],
-	loss: []
-});
 
 export const tfjs = readable<NeuralNetwork | undefined>(undefined, (set) => {
 	if (!browser) return undefined;
@@ -27,6 +20,14 @@ export const tfjs = readable<NeuralNetwork | undefined>(undefined, (set) => {
 			batchSize: 20,
 			callbacks: {
 				onEpochEnd: async (epoch, logs) => {
+					if (epoch === 0) {
+						trainingData.set({
+							val_mse: [],
+							val_loss: [],
+							mse: [],
+							loss: []
+						});
+					}
 					trainingData.update((d) => {
 						const { val_loss, val_mse, mse, loss } = logs;
 						d.val_mse.push({ x: epoch, y: val_mse });

@@ -157,6 +157,10 @@ importers:
       '@balleranalytics/nba-api-ts': workspace:*
       '@balleranalytics/tf-neat': workspace:*
       '@iconify/json': ^2.1.28
+      '@lexical/link': ^0.2.1
+      '@lexical/overflow': ^0.2.1
+      '@lexical/text': ^0.2.1
+      '@lexical/utils': ^0.2.1
       '@sveltejs/adapter-vercel': next
       '@sveltejs/kit': next
       '@sveltejs/pancake': ^0.0.18
@@ -184,6 +188,7 @@ importers:
       eslint-config-prettier: ^8.5.0
       eslint-plugin-svelte3: ^3.4.1
       jsonwebtoken: ^8.5.1
+      lexical: ^0.2.1
       mdsvex: ^0.10.5
       mongoose: 6.2.7
       nba-color: ^1.4.1
@@ -220,6 +225,10 @@ importers:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
       '@iconify/json': 2.1.28
+      '@lexical/link': 0.2.1_lexical@0.2.1
+      '@lexical/overflow': 0.2.1_lexical@0.2.1
+      '@lexical/text': 0.2.1_lexical@0.2.1
+      '@lexical/utils': 0.2.1_lexical@0.2.1
       '@sveltejs/adapter-vercel': 1.0.0-next.47
       '@sveltejs/kit': 1.0.0-next.314_svelte@3.47.0
       '@sveltejs/pancake': 0.0.18
@@ -247,6 +256,7 @@ importers:
       eslint-config-prettier: 8.5.0_eslint@8.13.0
       eslint-plugin-svelte3: 3.4.1_eslint@8.13.0+svelte@3.47.0
       jsonwebtoken: 8.5.1
+      lexical: 0.2.1
       mdsvex: 0.10.5_svelte@3.47.0
       mongoose: 6.2.7
       nba-color: 1.4.1
@@ -1226,6 +1236,59 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /@lexical/link/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-91eID3LUVj07epPI98MhSVXlqMhbmPHFi/khaekYfx+STtMKMVyiPf9txxsVUKIgajfCopWSVUqu9ZdT+R7ZnQ==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      '@lexical/utils': 0.2.1_lexical@0.2.1
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/list/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-jRly4P0ClYZtKDXzmhPaDBFXYlTqXc2XooqKjdYff/0TLoVaMdZJJL4YrbBsFSIFhwuMTeb4qJNRaFLca49xhg==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      '@lexical/utils': 0.2.1_lexical@0.2.1
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/overflow/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-WJdX/a6Jd6flZEbBnKpb6srsLjaE7H2kigu1t0CVphoMRGIomSgwvGv6VFWE6ttNyOmHbqVPefcfpQZN3eZFag==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/table/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-fLwaZQBwkNWTMcMUf7xdBTAv/iwsRhGlqHqXPGELf7nr31H/RcWis7VMtFFFC6bXm2l8AaqwHk9tmGKlzlspnA==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      '@lexical/utils': 0.2.1_lexical@0.2.1
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/text/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-5x3TvlXw7HJjHLbgYcwkJPc9TVs755BhGH8k9C6lFFUlk28wEzSRBFkna9CchrVqF52jDjJKLu6+hkIGNdsYbg==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/utils/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-P1O0uN7U3vVTk4pqaobP+MF9RkXtSCseIEyLZMgBgoPAS+TcelXeVgbhTjP2H67yss9cNRlCseqF3/anexPCVg==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      '@lexical/list': 0.2.1_lexical@0.2.1
+      '@lexical/table': 0.2.1_lexical@0.2.1
+      lexical: 0.2.1
+    dev: true
+
   /@mapbox/node-pre-gyp/1.0.4:
     resolution: {integrity: sha512-M669Qo4nRT7iDmQEjQYC7RU8Z6dpz9UmSbkJ1OFEja3uevCdLKh7IZZki7L1TZj02kRyl82snXFY8QqkyfowrQ==}
     hasBin: true
@@ -1900,7 +1963,6 @@ packages:
 
   /@types/node/16.11.27:
     resolution: {integrity: sha512-C1pD3kgLoZ56Uuy5lhfOxie4aZlA3UMGLX9rXteq4WitEZH6Rl80mwactt9QG0w0gLFlN/kLBTFnGXtDVWvWQw==}
-    dev: true
 
   /@types/node/17.0.24:
     resolution: {integrity: sha512-aveCYRQbgTH9Pssp1voEP7HiuWlD2jW2BO56w+bVrJn04i61yh6mRfoKO6hEYQD9vF+W8Chkwc6j1M36uPkx4g==}
@@ -1974,7 +2036,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.24
+      '@types/node': 16.11.27
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.13:
@@ -4341,6 +4403,10 @@ packages:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+    dev: true
+
+  /lexical/0.2.1:
+    resolution: {integrity: sha512-6GwyP+KByy6aMuS1Ri1fFD/7NHENnhEFutdT+4SGIZCau0RkzlUYz0izA7FPQHEn663w23h0op477UHvjzrJHQ==}
     dev: true
 
   /lilconfig/2.0.4:
@@ -6779,7 +6845,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 4.2.3
+      string-width: 1.0.2
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
