@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import paths from '$ml/basic.json?url';
-	import { profile } from '@tensorflow/tfjs';
 	import type { GraphData } from '$lib/data/stores/types';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
 	import LoaderWorker from '$lib/functions/_worker/loader?worker';
@@ -37,13 +36,10 @@
 		};
 	});
 
-	async function optWasm() {
-		const logs = await profile(() => {
-			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
-		});
-		console.log(logs.kernelNames);
+	function startDemo() {
+		model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
 	}
-	$: if (data && model) optWasm();
+	$: if (data && model) startDemo();
 </script>
 
 <div class="appContent flex bg-hero-circuit-board-blue-30">
