@@ -110,7 +110,12 @@ export type Coach2Model = mongoose.Model<Coach2Document, Coach2Queries> & Coach2
  * const Coach2Schema: Coach2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Coach2Schema = mongoose.Schema<Coach2Document, Coach2Model, Coach2Methods>;
+export type Coach2Schema = mongoose.Schema<
+	Coach2Document,
+	Coach2Model,
+	Coach2Methods,
+	Coach2Queries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -677,7 +682,7 @@ export type Game2Model = mongoose.Model<Game2Document, Game2Queries> & Game2Stat
  * const Game2Schema: Game2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Game2Schema = mongoose.Schema<Game2Document, Game2Model, Game2Methods>;
+export type Game2Schema = mongoose.Schema<Game2Document, Game2Model, Game2Methods, Game2Queries>;
 
 /**
  * Mongoose Subdocument type
@@ -1223,7 +1228,12 @@ export type LeagueModel = mongoose.Model<LeagueDocument, LeagueQueries> & League
  * const LeagueSchema: LeagueSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type LeagueSchema = mongoose.Schema<LeagueDocument, LeagueModel, LeagueMethods>;
+export type LeagueSchema = mongoose.Schema<
+	LeagueDocument,
+	LeagueModel,
+	LeagueMethods,
+	LeagueQueries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -1387,7 +1397,12 @@ export type Official2Model = mongoose.Model<Official2Document, Official2Queries>
  * const Official2Schema: Official2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Official2Schema = mongoose.Schema<Official2Document, Official2Model, Official2Methods>;
+export type Official2Schema = mongoose.Schema<
+	Official2Document,
+	Official2Model,
+	Official2Methods,
+	Official2Queries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -1771,7 +1786,12 @@ export type Player2Model = mongoose.Model<Player2Document, Player2Queries> & Pla
  * const Player2Schema: Player2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Player2Schema = mongoose.Schema<Player2Document, Player2Model, Player2Methods>;
+export type Player2Schema = mongoose.Schema<
+	Player2Document,
+	Player2Model,
+	Player2Methods,
+	Player2Queries
+>;
 
 /**
  * Mongoose Subdocument type
@@ -2480,7 +2500,7 @@ export type Team2Model = mongoose.Model<Team2Document, Team2Queries> & Team2Stat
  * const Team2Schema: Team2Schema = new mongoose.Schema({ ... })
  * ```
  */
-export type Team2Schema = mongoose.Schema<Team2Document, Team2Model, Team2Methods>;
+export type Team2Schema = mongoose.Schema<Team2Document, Team2Model, Team2Methods, Team2Queries>;
 
 /**
  * Mongoose Subdocument type
@@ -2950,7 +2970,7 @@ export type TxModel = mongoose.Model<TxDocument, TxQueries> & TxStatics;
  * const TxSchema: TxSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type TxSchema = mongoose.Schema<TxDocument, TxModel, TxMethods>;
+export type TxSchema = mongoose.Schema<TxDocument, TxModel, TxMethods, TxQueries>;
 
 /**
  * Mongoose Subdocument type
@@ -3091,7 +3111,7 @@ export type UserModel = mongoose.Model<UserDocument, UserQueries> & UserStatics;
  * const UserSchema: UserSchema = new mongoose.Schema({ ... })
  * ```
  */
-export type UserSchema = mongoose.Schema<UserDocument, UserModel, UserMethods>;
+export type UserSchema = mongoose.Schema<UserDocument, UserModel, UserMethods, UserQueries>;
 
 /**
  * Mongoose Subdocument type

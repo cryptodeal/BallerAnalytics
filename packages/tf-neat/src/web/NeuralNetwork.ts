@@ -13,11 +13,11 @@ export class NeuralNetwork extends BaseModel {
 				/* relu activated input layer w 15 neurons */
 				layers.dense({ units: 100, inputShape: [15], activation: 'relu' }),
 				/* sigmoid activation effective w 100 neurons on input layer */
-				layers.dense({ units: 100, activation: 'sigmoid' }),
+				layers.dense({ units: 100, activation: 'relu' }),
 				/* relu effective w 100 neuron dense layer */
 				layers.dense({ units: 100, activation: 'relu' }),
 				/* softplus tests effective on output layer */
-				layers.dense({ units: 1, activation: 'softplus' })
+				layers.dense({ units: 1, activation: 'relu' })
 			]
 		});
 

@@ -32,4 +32,10 @@ export interface IRawData {
 	labels: [number];
 }
 
+export type TfjsWasmConfig = {
+	wasmSimdThreadedPath: string;
+	wasmSimdPath: string;
+	wasmPath: string;
+};
+
 export type RawData = IRawData[];

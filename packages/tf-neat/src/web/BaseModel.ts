@@ -7,11 +7,13 @@ import {
 	losses,
 	tensor,
 	util,
-	loadLayersModel
+	loadLayersModel,
+	setBackend
 } from '@tensorflow/tfjs';
+import { setWasmPaths } from '@tensorflow/tfjs-backend-wasm';
 import { getDateStr } from '../utils';
 import { ModelType } from '../base';
-import type { IBaseConfig, BaseInputs, RawData } from '../base/types';
+import type { IBaseConfig, BaseInputs, RawData, TfjsWasmConfig } from '../base/types';
 import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
 
 export class BaseModel {
@@ -49,7 +51,13 @@ export class BaseModel {
 		labelMin: Tensor<Rank>;
 	};
 
-	constructor(config?: IBaseConfig) {
+	constructor(wasmPaths: TfjsWasmConfig, config?: IBaseConfig) {
+		const { wasmPath, wasmSimdPath, wasmSimdThreadedPath } = wasmPaths;
+		setWasmPaths({
+			'tfjs-backend-wasm.wasm': wasmPath,
+			'tfjs-backend-wasm-simd.wasm': wasmSimdPath,
+			'tfjs-backend-wasm-threaded-simd.wasm': wasmSimdThreadedPath
+		});
 		if (config) {
 			const { batchSize, epochs, callbacks } = config;
 
@@ -175,6 +183,7 @@ export class BaseModel {
 	}
 
 	async init(data: RawData) {
+		await setBackend('wasm');
 		this.loadData(data);
 		this.createModel();
 		this.dataToTensors();

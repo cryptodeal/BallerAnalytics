@@ -32,8 +32,8 @@ export class RNN extends Base {
 		});
 
 		// model.add(layers.reshape({ targetShape: rnn_input_shape }));
-
-		const lstmCells: unknown[] = [];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const lstmCells: any[] = [];
 		for (let i = 0; i < this.hiddenLayers; i++) {
 			const tempCell = layers.lstmCell({ units: rnn_output_neurons });
 			lstmCells.push(tempCell);

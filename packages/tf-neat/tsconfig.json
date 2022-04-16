@@ -11,10 +11,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "noImplicitAny": false,
-    "paths": {
-      "@tensorflow/tfjs": ["./tfjs-custom/custom_tfjs.js"],
-      "@tensorflow/tfjs-core": ["./tfjs-custom/custom_tfjs_core.js"]
-		}
+    "paths": {}
 	},
 	"include": ["src/**/*", "src/global.d.ts"],
 	"exclude": ["./node_modules", "dist"]

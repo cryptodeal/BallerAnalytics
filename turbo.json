@@ -33,5 +33,5 @@
 			"cache": false
 		}
 	},
-  "globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json"]
+  "globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json", "tsup.config.ts"]
 }
