@@ -1,14 +1,24 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import paths from '$ml/basic.json?url';
+	import { profile } from '@tensorflow/tfjs';
 	import type { GraphData } from '$lib/data/stores/types';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
 	import LoaderWorker from '$lib/functions/_worker/loader?worker';
 	import type { AssetLoaderMessage } from '$lib/functions/_worker/types';
-	let mse: GraphData, val_mse: GraphData, loss: GraphData, val_loss: GraphData, worker: Worker;
+	import type { Readable } from 'svelte/store';
+	import type { NeuralNetwork } from '@balleranalytics/tf-neat';
+	let mse: GraphData,
+		val_mse: GraphData,
+		loss: GraphData,
+		val_loss: GraphData,
+		worker: Worker,
+		data: ArrayBuffer,
+		model: Readable<NeuralNetwork>;
 
 	onMount(async () => {
-		const { trainingData, tfjs: model } = await import('$lib/data/stores/tfjs');
+		const { trainingData, tfjs: tempModel } = await import('$lib/data/stores/tfjs');
+		model = tempModel;
 		trainingData.subscribe((value) => {
 			const { mse: tMse, val_mse: vMse, loss: tLoss, val_loss: vLoss } = value;
 			mse = tMse;
@@ -21,12 +31,19 @@
 		worker.postMessage({ paths });
 
 		worker.onmessage = (event: AssetLoaderMessage) => {
-			const { data } = event;
-			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
-
+			const { data: tempData } = event;
+			data = tempData;
 			worker.terminate();
 		};
 	});
+
+	async function optWasm() {
+		const logs = await profile(() => {
+			model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
+		});
+		console.log(logs.kernelNames);
+	}
+	$: if (data && model) optWasm();
 </script>
 
 <div class="appContent flex bg-hero-circuit-board-blue-30">
