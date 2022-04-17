@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import { registerPlainText } from '@lexical/plain-text';
-	import { mergeRegister } from '@lexical/utils';
+	import pkg from '@lexical/utils';
 	import type {
 		EditorDecorators,
 		LexicalState,
@@ -9,6 +9,8 @@
 		ShowPlaceholder,
 		IsReadOnly
 	} from '../context';
+
+	const { mergeRegister } = pkg;
 	const editor: EditorRoot = getContext('lexical-editor');
 	const state: LexicalState = getContext('state');
 	const readOnly: IsReadOnly = getContext('read-only');
