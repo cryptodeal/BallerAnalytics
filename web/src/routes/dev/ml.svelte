@@ -4,11 +4,12 @@
 	import { trainingData } from '$lib/data/stores/trainingData';
 	import LineChart from '$lib/ux/dataviz/LineChart.svelte';
 	import LoaderWorker from '$lib/functions/_worker/loader?worker';
+
 	import type { AssetLoaderMessage } from '$lib/functions/_worker/types';
 	import type { GraphData } from '$lib/data/stores/types';
 	import type { Readable } from 'svelte/store';
 	import type { NeuralNetwork } from '@balleranalytics/tf-neat';
-	import { browser } from '$app/env';
+
 	let mse: GraphData,
 		val_mse: GraphData,
 		loss: GraphData,
@@ -24,17 +25,6 @@
 			loss: [],
 			val_loss: []
 		});
-
-	if (browser) {
-		resetData();
-		trainingData.subscribe((value) => {
-			const { mse: tMse, val_mse: vMse, loss: tLoss, val_loss: vLoss } = value;
-			mse = tMse;
-			val_mse = vMse;
-			loss = tLoss;
-			val_loss = vLoss;
-		});
-	}
 
 	onMount(async () => {
 		resetData();
@@ -59,7 +49,7 @@
 		model.subscribe((v) => v.init(JSON.parse(new TextDecoder().decode(data))));
 </script>
 
-<div class="appContent flex bg-hero-circuit-board-blue-30">
+<div class="appContent pb-2 flex bg-hero-circuit-board-blue-30">
 	<article class="flex-grow glassmorphicBg mx-1 rounded-md sm:(mx-auto p-10) p-2 prose lg:prose-xl">
 		<h1>TensorFlow.js Meets Fantasy Basketball</h1>
 		<h2>By: James Deal</h2>

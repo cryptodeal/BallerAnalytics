@@ -327,7 +327,7 @@ const loadSznGames = async (
 	return { year: year, games: resGames };
 };
 
-export const loadPlayerSznGames = async (player: Player2Object): Promise<Player | void> => {
+export const loadPlayerSznGames = async (player: Player2Object): Promise<Player> => {
 	const promises: Promise<SznGames>[] = [];
 	for (let i = 0; i < player.seasons.length; i++) {
 		const { year, regularSeason } = player.seasons[i];

@@ -157,8 +157,10 @@ importers:
       '@balleranalytics/nba-api-ts': workspace:*
       '@balleranalytics/tf-neat': workspace:*
       '@iconify/json': ^2.1.28
+      '@lexical/dragon': ^0.2.1
       '@lexical/link': ^0.2.1
       '@lexical/overflow': ^0.2.1
+      '@lexical/plain-text': ^0.2.1
       '@lexical/text': ^0.2.1
       '@lexical/utils': ^0.2.1
       '@sveltejs/adapter-vercel': next
@@ -225,8 +227,10 @@ importers:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
       '@iconify/json': 2.1.28
+      '@lexical/dragon': 0.2.1_lexical@0.2.1
       '@lexical/link': 0.2.1_lexical@0.2.1
       '@lexical/overflow': 0.2.1_lexical@0.2.1
+      '@lexical/plain-text': 0.2.1_1ba18f7b9271c772a007bd63ab328b9c
       '@lexical/text': 0.2.1_lexical@0.2.1
       '@lexical/utils': 0.2.1_lexical@0.2.1
       '@sveltejs/adapter-vercel': 1.0.0-next.47
@@ -1236,6 +1240,14 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /@lexical/dragon/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-je0uq9S6JGLBChwJrmSLOM04QOl5cCzC4zPNh8D7fGUFuw7W15uo9cdqmSEIgXsi3u1AkbTfAsf/QUzqHPLriQ==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      lexical: 0.2.1
+    dev: true
+
   /@lexical/link/0.2.1_lexical@0.2.1:
     resolution: {integrity: sha512-91eID3LUVj07epPI98MhSVXlqMhbmPHFi/khaekYfx+STtMKMVyiPf9txxsVUKIgajfCopWSVUqu9ZdT+R7ZnQ==}
     peerDependencies:
@@ -1259,6 +1271,18 @@ packages:
     peerDependencies:
       lexical: 0.2.1
     dependencies:
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/plain-text/0.2.1_1ba18f7b9271c772a007bd63ab328b9c:
+    resolution: {integrity: sha512-OP3GwRbjNSihrCF5D/TWL83YeNMuLI3y+Hk+Ezgl/Zc30uyCVSeKYn8zozu6cillVtSrOQDtv8D96AM0VytKnw==}
+    peerDependencies:
+      '@lexical/clipboard': 0.2.1
+      '@lexical/selection': 0.2.1
+      '@lexical/utils': 0.2.1
+      lexical: 0.2.1
+    dependencies:
+      '@lexical/utils': 0.2.1_lexical@0.2.1
       lexical: 0.2.1
     dev: true
 
