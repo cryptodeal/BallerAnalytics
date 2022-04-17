@@ -15,6 +15,7 @@
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@balleranalytics/tf-neat": "workspace:*",
 		"@iconify/json": "^2.1.28",
+		"@lexical/clipboard": "^0.2.1",
 		"@lexical/dragon": "^0.2.1",
 		"@lexical/link": "^0.2.1",
 		"@lexical/overflow": "^0.2.1",

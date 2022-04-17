@@ -157,6 +157,7 @@ importers:
       '@balleranalytics/nba-api-ts': workspace:*
       '@balleranalytics/tf-neat': workspace:*
       '@iconify/json': ^2.1.28
+      '@lexical/clipboard': ^0.2.1
       '@lexical/dragon': ^0.2.1
       '@lexical/link': ^0.2.1
       '@lexical/overflow': ^0.2.1
@@ -227,10 +228,11 @@ importers:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
       '@iconify/json': 2.1.28
+      '@lexical/clipboard': 0.2.1_lexical@0.2.1
       '@lexical/dragon': 0.2.1_lexical@0.2.1
       '@lexical/link': 0.2.1_lexical@0.2.1
       '@lexical/overflow': 0.2.1_lexical@0.2.1
-      '@lexical/plain-text': 0.2.1_1ba18f7b9271c772a007bd63ab328b9c
+      '@lexical/plain-text': 0.2.1_e977e1de474a47fc99880c47c40cabef
       '@lexical/text': 0.2.1_lexical@0.2.1
       '@lexical/utils': 0.2.1_lexical@0.2.1
       '@sveltejs/adapter-vercel': 1.0.0-next.47
@@ -1240,6 +1242,16 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /@lexical/clipboard/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-r2r8TwYLnM0i+//oQlUSz9IK/FrDrMi+mW3K2L9enjimV+HqXhdSqxQQspMjZ8ULE/lVRzf3aDFgP2p61Fn7nQ==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
+      '@lexical/selection': 0.2.1_lexical@0.2.1
+      '@lexical/utils': 0.2.1_lexical@0.2.1
+      lexical: 0.2.1
+    dev: true
+
   /@lexical/dragon/0.2.1_lexical@0.2.1:
     resolution: {integrity: sha512-je0uq9S6JGLBChwJrmSLOM04QOl5cCzC4zPNh8D7fGUFuw7W15uo9cdqmSEIgXsi3u1AkbTfAsf/QUzqHPLriQ==}
     peerDependencies:
@@ -1274,7 +1286,7 @@ packages:
       lexical: 0.2.1
     dev: true
 
-  /@lexical/plain-text/0.2.1_1ba18f7b9271c772a007bd63ab328b9c:
+  /@lexical/plain-text/0.2.1_e977e1de474a47fc99880c47c40cabef:
     resolution: {integrity: sha512-OP3GwRbjNSihrCF5D/TWL83YeNMuLI3y+Hk+Ezgl/Zc30uyCVSeKYn8zozu6cillVtSrOQDtv8D96AM0VytKnw==}
     peerDependencies:
       '@lexical/clipboard': 0.2.1
@@ -1282,7 +1294,16 @@ packages:
       '@lexical/utils': 0.2.1
       lexical: 0.2.1
     dependencies:
+      '@lexical/clipboard': 0.2.1_lexical@0.2.1
       '@lexical/utils': 0.2.1_lexical@0.2.1
+      lexical: 0.2.1
+    dev: true
+
+  /@lexical/selection/0.2.1_lexical@0.2.1:
+    resolution: {integrity: sha512-WsulHJV8lQRCDb4oTWlPLF2/C0SLc38h+5WHag85A9/xFwLOpl8xxKYZkhbAmda9jUsr7h2/SY/1FS4xTxk0Dg==}
+    peerDependencies:
+      lexical: 0.2.1
+    dependencies:
       lexical: 0.2.1
     dev: true
 
@@ -6869,7 +6890,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
