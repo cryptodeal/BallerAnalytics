@@ -10,9 +10,7 @@
 		>
 			<div class="w-full h-100 p-2">
 				<Composer>
-					<PlainText>
-						<div name="content-editable" class="w-100 h-100" />
-					</PlainText>
+					<PlainText />
 				</Composer>
 			</div>
 		</div>

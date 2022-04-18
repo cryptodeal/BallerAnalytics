@@ -2,43 +2,46 @@
 	import { getContext } from 'svelte';
 	import pkgTxt from '@lexical/plain-text';
 	import pkg from '@lexical/utils';
+	import { placeholderCurryTest } from '$lexical/context';
+
 	import type {
 		EditorDecorators,
-		// LexicalState,
 		EditorRoot,
-		ShowPlaceholder
-		// IsReadOnly
+		// ShowPlaceholder,
+		EditorUpdates
 	} from '../context';
+	import { browser } from '$app/env';
+
+	export let editableDiv: HTMLElement = undefined;
 
 	const { mergeRegister } = pkg;
 	const { registerPlainText } = pkgTxt;
 	const editor: EditorRoot = getContext('lexical-editor');
-	// const state: LexicalState = getContext('state');
-	// const readOnly: IsReadOnly = getContext('read-only');
-
-	const showPlaceholder: ShowPlaceholder = getContext('can-use-placeholder');
+	const state: EditorUpdates = getContext('state');
+	// const showPlaceholder: ShowPlaceholder = getContext('can-use-placeholder');
 	const decorators: EditorDecorators = getContext('decorators');
-	$: if ($editor) mergeRegister(registerPlainText($editor));
-	$: console.log('$showPlaceholder:', $showPlaceholder);
+	$: console.log($state);
+	$: if (browser && $editor && $state?.editorState)
+		mergeRegister(registerPlainText($editor, $state?.editorState));
 </script>
 
-{#if $showPlaceholder}
-	<slot name="placeholder">
-		<div class="editor-placeholder">Enter some plain text...</div>
-	</slot>
-{:else}
-	<slot name="content-editable" />
-	{decorators}
-{/if}
+<div
+	class="editor-input"
+	contentEditable={!$editor?.isReadOnly() ? true : false}
+	bind:this={editableDiv}
+>
+	{#if $editor && $state?.editorState?.read(placeholderCurryTest($editor.isComposing()))}
+		<slot name="placeholder">
+			<span class="editor-placeholder">Enter some plain text...</span>
+		</slot>
+	{/if}
+</div>
 
 <style>
 	.editor-placeholder {
 		color: #999;
 		overflow: hidden;
-		position: absolute;
 		text-overflow: ellipsis;
-		top: 15px;
-		left: 10px;
 		font-size: 15px;
 		user-select: none;
 		display: inline-block;

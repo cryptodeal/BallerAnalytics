@@ -1,5 +1,10 @@
-import { writable, derived } from 'svelte/store';
-import { createEditor, ElementNode } from 'lexical';
+import { writable } from 'svelte/store';
+import {
+	createEditor,
+	ElementNode,
+	type IntentionallyMarkedAsDirtyElement,
+	type NodeKey
+} from 'lexical';
 import { $canShowPlaceholderCurry } from '@lexical/text';
 
 import type { Readable, Writable } from 'svelte/store';
@@ -20,28 +25,27 @@ export type EditorOpts = {
 export type EditorRoot = Writable<LexicalEditor>;
 export type ShowPlaceholder = Readable<boolean>;
 export type IsReadOnly = Readable<boolean>;
+export type IsComposing = Readable<boolean>;
 export type EditorDecorators = Writable<Record<string, ElementNode>>;
 export type LexicalState = Readable<EditorState>;
+export type LexicalUpdates = {
+	tags: Set<string>;
+	prevEditorState: EditorState;
+	editorState: EditorState;
+	dirtyLeaves: Set<NodeKey>;
+	dirtyElements: Map<NodeKey, IntentionallyMarkedAsDirtyElement>;
+	normalizedNodes: Set<NodeKey>;
+};
+export type EditorUpdates = Writable<LexicalUpdates>;
 
 export function Editor(editorConfig: EditorOpts) {
 	const editor: EditorRoot = writable<LexicalEditor>(createEditor(editorConfig));
-	/* derived store boolean if should show placeholder */
-	const canUsePlaceholder: ShowPlaceholder = derived<EditorRoot, boolean>(editor, ($editor) =>
-		$editor.getEditorState().read($canShowPlaceholderCurry($editor.isComposing()))
-	);
-	/* derived store boolean if editor.isReadOnly(): boolean */
-	const isReadOnly: IsReadOnly = derived<EditorRoot, boolean>(editor, ($editor) =>
-		$editor.isReadOnly()
-	);
+
 	/* derived store returning editor decorators */
 	let decoratorList: Record<string, ElementNode>;
 	editor.subscribe((e) => {
 		decoratorList = e.getDecorators<ElementNode>();
 	});
-	/* derived store EditorState */
-	const state: LexicalState = derived<EditorRoot, EditorState>(editor, ($editor) =>
-		$editor.getEditorState()
-	);
 
 	const decorators: EditorDecorators = writable<Record<string, ElementNode>>(decoratorList);
 	const { set, update, subscribe } = editor;
@@ -55,10 +59,7 @@ export function Editor(editorConfig: EditorOpts) {
 
 	return {
 		editor,
-		canUsePlaceholder,
-		isReadOnly,
 		decorators,
-		state,
 		editorConfig,
 		set,
 		update,
@@ -66,3 +67,5 @@ export function Editor(editorConfig: EditorOpts) {
 		setRoot
 	};
 }
+
+export const placeholderCurryTest = $canShowPlaceholderCurry;

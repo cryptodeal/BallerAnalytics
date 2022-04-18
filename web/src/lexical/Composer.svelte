@@ -6,14 +6,15 @@
 	import theme from './themes/example';
 
 	import type { LexicalEditor } from 'lexical';
-	import type { Updater } from 'svelte/store';
+	import { writable, type Updater } from 'svelte/store';
 
 	import type {
 		EditorRoot,
 		ShowPlaceholder,
 		IsReadOnly,
 		EditorDecorators,
-		LexicalState
+		EditorUpdates,
+		LexicalUpdates
 	} from './context';
 
 	const initEditorOpts = {
@@ -29,24 +30,16 @@
 		canUsePlaceholder: ShowPlaceholder,
 		readOnly: IsReadOnly,
 		decorators: EditorDecorators,
-		state: LexicalState,
+		state: EditorUpdates = writable(),
 		setRoot: (root: HTMLElement) => void,
 		update: (this: void, updater: Updater<LexicalEditor>) => void;
 
 	function initEditor() {
 		const tempRes = Editor(initEditorOpts);
 		editor = tempRes.editor;
-		canUsePlaceholder = tempRes.canUsePlaceholder;
-		decorators = tempRes.decorators;
-		readOnly = tempRes.isReadOnly;
-		state = tempRes.state;
 		setContext('init-config', tempRes.editorConfig);
 		setRoot = tempRes.setRoot;
 		update = tempRes.update;
-		setContext('lexical-editor', editor);
-		setContext('can-use-placeholder', canUsePlaceholder);
-		setContext('read-only', readOnly);
-		setContext('decorators', decorators);
 		setContext('state', state);
 	}
 
@@ -56,16 +49,13 @@
 
 	$: if (editableDiv && $editor) {
 		setRoot(editableDiv);
-		$editor.setReadOnly($readOnly || false);
+		$editor.setReadOnly($editor.isReadOnly() || false);
+		$editor.registerUpdateListener((update: LexicalUpdates) => state.set(update));
 	}
-
-	$: console.log($readOnly);
 </script>
 
 <div class="editor-container">
-	<div class="editor-input" contentEditable={!$readOnly} bind:this={editableDiv}>
-		<slot />
-	</div>
+	<slot {editableDiv} />
 </div>
 
 <style>
