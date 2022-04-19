@@ -2,7 +2,7 @@
 	import { getContext } from 'svelte';
 	import pkgTxt from '@lexical/plain-text';
 	import pkg from '@lexical/utils';
-	import { placeholderCurryTest } from '$lexical/context';
+	//import { placeholderCurryTest, type LexicalUpdates } from '$lexical/context';
 
 	import type {
 		EditorDecorators,
@@ -11,18 +11,26 @@
 		EditorUpdates
 	} from '../context';
 	import { browser } from '$app/env';
+	import type { EditorState } from 'lexical';
 
-	export let editableDiv: HTMLElement = undefined;
+	export let editableDiv: HTMLElement = undefined,
+		editor: EditorRoot = undefined;
 
 	const { mergeRegister } = pkg;
 	const { registerPlainText } = pkgTxt;
-	const editor: EditorRoot = getContext('lexical-editor');
-	const state: EditorUpdates = getContext('state');
+	let state: EditorState;
 	// const showPlaceholder: ShowPlaceholder = getContext('can-use-placeholder');
-	const decorators: EditorDecorators = getContext('decorators');
-	$: console.log($state);
-	$: if (browser && $editor && $state?.editorState)
-		mergeRegister(registerPlainText($editor, $state?.editorState));
+	// const decorators: EditorDecorators = getContext('decorators');
+	$: if ($editor) {
+		console.log(true);
+		/*
+    $editor.registerUpdateListener((update: LexicalUpdates) => {
+			const { dirtyElements, dirtyLeaves, prevEditorState, editorState } = update;
+			console.log('update', update);
+			if (editorState) state = editorState;
+		});
+    */
+	}
 </script>
 
 <div
@@ -30,7 +38,7 @@
 	contentEditable={!$editor?.isReadOnly() ? true : false}
 	bind:this={editableDiv}
 >
-	{#if $editor && $state?.editorState?.read(placeholderCurryTest($editor.isComposing()))}
+	{#if $editor}
 		<slot name="placeholder">
 			<span class="editor-placeholder">Enter some plain text...</span>
 		</slot>

@@ -10,7 +10,7 @@
 		>
 			<div class="w-full h-100 p-2">
 				<Composer>
-					<PlainText />
+					<PlainText let:editor />
 				</Composer>
 			</div>
 		</div>

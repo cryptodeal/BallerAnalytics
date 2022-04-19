@@ -38,11 +38,18 @@ export type LexicalUpdates = {
 };
 export type EditorUpdates = Writable<LexicalUpdates>;
 
+export type EditorChangeParams = {
+	ignoreInitChange?: boolean;
+	ignoreSelectionChange?: boolean;
+	onChange?: (update: LexicalUpdates) => void;
+};
+
 export function Editor(editorConfig: EditorOpts) {
 	const editor: EditorRoot = writable<LexicalEditor>(createEditor(editorConfig));
 
 	/* derived store returning editor decorators */
 	let decoratorList: Record<string, ElementNode>;
+
 	editor.subscribe((e) => {
 		decoratorList = e.getDecorators<ElementNode>();
 	});

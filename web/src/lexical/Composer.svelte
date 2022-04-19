@@ -14,7 +14,8 @@
 		IsReadOnly,
 		EditorDecorators,
 		EditorUpdates,
-		LexicalUpdates
+		LexicalUpdates,
+		EditorChangeParams
 	} from './context';
 
 	const initEditorOpts = {
@@ -24,6 +25,26 @@
 		},
 		nodes: []
 	};
+	function editorChangeHandler(params: EditorChangeParams) {
+		const { onChange } = params;
+		let { ignoreInitChange, ignoreSelectionChange } = params;
+		if (!ignoreInitChange) ignoreInitChange = true;
+		if (!ignoreSelectionChange) ignoreSelectionChange = false;
+		if (onChange) {
+			$editor.registerUpdateListener((update: LexicalUpdates) => {
+				const { dirtyElements, dirtyLeaves, prevEditorState } = update;
+				if (ignoreSelectionChange && dirtyElements.size === 0 && dirtyLeaves.size === 0) {
+					return;
+				}
+
+				if (ignoreInitChange && prevEditorState.isEmpty()) {
+					return;
+				}
+
+				onChange(update);
+			});
+		}
+	}
 
 	let editor: EditorRoot,
 		editableDiv: HTMLElement,
@@ -37,7 +58,8 @@
 	function initEditor() {
 		const tempRes = Editor(initEditorOpts);
 		editor = tempRes.editor;
-		setContext('init-config', tempRes.editorConfig);
+		setContext('lexical-editor', editor);
+		setContext('init-config', tempRes.editor);
 		setRoot = tempRes.setRoot;
 		update = tempRes.update;
 		setContext('state', state);
@@ -50,12 +72,11 @@
 	$: if (editableDiv && $editor) {
 		setRoot(editableDiv);
 		$editor.setReadOnly($editor.isReadOnly() || false);
-		$editor.registerUpdateListener((update: LexicalUpdates) => state.set(update));
 	}
 </script>
 
 <div class="editor-container">
-	<slot {editableDiv} />
+	<slot {editableDiv} {editor} />
 </div>
 
 <style>
@@ -71,17 +92,5 @@
 		text-align: left;
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
-	}
-
-	.editor-input {
-		min-height: 150px;
-		resize: none;
-		font-size: 15px;
-		caret-color: rgb(5, 5, 5);
-		position: relative;
-		tab-size: 1;
-		outline: 0;
-		padding: 15px 10px;
-		caret-color: #444;
 	}
 </style>
