@@ -15,6 +15,7 @@ export type TeamOpts = {
 };
 
 export type TaskParams = {
+	dimensions: [number, number];
 	all_actions: number[];
 	numPlayers: number;
 	teamOpts: TeamOpts;

@@ -1,4 +1,4 @@
-import { util } from '@tensorflow/tfjs';
+import { util } from '@tensorflow/tfjs-node';
 
 /** Replay buffer for DQN training. */
 export class ReplayMemory {

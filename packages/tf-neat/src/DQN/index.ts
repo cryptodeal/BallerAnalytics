@@ -1,12 +1,12 @@
-import { sequential, layers } from '@tensorflow/tfjs';
-import { Sequential, LayersModel } from '@tensorflow/tfjs';
+import { sequential, layers } from '@tensorflow/tfjs-node';
+import { Sequential, LayersModel } from '@tensorflow/tfjs-node';
 
-export function createDeepQNetwork(h: number, w: number, numActions: number): Sequential {
-	if (!(Number.isInteger(h) && h > 0)) {
-		throw new Error(`Expected height to be a positive integer, but got ${h}`);
+export function createDeepQNetwork(dim1: number, dim2: number, numActions: number): Sequential {
+	if (!(Number.isInteger(dim1) && dim1 > 0)) {
+		throw new Error(`Expected dim1 to be a positive integer, but got ${dim1}`);
 	}
-	if (!(Number.isInteger(w) && w > 0)) {
-		throw new Error(`Expected width to be a positive integer, but got ${w}`);
+	if (!(Number.isInteger(dim2) && dim2 > 0)) {
+		throw new Error(`Expected dim2 to be a positive integer, but got ${dim2}`);
 	}
 	if (!(Number.isInteger(numActions) && numActions > 1)) {
 		throw new Error(
@@ -21,7 +21,7 @@ export function createDeepQNetwork(h: number, w: number, numActions: number): Se
 			kernelSize: 3,
 			strides: 1,
 			activation: 'relu',
-			inputShape: [h, w, 2]
+			inputShape: [dim1, dim2, 2]
 		})
 	);
 	model.add(layers.batchNormalization());

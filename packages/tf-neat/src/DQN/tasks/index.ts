@@ -1,5 +1,5 @@
 import { assertPositiveInt, getRandomInt } from '../utils';
-import { buffer } from '@tensorflow/tfjs';
+import { buffer } from '@tensorflow/tfjs-node';
 
 import type { TeamOpts, TaskParams, TaskState } from './types';
 
@@ -53,12 +53,14 @@ export function getStateTensor(state, h: number, w: number) {
 export class Task {
 	public selfState: number[][] = [];
 	private envState: number[][] = [];
+	private dimensions: [number, number];
 	public all_actions: number[];
 	public num_actions: number;
 	public teamOpts: TeamOpts;
 
 	constructor(args: TaskParams) {
-		const { all_actions, numPlayers, teamOpts } = args;
+		const { all_actions, numPlayers, teamOpts, dimensions } = args;
+		this.dimensions = dimensions;
 		/* ensure values are non neg int */
 		assertPositiveInt(numPlayers, 'numPlayers');
 		assertPositiveInt(all_actions.length, 'all_actions.length');
@@ -73,6 +75,13 @@ export class Task {
 		this.reset();
 	}
 
+	get dimension1() {
+		return this.dimensions[0];
+	}
+
+	get dimension2() {
+		return this.dimensions[0];
+	}
 	/**
 	 * Reset the state of the task.
 	 *

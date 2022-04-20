@@ -7,7 +7,7 @@ import {
 	variableGrads,
 	dispose,
 	losses
-} from '@tensorflow/tfjs';
+} from '@tensorflow/tfjs-node';
 
 import { createDeepQNetwork } from '.';
 import { getRandomAction, Task, getStateTensor } from './tasks';
@@ -15,7 +15,7 @@ import { getRandomAction, Task, getStateTensor } from './tasks';
 import { ReplayMemory } from './utils/ReplayMemory';
 import { assertPositiveInt } from './utils';
 
-import type { Optimizer, Sequential, Tensor, Rank, Scalar } from '@tensorflow/tfjs';
+import type { Optimizer, Sequential, Tensor, Rank, Scalar } from '@tensorflow/tfjs-node';
 import { PlayStepOutput } from './tasks/types';
 
 export type AgentConfig = {
@@ -59,8 +59,8 @@ export class Agent {
 		this.epsilonDecayFrames = config.epsilonDecayFrames;
 		this.epsilonIncrement = (this.epsilonFinal - this.epsilonInit) / this.epsilonDecayFrames;
 
-		this.onlineNetwork = createDeepQNetwork(task.height, task.width, task.num_actions);
-		this.targetNetwork = createDeepQNetwork(task.height, task.width, task.num_actions);
+		this.onlineNetwork = createDeepQNetwork(task.dimension1, task.dimension2, task.num_actions);
+		this.targetNetwork = createDeepQNetwork(task.dimension1, task.dimension2, task.num_actions);
 
 		/**
 		 * Freeze taget network: it's weights are updated only through copying from
