@@ -1,16 +1,22 @@
 import { suite } from 'uvu';
 import { NeuralNetwork } from '../src/base/NeuralNetwork';
 import type { Base } from '../src/base/Base';
-import { loadPlayerSznGames } from '@balleranalytics/nba-api-ts';
+import { loadPlayerSznGames, RawData } from '@balleranalytics/nba-api-ts';
 import { readFile } from 'fs';
 import config from '../src/config';
-import { endConnect, Player2, serverlessConnect } from '@balleranalytics/nba-api-ts';
+import {
+	endConnect,
+	Player2,
+	serverlessConnect,
+	loadSeasonPlayers
+} from '@balleranalytics/nba-api-ts';
 import { Player } from '../src/base/utils/Player';
 
 const NeuralNetTest = suite('neuralNetTest');
 let player: Player;
 let model: Base;
 let prediction: number;
+let dataSet: RawData;
 
 NeuralNetTest.before(async () => {
 	await serverlessConnect(config.MONGO_URI);
@@ -21,12 +27,9 @@ NeuralNetTest.after(async () => {
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const params = { batchSize: 10, epochs: 100000 };
+	const params = { batchSize: 10, epochs: 100 };
 	model = new NeuralNetwork(params);
-	return readFile(`${process.cwd()}/data/basic.json`, 'utf8', function (err, data) {
-		if (err) throw err;
-		return model.init(JSON.parse(data));
-	});
+	await model.init(await loadSeasonPlayers(2021));
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
@@ -46,4 +49,4 @@ NeuralNetTest('test output on model', async () => {
 	console.log(`Projected avgFppg: ${prediction}`);
 });
 
-// NeuralNetTest.run();
+NeuralNetTest.run();

@@ -10,7 +10,7 @@ import {
 } from '@tensorflow/tfjs-node';
 
 import { createDeepQNetwork } from '.';
-import { getRandomAction, Task, getStateTensor } from './tasks';
+import { getRandomAction, DraftTask, getStateTensor } from './tasks';
 // import { getRandomAction, Snaketask, NUM_ACTIONS, ALL_ACTIONS, getStateTensor } from './snake_task';
 import { ReplayMemory } from './utils/ReplayMemory';
 import { assertPositiveInt } from './utils';
@@ -35,7 +35,7 @@ export type AgentConfig = {
 };
 
 export class Agent {
-	public task;
+	public task: DraftTask;
 	public epsilon!: number;
 	public epsilonInit: number;
 	public epsilonFinal: number;
@@ -51,16 +51,17 @@ export class Agent {
 	private cumulativeReward = 0;
 	private milestone = 0;
 
-	/* Constructor of Task Agent */
-	constructor(task: Task, config: AgentConfig) {
+	/* Constructor of Agent for Task */
+	constructor(task: DraftTask, config: AgentConfig) {
+		this.task = task;
 		assertPositiveInt(config.epsilonDecayFrames);
 		this.epsilonInit = config.epsilonInit;
 		this.epsilonFinal = config.epsilonFinal;
 		this.epsilonDecayFrames = config.epsilonDecayFrames;
 		this.epsilonIncrement = (this.epsilonFinal - this.epsilonInit) / this.epsilonDecayFrames;
 
-		this.onlineNetwork = createDeepQNetwork(task.dimension1, task.dimension2, task.num_actions);
-		this.targetNetwork = createDeepQNetwork(task.dimension1, task.dimension2, task.num_actions);
+		this.onlineNetwork = createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
+		this.targetNetwork = createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
 
 		/**
 		 * Freeze taget network: it's weights are updated only through copying from
@@ -97,19 +98,24 @@ export class Agent {
 		} else {
 			/* greedily pick action using output from online DQN */
 			action = tidy(() => {
-				const stateTensor = getStateTensor(state, this.task.height, this.task.width);
+				const stateTensor = getStateTensor(
+					state,
+					this.task.dims1,
+					this.task.dims2,
+					this.task.dims3
+				);
 				return this.task.all_actions[
 					(this.onlineNetwork.predict(stateTensor) as Tensor<Rank>).argMax(-1).dataSync()[0]
 				];
 			});
 		}
 
-		const { state: nextState, reward, done, fruitEaten } = this.task.step(action);
+		const { state: nextState, reward, done, milestone } = this.task.step(action);
 
 		this.replayMemory.append([state, action, reward, done, nextState]);
 
 		this.cumulativeReward += reward;
-		if (fruitEaten) {
+		if (milestone) {
 			this.milestone++;
 		}
 		const output: PlayStepOutput = {
@@ -125,22 +131,21 @@ export class Agent {
 	}
 
 	/**
-	 * Perform training on a randomly sampled batch from the replay buffer.
-	 *
-	 * @param {number} batchSize Batch size.
-	 * @param {number} gamma Reward discount rate. Must be >= 0 and <= 1.
-	 * @param {train.Optimizer} optimizer The optimizer object used to update
-	 *   the weights of the online network.
+	 * Perform training on a randomly sampled batch from the replay buffer
+	 * `batchSize`: Batch size
+	 * `gamma`: Reward discount rate. Must be >= 0 and <= 1
+	 * `optimizer`: optimizer used to update weights of online network
 	 */
 	trainOnReplayBatch(batchSize: number, gamma: number, optimizer: Optimizer) {
-		// Get a batch of examples from the replay buffer.
+		/* Get a batch of examples from the replay buffer */
 		const batch = this.replayMemory.sample(batchSize);
 		const lossFunction = () =>
 			tidy(() => {
 				const stateTensor = getStateTensor(
 					batch.map((example) => example[0]),
-					this.task.height,
-					this.task.width
+					this.task.dims1,
+					this.task.dims2,
+					this.task.dims3
 				);
 				const actionTensor = tensor1d(
 					batch.map((example) => example[1]),
@@ -153,8 +158,9 @@ export class Agent {
 				const rewardTensor = tensor1d(batch.map((example) => example[2]));
 				const nextStateTensor = getStateTensor(
 					batch.map((example) => example[4]),
-					this.task.height,
-					this.task.width
+					this.task.dims1,
+					this.task.dims2,
+					this.task.dims3
 				);
 				const nextMaxQTensor = (this.targetNetwork.predict(nextStateTensor) as Tensor<Rank>).max(
 					-1
@@ -166,12 +172,11 @@ export class Agent {
 				return losses.meanSquaredError(targetQs, qs) as Scalar;
 			});
 
-		// Calculate the gradients of the loss function with repsect to the weights
-		// of the online DQN.
+		/* calc gradients of loss function w respect to weights of online DQN */
 		const grads = variableGrads(lossFunction);
-		// Use the gradients to update the online DQN's weights.
+		/* use gradients to update the online DQN's weights */
 		optimizer.applyGradients(grads.grads);
 		dispose(grads);
-		// TODO(cais): Return the loss value here?
+		/* TODO: Return the loss value here? */
 	}
 }

@@ -5,7 +5,6 @@ import { ReplayMemory as ReplayMem } from '../src/DQN/utils/ReplayMemory';
 const ReplayMemTest = suite('ReplayMemoryTest');
 const maxLength = 5;
 const mem = new ReplayMem(maxLength);
-let batch: any[];
 
 ReplayMemTest('expect init mem.length = 0', () => {
 	assert.is(mem.length, 0);

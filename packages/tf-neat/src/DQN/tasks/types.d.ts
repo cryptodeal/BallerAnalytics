@@ -1,7 +1,4 @@
-export type TaskState = {
-	s: number[][];
-	e: number[][];
-};
+export type TaskState = Record<string, number[][]>;
 
 export type TeamOpts = {
 	pg: number;
@@ -15,9 +12,13 @@ export type TeamOpts = {
 };
 
 export type TaskParams = {
-	dimensions: [number, number];
+	dimensions: [number, number, number];
 	all_actions: number[];
-	numPlayers: number;
+	teamOpts: TeamOpts;
+};
+
+export type DraftTaskParams = TaskParams & {
+	oppCount: number;
 	teamOpts: TeamOpts;
 };
 

@@ -1,12 +1,20 @@
 import { sequential, layers } from '@tensorflow/tfjs-node';
 import { Sequential, LayersModel } from '@tensorflow/tfjs-node';
 
-export function createDeepQNetwork(dim1: number, dim2: number, numActions: number): Sequential {
+export function createDeepQNetwork(
+	dim1: number,
+	dim2: number,
+	dim3: number,
+	numActions: number
+): Sequential {
 	if (!(Number.isInteger(dim1) && dim1 > 0)) {
 		throw new Error(`Expected dim1 to be a positive integer, but got ${dim1}`);
 	}
 	if (!(Number.isInteger(dim2) && dim2 > 0)) {
 		throw new Error(`Expected dim2 to be a positive integer, but got ${dim2}`);
+	}
+	if (!(Number.isInteger(dim3) && dim3 > 0)) {
+		throw new Error(`Expected dim3 to be a positive integer, but got ${dim3}`);
 	}
 	if (!(Number.isInteger(numActions) && numActions > 1)) {
 		throw new Error(
@@ -21,7 +29,7 @@ export function createDeepQNetwork(dim1: number, dim2: number, numActions: numbe
 			kernelSize: 3,
 			strides: 1,
 			activation: 'relu',
-			inputShape: [dim1, dim2, 2]
+			inputShape: [dim1, dim2, dim3]
 		})
 	);
 	model.add(layers.batchNormalization());

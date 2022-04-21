@@ -15,3 +15,11 @@ export function assertPositiveInt(x: number, name?: string) {
 
 export const getRandomInt = (min: number, max: number): number =>
 	Math.floor((max - min) * Math.random()) + min;
+
+export function getRandomInts(min: number, max: number, numIntegers: number): number[] {
+	const output: number[] = [];
+	for (let i = 0; i < numIntegers; i++) {
+		output.push(Math.floor((max - min) * Math.random()) + min);
+	}
+	return output;
+}

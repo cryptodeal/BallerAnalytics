@@ -4,37 +4,43 @@ import { createDeepQNetwork, copyWeights } from '../src/DQN';
 import { train, randomUniform } from '@tensorflow/tfjs';
 
 const DQNTest = suite('DQNTest');
-const dimensions = [9, 9];
+const dimensions = [9, 9, 2];
 const numActions = 4;
 
 DQNTest('createDeepQNetwork', () => {
-	const [d1, d2] = dimensions;
-	const model = createDeepQNetwork(d1, d2, numActions);
+	const [d1, d2, d3] = dimensions;
+	const model = createDeepQNetwork(d1, d2, d3, numActions);
 	assert.is(model.inputs.length, 1);
 	assert.equal(model.inputs[0].shape, [null, 9, 9, 2]);
 	assert.is(model.outputs.length, 1);
 	assert.equal(model.outputs[0].shape, [null, numActions]);
 });
 
-DQNTest('Invalid dim1 and/or dim2 leads to Error', () => {
-	assert.throws(() => createDeepQNetwork(0, 10, 4), /dim1/);
-	assert.throws(() => createDeepQNetwork('10' as unknown as number, 10, 4), /dim1/);
-	assert.throws(() => createDeepQNetwork(null, 10, 4), /dim1/);
-	assert.throws(() => createDeepQNetwork(undefined, 10, 4), /dim1/);
-	assert.throws(() => createDeepQNetwork(10.8, 10, 4), /dim1/);
-	assert.throws(() => createDeepQNetwork(10, 0, 4), /dim2/);
-	assert.throws(() => createDeepQNetwork(10, '10' as unknown as number, 4), /dim2/);
-	assert.throws(() => createDeepQNetwork(10, null, 4), /dim2/);
-	assert.throws(() => createDeepQNetwork(10, undefined, 4), /dim2/);
-	assert.throws(() => createDeepQNetwork(10, 10.8, 4), /dim2/);
+DQNTest('Invalid dim1, dim2, and/or dim3 leads to Error', () => {
+	assert.throws(() => createDeepQNetwork(0, 10, 10, 4), /dim1/);
+	assert.throws(() => createDeepQNetwork('10' as unknown as number, 10, 10, 4), /dim1/);
+	assert.throws(() => createDeepQNetwork(null, 10, 10, 4), /dim1/);
+	assert.throws(() => createDeepQNetwork(undefined, 10, 10, 4), /dim1/);
+	assert.throws(() => createDeepQNetwork(10.8, 10, 10, 4), /dim1/);
+	assert.throws(() => createDeepQNetwork(10, 0, 10, 4), /dim2/);
+	assert.throws(() => createDeepQNetwork(10, '10' as unknown as number, 10, 4), /dim2/);
+	assert.throws(() => createDeepQNetwork(10, null, 10, 4), /dim2/);
+	assert.throws(() => createDeepQNetwork(10, undefined, 10, 4), /dim2/);
+	assert.throws(() => createDeepQNetwork(10, 10.8, 10, 4), /dim2/);
+
+	assert.throws(() => createDeepQNetwork(10, 10, 0, 4), /dim3/);
+	assert.throws(() => createDeepQNetwork(10, 10, '10' as unknown as number, 4), /dim3/);
+	assert.throws(() => createDeepQNetwork(10, 10, null, 4), /dim3/);
+	assert.throws(() => createDeepQNetwork(10, 10, undefined, 4), /dim3/);
+	assert.throws(() => createDeepQNetwork(10, 10, 10.8, 4), /dim3/);
 });
 
 DQNTest('Invalid numActions leads to Error', () => {
-	assert.throws(() => createDeepQNetwork(10, 10, 0), /numActions/);
-	assert.throws(() => createDeepQNetwork(10, 10, 1), /numActions/);
-	assert.throws(() => createDeepQNetwork(10, 10, '4' as unknown as number), /numActions/);
-	assert.throws(() => createDeepQNetwork(10, 10, null), /numActions/);
-	assert.throws(() => createDeepQNetwork(10, 10, undefined), /numActions/);
+	assert.throws(() => createDeepQNetwork(10, 10, 10, 0), /numActions/);
+	assert.throws(() => createDeepQNetwork(10, 10, 10, 1), /numActions/);
+	assert.throws(() => createDeepQNetwork(10, 10, 10, '4' as unknown as number), /numActions/);
+	assert.throws(() => createDeepQNetwork(10, 10, 10, null), /numActions/);
+	assert.throws(() => createDeepQNetwork(10, 10, 10, undefined), /numActions/);
 });
 
 DQNTest.run();
@@ -42,11 +48,12 @@ DQNTest.run();
 const CopyWeightsTest = suite('CopyWeightsTest');
 
 CopyWeightsTest('copyWeights', async () => {
-	const h = 9;
-	const w = 9;
+	const d1 = 9;
+	const d2 = 9;
+	const d3 = 2;
 	const numActions = 4;
-	const onlineNetwork = createDeepQNetwork(h, w, numActions);
-	const targetNetwork = createDeepQNetwork(h, w, numActions);
+	const onlineNetwork = createDeepQNetwork(d1, d2, d3, numActions);
+	const targetNetwork = createDeepQNetwork(d1, d2, d3, numActions);
 	onlineNetwork.compile({
 		loss: 'meanSquaredError',
 		optimizer: train.sgd(0.1)
@@ -98,9 +105,10 @@ CopyWeightsTest('Copy from trainable source to untrainable dest works', () => {
 	/* Covers https://github.com/tensorflow/tfjs/issues/1807 */
 	const dim1 = 9;
 	const dim2 = 9;
+	const dim3 = 2;
 	const numActions = 4;
-	const srcNetwork = createDeepQNetwork(dim1, dim2, numActions);
-	const destNetwork = createDeepQNetwork(dim1, dim2, numActions);
+	const srcNetwork = createDeepQNetwork(dim1, dim2, dim3, numActions);
+	const destNetwork = createDeepQNetwork(dim1, dim2, dim3, numActions);
 
 	destNetwork.trainable = false;
 	copyWeights(destNetwork, srcNetwork);
