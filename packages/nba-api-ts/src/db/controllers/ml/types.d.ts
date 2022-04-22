@@ -90,6 +90,18 @@ export type BaseInputs = [
 	number
 ];
 
+export type OneHotInput = 0 | 1;
+
+export type PositionEncoded = [
+	OneHotInput, // PG
+	OneHotInput, // SG
+	OneHotInput, // SF
+	OneHotInput, // PF
+	OneHotInput, // C
+	OneHotInput, // G
+	OneHotInput // F
+];
+
 export interface IRawData {
 	inputs: BaseInputs;
 	labels: [number];

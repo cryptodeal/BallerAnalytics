@@ -44,7 +44,7 @@ const loadSznGames = async (
 	return { year: year, games: resGames };
 };
 
-export const loadPlayerSznGames = async (player: Player2Object): Promise<Player | void> => {
+export const loadPlayerSznGames = async (player: Player2Object): Promise<Player> => {
 	const promises: Promise<SznGames>[] = [];
 	for (let i = 0; i < player.seasons.length; i++) {
 		const { year, regularSeason } = player.seasons[i];
@@ -55,7 +55,7 @@ export const loadPlayerSznGames = async (player: Player2Object): Promise<Player 
 	const sznGames = await Promise.all(promises);
 	sznGames.sort((a, b) => a.year - b.year);
 	const playerData: PlayerData = {};
-	const resPlayer = new Player(player._id, sznGames[0].year, player.birthDate);
+	const resPlayer = new Player(player._id, sznGames[0].year, player.position, player.birthDate);
 	for (let i = 0; i < sznGames.length; i++) {
 		const { year, games } = sznGames[i];
 		playerData[year] = games;
@@ -67,6 +67,8 @@ export const loadPlayerSznGames = async (player: Player2Object): Promise<Player 
 
 export const loadSeasonPlayers = async (season: number): Promise<Player[]> => {
 	return Player2.fantasyData(season).then((players) => {
-		return Promise.all(players.map(loadPlayerSznGames));
+		return Promise.all(players.map(loadPlayerSznGames)).then((players) =>
+			players.filter((p) => p !== null)
+		);
 	});
 };

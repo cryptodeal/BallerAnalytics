@@ -7,7 +7,8 @@ import type {
 	PlayerData,
 	PlayerStatTotals,
 	BaseInputs,
-	RawData
+	RawData,
+	PositionEncoded
 } from './types';
 
 export enum EspnScoring {
@@ -22,6 +23,16 @@ export enum EspnScoring {
 	STL = 4,
 	BLK = 4,
 	TOV = -2
+}
+
+export enum PositionIdx {
+	PG = 0,
+	SG = 0,
+	SF = 0,
+	PF = 0,
+	C = 0,
+	G = 0,
+	F = 0
 }
 
 export const calcFantasyPoints = (playerGameStats: PlayerStatTotals): number => {
@@ -67,19 +78,36 @@ export const getDateStr = () => {
 	}`;
 };
 
+export enum Position {
+	pg = 0,
+	sg = 1,
+	sf = 2,
+	pf = 3,
+	c = 4,
+	g = 5
+}
+
 export class Player {
 	public _playerId: Player2Object['_id'];
 	public _playerBirthdate!: Date;
 	public _startSeason: number;
+	public _position = '';
 	public _processedData!: number[];
 	public _playerData!: PlayerData;
 	public inputs!: BaseInputs;
 	public rawData: RawData = [];
 	public labels: number[] = [];
+	public posEncoded: PositionEncoded = [0, 0, 0, 0, 0, 0, 0];
 	// trainingData:
 	// _regularSznBasicStats:
 
-	constructor(playerId: Player2Object['_id'], startSeason: number, birthDate?: Date) {
+	constructor(
+		playerId: Player2Object['_id'],
+		startSeason: number,
+		position?: string,
+		birthDate?: Date
+	) {
+		if (position) this._position = position;
 		this._playerId = playerId;
 		this._startSeason = startSeason;
 		if (birthDate) this._playerBirthdate = birthDate;
@@ -91,6 +119,14 @@ export class Player {
 
 	get startSeason() {
 		return this._startSeason;
+	}
+
+	get position() {
+		return this._position;
+	}
+
+	set position(val: string) {
+		this._position = val;
 	}
 
 	get playerBirthDate() {
@@ -107,6 +143,58 @@ export class Player {
 
 	getPlayerDataYear(year: number) {
 		return this._playerData[year];
+	}
+
+	parsePositions() {
+		const positionList: string[] = [];
+		/**
+		 * Handle the two following formatting cases:
+		 *  - `Shooting Guard, Small Forward, and Point Guard`
+		 *  - `Shooting Guard and Point Guard`
+		 */
+		if (this._position.includes('and')) {
+			const tempSplit = this._position.split('and');
+			const finalPosition = tempSplit[tempSplit.length - 1].trim();
+			positionList.push(finalPosition);
+			if (tempSplit[0].includes(',')) {
+				tempSplit[0].split(',').map((pos) => positionList.push(pos.trim()));
+			} else {
+				positionList.push(tempSplit[0].trim());
+			}
+		} else {
+			/**
+			 * Handle the two following formatting cases:
+			 *  - `Center/Forward`
+			 *  - `Center`
+			 */
+			if (this._position.includes('/')) {
+				this._position.split('/').map((pos) => positionList.push(pos.trim()));
+			} else {
+				positionList.push(this._position.trim());
+			}
+		}
+
+		/* One hot encode this.posEncoded */
+		for (let i = 0; i < positionList.length; i++) {
+			switch (positionList[i].toLowerCase()) {
+				case 'point guard':
+					this.posEncoded[PositionIdx.PG] = 1;
+				case 'shooting guard':
+					this.posEncoded[PositionIdx.SG] = 1;
+				case 'small forward':
+					this.posEncoded[PositionIdx.SF] = 1;
+				case 'power forward':
+					this.posEncoded[PositionIdx.PF] = 1;
+				case 'center':
+					this.posEncoded[PositionIdx.PF] = 1;
+				case 'guard':
+					this.posEncoded[PositionIdx.G] = 1;
+				case 'forward':
+					this.posEncoded[PositionIdx.F] = 1;
+				default:
+					break;
+			}
+		}
 	}
 
 	calcAverages(games: ParsedGame[]) {
@@ -338,7 +426,7 @@ export const loadPlayerSznGames = async (player: Player2Object): Promise<Player>
 	const sznGames = await Promise.all(promises);
 	sznGames.sort((a, b) => a.year - b.year);
 	const playerData: PlayerData = {};
-	const resPlayer = new Player(player._id, sznGames[0].year, player.birthDate);
+	const resPlayer = new Player(player._id, sznGames[0].year, player.position, player.birthDate);
 	for (let i = 0; i < sznGames.length; i++) {
 		const { year, games } = sznGames[i];
 		playerData[year] = games;

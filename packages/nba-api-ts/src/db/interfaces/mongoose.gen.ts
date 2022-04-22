@@ -6,6 +6,7 @@
 // NOTE: ANY CHANGES MADE WILL BE OVERWRITTEN ON SUBSEQUENT EXECUTIONS OF MONGOOSE-TSGEN.
 
 import mongoose from 'mongoose';
+import type { Player2StatsObject } from '../models/Player2';
 
 /**
  * Lean version of Coach2SeasonDocument

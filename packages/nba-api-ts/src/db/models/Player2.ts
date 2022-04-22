@@ -200,6 +200,7 @@ Player2Schema.statics = {
 				$project: {
 					name: 1,
 					birthDate: 1,
+					position: 1,
 					seasons: {
 						$filter: {
 							input: '$seasons',

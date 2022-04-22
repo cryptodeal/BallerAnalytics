@@ -1,0 +1,4 @@
+{
+  "imports": ["import type { Player2StatsObject } from \"../models/Player2\""],
+  "output": "./src/custom/path/mongoose-types.ts"
+}
