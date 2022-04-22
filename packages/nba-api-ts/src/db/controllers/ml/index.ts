@@ -27,12 +27,12 @@ export enum EspnScoring {
 
 export enum PositionIdx {
 	PG = 0,
-	SG = 0,
-	SF = 0,
-	PF = 0,
-	C = 0,
-	G = 0,
-	F = 0
+	SG = 1,
+	SF = 2,
+	PF = 3,
+	C = 4,
+	G = 5,
+	F = 6
 }
 
 export const calcFantasyPoints = (playerGameStats: PlayerStatTotals): number => {
@@ -91,7 +91,7 @@ export class Player {
 	public _playerId: Player2Object['_id'];
 	public _playerBirthdate!: Date;
 	public _startSeason: number;
-	public _position = '';
+	public _position!: string;
 	public _processedData!: number[];
 	public _playerData!: PlayerData;
 	public inputs!: BaseInputs;
@@ -145,7 +145,7 @@ export class Player {
 		return this._playerData[year];
 	}
 
-	parsePositions() {
+	private encodePositions() {
 		const positionList: string[] = [];
 		/**
 		 * Handle the two following formatting cases:
@@ -272,6 +272,7 @@ export class Player {
 		const seasonYears = keys.map((key) => parseInt(key));
 		const maxYear = Math.max(...seasonYears);
 		const trainingKeys = keys.filter((k) => k !== maxYear.toString());
+		if (this._position) this.encodePositions();
 		const inputGames: ParsedGame[] = [];
 		for (let i = 0; i < trainingKeys.length; i++) {
 			const key = trainingKeys[i];
@@ -304,13 +305,15 @@ export class Player {
 			ast,
 			stl,
 			blk,
-			tov
+			tov,
+			...this.posEncoded
 		];
 		const { fppg } = this.calcAverages(this._playerData[maxYear.toString()]);
 		this.labels = [fppg];
 	}
 
 	processSznData() {
+		if (this._position) this.encodePositions();
 		const keys = Object.keys(this._playerData);
 		const seasonYears = keys.map((key) => parseInt(key));
 		const maxYear = Math.max(...seasonYears);
@@ -354,7 +357,8 @@ export class Player {
 				ast,
 				stl,
 				blk,
-				tov
+				tov,
+				...this.posEncoded
 			];
 			if (labelKeys.includes((parseFloat(inputKeys[i]) + 1).toString()) && labelAvgFppg !== 0) {
 				const { fppg } = this.calcAverages(this._playerData[maxYear.toString()]);

@@ -1,6 +1,6 @@
 import rfdc from 'rfdc';
 import { EspnScoring } from '../core/genetics/models';
-import type { PlayerStatTotals } from '../core/data/types';
+import type { PlayerStatTotals } from '@balleranalytics/nba-api-ts';
 
 /** Credit p5.org:
  *  Random # generator

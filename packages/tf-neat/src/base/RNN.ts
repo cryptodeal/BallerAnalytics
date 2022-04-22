@@ -11,7 +11,7 @@ import {
 } from '@tensorflow/tfjs-node';
 import { ModelType } from '.';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
-import type { BaseInputs } from './types';
+import type { BaseInputs } from '@balleranalytics/nba-api-ts';
 
 export class RNN extends Base {
 	public type = ModelType.RNN;
@@ -41,6 +41,7 @@ export class RNN extends Base {
 		});
 
 		// model.add(layers.reshape({ targetShape: rnn_input_shape }));
+
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const lstmCells: any[] = [];
 		for (let i = 0; i < this.hiddenLayers; i++) {

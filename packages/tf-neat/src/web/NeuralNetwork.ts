@@ -1,7 +1,7 @@
 import { tidy, tensor, sequential, layers, train, losses } from '@tensorflow/tfjs';
 import { BaseModel } from './BaseModel';
 import { ModelType } from '../base';
-import type { BaseInputs } from '../base/types';
+import type { BaseInputs } from '@balleranalytics/nba-api-ts';
 import type { Tensor, Rank } from '@tensorflow/tfjs';
 
 export class NeuralNetwork extends BaseModel {

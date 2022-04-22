@@ -1,3 +1,5 @@
+import type BaseInputs from '@balleranalytics/nba-api-ts';
+
 export type BaseFeatures = number[];
 
 export interface IBaseConfig {
@@ -8,24 +10,6 @@ export interface IBaseConfig {
 	};
 	tfvis?: boolean;
 }
-
-export type BaseInputs = [
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number,
-	number
-];
 
 export interface IRawData {
 	inputs: BaseInputs;

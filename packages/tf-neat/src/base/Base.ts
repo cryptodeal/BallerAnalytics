@@ -1,8 +1,8 @@
 import { sequential, layers, tidy, train, losses, tensor, util } from '@tensorflow/tfjs-node';
 import { writeFile } from 'fs';
-import type { Player } from '@balleranalytics/nba-api-ts';
+import type { Player, BaseInputs } from '@balleranalytics/nba-api-ts';
 import { getDateStr } from '../utils';
-import type { IBaseConfig, BaseInputs, RawData } from './types';
+import type { IBaseConfig, RawData } from './types';
 import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs-node';
 import { ModelType } from '.';
 
@@ -67,7 +67,7 @@ export class Base {
 			}
 		});
 
-		writeFile(`${process.cwd()}/data/models/basic.json`, JSON.stringify(this.rawData), (err) => {
+		writeFile(`${process.cwd()}/data/basic.json`, JSON.stringify(this.rawData), (err) => {
 			if (err) {
 				throw err;
 			}
@@ -83,7 +83,7 @@ export class Base {
 	createModel() {
 		const model = sequential({
 			layers: [
-				layers.dense({ units: 1, inputShape: [15], useBias: true }),
+				layers.dense({ units: 1, inputShape: [22], useBias: true }),
 				layers.dense({ units: 1, useBias: true })
 			]
 		});

@@ -2,7 +2,7 @@ import { Base } from './Base';
 import { sequential, layers, tidy, train, losses, tensor } from '@tensorflow/tfjs-node';
 import { ModelType } from '.';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
-import type { BaseInputs } from './types';
+import type { BaseInputs } from '@balleranalytics/nba-api-ts';
 
 export class NeuralNetwork extends Base {
 	public type = ModelType.NN;
@@ -10,9 +10,9 @@ export class NeuralNetwork extends Base {
 	createModel() {
 		const model = sequential({
 			layers: [
-				/* relu activated input layer w 15 neurons */
-				layers.dense({ units: 100, inputShape: [15], activation: 'relu' }),
-				/* sigmoid activation effective w 100 neurons on input layer */
+				/* relu activated input layer w 22 neurons */
+				layers.dense({ units: 100, inputShape: [22], activation: 'relu' }),
+				/* sigmoid activation effective */
 				layers.dense({ units: 100, activation: 'sigmoid' }),
 				/* relu effective w 100 neuron dense layer */
 				layers.dense({ units: 100, activation: 'relu' }),

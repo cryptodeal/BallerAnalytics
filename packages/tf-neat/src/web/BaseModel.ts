@@ -13,7 +13,8 @@ import {
 import { setWasmPaths } from '@tensorflow/tfjs-backend-wasm';
 import { getDateStr } from '../utils';
 import { ModelType } from '../base';
-import type { IBaseConfig, BaseInputs, RawData, TfjsWasmConfig } from '../base/types';
+import type { IBaseConfig, RawData, TfjsWasmConfig } from '../base/types';
+import type { BaseInputs } from '@balleranalytics/nba-api-ts';
 import type { Sequential, Tensor, Rank } from '@tensorflow/tfjs';
 
 export class BaseModel {

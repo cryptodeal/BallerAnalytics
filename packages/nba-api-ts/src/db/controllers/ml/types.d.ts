@@ -87,6 +87,13 @@ export type BaseInputs = [
 	number,
 	number,
 	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
+	number,
 	number
 ];
 
