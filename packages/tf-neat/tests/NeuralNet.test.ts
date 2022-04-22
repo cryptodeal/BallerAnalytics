@@ -33,7 +33,7 @@ NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
 		if (!data) {
 			await model.init(await loadSeasonPlayers(2021));
 		} else {
-			await model.init(data);
+			await model.init(JSON.parse(data));
 		}
 	});
 });
