@@ -54,8 +54,6 @@ if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
 	};
 } else {
 	config.kit.vite.resolve.alias = {
-		// '@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src'),
-		// '@balleranalytics/tf-neat': path.resolve('../packages/tf-neat/src'),
 		$models: path.resolve('src/models'),
 		$ml: path.resolve('src/ml'),
 		$lexical: path.resolve('src/lexical')
