@@ -78,7 +78,8 @@ CopyWeightsTest('copyWeights', async () => {
 	const onlineWeights1 = onlineNetwork.getWeights();
 	const targetWeights1 = targetNetwork.getWeights();
 	assert.is(onlineWeights1.length, targetWeights1.length);
-	for (let i = 0; i < onlineWeights1.length; ++i) {
+	let onlineWeights1Count = onlineWeights1.length;
+	for (let i = 0; i < onlineWeights1Count; i++) {
 		assert.is(onlineWeights1[i].sub(targetWeights1[i]).abs().mean().arraySync(), 0);
 	}
 
@@ -91,7 +92,8 @@ CopyWeightsTest('copyWeights', async () => {
 	const targetWeights2 = targetNetwork.getWeights();
 	assert.is(onlineWeights2.length, targetWeights2.length);
 
-	for (let i = 0; i < onlineWeights1.length; ++i) {
+	onlineWeights1Count = onlineWeights1.length;
+	for (let i = 0; i < onlineWeights1Count; i++) {
 		/**
 		 * Verify that the target network's weights haven't changed from before,
 		 * even though the online network's weights have

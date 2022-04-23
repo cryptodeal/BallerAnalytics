@@ -5,6 +5,7 @@ export type BaseFeatures = number[];
 export interface IBaseConfig {
 	batchSize: number;
 	epochs: number;
+	learningRate?: number;
 	callbacks?: {
 		onEpochEnd: (epoch: number, logs: uknown) => Promise<void>;
 	};

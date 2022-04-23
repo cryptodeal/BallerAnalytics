@@ -334,12 +334,13 @@ export const importBoxScore = async (game: Game2Document) => {
 
 const addGameRefs = async (game: Game2Document, seasonStage: string) => {
 	/** Add game._id to regular season games for players */
-	for (let i = 0; i < game.home.players.length; i++) {
+	const homePlayerCount = game.home.players.length;
+	for (let i = 0; i < homePlayerCount; i++) {
 		const player = await Player2.findById(game.home.players[i].player);
 		if (player) await addGameToPlayer(game, player, seasonStage);
 	}
-
-	for (let j = 0; j < game.visitor.players.length; j++) {
+	const visitorPlayerCount = game.visitor.players.length;
+	for (let j = 0; j < visitorPlayerCount; j++) {
 		const player = await Player2.findById(game.visitor.players[j].player);
 		if (player) await addGameToPlayer(game, player, seasonStage);
 	}
@@ -352,7 +353,8 @@ const addGameRefs = async (game: Game2Document, seasonStage: string) => {
 	if (visitorTeam) await addGameToTeam(game, visitorTeam, seasonStage);
 
 	/** Add game._id to regular season games for officials */
-	for (let k = 0; k < game.officials.length; k++) {
+	const officialCount = game.officials.length;
+	for (let k = 0; k < officialCount; k++) {
 		const official = await Official2.findById(game.officials[k]);
 		if (official) await addGameToOfficial(game, official, seasonStage);
 	}
@@ -413,17 +415,21 @@ export const importAllGames = () => {
 		})
 		.then(async (leagues) => {
 			let importedCount = 0;
-			for (const league of leagues) {
+			const leagueCount = leagues.length;
+			for (let i = 0; i < leagueCount; i++) {
+				const league = leagues[i];
 				const { name } = league;
-				for (let i = 0; i < league.seasons.length; i++) {
-					const { year } = league.seasons[i];
+				const seasonCount = league.seasons.length;
+				for (let j = 0; j < seasonCount; j++) {
+					const { year } = league.seasons[j];
 					const games = await getSeasonGames(name, year);
 					const playoffGames = await getPlayoffGames(name, year);
 					const regularSeasonGames = games.filter(
 						(g) => !playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl)
 					);
-
-					for (const regularSeasonGame of regularSeasonGames) {
+					const regGameCount = regularSeasonGames.length;
+					for (let k = 0; k < regGameCount; k++) {
+						const regularSeasonGame = regularSeasonGames[k];
 						importedCount++;
 						console.log(importedCount);
 						const count: number = await Game2.countDocuments({
@@ -457,8 +463,9 @@ export const importAllGames = () => {
 							}
 						}
 					}
-
-					for (const playoffGame of playoffGames) {
+					const playoffCount = playoffGames.length;
+					for (let l = 0; l < playoffCount; l++) {
+						const playoffGame = playoffGames[l];
 						importedCount++;
 						console.log(importedCount);
 						const count: number = await Game2.countDocuments({
@@ -522,7 +529,9 @@ export const importLatestGames = () => {
 					playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
 			);
 			console.log(regularSeasonGames.length);
-			for (const regularSeasonGame of regularSeasonGames) {
+			const regGameCount = regularSeasonGames.length;
+			for (let j = 0; j < regGameCount; j++) {
+				const regularSeasonGame = regularSeasonGames[j];
 				importedCount++;
 				console.log(importedCount);
 				const count: number = await Game2.countDocuments({
@@ -560,7 +569,9 @@ export const importLatestGames = () => {
 				}
 			}
 
-			for (const playoffGame of playoffGames) {
+			const playoffCount = playoffGames.length;
+			for (let k = 0; k < playoffCount; k++) {
+				const playoffGame = playoffGames[k];
 				importedCount++;
 				console.log(importedCount);
 				const count: number = await Game2.countDocuments({
@@ -621,7 +632,9 @@ const storeNbaData = async (
 	if (!game.attendance && Number.isNaN(parseInt(dataGame.attendance))) {
 		game.attendance = parseInt(dataGame.attendance);
 	}
-	for (const official of dataGame.officials) {
+	const officialCount = dataGame.officials.length;
+	for (let i = 0; i < officialCount; i++) {
+		const official = dataGame.officials[i];
 		const fullName = `${official.first_name} ${official.last_name}`;
 		const parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
 			nameArray = [fullName, parsedName],
@@ -641,8 +654,9 @@ const storeNbaData = async (
 			 */
 		}
 	}
-
-	for (const homePlayer of dataGame.home.players.player) {
+	const hPlayerCount = dataGame.home.players.player.length;
+	for (let j = 0; j < hPlayerCount; j++) {
+		const homePlayer = dataGame.home.players.player[j];
 		/** Find player by name or nba playerId or name */
 		const fullName = `${homePlayer.first_name} ${homePlayer.last_name}`,
 			parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
@@ -870,8 +884,9 @@ const storeNbaData = async (
 				game.home.players[playerIdx].active == true ? false : true;
 		}
 	}
-
-	for (const visitorPlayer of dataGame.visitor.players.player) {
+	const vPlayerCount = dataGame.visitor.players.player.length;
+	for (let k = 0; k < vPlayerCount; k++) {
+		const visitorPlayer = dataGame.visitor.players.player[k];
 		/** Find player by name or nba playerId or name */
 		const fullName = `${visitorPlayer.first_name} ${visitorPlayer.last_name}`,
 			parsedName = fullName.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
@@ -1424,7 +1439,9 @@ const storeEspnData = (
 			game.home.score = 0;
 			/* Update home player stats */
 			const { team } = await getEspnTeamPlayers(game.home.team.meta.helpers.espnTeamId);
-			for (const player of teamData.players) {
+			const playerCount = teamData.players.length;
+			for (let i = 0; i < playerCount; i++) {
+				const player = teamData.players[i];
 				if (player.stats?.points) {
 					game.home.stats.totals.points += player.stats.points;
 					game.home.score += player.stats.points;
@@ -1482,7 +1499,9 @@ const storeEspnData = (
 			game.visitor.score = 0;
 			/* Update visitor player stats */
 			const { team } = await getEspnTeamPlayers(game.visitor.team.meta.helpers.espnTeamId);
-			for (const player of teamData.players) {
+			const playerCount = teamData.players.length;
+			for (let i = 0; i < playerCount; i++) {
+				const player = teamData.players[i];
 				if (player.stats?.points) {
 					game.visitor.stats.totals.points += player.stats.points;
 					game.visitor.score += player.stats.points;

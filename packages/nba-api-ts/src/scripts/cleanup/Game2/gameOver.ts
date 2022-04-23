@@ -45,7 +45,8 @@ const fixGameOver = () => {
 			const { year, league } = JSON.parse(entry) as ISetItem;
 			const filteredGames = games.filter((g) => g.meta.helpers.bballRef.year === year);
 			const gameData = await getSeasonGames(league, year);
-			for (let i = 0; i < filteredGames.length; i++) {
+			const filteredCount = filteredGames.length;
+			for (let i = 0; i < filteredCount; i++) {
 				const game = filteredGames[i];
 				const gameIdx = gameData.findIndex(
 					(g) => g.boxScoreUrl === game.meta.helpers.bballRef.boxScoreUrl

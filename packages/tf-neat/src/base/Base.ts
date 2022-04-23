@@ -61,7 +61,8 @@ export class Base {
 		tempPlayers.map((p) => {
 			if (Object.keys(p.playerData).length > 1) {
 				p.processSznData();
-				for (let i = 0; i < p.rawData.length; i++) {
+				const rawDataLength = p.rawData.length;
+				for (let i = 0; i < rawDataLength; i++) {
 					this.rawData.push(p.rawData[i]);
 				}
 			}
@@ -199,6 +200,6 @@ export class Base {
 		this.createModel();
 		this.dataToTensors();
 		await this.train();
-		await this.saveModel();
+		if (data && data.length) await this.saveModel();
 	}
 }

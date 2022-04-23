@@ -91,7 +91,8 @@ class BoxScoreQuery {
 
 		/** Find Home Abbreviation for Season */
 		if (game.home.team && IsPopulated(game.home.team)) {
-			for (let i = 0; i < game.home.team.seasons.length; i++) {
+			const homeLength = game.home.team.seasons.length;
+			for (let i = 0; i < homeLength; i++) {
 				if (game.home.team.seasons[i].season === game.meta.helpers.bballRef.year) {
 					this.homeAbbrev = game.home.team.seasons[i].infoCommon.abbreviation;
 				}
@@ -100,7 +101,8 @@ class BoxScoreQuery {
 
 		/** Find Visitor Abbreviation for Season */
 		if (game.visitor.team && IsPopulated(game.visitor.team)) {
-			for (let j = 0; j < game.visitor.team.seasons.length; j++) {
+			const visitorLength = game.visitor.team.seasons.length;
+			for (let j = 0; j < visitorLength; j++) {
 				if (game.visitor.team.seasons[j].season === game.meta.helpers.bballRef.year) {
 					this.visitorAbbrev = game.visitor.team.seasons[j].infoCommon.abbreviation;
 				}
@@ -212,9 +214,10 @@ const fetchTeamBasicData = ($: cheerio.Root, team: string, period: string): stri
 };
 
 const getTeamBasicData = ($: cheerio.Root, team: string, periods: string[]): string[][] => {
-	const allData: string[][] = [];
-	for (let i = 0; i < periods.length; i++) {
-		allData.push(fetchTeamBasicData($, team, periods[i]));
+	const length = periods.length;
+	const allData: string[][] = new Array(length);
+	for (let i = 0; i < length; i++) {
+		allData[i] = fetchTeamBasicData($, team, periods[i]);
 	}
 	return allData;
 };
@@ -265,7 +268,8 @@ const getBasicData = (
 	periods: string[]
 ): [string[], ...string[]][][] => {
 	const allData: [string[], ...string[]][][] = [];
-	for (let i = 0; i < periods.length; i++) {
+	const periodCount = periods.length;
+	for (let i = 0; i < periodCount; i++) {
 		//if no data in allData, add initial data (totals)
 		if (i == 0) {
 			const initData = fetchBasicData($, team, periods[i]);
@@ -492,14 +496,17 @@ const getBoxScore = async (game: Game2Document): Promise<void | BoxScore> => {
 		if (officials.length) boxScore.officials = officials;
 		if (locale !== undefined && typeof locale !== 'boolean') boxScore.locale = locale;
 		const boxScoreResult = new BoxScore(boxScore);
-		for (let i = 0; i < boxScoreResult.home.players.length; i++) {
+		const homeLength = boxScoreResult.home.players.length;
+		for (let i = 0; i < homeLength; i++) {
 			await setPlayerId(boxScoreResult.home.players[i]);
 		}
-		for (let j = 0; j < boxScoreResult.visitor.players.length; j++) {
+		const visitorLength = boxScoreResult.visitor.players.length;
+		for (let j = 0; j < visitorLength; j++) {
 			await setPlayerId(boxScoreResult.visitor.players[j]);
 		}
 		if (boxScoreResult.officials) {
-			for (let k = 0; k < boxScoreResult.officials?.length; k++) {
+			const length = boxScoreResult.officials.length;
+			for (let k = 0; k < length; k++) {
 				await setOfficialId(boxScoreResult.officials[k]);
 			}
 		}

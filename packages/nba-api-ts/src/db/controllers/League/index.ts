@@ -43,7 +43,8 @@ interface Season {
 export const addOrUpdateSeasons = async (name: string, seasons: BballRefSeason[]) => {
 	const league = await League.findOne({ name });
 	if (league) {
-		for (let i = 0; i < seasons.length; i++) {
+		const sznCount = seasons.length;
+		for (let i = 0; i < sznCount; i++) {
 			const year = parseInt(seasons[i].displaySeason.split('-')[0]) + 1;
 			const {
 				displaySeason,
@@ -66,13 +67,15 @@ export const addOrUpdateSeasons = async (name: string, seasons: BballRefSeason[]
 				}
 
 				/** set mvp(s) */
-				for (let j = 0; j < mvp.length; j++) {
+				const mvpCount = mvp.length;
+				for (let j = 0; j < mvpCount; j++) {
 					const mvpDoc = await Player2.findByPlayerUrl(mvp[j].url);
 					if (mvpDoc) league.seasons[seasonIndex].awards.mvp.addToSet(mvpDoc._id);
 				}
 
 				/** set roty(s) */
-				for (let k = 0; k < roty.length; k++) {
+				const rotyCount = roty.length;
+				for (let k = 0; k < rotyCount; k++) {
 					const rotyDoc = await Player2.findByPlayerUrl(roty[k].url);
 					if (rotyDoc) league.seasons[seasonIndex].awards.roty.addToSet(rotyDoc._id);
 				}
@@ -154,13 +157,15 @@ export const addOrUpdateSeasons = async (name: string, seasons: BballRefSeason[]
 				}
 
 				/** set mvp(s) */
-				for (let j = 0; j < mvp.length; j++) {
+				const mvpCount = mvp.length;
+				for (let j = 0; j < mvpCount; j++) {
 					const mvpDoc: Player2Document = await Player2.findByPlayerUrl(mvp[j].url);
 					if (mvpDoc) season.awards.mvp.push(mvpDoc._id);
 				}
 
 				/** set roty(s) */
-				for (let k = 0; k < roty.length; k++) {
+				const rotyCount = roty.length;
+				for (let k = 0; k < rotyCount; k++) {
 					const rotyDoc: Player2Document = await Player2.findByPlayerUrl(roty[k].url);
 					if (rotyDoc) season.awards.roty.push(rotyDoc._id);
 				}

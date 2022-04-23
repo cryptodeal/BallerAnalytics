@@ -73,7 +73,8 @@ export const importTeamRoster = async (team: Team2Document, year: number) => {
 	}
 
 	const rosterData = await getTeamRoster(team.seasons[j].infoCommon.abbreviation, year);
-	for (let i = 0; i < rosterData.length; i++) {
+	const rosterCount = rosterData.length;
+	for (let i = 0; i < rosterCount; i++) {
 		let player = await Player2.findByPlayerUrl(rosterData[i].playerUrl);
 		if (!player) {
 			const { height, weight, birthDate, birthPlace, position, shoots, name, college, socials } =

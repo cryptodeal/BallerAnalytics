@@ -8,7 +8,6 @@ import {
 	serverlessConnect,
 	loadSeasonPlayers
 } from '@balleranalytics/nba-api-ts';
-import { readFile } from 'fs';
 import type { Base } from '../src/base/Base';
 import type { Player } from '@balleranalytics/nba-api-ts';
 
@@ -26,20 +25,7 @@ NeuralNetTest.after(async () => {
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const params = { batchSize: 10, epochs: 100 };
-	model = new NeuralNetwork(params);
-	await readFile(`${process.cwd()}/data/basic.json`, 'utf8', async function (err, data) {
-		if (err) throw err;
-		if (!data) {
-			await model.init(await loadSeasonPlayers(2021));
-		} else {
-			await model.init(JSON.parse(data));
-		}
-	});
-});
-
-NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const params = { batchSize: 10, epochs: 100 };
+	const params = { batchSize: 20, epochs: 10000 };
 	model = new NeuralNetwork(params);
 	const players = await loadSeasonPlayers(2021);
 	console.log('# players:', players.length);

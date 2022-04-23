@@ -50,7 +50,8 @@ function parseArgs(rawArgs, numFixedArgs, expectedOptions) {
   const options = {};
   const extra = [];
   const alreadyCounted = {};
-  for (let i = 0; i < rawArgs.length; i++) {
+  const rawArgCount = rawArgs.length;
+  for (let i = 0; i < rawArgCount; i++) {
     const rawArg = rawArgs[i];
     if (rawArg.startsWith('--')) {
       const optionName = rawArg.slice(2);

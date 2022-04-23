@@ -58,7 +58,9 @@ const findNbaGameId = async (
 	console.log(date);
 	const games = await getNbaScoreboard(date);
 	//console.log(games);
-	for (const scoreBoardGame of games) {
+	const gLength = games.length;
+	for (let i = 0; i < gLength; i++) {
+		const scoreBoardGame = games[i];
 		const { homeTeamId, visitorTeamId } = scoreBoardGame;
 
 		const { nbaTeamId: homeId } = game.home.team.meta.helpers,

@@ -24,7 +24,8 @@ const fixGameStats = async () => {
 		const visitorPeriods: Game2VisitorStatsPeriodDocument[] = [];
 
 		// fix home team stat period duplicates
-		for (let i = 0; i < game.home.stats.periods.length; i++) {
+		const hPeriodCount = game.home.stats.periods.length;
+		for (let i = 0; i < hPeriodCount; i++) {
 			if (
 				homePeriods.findIndex((p) => p.periodValue === game.home.stats.periods[i].periodValue) ===
 				-1
@@ -35,7 +36,8 @@ const fixGameStats = async () => {
 		game.home.stats.periods.splice(0);
 
 		// fix visitor team stat period duplicates
-		for (let j = 0; j < game.visitor.stats.periods.length; j++) {
+		const vPeriodCount = game.visitor.stats.periods.length;
+		for (let j = 0; j < vPeriodCount; j++) {
 			if (
 				visitorPeriods.findIndex(
 					(p) => p.periodValue === game.visitor.stats.periods[j].periodValue

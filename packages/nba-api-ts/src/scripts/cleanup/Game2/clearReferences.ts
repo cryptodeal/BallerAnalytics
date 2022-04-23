@@ -6,7 +6,8 @@ const clearGameRef = async () => {
 	let playerCount = await Player2.countDocuments();
 	console.log(`Players Total: ${playerCount}`);
 	for (const player of await Player2.find()) {
-		for (let i = 0; i < player.seasons.length; i++) {
+		const sznCount = player.seasons.length;
+		for (let i = 0; i < sznCount; i++) {
 			player.seasons[i].preseason.games.splice(0);
 			player.seasons[i].regularSeason.games.splice(0);
 			player.seasons[i].postseason.games.splice(0);
@@ -18,7 +19,8 @@ const clearGameRef = async () => {
 	let teamCount = await Team2.countDocuments();
 	console.log(`Teams Total: ${teamCount}`);
 	for (const team of await Team2.find()) {
-		for (let i = 0; i < team.seasons.length; i++) {
+		const sznCount = team.seasons.length;
+		for (let i = 0; i < sznCount; i++) {
 			team.seasons[i].preseason.games.splice(0);
 			team.seasons[i].regularSeason.games.splice(0);
 			team.seasons[i].postseason.games.splice(0);
@@ -30,7 +32,8 @@ const clearGameRef = async () => {
 	let leagueCount = await League.countDocuments();
 	console.log(`Leagues Total: ${leagueCount}`);
 	for (const league of await League.find()) {
-		for (let i = 0; i < league.seasons.length; i++) {
+		const sznCount = league.seasons.length;
+		for (let i = 0; i < sznCount; i++) {
 			league.seasons[i].games.preseason.splice(0);
 			league.seasons[i].games.regularSeason.splice(0);
 			league.seasons[i].games.postSeason.splice(0);

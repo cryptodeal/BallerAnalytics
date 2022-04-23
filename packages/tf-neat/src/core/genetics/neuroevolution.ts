@@ -19,7 +19,8 @@ export class NeuroEvolution {
 	public _useImageRecognition = false;
 
 	calcFitness(models: IModel[]): IModelFitness[] {
-		for (let i = 0; i < models.length; i++) {
+		const modelCount = models.length;
+		for (let i = 0; i < modelCount; i++) {
 			const model = models[i];
 			models[i].fitness = model.modelApi.getProgress() / 100;
 			models[i].score = model.modelApi.getScore();
@@ -31,7 +32,7 @@ export class NeuroEvolution {
 
 		models.reverse();
 		let prev = 0;
-		for (let i = 0; i < models.length; i++) {
+		for (let i = 0; i < modelCount; i++) {
 			models[i].fitness = this._discountRate * prev + (models[i] as IModelFitness).fitness;
 			prev = (models[i] as IModelFitness).fitness;
 		}
@@ -62,7 +63,8 @@ export class NeuroEvolution {
 	getBestModelByTrueFitness(models: IModelFitness[]): IModelFitness {
 		let model: IModelFitness | undefined = undefined;
 		let prevFitness = 0;
-		for (let i = 0; i < models.length; i++) {
+		const modelCount = models.length;
+		for (let i = 0; i < modelCount; i++) {
 			const tempModel = models[i];
 			if (tempModel.fitness > prevFitness) {
 				model = tempModel;
@@ -75,7 +77,8 @@ export class NeuroEvolution {
 	}
 
 	minOneModelComplete(models: IModel[]): false | IModel {
-		for (let i = 0; i < models.length; i++) {
+		const modelCount = models.length;
+		for (let i = 0; i < modelCount; i++) {
 			if (models[i].modelApi.isLevelPassed()) {
 				return models[i];
 			}
@@ -149,8 +152,10 @@ export class NeuroEvolution {
 	}
 
 	start(models: IModel[], bestPlayerBrainsByFitness) {
+		const modelCount = models.length;
 		if (false == this._pauseBeforeNextGeneration) {
-			for (let i = 0; i < models.length; i++) {
+			const modelCount = models.length;
+			for (let i = 0; i < modelCount; i++) {
 				models[i].modelApi.remove();
 			}
 
@@ -167,7 +172,7 @@ export class NeuroEvolution {
 			this._pausedModels = models;
 			this._pausedBestNeuralNetworksByFitness = bestPlayerBrainsByFitness;
 
-			for (let i = 0; i < models.length; i++) {
+			for (let i = 0; i < modelCount; i++) {
 				models[i].modelApi.show();
 			}
 		}
@@ -194,11 +199,13 @@ export class NeuroEvolution {
 			this._bestModels = this._bestModels.slice(0, 5);
 		}
 
+		const modelCount = models.length;
+
 		if (false != modelDone) {
-			for (let i = 0; i < models.length; i++) {
+			for (let i = 0; i < modelCount; i++) {
 				if (models[i].modelApi.isLevelPassed()) {
 					models[i].neuralNetwork.save('neuralNetwork');
-					for (let ii = 0; ii < models.length; ii++) {
+					for (let ii = 0; ii < modelCount; ii++) {
 						bestPlayerBrainsByFitness.push(models[i].neuralNetwork.clone());
 					}
 				}
@@ -208,7 +215,7 @@ export class NeuroEvolution {
 			this.start(models, bestPlayerBrainsByFitness);
 		} else {
 			/* Breed the best performers for use in next generation */
-			for (let i = 0; i < models.length; i++) {
+			for (let i = 0; i < modelCount; i++) {
 				const bestModelA = this.getBestModelInFitnessPool(models as IModelFitness[]);
 				const bestModelB = this.getBestModelInFitnessPool(models as IModelFitness[]);
 				const bestModelC = this._bestModels[0];

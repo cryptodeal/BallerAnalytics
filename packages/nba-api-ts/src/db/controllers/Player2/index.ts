@@ -159,7 +159,8 @@ export const compareNbaPlayerBday = (
 	const { birthdate, personId, firstName, lastName } = nbaPlayerInfo.commonPlayerInfo[0];
 
 	const nbaPlayerBday = dayjs(birthdate);
-	for (let i = 0; i < playerDocs.length; i++) {
+	const pDocCount = playerDocs.length;
+	for (let i = 0; i < pDocCount; i++) {
 		if (nbaPlayerBday.isSame(dayjs(playerDocs[i].birthDate), 'day')) {
 			return playerDocs[i];
 		}
@@ -174,7 +175,8 @@ export const compareEspnPlayerBday = (
 	const { dateOfBirth, fullName, id } = espnPlayerInfo;
 
 	const nbaPlayerBday = dayjs(dateOfBirth);
-	for (let i = 0; i < playerDocs.length; i++) {
+	const pDocCount = playerDocs.length;
+	for (let i = 0; i < pDocCount; i++) {
 		if (nbaPlayerBday.isSame(dayjs(playerDocs[i].birthDate), 'day')) {
 			return playerDocs[i];
 		}
@@ -186,7 +188,8 @@ export const findMatchingBballRefPlayers = async (
 	playerQueries: BballRefPlayerQueryResItem[]
 ): Promise<Player2Document[]> => {
 	const players: Player2Document[] = [];
-	for (let i = 0; i < playerQueries.length; i++) {
+	const pQueryCount = playerQueries.length;
+	for (let i = 0; i < pQueryCount; i++) {
 		let player = await addOrFindPlayer(playerQueries[i]);
 		if (!player) throw Error(`Player not found in db. Full Name: ${playerQueries[i].name}`);
 		player = await addPlayerBasicData(player);
@@ -303,9 +306,9 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 		player.seasons[seasonIdx].teams.splice(0);
 		player.seasons[seasonIdx].regularSeason.stats.teamSplits.splice(0);
 		//console.log(filtered);
-
 		if (filtered.length > 1) {
-			for (let i = 0; i < filtered.length; i++) {
+			const tempLength = filtered.length;
+			for (let i = 0; i < tempLength; i++) {
 				const stat: PlayerCareerStatSeason = filtered[i];
 				if (stat.teamAbbrev === 'TOT') {
 					player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(stat);

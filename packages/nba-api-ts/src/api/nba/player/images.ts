@@ -82,8 +82,8 @@ const transformImage = async (image: ArrayBuffer, slug: string) => {
 	const imageUrl: string[] = [];
 	const sizes = [1040, 520, 260];
 	const sharpInitImg = sharp(Buffer.from(image));
-
-	for (let i = 0; i < sizes.length; i++) {
+	const sLength = sizes.length;
+	for (let i = 0; i < sLength; i++) {
 		await createPng(sharpInitImg, slug, sizes[i]).then((result) => {
 			if (result) imageUrl.push(result);
 		});

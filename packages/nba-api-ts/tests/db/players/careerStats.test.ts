@@ -21,10 +21,6 @@ ImportCareerStatsTest('test function type', () => {
 ImportCareerStatsTest('query db for player', async () => {
 	const tempPlayer = await Player2.findOne();
 	player = await storePlayerRegSeasonStats(tempPlayer);
-});
-
-ImportCareerStatsTest('test load of player stats', async () => {
-	player = await storePlayerRegSeasonStats(player);
 	console.log(player);
 });
 

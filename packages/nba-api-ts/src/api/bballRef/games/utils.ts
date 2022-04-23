@@ -223,7 +223,8 @@ export class BoxScorePlayer {
 
 						//set basic stats for all periods in game
 						this.stats.periods = [];
-						for (let i = 1; i < periods.length; i++) {
+						const periodCount = periods.length;
+						for (let i = 1; i < periodCount; i++) {
 							if (basicData[i]) {
 								const period = this.setPeriodStats(basicData[i], i, periods[i]);
 								period.periodValue = i;
@@ -686,9 +687,14 @@ export class BoxScore {
 			this.home.stats = stats;
 		}
 		if (boxScore.home.basic && boxScore.home.advanced) {
-			for (let i = 0; i < boxScore.home.basic.length; i++) {
-				this.home.players.push(
-					new BoxScorePlayer(boxScore.home.basic[i], boxScore.home.advanced[i], i, boxScore.periods)
+			const hBasicLength = boxScore.home.basic.length;
+			this.home.players = new Array(hBasicLength);
+			for (let i = 0; i < hBasicLength; i++) {
+				this.home.players[i] = new BoxScorePlayer(
+					boxScore.home.basic[i],
+					boxScore.home.advanced[i],
+					i,
+					boxScore.periods
 				);
 			}
 			boxScore.home.inactive?.map((p) => this.home.players.push(new BoxScorePlayer(p)));
@@ -707,14 +713,14 @@ export class BoxScore {
 			this.visitor.stats = stats;
 		}
 		if (boxScore.visitor.basic && boxScore.visitor.advanced) {
-			for (let i = 0; i < boxScore.visitor.basic.length; i++) {
-				this.visitor.players.push(
-					new BoxScorePlayer(
-						boxScore.visitor.basic[i],
-						boxScore.visitor.advanced[i],
-						i,
-						boxScore.periods
-					)
+			const vBasicLength = boxScore.visitor.basic.length;
+			this.visitor.players = new Array(vBasicLength);
+			for (let i = 0; i < vBasicLength; i++) {
+				this.visitor.players[i] = new BoxScorePlayer(
+					boxScore.visitor.basic[i],
+					boxScore.visitor.advanced[i],
+					i,
+					boxScore.periods
 				);
 			}
 			boxScore.visitor.inactive?.map((p) => this.visitor.players.push(new BoxScorePlayer(p)));
@@ -731,9 +737,11 @@ export class BoxScore {
 			totals: this.setTeamBasicStats(teamBasic[0], teamAdvanced, fourFactor),
 			periods: []
 		};
-		for (let i = 1; i < periods.length; i++) {
-			const period = this.setTeamStatPeriods(teamBasic[i], i, periods[i]);
-			teamStats.periods.push(period);
+		const periodCount = periods.length;
+		teamStats.periods = new Array(periodCount);
+		for (let i = 1; i < periodCount; i++) {
+			const tempPeriod = this.setTeamStatPeriods(teamBasic[i], i, periods[i]);
+			teamStats.periods[i] = tempPeriod;
 		}
 		return teamStats;
 	}
@@ -742,8 +750,8 @@ export class BoxScore {
 		if (this.home.players.length && this.visitor.players.length) {
 			const homePlayers = this.home.players;
 			const visitorPlayers = this.visitor.players;
-
-			for (let i = 0; i < homePlayers.length; i++) {
+			const hPlayerLength = homePlayers.length;
+			for (let i = 0; i < hPlayerLength; i++) {
 				const player = homePlayers[i];
 				if (player.stats) {
 					if (player.stats.totals.points) {
@@ -785,8 +793,9 @@ export class BoxScore {
 					}
 				}
 			}
+			const vPlayerLength = visitorPlayers.length;
 
-			for (let i = 0; i < visitorPlayers.length; i++) {
+			for (let i = 0; i < vPlayerLength; i++) {
 				const player = visitorPlayers[i];
 				if (player.stats) {
 					if (player.stats.totals.points) {

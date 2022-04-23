@@ -173,9 +173,9 @@ export class Player {
 				positionList.push(this._position.trim());
 			}
 		}
-
+		const posListLength = positionList.length;
 		/* One hot encode this.posEncoded */
-		for (let i = 0; i < positionList.length; i++) {
+		for (let i = 0; i < posListLength; i++) {
 			switch (positionList[i].toLowerCase()) {
 				case 'point guard':
 					this.posEncoded[PositionIdx.PG] = 1;
@@ -274,7 +274,8 @@ export class Player {
 		const trainingKeys = keys.filter((k) => k !== maxYear.toString());
 		if (this._position) this.encodePositions();
 		const inputGames: ParsedGame[] = [];
-		for (let i = 0; i < trainingKeys.length; i++) {
+		const tKeyLength = trainingKeys.length;
+		for (let i = 0; i < tKeyLength; i++) {
 			const key = trainingKeys[i];
 			const games = this._playerData[key];
 			games.map((g) => inputGames.push(g));
@@ -319,7 +320,8 @@ export class Player {
 		const maxYear = Math.max(...seasonYears);
 		const inputKeys = keys.filter((k) => k !== maxYear.toString());
 		const labelKeys = keys.filter((k) => k !== this._startSeason.toString());
-		for (let i = 0; i < inputKeys.length; i++) {
+		const iKeyLength = inputKeys.length;
+		for (let i = 0; i < iKeyLength; i++) {
 			const tempGames = this._playerData[inputKeys[i]];
 			const {
 				min,
@@ -420,18 +422,20 @@ const loadSznGames = async (
 };
 
 export const loadPlayerSznGames = async (player: Player2Object): Promise<Player> => {
-	const promises: Promise<SznGames>[] = [];
-	for (let i = 0; i < player.seasons.length; i++) {
+	const pSznCount = player.seasons.length;
+	const promises: Promise<SznGames>[] = new Array(pSznCount);
+	for (let i = 0; i < pSznCount; i++) {
 		const { year, regularSeason } = player.seasons[i];
 		const { games } = regularSeason;
 		if (!games) continue;
-		promises.push(loadSznGames(player._id, games as Game2Document['_id'][], year));
+		promises[i] = loadSznGames(player._id, games as Game2Document['_id'][], year);
 	}
 	const sznGames = await Promise.all(promises);
 	sznGames.sort((a, b) => a.year - b.year);
 	const playerData: PlayerData = {};
 	const resPlayer = new Player(player._id, sznGames[0].year, player.position, player.birthDate);
-	for (let i = 0; i < sznGames.length; i++) {
+	const sznGameCount = sznGames.length;
+	for (let i = 0; i < sznGameCount; i++) {
 		const { year, games } = sznGames[i];
 		playerData[year] = games;
 	}

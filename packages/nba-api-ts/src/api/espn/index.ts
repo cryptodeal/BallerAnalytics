@@ -27,7 +27,8 @@ export const findEspnGameId = (
 	if (!data) throw Error(`No ESPN scoreboard data for ${dateStr}`);
 	/* if key "dateStr" is defined, destructure array of games from data */
 	const { games } = data;
-	for (let i = 0; i < games.length; i++) {
+	const gameCount = games.length;
+	for (let i = 0; i < gameCount; i++) {
 		const [gameData] = games[i].competitions;
 		const homeIdx = gameData.competitors.findIndex((c) => c.homeAway == 'home');
 		const visitorIdx = gameData.competitors.findIndex((c) => c.homeAway == 'away');
@@ -55,7 +56,9 @@ export const findEspnGameId = (
 export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => {
 	return sdv.nba.getBoxScore(gameId).then((data: IEspnBoxscore) => {
 		const parsedBoxscore: ParsedEspnBoxscore = {};
-		for (const team of data.teams) {
+		const tLength = data.teams.length;
+		for (let i = 0; i < tLength; i++) {
+			const team = data.teams[i];
 			const stats = team.statistics;
 			if (stats.length > 0) {
 				const [
@@ -125,9 +128,12 @@ export const getEspnBoxscore = (gameId: number): Promise<ParsedEspnBoxscore> => 
 		}
 		/* add players to team */
 		if (data.players && data.players.length > 0) {
-			for (const player of data.players) {
+			const pLength = data.players.length;
+			for (let i = 0; i < pLength; i++) {
+				const player = data.players[i];
 				const teamId = player.team.id;
-				for (let i = 0; i < player.statistics[0].athletes.length; i++) {
+				const pStatsLength = player.statistics[0].athletes.length;
+				for (let i = 0; i < pStatsLength; i++) {
 					const athleteStats = player.statistics[0].athletes[i].stats;
 					const playerData: ParsedEspnBoxscoreTeamPlayer = {
 						name: {
