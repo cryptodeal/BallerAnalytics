@@ -1,49 +1,26 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import pkgTxt from '@lexical/plain-text';
-	import pkg from '@lexical/utils';
-	//import { placeholderCurryTest, type LexicalUpdates } from '$lexical/context';
+	import { onMount, getContext } from 'svelte';
+	import { registerPlainText } from '@lexical/plain-text';
+	import { $canShowPlaceholderCurry as _canShowPlaceholderCurry } from '@lexical/text';
+	import type { LexicalEditor } from 'lexical';
 
-	import type {
-		EditorDecorators,
-		EditorRoot,
-		// ShowPlaceholder,
-		EditorUpdates
-	} from '../context';
-	import { browser } from '$app/env';
-	import type { EditorState } from 'lexical';
-
-	export let editableDiv: HTMLElement = undefined,
-		editor: EditorRoot = undefined;
-
-	const { mergeRegister } = pkg;
-	const { registerPlainText } = pkgTxt;
-	let state: EditorState;
-	// const showPlaceholder: ShowPlaceholder = getContext('can-use-placeholder');
-	// const decorators: EditorDecorators = getContext('decorators');
-	$: if ($editor) {
-		console.log(true);
-		/*
-    $editor.registerUpdateListener((update: LexicalUpdates) => {
-			const { dirtyElements, dirtyLeaves, prevEditorState, editorState } = update;
-			console.log('update', update);
-			if (editorState) state = editorState;
+	const editor: LexicalEditor = getContext('editor');
+	let can_show_placeholder = true;
+	// returns callback to unregister
+	onMount(() => {
+		registerPlainText(editor);
+		editor.registerUpdateListener(({ editorState }) => {
+			const isComposing = editor.isComposing();
+			can_show_placeholder = editorState.read(_canShowPlaceholderCurry(isComposing));
 		});
-    */
-	}
+	});
 </script>
 
-<div
-	class="editor-input"
-	contentEditable={!$editor?.isReadOnly() ? true : false}
-	bind:this={editableDiv}
->
-	{#if $editor}
-		<slot name="placeholder">
-			<span class="editor-placeholder">Enter some plain text...</span>
-		</slot>
-	{/if}
-</div>
+{#if can_show_placeholder}
+	<slot name="placeholder">
+		<span class="editor-placeholder">Enter some plain text...</span>
+	</slot>
+{/if}
 
 <style>
 	.editor-placeholder {

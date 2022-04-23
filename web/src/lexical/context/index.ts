@@ -57,21 +57,13 @@ export function Editor(editorConfig: EditorOpts) {
 	const decorators: EditorDecorators = writable<Record<string, ElementNode>>(decoratorList);
 	const { set, update, subscribe } = editor;
 
-	const setRoot = (root: HTMLElement) => {
-		update((e) => {
-			e.setRootElement(root);
-			return e;
-		});
-	};
-
 	return {
 		editor,
 		decorators,
 		editorConfig,
 		set,
 		update,
-		subscribe,
-		setRoot
+		subscribe
 	};
 }
 
