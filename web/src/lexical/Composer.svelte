@@ -1,8 +1,9 @@
 <script lang="ts">
 	import './editor.css';
 	import pkg from 'lexical';
-	import { setContext } from 'svelte';
-	import { onMount } from 'svelte';
+	import { $canShowPlaceholderCurry as _canShowPlaceholderCurry } from '@lexical/text';
+	import { onMount, setContext } from 'svelte';
+	import { writable } from 'svelte/store';
 	import theme from './themes/example';
 
 	export let initEditorOpts = {
@@ -13,15 +14,26 @@
 		nodes: []
 	};
 
-	const { createEditor } = pkg;
-	const editor = createEditor(initEditorOpts);
+	const { createEditor } = pkg,
+		editor = createEditor(initEditorOpts),
+		decorators = writable<Record<string, any>>({}),
+		can_show_placeholder = writable(true);
 
 	let editableDiv: HTMLElement;
 
 	setContext('editor', editor);
+	setContext('decorators', decorators);
+	setContext('can_show_placeholder', can_show_placeholder);
 
 	onMount(() => {
 		editor.setRootElement(editableDiv);
+		editor.registerDecoratorListener((nextDecorators) => {
+			decorators.set(nextDecorators);
+		});
+		editor.registerUpdateListener(({ editorState }) => {
+			const isComposing = editor.isComposing();
+			can_show_placeholder.set(editorState.read(_canShowPlaceholderCurry(isComposing)));
+		});
 	});
 </script>
 

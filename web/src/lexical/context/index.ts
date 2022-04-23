@@ -68,3 +68,8 @@ export function Editor(editorConfig: EditorOpts) {
 }
 
 export const placeholderCurryTest = $canShowPlaceholderCurry;
+
+export const fontSize = writable<string>('15px');
+export const fontFamily = writable<string>('Calibri');
+export const isRTL = writable<boolean>(false);
+export const isLink = writable<boolean>(false);

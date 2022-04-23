@@ -162,6 +162,7 @@ importers:
       '@lexical/link': ^0.2.4
       '@lexical/overflow': ^0.2.4
       '@lexical/plain-text': ^0.2.4
+      '@lexical/rich-text': ^0.2.4
       '@lexical/text': ^0.2.4
       '@lexical/utils': ^0.2.4
       '@sveltejs/adapter-vercel': next
@@ -232,6 +233,7 @@ importers:
       '@lexical/link': 0.2.4_lexical@0.2.4
       '@lexical/overflow': 0.2.4_lexical@0.2.4
       '@lexical/plain-text': 0.2.4_1566cdf22f9dec1d83e33ef2335cb934
+      '@lexical/rich-text': 0.2.4_1566cdf22f9dec1d83e33ef2335cb934
       '@lexical/text': 0.2.4_lexical@0.2.4
       '@lexical/utils': 0.2.4_lexical@0.2.4
       '@sveltejs/adapter-vercel': 1.0.0-next.49
@@ -1302,6 +1304,19 @@ packages:
 
   /@lexical/plain-text/0.2.4_1566cdf22f9dec1d83e33ef2335cb934:
     resolution: {integrity: sha512-ZOJhtWaK69xbc3oSzj+iLDlCUmpkl99PZmZMmGg0V8kHvsMym3u9BsVbYcBqUwp3xYSZGLNkLoHPAk15eoU9Hw==}
+    peerDependencies:
+      '@lexical/clipboard': 0.2.4
+      '@lexical/selection': 0.2.4
+      '@lexical/utils': 0.2.4
+      lexical: 0.2.4
+    dependencies:
+      '@lexical/clipboard': 0.2.4_lexical@0.2.4
+      '@lexical/utils': 0.2.4_lexical@0.2.4
+      lexical: 0.2.4
+    dev: true
+
+  /@lexical/rich-text/0.2.4_1566cdf22f9dec1d83e33ef2335cb934:
+    resolution: {integrity: sha512-+67ENTk3LKVXeB4Ui79Rh6VQBz77A9no/WZNEB2sZ3uGSXCZPib+HswRlUccvZ8j8DNzu1doTnG8ktZX7fgcyg==}
     peerDependencies:
       '@lexical/clipboard': 0.2.4
       '@lexical/selection': 0.2.4

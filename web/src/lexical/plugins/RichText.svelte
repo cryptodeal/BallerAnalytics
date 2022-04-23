@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, getContext } from 'svelte';
-	import { registerPlainText } from '@lexical/plain-text';
+	import { registerRichText } from '@lexical/rich-text';
 	import { registerDragonSupport } from '@lexical/dragon';
 	import { mergeRegister } from '@lexical/utils';
 	import Decorators from '$lexical/shared/Decorators.svelte';
@@ -14,28 +14,26 @@
 		decorators: Writable<Record<string, any>> = getContext('can_show_placeholder');
 
 	onMount(() => {
-		mergeRegister(registerPlainText(editor), registerDragonSupport(editor));
+		mergeRegister(registerRichText(editor), registerDragonSupport(editor));
 	});
+	// TODO: take care of decorators - useDecorators(editor)
 </script>
 
 {#if $can_show_placeholder}
-	<div class="h-full w-full bg-red-200">
-		<slot name="placeholder">
-			<span class="editor-placeholder">Enter some plain text...</span>
-		</slot>
-	</div>
+	<slot name="placeholder">
+		<span class="editor-placeholder">Enter some rich text...</span>
+	</slot>
 {/if}
 <Decorators decorators={$decorators} />
 
 <style>
 	.editor-placeholder {
-		position: absolute;
-		top: 10px;
 		color: #999;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		font-size: 15px;
 		user-select: none;
+		display: inline-block;
 		pointer-events: none;
 	}
 </style>

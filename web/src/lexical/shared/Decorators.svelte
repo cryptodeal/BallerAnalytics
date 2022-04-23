@@ -1,22 +1,10 @@
 <script lang="ts">
-	import { getContext } from 'svelte';
-	import { browser } from '$app/env';
-	import type { EditorDecorators, EditorRoot } from '$lexical/context';
-
-	const editor: EditorRoot = getContext('lexical-editor');
-	const decorators: EditorDecorators = getContext('lexical-editor');
-
-	function initDecorators() {
-		$editor.registerDecoratorListener((nextDecorators) => {
-			decorators.set(nextDecorators);
-		});
-	}
-
-	$: if (browser) initDecorators();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	export let decorators: Record<string, any> = {};
 </script>
 
-{#each Object.keys($decorators) as key}
-	{@const decorator = $decorators[key]}
+{#each Object.keys(decorators) as key}
+	{@const decorator = decorators[key]}
 	<div>
 		{decorator}
 	</div>

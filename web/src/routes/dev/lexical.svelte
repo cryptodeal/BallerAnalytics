@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Composer from '$lexical/Composer.svelte';
-	import PlainText from '$lexical/plugins/PlainText.svelte';
+	import RichText from '$lexical/plugins/RichText.svelte';
+	// import BasicToolbar from '$lexical/toolbar/Basic.svelte';
 </script>
 
 <div class="w-screen min-h-screen bg-hero-circuit-board-blue-30">
@@ -10,7 +11,7 @@
 		>
 			<div class="w-full h-100 p-2">
 				<Composer>
-					<PlainText />
+					<RichText />
 				</Composer>
 			</div>
 		</div>
