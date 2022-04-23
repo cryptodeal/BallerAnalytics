@@ -1,6 +1,6 @@
 <script lang="ts">
 	import './editor.css';
-	import { createEditor } from 'lexical';
+	import pkg from 'lexical';
 	import { setContext } from 'svelte';
 	import { onMount } from 'svelte';
 	import theme from './themes/example';
@@ -12,6 +12,8 @@
 		},
 		nodes: []
 	};
+
+	const { createEditor } = pkg;
 	const editor = createEditor(initEditorOpts);
 
 	let editableDiv: HTMLElement;
