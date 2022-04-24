@@ -54,7 +54,7 @@ const statTotalsSchema = new mongoose.Schema(
 
 const statAdvSchema = new mongoose.Schema(
 	{
-		pEffRat: { type: Number },
+		pEffRate: { type: Number },
 		tsPct: { type: Number },
 		threePtAttRate: { type: Number },
 		ftAttRate: { type: Number },

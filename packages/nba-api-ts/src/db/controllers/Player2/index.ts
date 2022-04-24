@@ -321,6 +321,7 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 					) as ParsedAdvStats;
 					delete tempStats.season;
 					delete tempStats.teamAbbrev;
+					// console.log(tempStats);
 					player.seasons[seasonIdx].regularSeason.stats.adv = tempStats as never;
 				} else {
 					try {
@@ -333,9 +334,9 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 								(s) => s.team.toString() === _id.toString()
 							);
 							if (teamSplitIdx === -1) {
-								const { teamAbbrev } = stat;
+								const { teamAbbrev, season } = stat;
 								const tempStats = careerAdvStats.find(
-									(s) => s.season === year && s.teamAbbrev === teamAbbrev
+									(s) => s.season === season && s.teamAbbrev === teamAbbrev
 								) as ParsedAdvStats;
 								delete tempStats.season;
 								delete tempStats.teamAbbrev;
@@ -345,11 +346,11 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 									adv: tempStats as never
 								});
 							} else {
-								const { teamAbbrev } = stat;
+								const { teamAbbrev, season } = stat;
 								player.seasons[seasonIdx].regularSeason.stats.teamSplits[teamSplitIdx].totals =
 									formatStatTotals(stat);
 								const tempStats: ParsedAdvStats = careerAdvStats.find(
-									(s) => s.season === year && s.teamAbbrev === teamAbbrev
+									(s) => s.season === season && s.teamAbbrev === teamAbbrev
 								) as ParsedAdvStats;
 								delete tempStats.season;
 								delete tempStats.teamAbbrev;
@@ -380,10 +381,10 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 			) as never;
 		}
 	}
-	return player
+	await player
 		.save()
 		.then((p) => {
-			console.log(p);
+			p.seasons.map((s) => console.log(s.regularSeason.stats.adv));
 			// return p.seasons.sort(({ year: a }, { year: b }) => a - b);
 		})
 		.catch((e) => {
@@ -403,10 +404,10 @@ export const importPlayerStats = async () => {
 
 export const importAllPlayerStats = async () => {
 	let count = await Player2.countDocuments({
-		seasons: { $elemMatch: { 'regularSeason.stats.teamSplits.0': { $exists: true } } }
+		'seasons.regularSeason.stats.totals.minutes': { $exists: true, $gt: 0 }
 	});
 	for (const player of await Player2.find({
-		seasons: { $elemMatch: { 'regularSeason.stats.teamSplits.0': { $exists: true } } }
+		'seasons.regularSeason.stats.totals.minutes': { $exists: true, $gt: 0 }
 	})) {
 		await storePlayerRegSeasonStats(player);
 		console.log('remaining: ', count--);

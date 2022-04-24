@@ -1549,7 +1549,7 @@ export type Player2SeasonRegularSeasonStatsTotal = {
  * ```
  */
 export type Player2SeasonRegularSeasonStatsAdv = {
-	pEffRat?: number;
+	pEffRate?: number;
 	tsPct?: number;
 	threePtAttRate?: number;
 	ftAttRate?: number;
@@ -1616,7 +1616,7 @@ export type Player2SeasonRegularSeasonStatsTeamSplitTotal = {
  * ```
  */
 export type Player2SeasonRegularSeasonStatsTeamSplitAdv = {
-	pEffRat?: number;
+	pEffRate?: number;
 	tsPct?: number;
 	threePtAttRate?: number;
 	ftAttRate?: number;
@@ -1954,7 +1954,7 @@ export type Player2SeasonRegularSeasonStatsTotalDocument =
  */
 export type Player2SeasonRegularSeasonStatsAdvDocument =
 	mongoose.Document<mongoose.Types.ObjectId> & {
-		pEffRat?: number;
+		pEffRate?: number;
 		tsPct?: number;
 		threePtAttRate?: number;
 		ftAttRate?: number;
@@ -2023,7 +2023,7 @@ export type Player2SeasonRegularSeasonStatsTeamSplitTotalDocument =
  */
 export type Player2SeasonRegularSeasonStatsTeamSplitAdvDocument =
 	mongoose.Document<mongoose.Types.ObjectId> & {
-		pEffRat?: number;
+		pEffRate?: number;
 		tsPct?: number;
 		threePtAttRate?: number;
 		ftAttRate?: number;
