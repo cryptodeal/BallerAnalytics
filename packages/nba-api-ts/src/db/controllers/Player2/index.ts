@@ -376,9 +376,7 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 			) as ParsedAdvStats;
 			delete tempStats.season;
 			delete tempStats.teamAbbrev;
-			player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.find(
-				(s) => s.season === year && s.teamAbbrev === teamAbbrev
-			) as never;
+			player.seasons[seasonIdx].regularSeason.stats.adv = tempStats as never;
 		}
 	}
 	await player
