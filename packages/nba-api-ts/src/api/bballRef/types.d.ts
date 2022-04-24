@@ -50,26 +50,31 @@ export interface PlayerCareerStatSeason {
 export interface PlayerCareerAdvStats {
 	season: number;
 	teamAbbrev: string;
-	pEffRat: number;
-	tsPct: number;
-	threePtAttRate: number;
-	ftAttRate: number;
-	offRebPct: number;
-	defRebPct: number;
-	totalRebPct: number;
-	assistPct: number;
-	stlPct: number;
-	blkPct: number;
-	tovPct: number;
-	usgPct: number;
-	offWinShares: number;
-	defWinShares: number;
-	winShares: number;
-	winSharesPer48: number;
-	offBoxPlusMinus: number;
-	defBoxPlusMinus: number;
-	boxPlusMinus: number;
-	valOverBackup: number;
+	pEffRate?: number;
+	tsPct?: number;
+	threePtAttRate?: number;
+	ftAttRate?: number;
+	offRebPct?: number;
+	defRebPct?: number;
+	totalRebPct?: number;
+	assistPct?: number;
+	stlPct?: number;
+	blkPct?: number;
+	tovPct?: number;
+	usgPct?: number;
+	offWinShares?: number;
+	defWinShares?: number;
+	winShares?: number;
+	winSharesPer48?: number;
+	offBoxPlusMinus?: number;
+	defBoxPlusMinus?: number;
+	boxPlusMinus?: number;
+	valOverBackup?: number;
+}
+
+export interface ParsedAdvStats extends PlayerCareerAdvStats {
+	season?: number;
+	teamAbbrev?: string;
 }
 
 export interface BballRefPlayerQueryResItem {

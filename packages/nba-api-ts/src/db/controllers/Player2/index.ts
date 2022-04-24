@@ -7,6 +7,7 @@ import type {
 import { BoxScorePlayer } from '../../../api/bballRef/games/utils';
 import type {
 	BballRefPlayerQueryResItem,
+	ParsedAdvStats,
 	PlayerCareerStatSeason
 } from '../../../api/bballRef/types';
 import { getPlayerData, getPlayerCareerStats } from '../../../api/bballRef/player';
@@ -315,9 +316,12 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 				if (stat.teamAbbrev === 'TOT') {
 					player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(stat);
 					const year = player.seasons[seasonIdx].year;
-					player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.filter(
+					const tempStats = careerAdvStats.find(
 						(s) => s.season === year && s.teamAbbrev === 'TOT'
-					) as never;
+					) as ParsedAdvStats;
+					delete tempStats.season;
+					delete tempStats.teamAbbrev;
+					player.seasons[seasonIdx].regularSeason.stats.adv = tempStats as never;
 				} else {
 					try {
 						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
@@ -330,18 +334,26 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 							);
 							if (teamSplitIdx === -1) {
 								const { teamAbbrev } = stat;
+								const tempStats = careerAdvStats.find(
+									(s) => s.season === year && s.teamAbbrev === teamAbbrev
+								) as ParsedAdvStats;
+								delete tempStats.season;
+								delete tempStats.teamAbbrev;
 								player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
 									team: _id,
 									totals: formatStatTotals(stat),
-									adv: careerAdvStats.filter(
-										(s) => s.season === year && s.teamAbbrev === teamAbbrev
-									) as never
+									adv: tempStats as never
 								});
 							} else {
 								const { teamAbbrev } = stat;
 								player.seasons[seasonIdx].regularSeason.stats.teamSplits[teamSplitIdx].totals =
 									formatStatTotals(stat);
-								player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.filter(
+								const tempStats: ParsedAdvStats = careerAdvStats.find(
+									(s) => s.season === year && s.teamAbbrev === teamAbbrev
+								) as ParsedAdvStats;
+								delete tempStats.season;
+								delete tempStats.teamAbbrev;
+								player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.find(
 									(s) => s.season === year && s.teamAbbrev === teamAbbrev
 								) as never;
 							}
@@ -353,17 +365,26 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 				}
 			}
 		} else {
-			console.log(filtered);
+			// console.log(filtered);
+			const { teamAbbrev } = filtered[0];
 			const { _id } = await findTeamAbbrevYear(filtered[0].teamAbbrev, year);
 			player.seasons[seasonIdx].teams.addToSet({ id: _id });
 			player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(filtered[0]);
+			const tempStats: ParsedAdvStats = careerAdvStats.find(
+				(s) => s.season === year && s.teamAbbrev === teamAbbrev
+			) as ParsedAdvStats;
+			delete tempStats.season;
+			delete tempStats.teamAbbrev;
+			player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.find(
+				(s) => s.season === year && s.teamAbbrev === teamAbbrev
+			) as never;
 		}
 	}
 	return player
 		.save()
 		.then((p) => {
 			console.log(p);
-			return p.seasons.sort(({ year: a }, { year: b }) => a - b);
+			// return p.seasons.sort(({ year: a }, { year: b }) => a - b);
 		})
 		.catch((e) => {
 			console.log(player.name);
@@ -382,13 +403,10 @@ export const importPlayerStats = async () => {
 
 export const importAllPlayerStats = async () => {
 	let count = await Player2.countDocuments({
-		// seasons: { $elemMatch: { 'regularSeason.stats.teamSplits.0': { $exists: true } } }
-		'name.full': 'Seth Curry'
+		seasons: { $elemMatch: { 'regularSeason.stats.teamSplits.0': { $exists: true } } }
 	});
 	for (const player of await Player2.find({
-		'name.full': 'Seth Curry'
-
-		// seasons: { $elemMatch: { 'regularSeason.stats.teamSplits.0': { $exists: true } } }
+		seasons: { $elemMatch: { 'regularSeason.stats.teamSplits.0': { $exists: true } } }
 	})) {
 		await storePlayerRegSeasonStats(player);
 		console.log('remaining: ', count--);
