@@ -47,6 +47,31 @@ export interface PlayerCareerStatSeason {
 	ptsPerGame: number;
 }
 
+export interface PlayerCareerAdvStats {
+	season: number;
+	teamAbbrev: string;
+	pEffRat: number;
+	tsPct: number;
+	threePtAttRate: number;
+	ftAttRate: number;
+	offRebPct: number;
+	defRebPct: number;
+	totalRebPct: number;
+	assistPct: number;
+	stlPct: number;
+	blkPct: number;
+	tovPct: number;
+	usgPct: number;
+	offWinShares: number;
+	defWinShares: number;
+	winShares: number;
+	winSharesPer48: number;
+	offBoxPlusMinus: number;
+	defBoxPlusMinus: number;
+	boxPlusMinus: number;
+	valOverBackup: number;
+}
+
 export interface BballRefPlayerQueryResItem {
 	name: string;
 	playerUrl: string;

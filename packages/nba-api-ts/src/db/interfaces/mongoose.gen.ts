@@ -1541,6 +1541,37 @@ export type Player2SeasonRegularSeasonStatsTotal = {
 };
 
 /**
+ * Lean version of Player2SeasonRegularSeasonStatsAdvDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
+ * ```
+ * const player2seasonObject = player2season.toObject();
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsAdv = {
+	pEffRat?: number;
+	tsPct?: number;
+	threePtAttRate?: number;
+	ftAttRate?: number;
+	offRebPct?: number;
+	defRebPct?: number;
+	totalRebPct?: number;
+	assistPct?: number;
+	stlPct?: number;
+	blkPct?: number;
+	tovPct?: number;
+	usgPct?: number;
+	offWinShares?: number;
+	defWinShares?: number;
+	winShares?: number;
+	winSharesPer48?: number;
+	offBoxPlusMinus?: number;
+	defBoxPlusMinus?: number;
+	boxPlusMinus?: number;
+	valOverBackup?: number;
+};
+
+/**
  * Lean version of Player2SeasonRegularSeasonStatsTeamSplitTotalDocument
  *
  * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonRegularSeasonStatsTeamSplitDocument.toObject()`.
@@ -1577,6 +1608,37 @@ export type Player2SeasonRegularSeasonStatsTeamSplitTotal = {
 };
 
 /**
+ * Lean version of Player2SeasonRegularSeasonStatsTeamSplitAdvDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonRegularSeasonStatsTeamSplitDocument.toObject()`.
+ * ```
+ * const player2seasonregularseasonstatsteamsplitObject = player2seasonregularseasonstatsteamsplit.toObject();
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTeamSplitAdv = {
+	pEffRat?: number;
+	tsPct?: number;
+	threePtAttRate?: number;
+	ftAttRate?: number;
+	offRebPct?: number;
+	defRebPct?: number;
+	totalRebPct?: number;
+	assistPct?: number;
+	stlPct?: number;
+	blkPct?: number;
+	tovPct?: number;
+	usgPct?: number;
+	offWinShares?: number;
+	defWinShares?: number;
+	winShares?: number;
+	winSharesPer48?: number;
+	offBoxPlusMinus?: number;
+	defBoxPlusMinus?: number;
+	boxPlusMinus?: number;
+	valOverBackup?: number;
+};
+
+/**
  * Lean version of Player2SeasonRegularSeasonStatsTeamSplitDocument
  *
  * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
@@ -1588,6 +1650,7 @@ export type Player2SeasonRegularSeasonStatsTeamSplit = {
 	team: Team2['_id'] | Team2;
 	_id: mongoose.Types.ObjectId;
 	totals: Player2SeasonRegularSeasonStatsTeamSplitTotal;
+	adv?: Player2SeasonRegularSeasonStatsTeamSplitAdv;
 };
 
 /**
@@ -1649,6 +1712,7 @@ export type Player2Season = {
 		stats: {
 			teamSplits: Player2SeasonRegularSeasonStatsTeamSplit[];
 			totals?: Player2SeasonPostseasonStat;
+			adv?: Player2SeasonRegularSeasonStatsAdv;
 		};
 	};
 	postseason: {
@@ -1760,6 +1824,7 @@ export type Player2Statics = {
 		playerUids: Player2Document['_id'][]
 	) => Promise<Player2Object[]>;
 	fantasyData: (this: Player2Model, year: number) => Promise<Player2Object[]>;
+	fantasyDataPerf: (this: Player2Model, year: number) => Promise<Player2Object[]>;
 	getPlayerSeasonStats: (
 		this: Player2Model,
 		playerUids: Player2Document['_id'][],
@@ -1884,6 +1949,38 @@ export type Player2SeasonRegularSeasonStatsTotalDocument =
  *
  * Pass this type to the Mongoose Model constructor:
  * ```
+ * const Player2Season = mongoose.model<Player2SeasonDocument, Player2SeasonModel>("Player2Season", Player2SeasonSchema);
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsAdvDocument =
+	mongoose.Document<mongoose.Types.ObjectId> & {
+		pEffRat?: number;
+		tsPct?: number;
+		threePtAttRate?: number;
+		ftAttRate?: number;
+		offRebPct?: number;
+		defRebPct?: number;
+		totalRebPct?: number;
+		assistPct?: number;
+		stlPct?: number;
+		blkPct?: number;
+		tovPct?: number;
+		usgPct?: number;
+		offWinShares?: number;
+		defWinShares?: number;
+		winShares?: number;
+		winSharesPer48?: number;
+		offBoxPlusMinus?: number;
+		defBoxPlusMinus?: number;
+		boxPlusMinus?: number;
+		valOverBackup?: number;
+	};
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
  * const Player2SeasonRegularSeasonStatsTeamSplit = mongoose.model<Player2SeasonRegularSeasonStatsTeamSplitDocument, Player2SeasonRegularSeasonStatsTeamSplitModel>("Player2SeasonRegularSeasonStatsTeamSplit", Player2SeasonRegularSeasonStatsTeamSplitSchema);
  * ```
  */
@@ -1917,6 +2014,38 @@ export type Player2SeasonRegularSeasonStatsTeamSplitTotalDocument =
 	};
 
 /**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const Player2SeasonRegularSeasonStatsTeamSplit = mongoose.model<Player2SeasonRegularSeasonStatsTeamSplitDocument, Player2SeasonRegularSeasonStatsTeamSplitModel>("Player2SeasonRegularSeasonStatsTeamSplit", Player2SeasonRegularSeasonStatsTeamSplitSchema);
+ * ```
+ */
+export type Player2SeasonRegularSeasonStatsTeamSplitAdvDocument =
+	mongoose.Document<mongoose.Types.ObjectId> & {
+		pEffRat?: number;
+		tsPct?: number;
+		threePtAttRate?: number;
+		ftAttRate?: number;
+		offRebPct?: number;
+		defRebPct?: number;
+		totalRebPct?: number;
+		assistPct?: number;
+		stlPct?: number;
+		blkPct?: number;
+		tovPct?: number;
+		usgPct?: number;
+		offWinShares?: number;
+		defWinShares?: number;
+		winShares?: number;
+		winSharesPer48?: number;
+		offBoxPlusMinus?: number;
+		defBoxPlusMinus?: number;
+		boxPlusMinus?: number;
+		valOverBackup?: number;
+	};
+
+/**
  * Mongoose Subdocument type
  *
  * Type of `Player2SeasonDocument["regularSeason.stats.teamSplits"]` element.
@@ -1925,6 +2054,7 @@ export type Player2SeasonRegularSeasonStatsTeamSplitDocument = mongoose.Types.Su
 	team: Team2Document['_id'] | Team2Document;
 	_id: mongoose.Types.ObjectId;
 	totals: Player2SeasonRegularSeasonStatsTeamSplitTotalDocument;
+	adv?: Player2SeasonRegularSeasonStatsTeamSplitAdvDocument;
 };
 
 /**
@@ -1983,6 +2113,7 @@ export type Player2SeasonDocument = mongoose.Types.Subdocument & {
 		stats: {
 			teamSplits: mongoose.Types.DocumentArray<Player2SeasonRegularSeasonStatsTeamSplitDocument>;
 			totals?: Player2SeasonPostseasonStatDocument;
+			adv?: Player2SeasonRegularSeasonStatsAdvDocument;
 		};
 	};
 	postseason: {

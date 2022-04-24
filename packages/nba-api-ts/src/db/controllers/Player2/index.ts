@@ -257,7 +257,9 @@ const formatStatTotals = (stats: PlayerCareerStatSeason): Player2SeasonPostseaso
 };
 
 export const storePlayerRegSeasonStats = async (player: Player2Document) => {
-	const careerStats = await getPlayerCareerStats(player.meta.helpers.bballRef.playerUrl);
+	const { basic: careerStats, adv: careerAdvStats } = await getPlayerCareerStats(
+		player.meta.helpers.bballRef.playerUrl
+	);
 	const seasons: Set<number> = new Set();
 	careerStats.map((s) => {
 		if (!isNaN(s.season)) seasons.add(s.season);
@@ -312,6 +314,10 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 				const stat: PlayerCareerStatSeason = filtered[i];
 				if (stat.teamAbbrev === 'TOT') {
 					player.seasons[seasonIdx].regularSeason.stats.totals = formatStatTotals(stat);
+					const year = player.seasons[seasonIdx].year;
+					player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.filter(
+						(s) => s.season === year && s.teamAbbrev === 'TOT'
+					) as never;
 				} else {
 					try {
 						const { _id } = await findTeamAbbrevYear(stat.teamAbbrev, year);
@@ -323,13 +329,21 @@ export const storePlayerRegSeasonStats = async (player: Player2Document) => {
 								(s) => s.team.toString() === _id.toString()
 							);
 							if (teamSplitIdx === -1) {
+								const { teamAbbrev } = stat;
 								player.seasons[seasonIdx].regularSeason.stats.teamSplits.addToSet({
 									team: _id,
-									totals: formatStatTotals(stat)
+									totals: formatStatTotals(stat),
+									adv: careerAdvStats.filter(
+										(s) => s.season === year && s.teamAbbrev === teamAbbrev
+									) as never
 								});
 							} else {
+								const { teamAbbrev } = stat;
 								player.seasons[seasonIdx].regularSeason.stats.teamSplits[teamSplitIdx].totals =
 									formatStatTotals(stat);
+								player.seasons[seasonIdx].regularSeason.stats.adv = careerAdvStats.filter(
+									(s) => s.season === year && s.teamAbbrev === teamAbbrev
+								) as never;
 							}
 						}
 					} catch (e) {

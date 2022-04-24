@@ -1,6 +1,10 @@
 import { loadPlayerPage, loadPlayerQuery } from '../fetchers';
 import { findByAlpha2 } from 'iso-3166-1-ts';
-import type { PlayerCareerStatSeason, BballRefPlayerQueryResItem } from '../types';
+import type {
+	PlayerCareerStatSeason,
+	BballRefPlayerQueryResItem,
+	PlayerCareerAdvStats
+} from '../types';
 
 interface PlayerName {
 	display: string;
@@ -166,6 +170,42 @@ const findPlayerCareerStats = ($: cheerio.Root) => {
 	return careerStats;
 };
 
+const findPlayerCareerAdvStats = ($: cheerio.Root) => {
+	const careerStats: PlayerCareerAdvStats[] = [];
+	$('#advanced')
+		.find('tbody > tr')
+		.each(function (i, row) {
+			const seasonStats: PlayerCareerAdvStats = {
+				season: parseInt($(row).find('[data-stat=season]').text().trim().split('-')[0]) + 1,
+				teamAbbrev: $(row).find('[data-stat=team_id]').text().trim(),
+				/* player efficiency rating */
+				pEffRat: parseFloat($(row).find('[data-stat=per]').text().trim()),
+				/* true shooting percentage */
+				tsPct: parseFloat($(row).find('[data-stat=ts_pct]').text().trim()),
+				threePtAttRate: parseFloat($(row).find('[data-stat=fg3a_per_fga_pct]').text().trim()),
+				ftAttRate: parseFloat($(row).find('[data-stat=fta_per_fga_pct]').text().trim()),
+				offRebPct: parseFloat($(row).find('[data-stat=orb_pct]').text().trim()),
+				defRebPct: parseFloat($(row).find('[data-stat=drb_pct]').text().trim()),
+				totalRebPct: parseFloat($(row).find('[data-stat=trb_pct]').text().trim()),
+				assistPct: parseFloat($(row).find('[data-stat=ast_pct]').text().trim()),
+				stlPct: parseFloat($(row).find('[data-stat=stl_pct]').text().trim()),
+				blkPct: parseFloat($(row).find('[data-stat=blk_pct]').text().trim()),
+				tovPct: parseFloat($(row).find('[data-stat=tov_pct]').text().trim()),
+				usgPct: parseFloat($(row).find('[data-stat=usg_pct]').text().trim()),
+				offWinShares: parseFloat($(row).find('[data-stat=ows]').text().trim()),
+				defWinShares: parseFloat($(row).find('[data-stat=dws]').text().trim()),
+				winShares: parseFloat($(row).find('[data-stat=ws]').text().trim()),
+				winSharesPer48: parseFloat($(row).find('[data-stat=ws_per_48]').text().trim()),
+				offBoxPlusMinus: parseFloat($(row).find('[data-stat=obpm]').text().trim()),
+				defBoxPlusMinus: parseFloat($(row).find('[data-stat=dbpm]').text().trim()),
+				boxPlusMinus: parseFloat($(row).find('[data-stat=bpm]').text().trim()),
+				valOverBackup: parseFloat($(row).find('[data-stat=vorp]').text().trim())
+			};
+			careerStats.push(seasonStats);
+		});
+	return careerStats;
+};
+
 export const getPlayerData = async (playerUrl: string) => {
 	const $ = await loadPlayerPage(playerUrl);
 	return findPlayerMeta($);
@@ -173,7 +213,9 @@ export const getPlayerData = async (playerUrl: string) => {
 
 export const getPlayerCareerStats = async (playerUrl: string) => {
 	const $ = await loadPlayerPage(playerUrl);
-	return findPlayerCareerStats($);
+	const basic = findPlayerCareerStats($);
+	const adv = findPlayerCareerAdvStats($);
+	return { basic, adv };
 };
 
 const findPlayerQueryRes = ($: cheerio.Root): BballRefPlayerQueryResItem[] => {

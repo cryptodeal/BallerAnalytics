@@ -52,6 +52,32 @@ const statTotalsSchema = new mongoose.Schema(
 	{ _id: false }
 );
 
+const statAdvSchema = new mongoose.Schema(
+	{
+		pEffRat: { type: Number },
+		tsPct: { type: Number },
+		threePtAttRate: { type: Number },
+		ftAttRate: { type: Number },
+		offRebPct: { type: Number },
+		defRebPct: { type: Number },
+		totalRebPct: { type: Number },
+		assistPct: { type: Number },
+		stlPct: { type: Number },
+		blkPct: { type: Number },
+		tovPct: { type: Number },
+		usgPct: { type: Number },
+		offWinShares: { type: Number },
+		defWinShares: { type: Number },
+		winShares: { type: Number },
+		winSharesPer48: { type: Number },
+		offBoxPlusMinus: { type: Number },
+		defBoxPlusMinus: { type: Number },
+		boxPlusMinus: { type: Number },
+		valOverBackup: { type: Number }
+	},
+	{ _id: false }
+);
+
 const Player2Schema: Player2Schema = new mongoose.Schema({
 	meta: {
 		helpers: {
@@ -126,12 +152,18 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 					totals: {
 						type: statTotalsSchema
 					},
+					adv: {
+						type: statAdvSchema
+					},
 					teamSplits: [
 						{
 							team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team2', required: true },
 							totals: {
 								type: statTotalsSchema,
 								required: true
+							},
+							adv: {
+								type: statAdvSchema
 							}
 						}
 					]
@@ -212,26 +244,115 @@ Player2Schema.statics = {
 					}
 				}
 			},
-			// TODO: use $lookup and $filter to only return total stats for the player for a game
-			/*
-        {
-          $lookup: {
-            from: 'game2',
-            localField: 'seasons.regularSeason.games',
-            foreignField: '_id',
-            as: 'seasons.regularSeason.games'
-          }
-        },
-        {
-          $unwind: '$seasons.regularSeason.games'
-        },
-      */
 			{
 				$project: {
 					name: 1,
 					birthDate: 1,
 					'seasons.year': 1,
 					'seasons.regularSeason.games': 1
+				}
+			}
+		]);
+	},
+
+	/* optimized version of the above fantasyData pipeline */
+	async fantasyDataPerf(year: number): Promise<Player2Object[]> {
+		return await this.aggregate([
+			{
+				$limit: 10
+			},
+			{
+				$match: {
+					$and: [
+						{
+							'seasons.year': year
+						},
+						{
+							'seasons.year': year - 1
+						}
+					]
+				}
+			},
+			{
+				$addFields: {
+					gpSum: {
+						$sum: '$seasons.regularSeason.stats.totals.games'
+					},
+					gsSum: {
+						$sum: '$seasons.regularSeason.stats.totals.gamesStarted'
+					}
+				}
+			},
+			// { $unwind: '$seasons' },
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					position: 1,
+					gpSum: 1,
+					gsSum: 1,
+					'seasons.year': 1,
+					'seasons.regularSeason.games': 1
+				}
+			},
+			{
+				$lookup: {
+					from: 'game2',
+					localField: 'seasons.regularSeason.games',
+					foreignField: '_id',
+					as: 'gameStats'
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					position: 1,
+					gpSum: 1,
+					gsSum: 1,
+					'gameStats.home.players': {
+						$filter: {
+							input: '$gameStats.home.players',
+							as: 'players',
+							cond: {
+								$and: [
+									{
+										$eq: ['$$players.player', '$_id']
+									},
+									{
+										$gt: ['$$players.stats.totals.minutes', 0]
+									}
+								]
+							}
+						}
+					},
+					'gameStats.visitor.players': {
+						$filter: {
+							input: '$gameStats.visitor.players',
+							as: 'players',
+							cond: {
+								$and: [
+									{
+										$eq: ['$$players.player', '$_id']
+									},
+									{
+										$gt: ['$$players.stats.totals.minutes', 0]
+									}
+								]
+							}
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					position: 1,
+					gpSum: 1,
+					gsSum: 1,
+					'gameStats.home.players.stats.totals': 1,
+					'gameStats.visitor.players.stats.totals': 1
 				}
 			}
 		]);

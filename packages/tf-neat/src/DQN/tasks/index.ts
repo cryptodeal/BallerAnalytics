@@ -6,10 +6,9 @@ import type { TeamOpts, TaskState, DraftTaskParams, TaskStepOutput } from './typ
 import type { Player } from '@balleranalytics/nba-api-ts';
 
 /* TODO: tune parameters */
-export const VALID_PICK_REWARD = 1;
-export const NO_FRUIT_REWARD = -0.2;
-export const FRUIT_REWARD = 10;
-export const DEATH_REWARD = -10;
+export const VALID_ROSTER_REWARD = 10;
+export const AVAIL_PLAYER_REWARD = 10;
+export const FAILED_DRAFT_REWARD = -20;
 
 export enum Position {
 	pg = 0,
@@ -65,6 +64,8 @@ export class DraftTask {
 	public round = 0;
 	public current_pick_number = 0;
 
+	/* draftPool is effectively the list of actions for the Agent Task */
+	private draftPool: Player[] = [];
 	private dims: [number, number, number];
 	private selfState: number[][] = [];
 	private envState: number[][] = [];
@@ -73,7 +74,7 @@ export class DraftTask {
 	private pickSlot!: number;
 	private draftOrder: number[] = [];
 	private pick!: Player;
-	private rosterSlots: TeamOpts = {
+	private roster: TeamOpts = {
 		pg: 0,
 		sg: 0,
 		sf: 0,
@@ -125,22 +126,6 @@ export class DraftTask {
 		return this.getState();
 	}
 
-	private init() {
-		/* reset state of task actor */
-		this.selfState = [];
-		/**
-		 * Create Array<boolean> where length === # of teams in draft
-		 * if this.draftOrder[i] === true, neural net make step
-		 * else, simulate opponent picks
-		 */
-		this.pickSlot = getRandomInt(0, this.oppCount);
-		this.draftOrder = [...Array(this.oppCount + 1).keys()];
-	}
-
-	private makeEnv() {
-		// const numPlayers =
-	}
-
 	/**
 	 * Perform a step of the Task
 	 *
@@ -173,7 +158,24 @@ export class DraftTask {
 		};
 	}
 
+	private init() {
+		/* reset state of task actor */
+		this.selfState = [];
+		/**
+		 * Create Array<boolean> where length === # of teams in draft
+		 * if this.draftOrder[i] === true, neural net make step
+		 * else, simulate opponent picks
+		 */
+		this.pickSlot = getRandomInt(0, this.oppCount);
+		this.draftOrder = [...Array(this.oppCount + 1).keys()];
+	}
+
+	private makeEnv() {
+		// const numPlayers =
+	}
+
 	private draftPlayer(action: number) {
+		const pick = this.draftPool[action];
 		return;
 	}
 
