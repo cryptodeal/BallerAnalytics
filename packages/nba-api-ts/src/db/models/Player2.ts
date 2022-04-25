@@ -6,7 +6,8 @@ import type {
 	Player2Schema,
 	Player2Object,
 	Player2SeasonPostseasonStatDocument,
-	Player2SeasonRegularSeasonStatsTeamSplitDocument
+	Player2SeasonRegularSeasonStatsTeamSplitDocument,
+	Game2Object
 } from '../interfaces/mongoose.gen';
 
 export type Player2Stats = {
@@ -19,6 +20,13 @@ export type Player2Stats = {
 
 export type Player2StatsObject = Player2Object & {
 	stats: [Player2Stats];
+};
+
+export type MlFantasyPlayerData = Player2Object & {
+	gpSum: number;
+	gsSum: number;
+	latestGameStats: Game2Object[];
+	trainingGameStats: Game2Object[];
 };
 
 const statTotalsSchema = new mongoose.Schema(
@@ -256,11 +264,8 @@ Player2Schema.statics = {
 	},
 
 	/* optimized version of the above fantasyData pipeline */
-	async fantasyDataPerf(year: number): Promise<Player2Object[]> {
+	async fantasyDataPerf(year: number): Promise<MlFantasyPlayerData[]> {
 		return await this.aggregate([
-			{
-				$limit: 10
-			},
 			{
 				$match: {
 					$and: [
@@ -275,6 +280,82 @@ Player2Schema.statics = {
 			},
 			{
 				$addFields: {
+					tempLatestSeason: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $eq: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$lookup: {
+					from: 'game2',
+					localField: 'tempLatestSeason.regularSeason.games',
+					foreignField: '_id',
+					as: 'latestGameStats'
+				}
+			},
+			{
+				$project: {
+					'name.full': 1,
+					'name.display': 1,
+					birthDate: 1,
+					position: 1,
+					'latestGameStats.meta.helpers.bballRef.year': 1,
+					'latestGameStats.home.players.player': 1,
+					'latestGameStats.home.players.stats.totals': 1,
+					/* TODO: optimize filter to reduce response size */
+					/*
+            {
+              $filter: {
+                input: '$latestGameStats.home.players',
+                as: 'players',
+                cond: {
+                  $and: [
+                    {
+                      $eq: ['$$players.player', '$$_id']
+                    }
+                  ]
+                }
+              }
+            },
+          */
+
+					'latestGameStats.visitor.players.player': 1,
+					'latestGameStats.visitor.players.stats.totals': 1,
+					/* TODO: Fix filter to reduce response size */
+					/*
+            {
+              $filter: {
+                input: '$latestGameStats.visitor.players',
+                as: 'players',
+                cond: {
+                  $and: [
+                    {
+                      $eq: ['$$players.player', '$$_id']
+                    }
+                  ]
+                }
+              }
+            },
+          */
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $lte: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$addFields: {
 					gpSum: {
 						$sum: '$seasons.regularSeason.stats.totals.games'
 					},
@@ -283,24 +364,30 @@ Player2Schema.statics = {
 					}
 				}
 			},
-			// { $unwind: '$seasons' },
-			{
-				$project: {
-					name: 1,
-					birthDate: 1,
-					position: 1,
-					gpSum: 1,
-					gsSum: 1,
-					'seasons.year': 1,
-					'seasons.regularSeason.games': 1
-				}
-			},
+			/* TODO: Needed if fix filters */
+			/*
+        {
+          $project: {
+            'name.full': 1,
+            'name.display': 1,
+            birthDate: 1,
+            position: 1,
+            gpSum: 1,
+            gsSum: 1,
+            'latestGameStats.meta.helpers.bballRef.year': 1,
+            'latestGameStats.home.players': 1,
+            'latestGameStats.visitor.players': 1,
+            'seasons.year': 1,
+            'seasons.regularSeason.games': 1
+          }
+        },
+      */
 			{
 				$lookup: {
 					from: 'game2',
 					localField: 'seasons.regularSeason.games',
 					foreignField: '_id',
-					as: 'gameStats'
+					as: 'trainingGameStats'
 				}
 			},
 			{
@@ -308,53 +395,65 @@ Player2Schema.statics = {
 					name: 1,
 					birthDate: 1,
 					position: 1,
+					latestGameStats: 1,
 					gpSum: 1,
 					gsSum: 1,
-					'gameStats.home.players': {
-						$filter: {
-							input: '$gameStats.home.players',
-							as: 'players',
-							cond: {
-								$and: [
-									{
-										$eq: ['$$players.player', '$_id']
-									},
-									{
-										$gt: ['$$players.stats.totals.minutes', 0]
-									}
-								]
-							}
-						}
-					},
-					'gameStats.visitor.players': {
-						$filter: {
-							input: '$gameStats.visitor.players',
-							as: 'players',
-							cond: {
-								$and: [
-									{
-										$eq: ['$$players.player', '$_id']
-									},
-									{
-										$gt: ['$$players.stats.totals.minutes', 0]
-									}
-								]
-							}
-						}
-					}
-				}
-			},
-			{
-				$project: {
-					name: 1,
-					birthDate: 1,
-					position: 1,
-					gpSum: 1,
-					gsSum: 1,
-					'gameStats.home.players.stats.totals': 1,
-					'gameStats.visitor.players.stats.totals': 1
+					'trainingGameStats.meta.helpers.bballRef.year': 1,
+					'trainingGameStats.home.players.player': 1,
+					'trainingGameStats.home.players.stats.totals': 1,
+					/* TODO: Fix filter to reduce response size */
+					/*
+            {
+              $filter: {
+                input: '$trainingGameStats.visitor.players',
+                as: 'players',
+                cond: {
+                  $and: [
+                    {
+                      $eq: ['$$players.player', '$$_id']
+                    }
+                  ]
+                }
+              }
+            },
+          */
+					'trainingGameStats.visitor.players.player': 1,
+					'trainingGameStats.visitor.players.stats.totals': 1
+
+					/* TODO: Fix filter to reduce response size */
+					/*
+            {
+              $filter: {
+                input: '$trainingGameStats.visitor.players',
+                as: 'players',
+                cond: {
+                  $and: [
+                    {
+                      $eq: ['$$players.player', '$$_id']
+                    }
+                  ]
+                }
+              }
+            }
+          */
 				}
 			}
+			/* TODO: Needed if fix filters */
+			/*
+        {
+          $project: {
+            name: 1,
+            birthDate: 1,
+            position: 1,
+            latestGameStats: 1,
+            gpSum: 1,
+            gsSum: 1,
+            'trainingGameStats.home.players': 1,
+            'trainingGameStats.visitor.players': 1,
+            'trainingGameStats.meta.helpers.bballRef.maxYear': 1
+          }
+        }
+      */
 		]);
 	},
 

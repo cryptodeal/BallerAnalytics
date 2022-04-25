@@ -42,8 +42,16 @@ export type PlayerStatTotals = {
 	};
 };
 
+type StatTotals = {
+	totals: PlayerStatTotals;
+};
 export type ParsedGame = {
 	date: Date;
+	stats: PlayerStatTotals;
+};
+
+export type DQNParsedGame = {
+	season: number;
 	stats: PlayerStatTotals;
 };
 

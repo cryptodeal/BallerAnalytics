@@ -87,6 +87,9 @@ export enum Position {
 	g = 5
 }
 
+// TODO: Write Base class to remove code duplication between ml player helper classes
+// class BasePlayer {}
+
 export class Player {
 	public _playerId: Player2Object['_id'];
 	public _playerBirthdate!: Date;

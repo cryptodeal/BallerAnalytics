@@ -11,4 +11,5 @@ export { serverlessConnect, initConnect, endConnect } from './db/connect';
 
 /* new exports to be used for data pipeline from db to tfjs */
 export * from './db/controllers/ml';
+export * from './db/controllers/ml/DQN';
 export * from './db/controllers/ml/types.d';
