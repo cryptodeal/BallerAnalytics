@@ -279,6 +279,16 @@ Player2Schema.statics = {
 				}
 			},
 			{
+				$project: {
+					'name.full': 1,
+					birthDate: 1,
+					position: 1,
+					'seasons.year': 1,
+					'seasons.regularSeason.games': 1,
+					'seasons.regularSeason.stats.totals': 1
+				}
+			},
+			{
 				$addFields: {
 					tempLatestSeason: {
 						$filter: {
@@ -302,7 +312,6 @@ Player2Schema.statics = {
 			{
 				$project: {
 					'name.full': 1,
-					'name.display': 1,
 					birthDate: 1,
 					position: 1,
 					'latestGameStats.meta.helpers.bballRef.year': 1,
@@ -348,7 +357,7 @@ Player2Schema.statics = {
 							input: '$seasons',
 							as: 'seasons',
 							cond: {
-								$and: [{ $lte: ['$$seasons.year', year] }]
+								$and: [{ $lt: ['$$seasons.year', year] }]
 							}
 						}
 					}
@@ -419,7 +428,6 @@ Player2Schema.statics = {
           */
 					'trainingGameStats.visitor.players.player': 1,
 					'trainingGameStats.visitor.players.stats.totals': 1
-
 					/* TODO: Fix filter to reduce response size */
 					/*
             {

@@ -4,9 +4,11 @@ import config from '../config';
 
 const test = async () => {
 	await serverlessConnect(config.MONGO_URI);
-	return Player2.fantasyDataPerf(2021).then((players) => {
-		return players.map((p) => new DQNPlayer(p));
-	});
+	const players: DQNPlayer[] = [];
+	for (const player of await Player2.fantasyDataPerf(2021)) {
+		players.push(new DQNPlayer(player));
+	}
+	return players;
 };
 
-test();
+test().then(console.log);

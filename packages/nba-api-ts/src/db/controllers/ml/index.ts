@@ -35,7 +35,10 @@ export enum PositionIdx {
 	F = 6
 }
 
-export const calcFantasyPoints = (playerGameStats: PlayerStatTotals): number => {
+export const calcFantasyPoints = (
+	playerGameStats: PlayerStatTotals | undefined
+): number | undefined => {
+	if (!playerGameStats) return undefined;
 	const {
 		points,
 		threePointersMade,

@@ -1,69 +1,10 @@
 // import { Player2, Game2 } from '../../..';
 import dayjs from 'dayjs';
 import { PositionIdx, calcFantasyPoints /*,EspnScoring*/ } from '.';
-import type { DQNParsedGame, PositionEncoded } from './types';
+import type { DQNParsedGame, PlayerStatTotals, PositionEncoded } from './types';
 import type { /*Player2Object,*/ Game2Object, Player2Document /*, Game2Document*/ } from '../../..';
 import type { MlFantasyPlayerData } from '../../models/Player2';
 
-/**
- * Inputs for each player
- * [
- *   age,
- *   seasonsExp,
- *   gamePlayedSum,
- *   gamesStartedSum,
- *   careerMinSum,
- *   careerFgSum,
- *   careerFgaSum,
- *   careerFtSum,
- *   careerFtaSum,
- *   career3pSum,
- *   career3paSum,
- *   careerPtsSum,
- *   careerRebSum,
- *   careerAstSum,
- *   careerStlSum,
- *   careerBlkSum,
- *   careerTovSum,
- *   careerAvgMin,
- *   careerAvgFg,
- *   careerAvgFga,
- *   careerAvgFgPct,
- *   careerAvgFt,
- *   careerAvgFta,
- *   careerAvgFtPct,
- *   careerAvgThreePt,
- *   careerAvgThreePtPct,
- *   careerAvgPts,
- *   careerAvgReb,
- *   careerAvgAst,
- *   careerAvgStl,
- *   careerAvgBlk,
- *   careerAvgTov
- *   lastSznAvgMin,
- *   lastSznAvgFg,
- *   lastSznAvgFga,
- *   lastSznAvgFgPct,
- *   lastSznAvgFt,
- *   lastSznAvgFta,
- *   lastSznAvgFtPct,
- *   lastSznAvgThreePt,
- *   lastSznAvgThreePtPct,
- *   lastSznAvgPts,
- *   lastSznAvgReb,
- *   lastSznAvgAst,
- *   lastSznAvgStl,
- *   lastSznAvgBlk,
- *   lastSznAvgTov
- *   position[0],
- *   position[1],
- *   position[2],
- *   position[3],
- *   position[4],
- *   position[5],
- *   position[6]
- * ]
- */
 /* TODO: Write class of player for DQN Model API */
 export class DQNPlayer {
 	private _id: Player2Document['_id'];
@@ -92,6 +33,7 @@ export class DQNPlayer {
 		this.name = name;
 		this.latestGameStats = this.parseGames(latestGameStats);
 		this.trainParsedGameStats = this.parseGames(trainingGameStats);
+		this.initRawData(this.trainParsedGameStats, this.latestGameStats);
 	}
 
 	/* resets inputs, labels, and rawData */
@@ -107,14 +49,17 @@ export class DQNPlayer {
 			ft = 0,
 			fta = 0,
 			threePts = 0,
+			threePtsAtt = 0,
 			pts = 0,
 			reb = 0,
 			ast = 0,
 			stl = 0,
 			blk = 0,
 			tov = 0,
-			fppg = 0;
+			fp = 0;
+		const seasons: Set<number> = new Set();
 		for (let i = 0; i < count; i++) {
+			seasons.add(games[i].season);
 			const game = games[i];
 			if (game.stats.minutes) {
 				let totalSec = game.stats.minutes * 60;
@@ -126,6 +71,7 @@ export class DQNPlayer {
 			if (game.stats.freeThrowsMade) ft += game.stats.freeThrowsMade;
 			if (game.stats.freeThrowsAttempted) fta += game.stats.freeThrowsAttempted;
 			if (game.stats.threePointersMade) threePts += game.stats.threePointersMade;
+			if (game.stats.threePointersAttempted) threePtsAtt += game.stats.threePointersAttempted;
 			if (game.stats.points) pts += game.stats.points;
 			if (game.stats.totalReb) {
 				reb += game.stats.totalReb;
@@ -137,8 +83,9 @@ export class DQNPlayer {
 			if (game.stats.steals) stl += game.stats.steals;
 			if (game.stats.blocks) blk += game.stats.blocks;
 			if (game.stats.turnovers) tov += game.stats.turnovers;
-			if (game.stats.fantasyPts) fppg += game.stats.fantasyPts;
+			if (game.stats.fantasyPts) fp += game.stats.fantasyPts;
 		}
+
 		return {
 			min,
 			fg,
@@ -146,19 +93,21 @@ export class DQNPlayer {
 			ft,
 			fta,
 			threePts,
+			threePtsAtt,
 			pts,
 			reb,
 			ast,
 			stl,
 			blk,
 			tov,
-			fppg
+			fp,
+			exp: seasons.size
 		};
 	}
 
 	public calcAverages(games: DQNParsedGame[]) {
 		const count = games.length || 0;
-		const { min, fg, fga, ft, fta, threePts, pts, reb, ast, stl, blk, tov, fppg } =
+		const { min, fg, fga, ft, fta, threePts, threePtsAtt, pts, reb, ast, stl, blk, tov, fp, exp } =
 			this.calcStatSums(games, count);
 
 		return {
@@ -168,13 +117,15 @@ export class DQNPlayer {
 			avgFt: ft / count,
 			avgFta: fta / count,
 			avgThreeP: threePts / count,
+			avgThreePA: threePtsAtt / count,
 			avgPts: pts / count,
 			avgReb: reb / count,
 			avgAst: ast / count,
 			avgStl: stl / count,
 			avgBlk: blk / count,
 			avgTov: tov / count,
-			avgFppg: fppg / count
+			avgFppg: fp / count,
+			avgFppSzn: fp / exp
 		};
 	}
 
@@ -188,28 +139,168 @@ export class DQNPlayer {
 		return age;
 	};
 
-	public preprocessData(inputs: DQNParsedGame[], labels: DQNParsedGame[]) {
-		const inputAvg = this.calcAverages(inputs);
-		const inputSums = this.calcStatSums(inputs, inputs.length);
+	public initRawData(inputs: DQNParsedGame[], labels: DQNParsedGame[]) {
+		const {
+			avgMin,
+			avgFg,
+			avgFga,
+			avgFt,
+			avgFta,
+			avgThreeP,
+			avgThreePA,
+			avgPts,
+			avgReb,
+			avgAst,
+			avgStl,
+			avgBlk,
+			avgTov,
+			avgFppg,
+			avgFppSzn
+		} = this.calcAverages(inputs);
+		const { min, fg, fga, ft, fta, threePts, threePtsAtt, pts, reb, ast, stl, blk, tov, fp, exp } =
+			this.calcStatSums(inputs, inputs.length);
+		const avgFgPct = fg && fga && fg !== 0 && fga !== 0 ? fg / fga : 0;
+		const avgFtPct = ft && fta && ft !== 0 && fta !== 0 ? ft / fta : 0;
+		const avg3Pct =
+			threePts && threePtsAtt && threePts !== 0 && threePtsAtt !== 0 ? threePts / threePtsAtt : 0;
+
 		const bdayStr = new Date(this.birthDate).toISOString();
 		const maxYear = Math.max.apply(
 			null,
-			inputs.map(function (o) {
-				return o.season;
-			})
+			inputs.map((o) => o.season)
 		);
-		const inputAge = this.getAge(bdayStr, dayjs(this.birthDate).year(maxYear).toDate());
-		const lastSznAvg = this.calcAverages(labels.filter((g) => g.season === maxYear));
+		const age = this.getAge(bdayStr, dayjs(this.birthDate).year(maxYear).toDate());
+		const lastSznGames = inputs.filter((o) => o.season === maxYear);
+		const lastSznGameCount = lastSznGames.length;
+
+		const {
+			min: lastSznMinSum,
+			fg: lastSznFgSum,
+			fga: lastSznFgaSum,
+			ft: lastSznFtSum,
+			fta: lastSznFtaSum,
+			threePts: lastSznThreePtsSum,
+			threePtsAtt: lastSznThreePtsAttSum,
+			pts: lastSznPtsSum,
+			reb: lastSznRebSum,
+			ast: lastSznAstSum,
+			stl: lastSznStlSum,
+			blk: lastSznBlkSum,
+			tov: lastSznTovSum,
+			fp: lastSznFpSum
+		} = this.calcStatSums(lastSznGames, lastSznGameCount);
+		const lastSznAvgFgPct =
+			lastSznFgSum && lastSznFgaSum && lastSznFgSum !== 0 && lastSznFgaSum !== 0
+				? lastSznFgSum / lastSznFgaSum
+				: 0;
+		const lastSznAvgFtPct =
+			lastSznFtSum && lastSznFtaSum && lastSznFtSum !== 0 && lastSznFtaSum !== 0
+				? lastSznFtSum / lastSznFtaSum
+				: 0;
+		const lastSznAvg3Pct =
+			lastSznThreePtsSum &&
+			lastSznThreePtsAttSum &&
+			lastSznThreePtsSum !== 0 &&
+			lastSznThreePtsAttSum !== 0
+				? lastSznThreePtsSum / lastSznThreePtsAttSum
+				: 0;
+		const {
+			avgMin: lastSznMin,
+			avgFg: lastSznFg,
+			avgFga: lastSznFga,
+			avgFt: lastSznFt,
+			avgFta: lastSznFta,
+			avgThreeP: lastSznThreeP,
+			avgThreePA: lastSznThreePA,
+			avgPts: lastSznPts,
+			avgReb: lastSznReb,
+			avgAst: lastSznAst,
+			avgStl: lastSznStl,
+			avgBlk: lastSznBlk,
+			avgTov: lastSznTov,
+			avgFppg: lastSznFppg
+		} = this.calcAverages(lastSznGames);
 
 		/* TODO: format the above inputs to Array<number> and set this.inputs */
+		this.inputs = [
+			age, // 0 - age
+			exp, // 1 - seasonsExp
+			this.gpSum, // 2 - gamePlayedSum
+			this.gsSum, // 3 - gamesStartedSum
+			min, // 4 - careerMinSum
+			fg, // 5 - careerFgSum
+			fga, // 6 - careerFgaSum
+			ft, // 7 - careerFtSum
+			fta, // 8 - careerFtaSum
+			threePts, // 9 - career3pSum
+			threePtsAtt, // 10 - career3paSum
+			pts, // 11 - careerPtsSum
+			reb, // 12 - careerRebSum
+			ast, // 13 - careerAstSum
+			stl, // 14 - careerStlSum
+			blk, // 15 - careerBlkSum
+			tov, // 16 - careerTovSum
+			fp, // 17 - careerFpSum
+			avgMin, // 18 - careerAvgMin
+			avgFg, // 19 - careerAvgFg
+			avgFga, // 20 - careerAvgFga
+			avgFgPct, // 21 - careerAvgFgPct
+			avgFt, // 22 - careerAvgFt
+			avgFta, // 23 - careerAvgFta
+			avgFtPct, // 24 - careerAvgFtPct
+			avgThreeP, // 25 - careerAvgThreePt
+			avgThreePA, // 26 - careerAvgThreePtAtt
+			avg3Pct, // 27 - careerAvgThreePtPct
+			avgPts, // 28 - careerAvgPts
+			avgReb, // 29 - careerAvgReb
+			avgAst, // 30 - careerAvgAst
+			avgStl, // 31 - careerAvgStl
+			avgBlk, // 32 - careerAvgBlk
+			avgTov, // 33 - careerAvgTov
+			avgFppg, // 34 - career Avg Fantasy Points Per Game
+			avgFppSzn, // 35 - career Avg Fantasy Points Per Season
+			lastSznMinSum, // 36 - lastSznMinSum
+			lastSznFgSum, // 37 - lastSznFgSum
+			lastSznFgaSum, // 38 - lastSznFgaSum
+			lastSznFtSum, // 39 - lastSznFtaSum
+			lastSznFtaSum, // 40 - lastSznFtSum
+			lastSznThreePtsSum, // 41 - lastSznThreePtsSum
+			lastSznThreePtsAttSum, // 42 - lastSznThreePtsAttSum
+			lastSznPtsSum, // 43 - lastSznPtsSum
+			lastSznRebSum, // 44 - lastSznRebSum
+			lastSznAstSum, // 45 - lastSznAstSum
+			lastSznStlSum, // 46 - lastSznStlSum
+			lastSznBlkSum, // 47 - lastSznBlkSum
+			lastSznTovSum, // 48 - lastSznTovSum
+			lastSznFpSum, // 49 - lastSznFpSum
+			lastSznMin, // 50 - lastSznAvgMin
+			lastSznFg, // 51 - lastSznAvgFg
+			lastSznFga, // 52 - lastSznAvgFga
+			lastSznAvgFgPct, // 53 - lastSznAvgFgPct
+			lastSznFt, // 54 - lastSznAvgFt
+			lastSznFta, // 55 - lastSznAvgFta
+			lastSznAvgFtPct, // 56 - lastSznAvgFtPct
+			lastSznThreeP, // 57 - lastSznAvgThreePt
+			lastSznThreePA, // 58 - lastSznAvgThreePtAtt
+			lastSznAvg3Pct, // 59 - lastSznAvgThreePtPct
+			lastSznPts, // 60 - lastSznAvgPts
+			lastSznReb, // 61 - lastSznAvgReb
+			lastSznAst, // 62 - lastSznAvgAst
+			lastSznStl, // 63 - lastSznAvgStl
+			lastSznBlk, // 64 - lastSznAvgBlk
+			lastSznTov, // 65 - lastSznAvgTov
+			lastSznFppg, // 66 - lastSzn Avg Fantasy Points Per Game
+			...this.positionEncd // position one hot encoded (occupies index: 67 - 73)
+		];
+		console.log('this.inputs.length', this.inputs.length);
 
-		const { fppg } = this.calcStatSums(labels, labels.length);
-		this.labels = [fppg];
+		const { fp: labelFp } = this.calcStatSums(labels, labels.length);
+		this.labels = [labelFp];
 		/* TODO: set this.rawData */
 	}
 
 	/* given game, parses and returns cleaned stats */
-	public parseGame(game: Game2Object): DQNParsedGame {
+	public parseGame(game: Game2Object): DQNParsedGame | undefined {
 		/* bleh, ugly destructuring of game object, but... */
 		const {
 			meta: {
@@ -232,6 +323,21 @@ export class DQNPlayer {
 		);
 		if (!homeFiltered.length) {
 			const [{ stats }] = visitorFiltered;
+			if (stats.totals) {
+				(stats.totals as PlayerStatTotals).fantasyPts = calcFantasyPoints(stats.totals);
+				const totals = stats.totals;
+				const parsedGame: DQNParsedGame = {
+					season,
+					stats: totals
+				};
+				return parsedGame;
+			}
+			return undefined;
+		}
+
+		const [{ stats }] = homeFiltered;
+		if (stats.totals) {
+			(stats.totals as PlayerStatTotals).fantasyPts = calcFantasyPoints(stats.totals);
 			const totals = stats.totals;
 			const parsedGame: DQNParsedGame = {
 				season,
@@ -239,20 +345,13 @@ export class DQNPlayer {
 			};
 			return parsedGame;
 		}
-
-		const [{ stats }] = homeFiltered;
-		const totals = stats.totals;
-		const parsedGame: DQNParsedGame = {
-			season,
-			stats: totals
-		};
-		return parsedGame;
+		return undefined;
 	}
 
 	/* given array of games, returns parsedGames */
 	public parseGames(games: Game2Object[]): DQNParsedGame[] {
 		const gameCount = games.length;
-		const parsedGames: DQNParsedGame[] = new Array(gameCount);
+		const parsedGames: DQNParsedGame[] = [];
 		for (let i = 0; i < gameCount; i++) {
 			const tempGame = games[i];
 			// console.log(tempGame);
@@ -260,10 +359,8 @@ export class DQNPlayer {
 			// console.log('visitor.players:', tempGame.visitor.players);
 			const parsedGame = this.parseGame(tempGame);
 			// console.log(parsedGame.stats);
-			if (parsedGame.stats && parsedGame.stats.minutes && parsedGame.stats.minutes > 0) {
-				parsedGames[i] = parsedGame;
-			} else {
-				parsedGames.slice(i, 1);
+			if (parsedGame && parsedGame.stats.minutes && parsedGame.stats.minutes > 0) {
+				parsedGames.push(parsedGame);
 			}
 		}
 		return parsedGames;
