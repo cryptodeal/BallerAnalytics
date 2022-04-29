@@ -21,7 +21,8 @@ export class DQNPlayer {
 	public positionEncd: PositionEncoded = [0, 0, 0, 0, 0, 0, 0];
 	public inputs: number[] = [];
 	public labels: number[] = [];
-	public rawData: { inputs: number[]; labels: number[] }[] = [];
+	public isInvalid = false;
+	public rawData!: { inputs: number[]; labels: number[] };
 	constructor(playerData: MlFantasyPlayerData) {
 		const { _id, gpSum, gsSum, birthDate, position, name, latestGameStats, trainingGameStats } =
 			playerData;
@@ -40,7 +41,7 @@ export class DQNPlayer {
 	public reset() {
 		this.inputs = [];
 		this.labels = [];
-		this.rawData = [];
+		this.rawData = { inputs: [], labels: [] };
 	}
 	private calcStatSums(games: DQNParsedGame[], count: number) {
 		let min = 0,
@@ -290,15 +291,25 @@ export class DQNPlayer {
 			lastSznBlk, // 64 - lastSznAvgBlk
 			lastSznTov, // 65 - lastSznAvgTov
 			lastSznFppg, // 66 - lastSzn Avg Fantasy Points Per Game
-			...this.positionEncd // position one hot encoded (occupies index: 67 - 73)
+			0, // 67 - encoded onRoster (0 = false, else = # of team)
+			...this.positionEncd // position one hot encoded (occupies index: 68 - 74)
 		];
-		console.log('this.inputs.length', this.inputs.length);
-
+		this.validate();
 		const { fp: labelFp } = this.calcStatSums(labels, labels.length);
 		this.labels = [labelFp];
 		/* TODO: set this.rawData */
+		this.rawData = {
+			inputs: this.inputs,
+			labels: this.labels
+		};
 	}
 
+	public validate() {
+		const inputCount = this.inputs.length;
+		for (let i = 0; i < inputCount; i++) {
+			if (isNaN(this.inputs[i])) this.isInvalid = true;
+		}
+	}
 	/* given game, parses and returns cleaned stats */
 	public parseGame(game: Game2Object): DQNParsedGame | undefined {
 		/* bleh, ugly destructuring of game object, but... */
@@ -315,14 +326,8 @@ export class DQNPlayer {
 		//console.log(game.home.players);
 		//console.log(game.visitor.players);
 
-		const homeFiltered = home.players.filter(
-			({ player }) => player?.toString() === this._id.toString()
-		);
-		const visitorFiltered = visitor.players.filter(
-			({ player }) => player?.toString() === this._id.toString()
-		);
-		if (!homeFiltered.length) {
-			const [{ stats }] = visitorFiltered;
+		if (!home.players.length) {
+			const [{ stats }] = visitor.players;
 			if (stats.totals) {
 				(stats.totals as PlayerStatTotals).fantasyPts = calcFantasyPoints(stats.totals);
 				const totals = stats.totals;
@@ -335,7 +340,7 @@ export class DQNPlayer {
 			return undefined;
 		}
 
-		const [{ stats }] = homeFiltered;
+		const [{ stats }] = home.players;
 		if (stats.totals) {
 			(stats.totals as PlayerStatTotals).fantasyPts = calcFantasyPoints(stats.totals);
 			const totals = stats.totals;

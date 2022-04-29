@@ -3,3 +3,4 @@ coverage
 dist/
 tsconfig.build.tsbuildinfo
 .turbo
+data/

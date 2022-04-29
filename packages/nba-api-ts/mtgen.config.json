@@ -1,4 +1,4 @@
 {
-  "imports": ["import type { Player2StatsObject, MlFantasyPlayerData } from \"../models/Player2\""],
-  "output": "./src/custom/path/mongoose-types.ts"
+  "imports": ["import type { Player2StatsObject, MlFantasyPlayerData, MlFantasyPlayerLean } from \"../models/Player2\""],
+  "output": "./src/db/interfaces"
 }

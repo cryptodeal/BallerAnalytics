@@ -6,7 +6,11 @@
 // NOTE: ANY CHANGES MADE WILL BE OVERWRITTEN ON SUBSEQUENT EXECUTIONS OF MONGOOSE-TSGEN.
 
 import mongoose from 'mongoose';
-import type { Player2StatsObject, MlFantasyPlayerData } from '../models/Player2';
+import type {
+	Player2StatsObject,
+	MlFantasyPlayerData,
+	MlFantasyPlayerLean
+} from '../models/Player2';
 
 /**
  * Lean version of Coach2SeasonDocument
@@ -659,6 +663,7 @@ export type Game2Methods = {};
 export type Game2Statics = {
 	findByUrl: (this: Game2Model, ...args: any[]) => any;
 	getFantasyGames: (this: Game2Model, ...args: any[]) => any;
+	getFantasyGamesOpt: (this: Game2Model, ...args: any[]) => any;
 	loadBasicData: (this: Game2Model, ...args: any[]) => any;
 	getDailyGames: (this: Game2Model, ...args: any[]) => any;
 	getGames: (this: Game2Model, ...args: any[]) => any;
@@ -1824,7 +1829,14 @@ export type Player2Statics = {
 		playerUids: Player2Document['_id'][]
 	) => Promise<Player2Object[]>;
 	fantasyData: (this: Player2Model, year: number) => Promise<Player2Object[]>;
-	fantasyDataPerf: (this: Player2Model, year: number) => Promise<MlFantasyPlayerData[]>;
+	fantasyDataCount: (this: Player2Model, year: number) => Promise<number>;
+	fantasyDataPerf: (
+		this: Player2Model,
+		year: number,
+		cursor?: number,
+		limit?: number
+	) => Promise<MlFantasyPlayerData[]>;
+	fantasyDataOpt: (this: Player2Model, year: number) => Promise<MlFantasyPlayerLean[]>;
 	getPlayerSeasonStats: (
 		this: Player2Model,
 		playerUids: Player2Document['_id'][],

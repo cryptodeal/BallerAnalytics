@@ -25,7 +25,7 @@ NeuralNetTest.after(async () => {
 });
 
 NeuralNetTest('fetch list of games in 2020-21 NBA season', async () => {
-	const params = { batchSize: 5, epochs: 10000 };
+	const params = { batchSize: 5, epochs: 10 };
 	model = new NeuralNetwork(params);
 	const players = await loadSeasonPlayers(2021);
 	console.log('# players:', players.length);
@@ -49,4 +49,4 @@ NeuralNetTest('test output on model', async () => {
 	console.log(`Projected avgFppg: ${prediction}`);
 });
 
-NeuralNetTest.run();
+//NeuralNetTest.run();

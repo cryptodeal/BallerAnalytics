@@ -471,6 +471,7 @@ Game2Schema.statics = {
 			},
 			{
 				$project: {
+					'meta.helpers.bballRef.year': 1,
 					date: 1,
 					home: {
 						players: {
@@ -507,8 +508,30 @@ Game2Schema.statics = {
 			{
 				$project: {
 					date: 1,
+					'meta.helpers.bballRef.year': 1,
 					'home.players': 1,
 					'visitor.players': 1
+				}
+			}
+		]);
+	},
+
+	async getFantasyGamesOpt(gameIds: Game2Document['_id'][]): Promise<Game2Object[]> {
+		return await this.aggregate([
+			{
+				$match: {
+					_id: {
+						$in: gameIds
+					}
+				}
+			},
+			{
+				$project: {
+					'meta.helpers.bballRef.year': 1,
+					'home.players.player': 1,
+					'home.players.stats.totals': 1,
+					'visitor.players.player': 1,
+					'visitor.players.stats.totals': 1
 				}
 			}
 		]);

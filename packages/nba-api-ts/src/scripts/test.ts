@@ -1,14 +1,7 @@
-import { Player2, serverlessConnect } from '../index';
-import { DQNPlayer } from '../db/controllers/ml/DQN';
-import config from '../config';
+import { loadDQNPlayers } from '../db/controllers/ml';
 
 const test = async () => {
-	await serverlessConnect(config.MONGO_URI);
-	const players: DQNPlayer[] = [];
-	for (const player of await Player2.fantasyDataPerf(2021)) {
-		players.push(new DQNPlayer(player));
-	}
-	return players;
+	return loadDQNPlayers(2021).then(console.log);
 };
 
-test().then(console.log);
+test();

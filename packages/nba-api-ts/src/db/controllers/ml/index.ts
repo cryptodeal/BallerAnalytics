@@ -1,5 +1,8 @@
-import { Player2, Game2 } from '../../..';
+import { Player2, Game2, serverlessConnect } from '../../..';
+import { DQNPlayer } from './DQN';
+import config from '../../../config';
 import dayjs from 'dayjs';
+import { writeFile } from 'fs';
 import type { Player2Object, Game2Object, Player2Document, Game2Document } from '../../..';
 import type {
 	SznGames,
@@ -10,6 +13,7 @@ import type {
 	RawData,
 	PositionEncoded
 } from './types';
+import { MlFantasyPlayerData } from '../../models/Player2';
 
 export enum EspnScoring {
 	POINT = 1,
@@ -34,6 +38,75 @@ export enum PositionIdx {
 	G = 5,
 	F = 6
 }
+
+export const loadPlayerData = async (year: number, batch = 10) => {
+	await serverlessConnect(config.MONGO_URI);
+	const count = await Player2.fantasyDataCount(2021);
+	console.log('count:', count);
+	const players: DQNPlayer[] = [];
+	const data: MlFantasyPlayerData[] = [];
+	for (let i = 0; i * batch < count; i++) {
+		try {
+			const temp = await Player2.fantasyDataPerf(year, i, batch);
+			temp.map((p) => {
+				data.push(p);
+				const parsed = new DQNPlayer(p);
+				console.log(parsed);
+				players.push(parsed);
+			});
+		} catch (e) {
+			console.log(e);
+			console.log(i);
+			console.log(players.length);
+		}
+	}
+
+	return { players, data };
+};
+
+export const loadDQNData = async (year: number) => {
+	await serverlessConnect(config.MONGO_URI);
+	const players = await Player2.fantasyDataOpt(year);
+	const playerCount = players.length;
+	const parsedPlayers: MlFantasyPlayerData[] = new Array(playerCount);
+	for (let i = 0; i < playerCount; i++) {
+		const player = players[i];
+
+		const parsed: MlFantasyPlayerData = {
+			name: {
+				full: player.name.full
+			},
+			position: player.position,
+			birthDate: player.birthDate,
+			_id: player._id,
+			gpSum: player.gpSum,
+			gsSum: player.gsSum,
+			latestGameStats: await Game2.getFantasyGames(player._id, player.latestGames),
+			trainingGameStats: await Game2.getFantasyGames(player._id, player.trainingGames)
+		} as MlFantasyPlayerData;
+		parsedPlayers.push(parsed);
+	}
+	return parsedPlayers;
+};
+
+export const loadDQNPlayers = (year = 2021) => {
+	return loadDQNData(year).then((players) => {
+		return players.map((p) => new DQNPlayer(p)).filter((p) => p !== undefined);
+	});
+};
+
+export const savePlayerData = (data: MlFantasyPlayerData[]) => {
+	return writeFile(
+		`${process.cwd()}/data/DQNPlayers.json`,
+		'[' + data.map((el) => JSON.stringify(el)).join(',') + ']',
+		(err) => {
+			if (err) {
+				throw err;
+			}
+			console.log(`🟢  DQNPlayers.json saved!`);
+		}
+	);
+};
 
 export const calcFantasyPoints = (
 	playerGameStats: PlayerStatTotals | undefined

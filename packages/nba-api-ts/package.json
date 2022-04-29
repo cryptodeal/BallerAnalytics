@@ -24,7 +24,7 @@
 		"*.d.ts"
 	],
 	"scripts": {
-		"build": "mtgen --output ./src/db/interfaces ./src/db/models && tsup",
+		"build": "mtgen ./src/db/models && tsup",
 		"build:fix": "esno scripts/postbuild.ts",
 		"dev": "mtgen --output ./src/db/interfaces ./src/db/models && tsup",
 		"lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",

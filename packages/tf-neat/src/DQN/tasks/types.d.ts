@@ -1,3 +1,4 @@
+import type { DQNPlayer } from '@balleranalytics/nba-api-ts';
 export type TaskState = Record<string, number[][]>;
 
 export type TeamOpts = {
@@ -5,6 +6,7 @@ export type TeamOpts = {
 	sg: number;
 	sf: number;
 	pf: number;
+	f: number;
 	c: number;
 	g: number;
 	util: number;
@@ -48,3 +50,6 @@ export type ReplayMemoryAppend = [
 	TaskDoneVal,
 	TaskStateVal
 ];
+
+export type PositionEnum = 'pg' | 'sg' | 'sf' | 'pf' | 'c' | 'g' | 'f' | 'util' | 'be';
+export type DQNRoster = Record<PositionEnum, DQNPlayer[]>;

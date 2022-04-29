@@ -7,7 +7,8 @@ import type {
 	Player2Object,
 	Player2SeasonPostseasonStatDocument,
 	Player2SeasonRegularSeasonStatsTeamSplitDocument,
-	Game2Object
+	Game2Object,
+	Game2Document
 } from '../interfaces/mongoose.gen';
 
 export type Player2Stats = {
@@ -27,6 +28,13 @@ export type MlFantasyPlayerData = Player2Object & {
 	gsSum: number;
 	latestGameStats: Game2Object[];
 	trainingGameStats: Game2Object[];
+};
+
+export type MlFantasyPlayerLean = Player2Object & {
+	gpSum: number;
+	gsSum: number;
+	latestGames: Game2Document['_id'][];
+	trainingGames: Game2Document['_id'][];
 };
 
 const statTotalsSchema = new mongoose.Schema(
@@ -263,20 +271,60 @@ Player2Schema.statics = {
 		]);
 	},
 
+	fantasyDataCount(year: number): Promise<number> {
+		return this.countDocuments({
+			$and: [
+				{
+					seasons: {
+						$elemMatch: {
+							year: year
+						}
+					}
+				},
+				{
+					seasons: {
+						$elemMatch: {
+							year: year - 1
+						}
+					}
+				}
+			]
+		}).exec();
+	},
+
 	/* optimized version of the above fantasyData pipeline */
-	async fantasyDataPerf(year: number): Promise<MlFantasyPlayerData[]> {
+	async fantasyDataPerf(year: number, cursor = 0, limit = 20): Promise<MlFantasyPlayerData[]> {
 		return await this.aggregate([
 			{
 				$match: {
 					$and: [
 						{
-							'seasons.year': year
+							seasons: {
+								$elemMatch: {
+									year: year
+								}
+							}
 						},
 						{
-							'seasons.year': year - 1
+							seasons: {
+								$elemMatch: {
+									year: year - 1
+								}
+							}
 						}
 					]
 				}
+			},
+			{
+				$sort: {
+					_id: 1
+				}
+			},
+			{
+				$skip: cursor * limit
+			},
+			{
+				$limit: limit
 			},
 			{
 				$project: {
@@ -285,7 +333,25 @@ Player2Schema.statics = {
 					position: 1,
 					'seasons.year': 1,
 					'seasons.regularSeason.games': 1,
-					'seasons.regularSeason.stats.totals': 1
+					'seasons.regularSeason.stats.totals': {
+						games: 1,
+						gamesStarted: 1,
+						minutes: 1,
+						fieldGoalsMade: 1,
+						fieldGoalsAttempted: 1,
+						threePointersMade: 1,
+						threePointersAttempted: 1,
+						freeThrowsMade: 1,
+						freeThrowsAttempted: 1,
+						offReb: 1,
+						defReb: 1,
+						totalReb: 1,
+						assists: 1,
+						steals: 1,
+						blocks: 1,
+						turnovers: 1,
+						points: 1
+					}
 				}
 			},
 			{
@@ -296,6 +362,23 @@ Player2Schema.statics = {
 							as: 'seasons',
 							cond: {
 								$and: [{ $eq: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					'name.full': 1,
+					birthDate: 1,
+					position: 1,
+					tempLatestSeason: 1,
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $lt: ['$$seasons.year', year] }]
 							}
 						}
 					}
@@ -316,7 +399,23 @@ Player2Schema.statics = {
 					position: 1,
 					'latestGameStats.meta.helpers.bballRef.year': 1,
 					'latestGameStats.home.players.player': 1,
-					'latestGameStats.home.players.stats.totals': 1,
+					'latestGameStats.home.players.stats.totals': {
+						minutes: 1,
+						fieldGoalsMade: 1,
+						fieldGoalsAttempted: 1,
+						threePointersMade: 1,
+						threePointersAttempted: 1,
+						freeThrowsMade: 1,
+						freeThrowsAttempted: 1,
+						offReb: 1,
+						defReb: 1,
+						totalReb: 1,
+						assists: 1,
+						steals: 1,
+						blocks: 1,
+						turnovers: 1,
+						points: 1
+					},
 					/* TODO: optimize filter to reduce response size */
 					/*
             {
@@ -335,7 +434,23 @@ Player2Schema.statics = {
           */
 
 					'latestGameStats.visitor.players.player': 1,
-					'latestGameStats.visitor.players.stats.totals': 1,
+					'latestGameStats.visitor.players.stats.totals': {
+						minutes: 1,
+						fieldGoalsMade: 1,
+						fieldGoalsAttempted: 1,
+						threePointersMade: 1,
+						threePointersAttempted: 1,
+						freeThrowsMade: 1,
+						freeThrowsAttempted: 1,
+						offReb: 1,
+						defReb: 1,
+						totalReb: 1,
+						assists: 1,
+						steals: 1,
+						blocks: 1,
+						turnovers: 1,
+						points: 1
+					},
 					/* TODO: Fix filter to reduce response size */
 					/*
             {
@@ -409,7 +524,23 @@ Player2Schema.statics = {
 					gsSum: 1,
 					'trainingGameStats.meta.helpers.bballRef.year': 1,
 					'trainingGameStats.home.players.player': 1,
-					'trainingGameStats.home.players.stats.totals': 1,
+					'trainingGameStats.home.players.stats.totals': {
+						minutes: 1,
+						fieldGoalsMade: 1,
+						fieldGoalsAttempted: 1,
+						threePointersMade: 1,
+						threePointersAttempted: 1,
+						freeThrowsMade: 1,
+						freeThrowsAttempted: 1,
+						offReb: 1,
+						defReb: 1,
+						totalReb: 1,
+						assists: 1,
+						steals: 1,
+						blocks: 1,
+						turnovers: 1,
+						points: 1
+					},
 					/* TODO: Fix filter to reduce response size */
 					/*
             {
@@ -427,7 +558,23 @@ Player2Schema.statics = {
             },
           */
 					'trainingGameStats.visitor.players.player': 1,
-					'trainingGameStats.visitor.players.stats.totals': 1
+					'trainingGameStats.visitor.players.stats.totals': {
+						minutes: 1,
+						fieldGoalsMade: 1,
+						fieldGoalsAttempted: 1,
+						threePointersMade: 1,
+						threePointersAttempted: 1,
+						freeThrowsMade: 1,
+						freeThrowsAttempted: 1,
+						offReb: 1,
+						defReb: 1,
+						totalReb: 1,
+						assists: 1,
+						steals: 1,
+						blocks: 1,
+						turnovers: 1,
+						points: 1
+					}
 					/* TODO: Fix filter to reduce response size */
 					/*
             {
@@ -462,6 +609,115 @@ Player2Schema.statics = {
           }
         }
       */
+		]);
+	},
+
+	/* optimized version of the above fantasyData pipeline */
+	async fantasyDataOpt(year: number): Promise<MlFantasyPlayerLean[]> {
+		return await this.aggregate([
+			{
+				$match: {
+					$and: [
+						{
+							seasons: {
+								$elemMatch: {
+									year: year
+								}
+							}
+						},
+						{
+							seasons: {
+								$elemMatch: {
+									year: year - 1
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				$limit: 50
+			},
+			{
+				$project: {
+					'name.full': 1,
+					birthDate: 1,
+					position: 1,
+					'seasons.year': 1,
+					'seasons.regularSeason.games': 1,
+					'seasons.regularSeason.stats.totals': 1
+				}
+			},
+			{
+				$addFields: {
+					tempLatestSeason: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $eq: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$addFields: {
+					latestGames: '$tempLatestSeason.regularSeason.games'
+				}
+			},
+			{
+				$unwind: {
+					path: '$latestGames'
+				}
+			},
+			{
+				$project: {
+					'name.full': 1,
+					birthDate: 1,
+					position: 1,
+					latestGames: {
+						$concatArrays: ['$latestGames']
+					},
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $lt: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$addFields: {
+					gpSum: {
+						$sum: '$seasons.regularSeason.stats.totals.games'
+					},
+					gsSum: {
+						$sum: '$seasons.regularSeason.stats.totals.gamesStarted'
+					},
+					trainingGames: {
+						$reduce: {
+							input: '$seasons.regularSeason.games',
+							initialValue: [],
+							in: { $concatArrays: ['$$value', '$$this'] }
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					position: 1,
+					latestGames: 1,
+					trainingGames: 1,
+					gpSum: 1,
+					gsSum: 1
+				}
+			}
 		]);
 	},
 
