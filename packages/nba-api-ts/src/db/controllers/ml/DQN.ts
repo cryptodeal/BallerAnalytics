@@ -11,7 +11,7 @@ export class DQNPlayer {
 	private gpSum: number;
 	private gsSum: number;
 	private birthDate!: Date;
-	private name: {
+	public name: {
 		full: string;
 		display?: string;
 	};
@@ -43,6 +43,11 @@ export class DQNPlayer {
 		this.labels = [];
 		this.rawData = { inputs: [], labels: [] };
 	}
+
+	public isIdMatch(id: string) {
+		return this._id.toString() === id;
+	}
+
 	private calcStatSums(games: DQNParsedGame[], count: number) {
 		let min = 0,
 			fg = 0,
@@ -304,6 +309,23 @@ export class DQNPlayer {
 		};
 	}
 
+	get reward() {
+		return this.labels[0];
+	}
+
+	public isDraftable(): boolean {
+		return this.inputs[67] === 0 ? true : false;
+	}
+	public flagDrafted(teamNum: number) {
+		this.inputs[67] = teamNum;
+		this.rawData.inputs = this.inputs;
+	}
+
+	public resetDrafted() {
+		this.inputs[67] = 0;
+		this.rawData.inputs = this.inputs;
+	}
+
 	public validate() {
 		const inputCount = this.inputs.length;
 		for (let i = 0; i < inputCount; i++) {
@@ -413,7 +435,7 @@ export class DQNPlayer {
 				case 'power forward':
 					this.positionEncd[PositionIdx.PF] = 1;
 				case 'center':
-					this.positionEncd[PositionIdx.PF] = 1;
+					this.positionEncd[PositionIdx.C] = 1;
 				case 'guard':
 					this.positionEncd[PositionIdx.G] = 1;
 				case 'forward':
@@ -421,6 +443,62 @@ export class DQNPlayer {
 				default:
 					break;
 			}
+		}
+	}
+
+	public lean(position?: string) {
+		return new DQNPlayerLean(this.name.full, this._id.toString(), this.positionEncd, position);
+	}
+}
+
+export class DQNPlayerLean {
+	public _id: string;
+	public name: string;
+	public position!: string;
+	public pg = false;
+	public sg = false;
+	public sf = false;
+	public pf = false;
+	public c = false;
+	public g = false;
+	public f = false;
+	public be = true;
+	public util = true;
+	public positions = 2;
+
+	constructor(name: string, _id: string, positionEncd: PositionEncoded, position?: string) {
+		this.name = name;
+		this._id = _id;
+		if (position) this.position = position;
+
+		const [pg, sg, sf, pf, c, g, f] = positionEncd;
+		if (pg === 1) {
+			this.pg = true;
+			this.positions += 1;
+		}
+		if (sg === 1) {
+			this.sg = true;
+			this.positions += 1;
+		}
+		if (sf === 1) {
+			this.sf = true;
+			this.positions += 1;
+		}
+		if (pf === 1) {
+			this.pf = true;
+			this.positions += 1;
+		}
+		if (c === 1) {
+			this.c = true;
+			this.positions += 1;
+		}
+		if (g === 1) {
+			this.g = true;
+			this.positions += 1;
+		}
+		if (f === 1) {
+			this.f = true;
+			this.positions += 1;
 		}
 	}
 }

@@ -23,3 +23,20 @@ export function getRandomInts(min: number, max: number, numIntegers: number): nu
 	}
 	return output;
 }
+
+export const minMaxScale = (inputs: number[], minZero = false) => {
+	let min = minZero ? 0 : Infinity;
+	let max = -Infinity;
+	const count = inputs.length;
+	for (let i = 0; i < count; i++) {
+		min = Math.min(inputs[i], min);
+		max = Math.max(inputs[i], max);
+	}
+	max -= min;
+
+	const scaled: number[] = new Array(count);
+	for (let i = 0; i < count; i++) {
+		scaled[i] = (inputs[i] - min) / max;
+	}
+	return scaled;
+};

@@ -4,14 +4,14 @@ import { createDeepQNetwork, copyWeights } from '../src/DQN';
 import { train, randomUniform } from '@tensorflow/tfjs';
 
 const DQNTest = suite('DQNTest');
-const dimensions = [9, 9, 2];
+const dimensions = [9, 9, 1];
 const numActions = 4;
 
 DQNTest('createDeepQNetwork', () => {
 	const [d1, d2, d3] = dimensions;
 	const model = createDeepQNetwork(d1, d2, d3, numActions);
 	assert.is(model.inputs.length, 1);
-	assert.equal(model.inputs[0].shape, [null, 9, 9, 2]);
+	assert.equal(model.inputs[0].shape, [null, 9, 9, 1]);
 	assert.is(model.outputs.length, 1);
 	assert.equal(model.outputs[0].shape, [null, numActions]);
 });
@@ -50,7 +50,7 @@ const CopyWeightsTest = suite('CopyWeightsTest');
 CopyWeightsTest('copyWeights', async () => {
 	const d1 = 9;
 	const d2 = 9;
-	const d3 = 2;
+	const d3 = 1;
 	const numActions = 4;
 	const onlineNetwork = createDeepQNetwork(d1, d2, d3, numActions);
 	const targetNetwork = createDeepQNetwork(d1, d2, d3, numActions);
@@ -107,7 +107,7 @@ CopyWeightsTest('Copy from trainable source to untrainable dest works', () => {
 	/* Covers https://github.com/tensorflow/tfjs/issues/1807 */
 	const dim1 = 9;
 	const dim2 = 9;
-	const dim3 = 2;
+	const dim3 = 1;
 	const numActions = 4;
 	const srcNetwork = createDeepQNetwork(dim1, dim2, dim3, numActions);
 	const destNetwork = createDeepQNetwork(dim1, dim2, dim3, numActions);

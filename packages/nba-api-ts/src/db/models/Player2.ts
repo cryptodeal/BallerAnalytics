@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { wrap, plugin, SluggerOptions } from 'mongoose-slugger-plugin';
+import { normalizeName, normalizeDiacritics } from 'normalize-text';
 import type {
 	Player2Document,
 	Player2Model,
@@ -200,14 +201,21 @@ Player2Schema.pre('save', function (this: Player2Document, next) {
 	if (!this.isModified('name')) {
 		next();
 	}
-	this.name.full = this.name.full.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
-	if (this.name.display)
+	if (this.name.full && this.isModified('name.full')) {
+		this.name.full = this.name.full.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
+		const parsedFull = normalizeDiacritics(this.name.full);
+		this.name.parsed.addToSet(parsedFull);
+	}
+	if (this.name.display && this.isModified('name.display')) {
 		this.name.display = this.name.display.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
-	if (this.name.pronunciation)
+		const parsedFull = normalizeDiacritics(this.name.display);
+		this.name.parsed.addToSet(parsedFull);
+	}
+	if (this.name.pronunciation && this.isModified('name.pronunciation'))
 		this.name.pronunciation = this.name.pronunciation.replace(/\r?\n?\t|\r?\n|\r/g, '').trim();
-	if (this.name.nicknames.length > 0)
+	if (this.name.nicknames.length > 0 && this.isModified('name.nicknames'))
 		this.name.nicknames.map((n) => n.replace(/\r?\n?\t|\r?\n|\r/g, '').trim());
-	if (this.name.parsed.length > 0)
+	if (this.name.parsed.length > 0 && this.isModified('name.parsed'))
 		this.name.parsed.map((p) => p.replace(/\r?\n?\t|\r?\n|\r/g, '').trim());
 	next();
 });
@@ -636,7 +644,113 @@ Player2Schema.statics = {
 				}
 			},
 			{
-				$limit: 50
+				$project: {
+					'name.full': 1,
+					birthDate: 1,
+					position: 1,
+					'seasons.year': 1,
+					'seasons.regularSeason.games': 1,
+					'seasons.regularSeason.stats.totals': 1
+				}
+			},
+			{
+				$addFields: {
+					tempLatestSeason: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $eq: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$addFields: {
+					latestGames: '$tempLatestSeason.regularSeason.games'
+				}
+			},
+			{
+				$unwind: {
+					path: '$latestGames'
+				}
+			},
+			{
+				$project: {
+					'name.full': 1,
+					birthDate: 1,
+					position: 1,
+					latestGames: {
+						$concatArrays: ['$latestGames']
+					},
+					seasons: {
+						$filter: {
+							input: '$seasons',
+							as: 'seasons',
+							cond: {
+								$and: [{ $lt: ['$$seasons.year', year] }]
+							}
+						}
+					}
+				}
+			},
+			{
+				$addFields: {
+					gpSum: {
+						$sum: '$seasons.regularSeason.stats.totals.games'
+					},
+					gsSum: {
+						$sum: '$seasons.regularSeason.stats.totals.gamesStarted'
+					},
+					trainingGames: {
+						$reduce: {
+							input: '$seasons.regularSeason.games',
+							initialValue: [],
+							in: { $concatArrays: ['$$value', '$$this'] }
+						}
+					}
+				}
+			},
+			{
+				$project: {
+					name: 1,
+					birthDate: 1,
+					position: 1,
+					latestGames: 1,
+					trainingGames: 1,
+					gpSum: 1,
+					gsSum: 1
+				}
+			}
+		]);
+	},
+
+	/* optimized version of the above fantasyData pipeline; limit for testing */
+	async fantasyDataOptTest(year: number, limit = 50): Promise<MlFantasyPlayerLean[]> {
+		return await this.aggregate([
+			{
+				$match: {
+					$and: [
+						{
+							seasons: {
+								$elemMatch: {
+									year: year
+								}
+							}
+						},
+						{
+							seasons: {
+								$elemMatch: {
+									year: year - 1
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				$limit: limit
 			},
 			{
 				$project: {

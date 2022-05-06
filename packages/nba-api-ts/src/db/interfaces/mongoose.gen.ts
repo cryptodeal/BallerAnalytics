@@ -1837,6 +1837,11 @@ export type Player2Statics = {
 		limit?: number
 	) => Promise<MlFantasyPlayerData[]>;
 	fantasyDataOpt: (this: Player2Model, year: number) => Promise<MlFantasyPlayerLean[]>;
+	fantasyDataOptTest: (
+		this: Player2Model,
+		year: number,
+		limit?: number
+	) => Promise<MlFantasyPlayerLean[]>;
 	getPlayerSeasonStats: (
 		this: Player2Model,
 		playerUids: Player2Document['_id'][],

@@ -127,3 +127,21 @@ export const getDateStr = () => {
 		now.getHours() + ':' + now.getMinutes()
 	}`;
 };
+
+export class MovingAverager {
+	public buffer: (number | null)[] = [];
+	constructor(bufferLength) {
+		for (let i = 0; i < bufferLength; i++) {
+			this.buffer.push(null);
+		}
+	}
+
+	append(x: number) {
+		this.buffer.shift();
+		this.buffer.push(x);
+	}
+
+	average() {
+		return (this.buffer as number[]).reduce((x, prev) => x + prev) / this.buffer.length;
+	}
+}

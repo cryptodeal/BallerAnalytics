@@ -56,6 +56,7 @@
 		"mongoose-slugger-plugin": "^3.0.3",
 		"mongoose-tsgen": "^9.0.5",
 		"nba": "^4.15.0",
+		"normalize-text": "^2.4.0",
 		"sharp": "^0.30.4",
 		"sportsdataverse": "^1.2.3"
 	},

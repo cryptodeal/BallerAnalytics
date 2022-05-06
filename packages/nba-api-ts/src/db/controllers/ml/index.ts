@@ -64,9 +64,11 @@ export const loadPlayerData = async (year: number, batch = 10) => {
 	return { players, data };
 };
 
-export const loadDQNData = async (year: number) => {
+export const loadDQNData = async (year: number, limit?: number) => {
 	await serverlessConnect(config.MONGO_URI);
-	const players = await Player2.fantasyDataOpt(year);
+	const players = !limit
+		? await Player2.fantasyDataOpt(year)
+		: await Player2.fantasyDataOptTest(year, limit);
 	const playerCount = players.length;
 	const parsedPlayers: MlFantasyPlayerData[] = new Array(playerCount);
 	for (let i = 0; i < playerCount; i++) {
@@ -89,8 +91,8 @@ export const loadDQNData = async (year: number) => {
 	return parsedPlayers;
 };
 
-export const loadDQNPlayers = (year = 2021) => {
-	return loadDQNData(year).then((players) => {
+export const loadDQNPlayers = (year = 2021, limit?: number) => {
+	return loadDQNData(year, limit).then((players) => {
 		return players.map((p) => new DQNPlayer(p)).filter((p) => p !== undefined);
 	});
 };

@@ -26,12 +26,12 @@ export type AgentConfig = {
 	/* the final value of epsilon; must be >= 0 and <= 1 */
 	epsilonFinal: number;
 	/**
-	 * # of frames over which the value of `epsilon` decreases from `episloInit`
+	 * # of frames over which the value of `epsilon` decreases from `epsilonInit`
 	 * to `epsilonFinal`, via a linear schedule
 	 */
 	epsilonDecayFrames: number;
 	/* learning rate used during training */
-	learningRate: number;
+	learningRate?: number;
 };
 
 export class Agent {
@@ -89,6 +89,13 @@ export class Agent {
 				: this.epsilonInit + this.epsilonIncrement * this.frameCount;
 		this.frameCount++;
 
+		const teamIdx = this.task.draftOrder.indexOf(this.task.pickSlot);
+		/* TODO: simulate picks of teams earlier in draftOrder */
+		/*
+      for (let i = 0; i < teamIdx; i++) {
+        this.task.simulatePick(this.task.draftOrder[i]);
+      }
+    */
 		/* epsilon-greedy algo */
 		let action: number;
 		const state = this.task.getState();
@@ -109,22 +116,35 @@ export class Agent {
 				];
 			});
 		}
-
 		const { state: nextState, reward, done, milestone } = this.task.step(action);
-
 		this.replayMemory.append([state, action, reward, done, nextState]);
+
+		/* TODO: simulate picks of teams later in draftOrder */
+		/*
+      for (let i = teamIdx + 1; i < this.task.draftOrder.length; i++) {
+        this.task.simulatePick(this.task.draftOrder[i]);
+      }
+      const nextState = this.task.getState();
+    */
+
+		/* TODO: reverse draftOrder at end of round */
+		/* 
+      this.draftApi.reverseDraftOrder();
+    */
 
 		this.cumulativeReward += reward;
 		if (milestone) {
 			this.milestone++;
 		}
+		/* TODO: Copy weights of network if it hits milestone for full roster */
 		const output: PlayStepOutput = {
 			action,
 			cumulativeReward: this.cumulativeReward,
 			done,
 			milestone: this.milestone
 		};
-		if (done) {
+
+		if (done || this.milestone === 13) {
 			this.reset();
 		}
 		return output;
