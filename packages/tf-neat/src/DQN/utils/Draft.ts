@@ -40,7 +40,7 @@ export class DraftAPI {
 	public simulatePick(teamNo: number) {
 		const avail = this.players.filter((p) => p.inputs[67] === 0);
 		const pick = avail[getRandomInt(0, avail.length)];
-		const pickIdx = this.players.findIndex(pick);
+		const pickIdx = this.players.findIndex(p => p === pick);
 		this.flagDrafted(pickIdx, teamNo);
 		return pickIdx;
 	}
