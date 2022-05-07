@@ -90,7 +90,7 @@ prefetch: false
 
   <p>Watch as a basic model is trained using an abbreviated dataset in real time below.</p>
 
-  <div class="w-full !h-480px">
+  <div class="w-full" style="height:480px;">
     <LineChart data={mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd MSE" />
   </div>
 
@@ -110,7 +110,7 @@ prefetch: false
     each training Epoch.
   </p>
 
-  <div class="w-full !h-480px">
+  <div class="w-full" style="height:480px;">
     <LineChart data={val_mse} xLabel="Epoch" yLabel="MSE" title="onEpochEnd Val. MSE" />
   </div>
 
@@ -125,7 +125,7 @@ prefetch: false
     the further from perfect, the further the loss is from zero.
   </p>
 
-  <div class="w-full !h-480px">
+  <div class="w-full" style="height:480px;">
     <LineChart data={loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Loss" />
   </div>
 
@@ -142,7 +142,7 @@ prefetch: false
     how bad (or, conversely, how good) each prediction of a model is.
   </p>
 
-  <div class="w-full !h-480px">
+  <div class="w-full" style="height:480px;">
     <LineChart data={val_loss} xLabel="Epoch" yLabel="Loss" title="onEpochEnd Val. Loss" />
   </div>
   <p>
