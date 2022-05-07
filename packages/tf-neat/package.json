@@ -24,6 +24,7 @@
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
     "test": "uvu -r tsm tests",
+    "train:DQN": "node --experimental-specifier-resolution=node dist/scripts/train/DQN",
     "test:coverage": "c8 pnpm test"
   },
   "repository": {

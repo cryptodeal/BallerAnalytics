@@ -40,10 +40,18 @@ export const get: RequestHandler = async ({ url }) => {
 	const posts = await Promise.all(postPromises);
 	const publishedPosts = posts
 		.filter((post) => post.published)
-		.sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1))
-		.slice(0, limit);
+		.sort((a, b) => (new Date(a.date) > new Date(b.date) ? -1 : 1));
+
+	let pages = 0;
+	if (publishedPosts.length > limit) {
+		publishedPosts.slice(0, limit);
+		pages = Math.ceil(publishedPosts.length / limit);
+	}
 
 	return {
-		body: publishedPosts
+		body: {
+			posts: publishedPosts,
+			pages
+		}
 	};
 };

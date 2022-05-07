@@ -71,7 +71,8 @@ DraftTaskTest('getRandomAction', () => {
 });
 
 DraftTaskTest('DraftTask constructor w args', () => {
-	const dimensions: [number, number, number] = [players.length, players[0].inputs.length, 1];
+	const actionCount = players.length;
+	const dimensions: [number, number, number] = [actionCount, players[0].inputs.length, 1];
 	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
 	assert.is(draft.dims1, players.length);
 	assert.is(draft.dims2, players[0].inputs.length);
@@ -80,7 +81,7 @@ DraftTaskTest('DraftTask constructor w args', () => {
 
 DraftTaskTest('test basic step and associated state', () => {
 	const actionCount = players.length;
-	const dimensions: [number, number, number] = [players.length, players[0].inputs.length, 1];
+	const dimensions: [number, number, number] = [actionCount, players[0].inputs.length, 1];
 	for (let i = 0; i < 10; i++) {
 		const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
 		const { s: sInitState, e: eInitState } = draft.getState();
@@ -181,14 +182,15 @@ DraftAgentTest('trainOnReplayBatch', () => {
 		newTargetWeights = agent.targetNetwork.getWeights().map((x) => x.dataSync());
 
 	/* check that online network's weights were updated */
-	for (let i = 0; i < oldOnlineWeights.length; i++) {
+	const oldOnlineWeightCount = oldOnlineWeights.length;
+	for (let i = 0; i < oldOnlineWeightCount; i++) {
 		assert.is(
 			tensor1d(newOnlineWeights[i]).sub(tensor1d(oldOnlineWeights[i])).abs().max().arraySync() > 0,
 			true
 		);
 	}
 	/* check that target network's weights have not changed */
-	for (let i = 0; i < oldOnlineWeights.length; i++) {
+	for (let i = 0; i < oldOnlineWeightCount; i++) {
 		assert.is(
 			tensor1d(newTargetWeights[i]).sub(tensor1d(oldTargetWeights[i])).abs().max().arraySync(),
 			0
@@ -196,20 +198,4 @@ DraftAgentTest('trainOnReplayBatch', () => {
 	}
 });
 
-// DraftAgentTest.run();
-
-TrainDQNTest('TrainDQNTest', async () => {
-	const actionCount = players.length;
-	const dimensions: [number, number, number] = [actionCount, players[0].inputs.length, 1];
-	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
-	const agent = new Agent(draft, {
-		replayBufferSize: 1e4,
-		epsilonInit: 0.5,
-		epsilonFinal: 0.01,
-		epsilonDecayFrames: 1e5
-	});
-
-	await train(agent, 64, 0.99, 1e3, 150, 1e6, 1e3, `${process.cwd()}/data/models/DQN`, null);
-});
-
-TrainDQNTest.run();
+DraftAgentTest.run();
