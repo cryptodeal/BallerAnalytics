@@ -20,7 +20,7 @@ ReplayMemTest('append values to mem; expect mem.length = 5', () => {
 });
 
 ReplayMemTest('various batch sampling assertions', () => {
-	for (let i = 0; i < 10; ++i) {
+	for (let i = 0; i < 10; i++) {
 		const batch = mem.sample(4);
 		const uniqueItems = [];
 		assert.is(batch.length, 4);

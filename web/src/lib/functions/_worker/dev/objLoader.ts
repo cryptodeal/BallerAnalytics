@@ -55,7 +55,7 @@ export class OBJLoader {
 				normal: []
 			};
 
-			for (let i = 1; i < splitLine.length; ++i) {
+			for (let i = 1; i < splitLine.length; i++) {
 				const dIndex = splitLine[i].indexOf('//');
 				const splitFaceIndices = splitLine[i].split(/\W+/);
 
@@ -114,17 +114,17 @@ export class OBJLoader {
 			currentMat.name = splitedLine[1];
 		} else if (splitedLine[0] === 'Ka') {
 			currentMat.ambient = [];
-			for (let i = 0; i < 3; ++i) {
+			for (let i = 0; i < 3; i++) {
 				currentMat.ambient.push(splitedLine[i + 1]);
 			}
 		} else if (splitedLine[0] === 'Kd') {
 			currentMat.diffuse = [];
-			for (let i = 0; i < 3; ++i) {
+			for (let i = 0; i < 3; i++) {
 				currentMat.diffuse.push(splitedLine[i + 1]);
 			}
 		} else if (splitedLine[0] === 'Ks') {
 			currentMat.specular = [];
-			for (let i = 0; i < 3; ++i) {
+			for (let i = 0; i < 3; i++) {
 				currentMat.specular.push(splitedLine[i + 1]);
 			}
 		} else if (splitedLine[0] === 'Ns') {

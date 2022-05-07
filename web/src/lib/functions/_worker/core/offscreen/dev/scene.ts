@@ -52,7 +52,7 @@ function makeSendPropertiesHandler(properties) {
 function touchEventHandler(event: TouchEvent, sendFn) {
 	const touches = [];
 	const data = { type: event.type, touches };
-	for (let i = 0; i < event.touches.length; ++i) {
+	for (let i = 0; i < event.touches.length; i++) {
 		const touch = event.touches[i];
 		touches.push({
 			pageX: touch.pageX,

@@ -63,7 +63,7 @@ RosterTest('load Players; use defaults w random players', async () => {
 RosterTest.run();
 
 DraftTaskTest('getRandomAction', () => {
-	for (let i = 0; i < 40; ++i) {
+	for (let i = 0; i < 40; i++) {
 		const action = getRandomAction(players.length);
 		assert.is(action >= 0, true);
 		assert.is(action < players.length, true);

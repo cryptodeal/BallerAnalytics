@@ -35,7 +35,7 @@ export const base64ToBlob = (base64Data: string): Blob => {
 	const uInt8Array = new Uint8Array(decodedData.length);
 
 	// Insert all character code into uInt8Array
-	for (let i = 0; i < decodedData.length; ++i) {
+	for (let i = 0; i < decodedData.length; i++) {
 		uInt8Array[i] = decodedData.charCodeAt(i);
 	}
 

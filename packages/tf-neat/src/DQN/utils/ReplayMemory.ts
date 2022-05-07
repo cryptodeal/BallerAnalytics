@@ -35,7 +35,7 @@ export class ReplayMemory {
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const out: any[] = [];
-		for (let i = 0; i < batchSize; ++i) {
+		for (let i = 0; i < batchSize; i++) {
 			out.push(this.buffer[this.bufferIndices[i]]);
 		}
 		return out;

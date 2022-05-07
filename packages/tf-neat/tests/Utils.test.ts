@@ -6,7 +6,7 @@ const UtilsTest = suite('UtilsTest');
 
 UtilsTest('getRandomInt(); max > min', () => {
 	const values = [];
-	for (let i = 0; i < 10; ++i) {
+	for (let i = 0; i < 10; i++) {
 		const v = getRandomInt(3, 6);
 		assert.is(v >= 3, true);
 		assert.is(v < 6, true);
