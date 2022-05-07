@@ -70,7 +70,7 @@ export async function train(
 	maxNumFrames: number,
 	syncEveryFrames: number,
 	savePath: string,
-	logDir: string
+	logDir: string | null
 ) {
 	let summaryWriter: SummaryFileWriter | null = null;
 	if (logDir != null) {

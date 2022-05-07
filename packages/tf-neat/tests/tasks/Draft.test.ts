@@ -196,7 +196,7 @@ DraftAgentTest('trainOnReplayBatch', () => {
 	}
 });
 
-DraftAgentTest.run();
+// DraftAgentTest.run();
 
 TrainDQNTest('TrainDQNTest', async () => {
 	const actionCount = players.length;

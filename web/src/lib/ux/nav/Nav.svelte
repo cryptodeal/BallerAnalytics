@@ -65,11 +65,12 @@
 			teams
 		</a>
 		<a
-			href="/dev/ml"
+			sveltekit:prefetch
+			href="/articles"
 			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
-			aria-current={segment === 'dev' ? 'page' : undefined}
+			aria-current={segment === 'articles' ? 'page' : undefined}
 		>
-			ml
+			articles
 		</a>
 		{#if $session.user}
 			<a
