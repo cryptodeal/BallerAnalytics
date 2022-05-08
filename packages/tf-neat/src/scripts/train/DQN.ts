@@ -7,9 +7,9 @@ import { train } from '../../DQN';
 const teamOpts: TeamOpts = { pg: 1, sg: 1, sf: 1, pf: 1, f: 1, c: 1, g: 1, util: 3, be: 3 };
 
 const trainDQN = async () => {
-	const players = await loadDQNPlayers(2021);
+	const players = await loadDQNPlayers(2021, 250);
 	const actionCount = players.length;
-	const dimensions: [number, number, number] = [actionCount, 1, players[0].inputs.length];
+	const dimensions: [number, number, number] = [actionCount, players[0].inputs.length, 1];
 	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
 	const agent = new Agent(draft, {
 		replayBufferSize: 1e4,

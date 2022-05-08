@@ -92,9 +92,9 @@ export async function train(
 	while (true) {
 		agent.trainOnReplayBatch(batchSize, gamma, optimizer);
 		const { cumulativeReward, done, milestone } = agent.playStep();
-		if (done) {
+		if (done || milestone === 13) {
 			const t = new Date().getTime();
-			const framesPerSecond = ((agent.frameCount - frameCountPrev) / (t - tPrev)) * 1e3;
+			const framesPerSec = ((agent.frameCount - frameCountPrev) / (t - tPrev)) * 1e3;
 			tPrev = t;
 			frameCountPrev = agent.frameCount;
 
@@ -106,12 +106,12 @@ export async function train(
 					`cumulative reward: ${cumulativeReward}, ` +
 					`cumulativeReward100=${averageReward100.toFixed(1)}; ` +
 					`(epsilon=${agent.epsilon.toFixed(3)}) ` +
-					`(${framesPerSecond.toFixed(1)} frames/s)`
+					`(${framesPerSec.toFixed(1)} frames/s)`
 			);
 			if (summaryWriter != null) {
 				summaryWriter.scalar('cumulativeReward100', averageReward100, agent.frameCount);
 				summaryWriter.scalar('epsilon', agent.epsilon, agent.frameCount);
-				summaryWriter.scalar('framesPerSecond', framesPerSecond, agent.frameCount);
+				summaryWriter.scalar('framesPerSec', framesPerSec, agent.frameCount);
 			}
 			if (averageReward100 >= cumulativeRewardThreshold || agent.frameCount >= maxNumFrames) {
 				/* TODO: Save online network */

@@ -1,9 +1,6 @@
-<script context="module" lang="ts">
-	const modalList: HTMLElement[] = [];
-</script>
-
 <script lang="ts">
 	import { booleanStore } from '$lib/data/stores/booleanStore';
+	const modalList: HTMLElement[] = [];
 
 	const store = booleanStore(false);
 	const { isOpen, open, close } = store;

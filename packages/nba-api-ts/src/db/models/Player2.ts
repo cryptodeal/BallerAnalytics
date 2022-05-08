@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { wrap, plugin, SluggerOptions } from 'mongoose-slugger-plugin';
-import { normalizeName, normalizeDiacritics } from 'normalize-text';
+import { normalizeDiacritics } from 'normalize-text';
 import type {
 	Player2Document,
 	Player2Model,
@@ -750,9 +750,6 @@ Player2Schema.statics = {
 				}
 			},
 			{
-				$limit: limit
-			},
-			{
 				$project: {
 					'name.full': 1,
 					birthDate: 1,
@@ -774,6 +771,15 @@ Player2Schema.statics = {
 						}
 					}
 				}
+			},
+			{
+				$sort: {
+					'tempLatestSeason.regularSeason.stats.totals.games': 1,
+					'meta.slug': 1
+				}
+			},
+			{
+				$limit: limit
 			},
 			{
 				$addFields: {

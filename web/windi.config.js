@@ -22,22 +22,28 @@ export default defineConfig({
 							}
 						},
 						h1: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h2: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h3: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h4: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h5: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h6: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						}
 					}
 				},
@@ -52,22 +58,28 @@ export default defineConfig({
 							}
 						},
 						h1: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h2: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h3: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h4: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h5: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						},
 						h6: {
-							color: '#60A5fA'
+							color: '#60A5fA',
+							fontWeight: 200
 						}
 					}
 				}

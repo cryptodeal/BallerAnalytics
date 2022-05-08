@@ -305,7 +305,7 @@ export class DraftTask {
 	reset() {
 		this.init();
 		this.draftApi.reset();
-		this.teamRoster.resetRoster(this.teamOpts);
+		this.teamRoster = new Roster(this.teamOpts);
 		this.initEnv();
 		return this.getState();
 	}
