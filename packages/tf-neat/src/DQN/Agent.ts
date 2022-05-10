@@ -6,7 +6,8 @@ import {
 	oneHot,
 	variableGrads,
 	dispose,
-	losses
+	losses,
+	type LayersModel
 } from '@tensorflow/tfjs-node';
 
 import { createDeepQNetwork } from '.';
@@ -17,6 +18,7 @@ import { assertPositiveInt } from './utils';
 
 import type { Optimizer, Sequential, Tensor, Rank, Scalar } from '@tensorflow/tfjs-node';
 import { PlayStepOutput } from './tasks/types';
+import { seededRandom } from '../utils';
 
 export type AgentConfig = {
 	/* size of the replay memory; must be a positive integer */
@@ -32,6 +34,8 @@ export type AgentConfig = {
 	epsilonDecayFrames: number;
 	/* learning rate used during training */
 	learningRate?: number;
+	/* should online model be loaded to restart training of existing model */
+	cachedOnlineNet?: LayersModel;
 };
 
 export class Agent {
@@ -54,13 +58,16 @@ export class Agent {
 	/* Constructor of Agent for Task */
 	constructor(task: DraftTask, config: AgentConfig) {
 		this.task = task;
-		assertPositiveInt(config.epsilonDecayFrames);
-		this.epsilonInit = config.epsilonInit;
-		this.epsilonFinal = config.epsilonFinal;
-		this.epsilonDecayFrames = config.epsilonDecayFrames;
+		const { epsilonDecayFrames, epsilonInit, epsilonFinal, cachedOnlineNet } = config;
+		assertPositiveInt(epsilonDecayFrames);
+		this.epsilonInit = epsilonInit;
+		this.epsilonFinal = epsilonFinal;
+		this.epsilonDecayFrames = epsilonDecayFrames;
 		this.epsilonIncrement = (this.epsilonFinal - this.epsilonInit) / this.epsilonDecayFrames;
 
-		this.onlineNetwork = createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
+		this.onlineNetwork = cachedOnlineNet
+			? (cachedOnlineNet as Sequential)
+			: createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
 		this.targetNetwork = createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
 
 		/**
@@ -89,7 +96,7 @@ export class Agent {
 				: this.epsilonInit + this.epsilonIncrement * this.frameCount;
 		this.frameCount++;
 
-		const teamIdx = this.task.draftOrder.indexOf(this.task.pickSlot);
+		// const teamIdx = this.task.draftOrder.indexOf(this.task.pickSlot);
 		/* TODO: simulate picks of teams earlier in draftOrder */
 		/*
       for (let i = 0; i < teamIdx; i++) {
@@ -97,9 +104,10 @@ export class Agent {
       }
     */
 		/* epsilon-greedy algo */
+		/* TODO: optimize by increasing exploration as roster becomes increasingly full */
 		let action: number;
 		const state = this.task.getState();
-		if (Math.random() < this.epsilon) {
+		if (seededRandom() < this.epsilon) {
 			/* pick an action at random */
 			action = getRandomAction(this.task.num_actions);
 		} else {

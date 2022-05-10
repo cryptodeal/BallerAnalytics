@@ -1,6 +1,9 @@
 import rfdc from 'rfdc';
+import seedrandom from 'seedrandom';
+import Random, { RNG } from 'random';
 import { EspnScoring } from '../core/genetics/models';
 import type { PlayerStatTotals } from '@balleranalytics/nba-api-ts';
+import { nanoid } from 'nanoid';
 
 /** Credit p5.org:
  *  Random # generator
@@ -8,7 +11,7 @@ import type { PlayerStatTotals } from '@balleranalytics/nba-api-ts';
  */
 
 export const random = (min?: number | number[], max?: number) => {
-	const rand = Math.random();
+	const rand = seededRandom();
 
 	if (typeof min === undefined || !min) {
 		return rand;
@@ -30,6 +33,11 @@ export const random = (min?: number | number[], max?: number) => {
 		return rand * (max - min) + min;
 	}
 };
+
+const seedString = nanoid();
+const seed = seedrandom(seedString) as unknown as RNG;
+Random.use(seed);
+export const seededRandom = () => Random.float();
 
 export const clone = (obj: unknown) => {
 	if (null == obj || 'object' != typeof obj) return obj;

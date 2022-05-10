@@ -376,6 +376,7 @@ export const addOrFindGame = async (
 	const gameDoc = new Game2({
 		meta: {
 			helpers: {
+				isOver: false,
 				bballRef: {
 					year: year,
 					boxScoreUrl: game.boxScoreUrl

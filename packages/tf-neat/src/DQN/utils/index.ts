@@ -1,3 +1,5 @@
+import { seededRandom } from '../../utils';
+
 export type NonNegativeInteger<T extends number> = number extends T
 	? never
 	: `${T}` extends `-${string}` | `${string}.${string}`
@@ -14,12 +16,12 @@ export function assertPositiveInt(x: number, name?: string) {
 }
 
 export const getRandomInt = (min: number, max: number): number =>
-	Math.floor((max - min) * Math.random()) + min;
+	Math.floor((max - min) * seededRandom()) + min;
 
 export function getRandomInts(min: number, max: number, numIntegers: number): number[] {
 	const output: number[] = [];
 	for (let i = 0; i < numIntegers; i++) {
-		output.push(Math.floor((max - min) * Math.random()) + min);
+		output.push(Math.floor((max - min) * seededRandom()) + min);
 	}
 	return output;
 }
