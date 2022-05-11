@@ -1,11 +1,6 @@
 import { seededRandom } from '../../../utils';
+import { NodeType } from '.';
 import type { Tensor } from '@tensorflow/tfjs-node';
-
-export enum NodeType {
-	INPUT = 'INPUT',
-	HIDDEN = 'HIDDEN',
-	OUTPUT = 'OUTPUT'
-}
 
 export class NodeGene {
 	public id: number;

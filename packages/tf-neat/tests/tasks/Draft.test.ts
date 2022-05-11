@@ -7,14 +7,12 @@ import { getRandomInt } from '../../src/DQN/utils';
 import { type DQNPlayer, loadDQNPlayers } from '@balleranalytics/nba-api-ts';
 import { PlayStepOutput, TeamOpts } from '../../src/DQN/tasks/types';
 import { DraftAPI } from '../../src/DQN/utils/Draft';
-import { train } from '../../src/DQN';
 
 const DraftTaskTest = suite('DraftTaskTest');
 const DraftAgentTest = suite('DraftAgentTest');
 
 const RosterTest = suite('RosterTest');
 const DraftApiTest = suite('DraftApiTest');
-const TrainDQNTest = suite('TrainDQNTest');
 
 const teamOpts: TeamOpts = { pg: 1, sg: 1, sf: 1, pf: 1, f: 1, c: 1, g: 1, util: 3, be: 3 };
 

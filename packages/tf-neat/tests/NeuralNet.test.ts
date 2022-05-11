@@ -49,4 +49,4 @@ NeuralNetTest('test output on model', async () => {
 	console.log(`Projected avgFppg: ${prediction}`);
 });
 
-//NeuralNetTest.run();
+NeuralNetTest.run();

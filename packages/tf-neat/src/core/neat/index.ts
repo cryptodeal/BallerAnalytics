@@ -4,13 +4,13 @@ import type { Genome } from './Genome';
 export class Neat {
 	public species: Species[] = [];
 	public genomes: Genome[];
-	public evaluator: any;
+	public evaluator: (gen: Genome) => number;
 	public fittestGenome: Genome | null = null;
 	public highestFitness = -Infinity;
 	public populationSize = 50;
 	public generation = 0;
 
-	constructor(genome: Genome, evaluator: any) {
+	constructor(genome: Genome, evaluator: (gen: Genome) => number) {
 		this.genomes = [genome];
 		this.evaluator = evaluator;
 	}

@@ -328,9 +328,12 @@ export class DraftTask {
 		const validPick = this.draftPlayer(action);
 		this.teamRoster.addPick(this.pick);
 
+		/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 		if (!validPick) {
 			done = true;
 			reward += UNAVAIL_PLAYER_REWARD;
+			/* TODO: Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
+			// if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD;
 		} else {
 			reward = AVAIL_PLAYER_REWARD;
 		}
@@ -338,6 +341,8 @@ export class DraftTask {
 		if (this.teamRoster.done) {
 			done = true;
 			reward += INVALID_ROSTER_REWARD;
+			/* TODO: Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
+			// if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD;
 		} else {
 			reward += VALID_ROSTER_REWARD;
 		}

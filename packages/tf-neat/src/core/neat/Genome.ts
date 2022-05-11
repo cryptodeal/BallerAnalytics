@@ -1,4 +1,5 @@
-import { NodeGene, NodeType } from './gene/Node';
+import { NodeGene } from './gene/Node';
+import { NodeType } from './gene';
 import { CxnGene } from './gene/Connection';
 import { seededRandom } from '../../utils';
 
@@ -87,7 +88,7 @@ export class Genome {
 	}
 
 	mutate() {
-		const rand = Math.random();
+		const rand = seededRandom();
 		let cumulProba = 0;
 		let selectedMutation = this.weightMutation;
 
@@ -108,11 +109,11 @@ export class Genome {
 		});
 
 		this.getNodes().forEach((node) => {
-			Math.random() > 0.2 ? node.perturbBias() : node.resetBias();
+			seededRandom() > 0.2 ? node.perturbBias() : node.resetBias();
 		});
-		// this.getNodes().forEach(node => { if (Math.random() > 0.2) node.perturbBias() })
+		/* this.getNodes().forEach(node => { if (seededRandom() > 0.2) node.perturbBias() }) */
 		this.getConnections().forEach((con) => {
-			if (Math.random() > 0.2) con.perturbWeight();
+			if (seededRandom() > 0.2) con.perturbWeight();
 		});
 
 		selectedMutation.call(this);
@@ -154,7 +155,7 @@ export class Genome {
 				continue;
 			}
 
-			const outNode = acceptableNodes[Math.floor(Math.random() * acceptableNodes.length)];
+			const outNode = acceptableNodes[Math.floor(seededRandom() * acceptableNodes.length)];
 
 			if (inNode === outNode) {
 				continue;
@@ -203,15 +204,15 @@ export class Genome {
 		return this.nodes.get(Math.floor(seededRandom() * this.nodes.size)) as NodeGene;
 	}
 
-	private calculateNodeLevelRecur(node, level) {
+	private calculateNodeLevelRecur(node: NodeGene, level: number) {
 		level++;
 		node.level = Math.max(node.level, level);
 
-		for (const id of node.outConnectionsId) {
+		for (const id of node.outCxnsId) {
 			const con = this.cxns.get(id);
 			if (con !== undefined) {
 				const childNode = this.nodes.get(con.outNodeId);
-				this.calculateNodeLevelRecur(childNode, level);
+				if (childNode !== undefined) this.calculateNodeLevelRecur(childNode, level);
 			}
 		}
 	}
