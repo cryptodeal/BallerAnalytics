@@ -1,6 +1,6 @@
 import { seededRandom } from '../../../utils';
 import { NodeType } from '.';
-import type { Tensor } from '@tensorflow/tfjs-node';
+import type { Tensor } from '@tensorflow/tfjs';
 
 export class NodeGene {
 	public id: number;

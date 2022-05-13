@@ -1,4 +1,4 @@
-import { tensor, tidy, scalar, sigmoid, Scalar, type Tensor } from '@tensorflow/tfjs-node';
+import { tensor, tidy, scalar, sigmoid, Scalar, type Tensor } from '@tensorflow/tfjs';
 import type { CxnGene } from './gene/Connection';
 import type { NodeGene } from './gene/Node';
 import type { Genome } from './Genome';
