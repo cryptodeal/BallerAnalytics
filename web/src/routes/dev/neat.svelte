@@ -38,7 +38,7 @@
 
 			return fitness;
 		});
-		for (let i = 0; i < 100; i++) {
+		for (let i = 0; i < 200; i++) {
 			const { generation, highestFitness, species, connections, nodes } = neat.nextGeneration();
 			currentGen = generation;
 			currentHighFitness = highestFitness;
