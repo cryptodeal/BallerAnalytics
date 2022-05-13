@@ -80,8 +80,8 @@
 					<StatLabel title="Nodes" value={currentNodes} />
 				</div>
 			</div>
-			<div class="w-full h-200">
-				<FDG title="NEAT: XOR Problem (200 generations)" {nodeData} {cxnData} />
+			<div class="flex w-full">
+				<FDG {nodeData} {cxnData} />
 			</div>
 		</div>
 	</div>

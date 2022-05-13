@@ -17,3 +17,14 @@ export type CXNGraphData = {
 	target: CXNGraphLoc;
 	label: string;
 };
+
+export type NodeGraphData = {
+	type: NodeType;
+	id: number;
+	index: number;
+	label: number;
+	vx: number;
+	vy: number;
+	x;
+	y;
+};
