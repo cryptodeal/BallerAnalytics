@@ -85,10 +85,17 @@
 					<text class="fill-blue-500" {...textProps}>{label}</text>
 				{/each}
 				{#each nodes as { x, y, type }}
-					{@const textProps = {
+					{@const nodeTypeProps = {
 						x: xScale(x),
 						y: yScale(y),
 						'transform-origin': `${xScale(x)} ${yScale(y)}`,
+						'text-anchor': 'middle',
+						'font-size': `1px`
+					}}
+					{@const actProps = {
+						x: xScale(x),
+						y: yScale(y),
+						'transform-origin': `${xScale(x)} ${yScale(y) - 2}`,
 						'text-anchor': 'middle',
 						'font-size': `1px`
 					}}
@@ -104,7 +111,8 @@
 							: '#b7d7e8'}
 					/>
 
-					<text {...textProps}>{type}</text>
+					<text {...nodeTypeProps}>{type}</text>
+					<text {...actProps}>{type}</text>
 				{/each}
 				{#each cxns as { source, target }}
 					{@const angle = Math.atan2(target.y - source.y, target.x - source.x)}

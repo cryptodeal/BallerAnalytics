@@ -180,8 +180,8 @@ importers:
       '@lexical/selection': ^0.2.9
       '@lexical/text': ^0.2.9
       '@lexical/utils': ^0.2.9
-      '@sveltejs/adapter-vercel': next
-      '@sveltejs/kit': next
+      '@sveltejs/adapter-vercel': 1.0.0-next.50
+      '@sveltejs/kit': 1.0.0-next.328
       '@sveltejs/pancake': ^0.0.18
       '@tensorflow/tfjs-backend-wasm': ^3.17.0
       '@tensorflow/tfjs-core': ^3.17.0
@@ -254,8 +254,8 @@ importers:
       '@lexical/selection': 0.2.9_lexical@0.2.9
       '@lexical/text': 0.2.9_lexical@0.2.9
       '@lexical/utils': 0.2.9_lexical@0.2.9
-      '@sveltejs/adapter-vercel': 1.0.0-next.51
-      '@sveltejs/kit': 1.0.0-next.330_svelte@3.48.0
+      '@sveltejs/adapter-vercel': 1.0.0-next.50
+      '@sveltejs/kit': 1.0.0-next.328_svelte@3.48.0
       '@sveltejs/pancake': 0.0.18
       '@tensorflow/tfjs-backend-wasm': 3.17.0_@tensorflow+tfjs-core@3.17.0
       '@tensorflow/tfjs-core': 3.17.0
@@ -1748,14 +1748,14 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@sveltejs/adapter-vercel/1.0.0-next.51:
-    resolution: {integrity: sha512-U4GSe1tYcWq90XCQfLK4qmEEVA1MyWgnT6i7LhbLVOoNP8bf3ict3xKjGrHcx/CY4jNUBA80DXSkj/hpFkweAg==}
+  /@sveltejs/adapter-vercel/1.0.0-next.50:
+    resolution: {integrity: sha512-yta0AkuWEr7qrm8LB34F4ZdCtMxj+cHD4huwrRYCgjv+PSJHLPwe7aH53+Mhrv6La0TgeyQ/f2lTyhBMXZXn9Q==}
     dependencies:
       esbuild: 0.14.39
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.330_svelte@3.48.0:
-    resolution: {integrity: sha512-Wb95D5tOF8BViZuikqzZLAcupdS7TpXtadNPgpEOxKowmkrW8xjRrrfVdPIkNOLqAP1V+gKInmQ/gFYmnv5EjA==}
+  /@sveltejs/kit/1.0.0-next.328_svelte@3.48.0:
+    resolution: {integrity: sha512-L1RJ7wwLkOgo7aE+JiYppJEtVsSIpGPfgBZtjrS3J0avXVYUSTy+AfXbvjFJxTdk94uuCcTLUk/0vVODFm+Khg==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
