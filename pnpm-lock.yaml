@@ -170,7 +170,7 @@ importers:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:*
       '@balleranalytics/tf-neat': workspace:*
-      '@iconify/json': ^2.1.41
+      '@iconify/json': ^2.1.43
       '@lexical/clipboard': ^0.2.9
       '@lexical/dragon': ^0.2.9
       '@lexical/link': ^0.2.9
@@ -219,7 +219,7 @@ importers:
       random: ^3.0.6
       resize-observer: ^1.0.4
       svelte: ^3.48.0
-      svelte-check: ^2.7.0
+      svelte-check: ^2.7.1
       svelte-cubed: ^0.2.1
       svelte-forms: ^2.3.1
       svelte-forms-lib: ^2.0.1
@@ -244,7 +244,7 @@ importers:
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
-      '@iconify/json': 2.1.41
+      '@iconify/json': 2.1.43
       '@lexical/clipboard': 0.2.9_lexical@0.2.9
       '@lexical/dragon': 0.2.9_lexical@0.2.9
       '@lexical/link': 0.2.9_lexical@0.2.9
@@ -254,8 +254,8 @@ importers:
       '@lexical/selection': 0.2.9_lexical@0.2.9
       '@lexical/text': 0.2.9_lexical@0.2.9
       '@lexical/utils': 0.2.9_lexical@0.2.9
-      '@sveltejs/adapter-vercel': 1.0.0-next.50
-      '@sveltejs/kit': 1.0.0-next.328_svelte@3.48.0
+      '@sveltejs/adapter-vercel': 1.0.0-next.51
+      '@sveltejs/kit': 1.0.0-next.330_svelte@3.48.0
       '@sveltejs/pancake': 0.0.18
       '@tensorflow/tfjs-backend-wasm': 3.17.0_@tensorflow+tfjs-core@3.17.0
       '@tensorflow/tfjs-core': 3.17.0
@@ -293,7 +293,7 @@ importers:
       random: 3.0.6
       resize-observer: 1.0.4
       svelte: 3.48.0
-      svelte-check: 2.7.0_svelte@3.48.0
+      svelte-check: 2.7.1_svelte@3.48.0
       svelte-cubed: 0.2.1
       svelte-forms: 2.3.1
       svelte-forms-lib: 2.0.1
@@ -1237,8 +1237,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.41:
-    resolution: {integrity: sha512-EO7/zC21tZLgFiNMR2CcOvko6HWHH8np9ao7bkHtJUvUR011fQWXH2dJNFUHoyTA+S+knJY7v9H9vZ3QAQGcrA==}
+  /@iconify/json/2.1.43:
+    resolution: {integrity: sha512-F65DAOH2q16lr0WksvHQaVw8s10gISD5aCaI8utQmK6Jr4v8xobw4yoD9y+Rvl7ktaCxUkqfmELSmldh7EKMjw==}
     dependencies:
       '@iconify/types': 1.1.0
       pathe: 0.2.0
@@ -1748,14 +1748,14 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@sveltejs/adapter-vercel/1.0.0-next.50:
-    resolution: {integrity: sha512-yta0AkuWEr7qrm8LB34F4ZdCtMxj+cHD4huwrRYCgjv+PSJHLPwe7aH53+Mhrv6La0TgeyQ/f2lTyhBMXZXn9Q==}
+  /@sveltejs/adapter-vercel/1.0.0-next.51:
+    resolution: {integrity: sha512-U4GSe1tYcWq90XCQfLK4qmEEVA1MyWgnT6i7LhbLVOoNP8bf3ict3xKjGrHcx/CY4jNUBA80DXSkj/hpFkweAg==}
     dependencies:
       esbuild: 0.14.39
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.328_svelte@3.48.0:
-    resolution: {integrity: sha512-L1RJ7wwLkOgo7aE+JiYppJEtVsSIpGPfgBZtjrS3J0avXVYUSTy+AfXbvjFJxTdk94uuCcTLUk/0vVODFm+Khg==}
+  /@sveltejs/kit/1.0.0-next.330_svelte@3.48.0:
+    resolution: {integrity: sha512-Wb95D5tOF8BViZuikqzZLAcupdS7TpXtadNPgpEOxKowmkrW8xjRrrfVdPIkNOLqAP1V+gKInmQ/gFYmnv5EjA==}
     engines: {node: '>=14.13'}
     hasBin: true
     peerDependencies:
@@ -2046,7 +2046,6 @@ packages:
 
   /@types/node/16.11.35:
     resolution: {integrity: sha512-QXu45LyepgnhUfnIAj/FyT4uM87ug5KpIrgXfQtUPNAlx8w5hmd8z8emqCLNvG11QkpRSCG9Qg2buMxvqfjfsQ==}
-    dev: true
 
   /@types/node/17.0.33:
     resolution: {integrity: sha512-miWq2m2FiQZmaHfdZNcbpp9PuXg34W5JZ5CrJ/BaS70VuhoJENBEQybeiYSaPBRNq6KQGnjfEnc/F3PN++D+XQ==}
@@ -2118,7 +2117,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.33
+      '@types/node': 16.11.35
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.13:
@@ -3974,8 +3973,8 @@ packages:
       path-is-absolute: 1.0.1
     dev: true
 
-  /glob/7.2.0:
-    resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
+  /glob/7.2.2:
+    resolution: {integrity: sha512-NzDgHDiJwKYByLrL5lONmQFpK/2G78SMMfo+E9CuGlX4IkvfKDsiQSNPwAYxEy+e6p7ZQ3uslSLlwlJcqezBmQ==}
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -5090,7 +5089,7 @@ packages:
       '@oclif/plugin-help': 3.3.1
       cli-ux: 5.6.7
       flat: 5.0.2
-      glob: 7.2.0
+      glob: 7.2.2
       lodash: 4.17.21
       mkdirp: 1.0.4
       mongoose: 6.2.7
@@ -5721,16 +5720,16 @@ packages:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
     hasBin: true
     dependencies:
-      glob: 7.2.0
+      glob: 7.2.2
 
   /rimraf/3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     hasBin: true
     dependencies:
-      glob: 7.2.0
+      glob: 7.2.2
 
-  /rollup/2.72.1:
-    resolution: {integrity: sha512-NTc5UGy/NWFGpSqF1lFY8z9Adri6uhyMLI6LvPAXdBKoPRFhIIiBUpt+Qg2awixqO3xvzSijjhnb4+QEZwJmxA==}
+  /rollup/2.73.0:
+    resolution: {integrity: sha512-h/UngC3S4Zt28mB3g0+2YCMegT5yoftnQplwzPqGZcKvlld5e+kT/QRmJiL+qxGyZKOYpgirWGdLyEO1b0dpLQ==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -6134,18 +6133,18 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check/2.7.0_svelte@3.48.0:
-    resolution: {integrity: sha512-GrvG24j0+i8AOm0k0KyJ6Dqc+TAR2yzB7rtS4nljHStunVxCTr/1KYlv4EsOeoqtHLzeWMOd5D2O6nDdP/yw4A==}
+  /svelte-check/2.7.1_svelte@3.48.0:
+    resolution: {integrity: sha512-vHVu2+SQ6ibt77iTQaq2oiOjBgGL48qqcg0ZdEOsP5pPOjgeyR9QbnaEdzdBs9nsVYBc/42haKtzb2uFqS8GVw==}
     hasBin: true
     peerDependencies:
       svelte: ^3.24.0
     dependencies:
+      '@jridgewell/trace-mapping': 0.3.13
       chokidar: 3.5.3
       fast-glob: 3.2.11
       import-fresh: 3.3.0
       picocolors: 1.0.0
       sade: 1.8.1
-      source-map: 0.7.3
       svelte: 3.48.0
       svelte-preprocess: 4.10.6_svelte@3.48.0+typescript@4.6.4
       typescript: 4.6.4
@@ -6332,7 +6331,7 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       '@istanbuljs/schema': 0.1.3
-      glob: 7.2.0
+      glob: 7.2.2
       minimatch: 3.1.2
     dev: true
 
@@ -6467,7 +6466,7 @@ packages:
       joycon: 3.1.1
       postcss-load-config: 3.1.4
       resolve-from: 5.0.0
-      rollup: 2.72.1
+      rollup: 2.73.0
       source-map: 0.7.3
       sucrase: 3.21.0
       tree-kill: 1.2.2
@@ -6893,7 +6892,7 @@ packages:
       esbuild: 0.14.39
       postcss: 8.4.13
       resolve: 1.22.0
-      rollup: 2.72.1
+      rollup: 2.73.0
     optionalDependencies:
       fsevents: 2.3.2
     dev: true

@@ -109,8 +109,19 @@ export class Genome {
 		});
 
 		this.getNodes().forEach((node) => {
-			seededRandom() > 0.2 ? node.perturbBias() : node.resetBias();
+			if (seededRandom() > 0.2) {
+				node.perturbBias();
+			} else {
+				node.resetBias();
+			}
+
+			if (seededRandom() > 0.2) {
+				node.perturbActivation();
+			} else {
+				node.resetActivation();
+			}
 		});
+
 		/* this.getNodes().forEach(node => { if (seededRandom() > 0.2) node.perturbBias() }) */
 		this.getConnections().forEach((con) => {
 			if (seededRandom() > 0.2) con.perturbWeight();

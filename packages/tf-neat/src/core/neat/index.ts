@@ -52,7 +52,7 @@ export class Neat {
 			}
 		}
 
-		// Remove empty Species and change representative
+		/* remove empty Species and change representative */
 		for (let i = 0; i < this.species.length; i++) {
 			const spe = this.species[i];
 			if (spe.size() === 0) {

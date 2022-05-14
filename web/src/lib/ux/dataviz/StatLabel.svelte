@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let title: string, value: number | string;
+	export let title: string, value: string;
 </script>
 
 <div class="flex inline-flex gap-2 items-center">

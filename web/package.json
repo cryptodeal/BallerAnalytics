@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@balleranalytics/tf-neat": "workspace:*",
-		"@iconify/json": "^2.1.41",
+		"@iconify/json": "^2.1.43",
 		"@lexical/clipboard": "^0.2.9",
 		"@lexical/dragon": "^0.2.9",
 		"@lexical/link": "^0.2.9",
@@ -63,7 +63,7 @@
 		"random": "^3.0.6",
 		"resize-observer": "^1.0.4",
 		"svelte": "^3.48.0",
-		"svelte-check": "^2.7.0",
+		"svelte-check": "^2.7.1",
 		"svelte-cubed": "^0.2.1",
 		"svelte-forms": "^2.3.1",
 		"svelte-forms-lib": "^2.0.1",
