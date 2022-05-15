@@ -508,6 +508,28 @@ export const importAllGames = () => {
 		});
 };
 
+export const fixGameTimes = () => {
+	return getSeasons()
+		.then((seasonList) => {
+			const nbaSeasons = seasonList.filter((s) => s.leagueStr === 'NBA');
+			return addOrUpdateSeasons('NBA', nbaSeasons);
+		})
+		.then(async (league) => {
+			const { name } = league;
+			const i = league.seasons.findIndex((s) => s.year == 2022);
+			const { year } = league.seasons[i];
+			const games = await getSeasonGames(name, year);
+			const gameCount = games.length;
+			let importCount = games.length;
+			for (let i = 0; i < gameCount; i++) {
+				const dbGame: Game2Document = await addOrFindGame(games[i], year, name);
+				dbGame.date = games[i].date.utc().toDate();
+				await dbGame.save();
+				console.log(importCount--);
+			}
+		});
+};
+
 export const importLatestGames = () => {
 	return getSeasons()
 		.then((seasonList) => {
