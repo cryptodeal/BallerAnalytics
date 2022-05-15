@@ -19,6 +19,7 @@ export type CXNGraphData = {
 };
 
 export type NodeGraphData = {
+	activation: 'elu' | 'relu' | 'relu6' | 'selu' | 'softmax' | 'sigmoid' | 'softplus' | 'tanh';
 	type: NodeType;
 	id: number;
 	index: number;

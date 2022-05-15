@@ -73,6 +73,9 @@ export class TFGenome {
 					case 'tanh':
 						out = tanh(out.add(scalar(node.bias)));
 						break;
+					/* TODO: possibly remove default option */
+					default:
+						out = out.add(scalar(node.bias));
 				}
 				node.out = out;
 			}

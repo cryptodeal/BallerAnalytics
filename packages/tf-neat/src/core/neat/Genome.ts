@@ -115,7 +115,7 @@ export class Genome {
 				node.resetBias();
 			}
 
-			if (seededRandom() > 0.2) {
+			if (node.type !== NodeType.INPUT && seededRandom() > 0.2) {
 				node.perturbActivation();
 			} else {
 				node.resetActivation();

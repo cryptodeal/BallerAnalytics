@@ -23,8 +23,8 @@
 			currentSpecies = species;
 			currentCxns = connections;
 			currentNodes = nodes;
-			nodeData = neat.fittestGenome.getNodes().map(({ type, id, level }) => {
-				return { type, id, label: level };
+			nodeData = neat.fittestGenome.getNodes().map(({ type, id, level, activation }) => {
+				return { type, id, label: level, activation };
 			});
 			cxnData = neat.fittestGenome
 				.getConnections()

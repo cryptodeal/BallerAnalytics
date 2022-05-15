@@ -1,45 +1,40 @@
 <script lang="ts">
 	import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
+	import { shape, intersect } from 'svg-intersections';
 	import { Chart, Svg, SvgLine, SvgPolygon } from '@sveltejs/pancake/index.mjs';
 	import { linearScale } from 'yootils';
+	import { NodeType } from '@balleranalytics/tf-neat';
 
 	import type { CXNGraphData, NodeGraphData } from './types';
-	import { NodeType } from '@balleranalytics/tf-neat';
 
 	export let nodeData: { type: NodeType; id: number; label: number }[],
 		cxnData: { id: number; enabled: boolean; source: number; target: number; label: string }[];
 
-	let x1 = Infinity,
-		x2 = -Infinity,
-		y1 = Infinity,
-		y2 = -Infinity,
-		width = 0,
-		height = 0,
-		cxns: CXNGraphData[] = [],
-		nodes: {
-			type: NodeType;
-			id: number;
-			index: number;
-			label: number;
-			vx: number;
-			vy: number;
-			x;
-			y;
-		}[] = [];
+	let cxns: CXNGraphData[] = [],
+		nodes: NodeGraphData[] = [];
 
-	$: forceSimulation(nodeData)
+	$: width = 0;
+	$: height = 0;
+	$: x1 = Infinity;
+	$: x2 = -Infinity;
+	$: y1 = Infinity;
+	$: y2 = -Infinity;
+
+	$: simulation = forceSimulation(nodeData)
 		.force(
 			'link',
 			forceLink(cxnData).id((d) => d.id)
 		)
 		.force('charge', forceManyBody())
-		.force('center', forceCenter(width / 2, height / 2))
+		.force('center', forceCenter(width, height))
 		.on('tick', () => {
 			nodes = nodeData as unknown as NodeGraphData[];
 			cxns = cxnData as unknown as CXNGraphData[];
 		});
 	$: xScale = linearScale([x1, x2], [0, 100]);
+	$: xScaleInv = xScale.inverse();
 	$: yScale = linearScale([y1, y2], [100, 0]);
+	$: yScaleInv = yScale.inverse();
 
 	$: cxns.forEach(({ target, source }) => {
 		if (source.x < x1) x1 = source.x;
@@ -65,45 +60,85 @@
 		<Chart {x1} {x2} {y1} {y2}>
 			<Svg>
 				{#each cxns as { source, target, label }}
-					{@const data = [
-						{ x: source.x, y: source.y },
-						{ x: target.x, y: target.y }
-					]}
 					{@const lineCenterX = (source.x + target.x) / 2}
 					{@const lineCenterY = (source.y + target.y) / 2}
+					{@const {
+						points: [{ x: endX, y: endY }]
+					} = intersect(
+						shape('circle', { cx: xScale(target.x), cy: yScale(target.y), r: 5 }),
+						shape('line', {
+							x1: xScale(source.x),
+							y1: yScale(source.y),
+							x2: xScale(target.x),
+							y2: yScale(target.y)
+						})
+					)}
+					{@const {
+						points: [{ x: startX, y: startY }]
+					} = intersect(
+						shape('circle', { cx: xScale(source.x), cy: yScale(source.y), r: 5 }),
+						shape('line', {
+							x1: xScale(source.x),
+							y1: yScale(source.y),
+							x2: xScale(target.x),
+							y2: yScale(target.y)
+						})
+					)}
+					{@const data = [
+						{ x: xScaleInv(startX), y: yScaleInv(startY) },
+						{ x: xScaleInv(endX), y: yScaleInv(endY) }
+					]}
 					{@const textProps = {
 						x: xScale(lineCenterX),
 						y: yScale(lineCenterY),
 						'transform-origin': `${xScale(lineCenterX)} ${yScale(lineCenterY)}`,
 						// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 						'text-anchor': 'start',
-						'font-size': `1.5px`
+						'font-size': `2px`
 					}}
+					{@const angle = Math.atan2(target.y - source.y, target.x - source.x)}
+					{@const cX =
+						(((lineCenterX + xScaleInv(endX)) / 2 + xScaleInv(endX)) / 2 + xScaleInv(endX)) / 2}
+					{@const cY =
+						(((lineCenterY + yScaleInv(endY)) / 2 + yScaleInv(endY)) / 2 + yScaleInv(endY)) / 2}
+					{@const baseX = ((lineCenterX + cX) / 2 + cX) / 2}
+					{@const baseY = ((lineCenterY + cY) / 2 + cY) / 2}
+					{@const arrowHead = [
+						{ x: Math.sin(angle) + baseX, y: -Math.cos(angle) + baseY },
+						{ x: -Math.sin(angle) + baseX, y: Math.cos(angle) + baseY },
+						{ x: xScaleInv(endX), y: yScaleInv(endY) },
+						{ x: Math.sin(angle) + baseX, y: -Math.cos(angle) + baseY }
+					]}
+
+					<SvgPolygon data={arrowHead} let:d>
+						<path class="arrowHead fill-dark-800 dark:fill-light-200" {d} />
+					</SvgPolygon>
 					<SvgLine {data} let:d>
 						<path class="data stroke-dark-800 dark:stroke-light-200" {d} />
 					</SvgLine>
 					<text class="fill-blue-500" {...textProps}>{label}</text>
 				{/each}
-				{#each nodes as { x, y, type }}
+
+				{#each nodes as { x, y, type, activation }}
 					{@const nodeTypeProps = {
 						x: xScale(x),
 						y: yScale(y),
 						'transform-origin': `${xScale(x)} ${yScale(y)}`,
 						'text-anchor': 'middle',
-						'font-size': `1px`
+						'font-size': `2px`
 					}}
 					{@const actProps = {
 						x: xScale(x),
-						y: yScale(y),
-						'transform-origin': `${xScale(x)} ${yScale(y) - 2}`,
+						y: yScale(y) + 2,
+						'transform-origin': `${xScale(x)} ${yScale(y) + 2}`,
 						'text-anchor': 'middle',
-						'font-size': `1px`
+						'font-size': `2px`
 					}}
 					<circle
 						class="node"
 						cx={xScale(x)}
 						cy={yScale(y)}
-						r={3}
+						r={5}
 						style:--fillColor={type === NodeType.INPUT
 							? '#87bdd8'
 							: type === NodeType.OUTPUT
@@ -112,23 +147,9 @@
 					/>
 
 					<text {...nodeTypeProps}>{type}</text>
-					<text {...actProps}>{type}</text>
-				{/each}
-				{#each cxns as { source, target }}
-					{@const angle = Math.atan2(target.y - source.y, target.x - source.x)}
-					{@const lineCenterX = (source.x + target.x) / 2}
-					{@const lineCenterY = (source.y + target.y) / 2}
-					{@const cX = ((lineCenterX + target.x) / 2 + target.x) / 2}
-					{@const cY = ((lineCenterY + target.y) / 2 + target.y) / 2}
-					{@const arrowHead = [
-						{ x: Math.sin(angle) + cX, y: -Math.cos(angle) + cY },
-						{ x: -Math.sin(angle) + cX, y: Math.cos(angle) + cY },
-						{ x: ((cX + target.x) / 2 + target.x) / 2, y: ((cY + target.y) / 2 + target.y) / 2 },
-						{ x: Math.sin(angle) + cX, y: -Math.cos(angle) + cY }
-					]}
-					<SvgPolygon data={arrowHead} let:d>
-						<path class="arrowHead fill-dark-800 dark:fill-light-200" {d} />
-					</SvgPolygon>
+					{#if activation}
+						<text {...actProps}>{activation}</text>
+					{/if}
 				{/each}
 			</Svg>
 		</Chart>
