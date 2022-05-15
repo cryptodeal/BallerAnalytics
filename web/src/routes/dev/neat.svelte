@@ -37,7 +37,7 @@
 						enabled
 					};
 				})
-				.filter((c) => c.enabled && c.target && c.source);
+				.filter((c) => c.enabled);
 			await new Promise((res) => setTimeout(res, vizDelay));
 		}
 	}
