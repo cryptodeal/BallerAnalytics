@@ -66,7 +66,14 @@ export const importBoxScore = async (game: Game2Document) => {
 						inactive: p.inactive ? p.inactive : false,
 						stats: p.stats ? p.stats : {}
 					};
-					game.home.players.addToSet(player);
+					if (!game.home.players.filter(({ player }) => player === p._id).length) {
+						game.home.players.addToSet(player);
+					} else {
+						const idx = game.home.players.findIndex(({ player }) => player === p._id);
+						game.home.players[idx].active = player.active;
+						game.home.players[idx].inactive = player.inactive;
+						game.home.players[idx].stats = player.stats;
+					}
 				});
 			}
 
@@ -201,7 +208,14 @@ export const importBoxScore = async (game: Game2Document) => {
 						inactive: p.inactive ? p.inactive : false,
 						stats: p.stats ? p.stats : {}
 					};
-					game.visitor.players.addToSet(player);
+					if (!game.visitor.players.filter(({ player }) => player === p._id).length) {
+						game.visitor.players.addToSet(player);
+					} else {
+						const idx = game.visitor.players.findIndex(({ player }) => player === p._id);
+						game.visitor.players[idx].active = player.active;
+						game.visitor.players[idx].inactive = player.inactive;
+						game.visitor.players[idx].stats = player.stats;
+					}
 				});
 			}
 
@@ -502,7 +516,13 @@ export const importAllGames = () => {
 						});
 						if (count !== 0) {
 							const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
-							if (regularSeasonGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
+							if (
+								regularSeasonGame.isBoxscore &&
+								!game.meta.helpers.bballRef.missingData /*&&
+								!game.meta.helpers.isOver*/
+							) {
+								game.home.players.splice(0);
+								game.visitor.players.splice(0);
 								await importBoxScore(game).then(async (g) => {
 									if (g) {
 										await addGameRefs(g, 'regular');
@@ -538,7 +558,13 @@ export const importAllGames = () => {
 						});
 						if (count !== 0) {
 							const game: Game2Document = await addOrFindGame(playoffGame, year, name);
-							if (playoffGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
+							if (
+								playoffGame.isBoxscore &&
+								!game.meta.helpers.bballRef.missingData /*&&
+								!game.meta.helpers.isOver*/
+							) {
+								game.home.players.splice(0);
+								game.visitor.players.splice(0);
 								await importBoxScore(game).then(async (g) => {
 									if (g) {
 										await addGameRefs(g, 'post');
