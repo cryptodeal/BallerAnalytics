@@ -376,10 +376,7 @@ const addGameRefs = async (game: Game2Document, seasonStage: string) => {
 
 const removeGameRefs = async (_id: Game2Document['_id']) => {
 	const players = await Player2.find({
-		$or: [
-			{ 'seasons.regularSeason.games': { $elemMatch: _id } },
-			{ 'seasons.postseason.games': { $elemMatch: _id } }
-		]
+		$or: [{ 'seasons.regularSeason.games': _id }, { 'seasons.postseason.games': _id }]
 	});
 	const playerCount = players.length;
 	for (let i = 0; i < playerCount; i++) {
@@ -391,10 +388,7 @@ const removeGameRefs = async (_id: Game2Document['_id']) => {
 	}
 
 	const teams = await Team2.find({
-		$or: [
-			{ 'seasons.regularSeason.games': { $elemMatch: _id } },
-			{ 'seasons.postseason.games': { $elemMatch: _id } }
-		]
+		$or: [{ 'seasons.regularSeason.games': _id }, { 'seasons.postseason.games': _id }]
 	});
 	const teamCount = teams.length;
 	for (let j = 0; j < teamCount; j++) {
@@ -406,10 +400,7 @@ const removeGameRefs = async (_id: Game2Document['_id']) => {
 	}
 
 	const officials = await Official2.find({
-		$or: [
-			{ 'seasons.regularSeason.games': { $elemMatch: _id } },
-			{ 'seasons.postseason.games': { $elemMatch: _id } }
-		]
+		$or: [{ 'seasons.regularSeason.games': _id }, { 'seasons.postseason.games': _id }]
 	});
 	const officialCount = officials.length;
 	for (let k = 0; k < officialCount; k++) {
@@ -421,10 +412,7 @@ const removeGameRefs = async (_id: Game2Document['_id']) => {
 	}
 
 	const leagues = await League.find({
-		$or: [
-			{ 'seasons.games.regularSeason': { $elemMatch: _id } },
-			{ 'seasons.postseason.games': { $elemMatch: _id } }
-		]
+		$or: [{ 'seasons.games.regularSeason': _id }, { 'seasons.postseason.games': _id }]
 	});
 	const leagueCount = leagues.length;
 	for (let m = 0; m < leagueCount; m++) {
