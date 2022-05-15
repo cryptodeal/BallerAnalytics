@@ -81,7 +81,7 @@
 				<h3 class="text-center">NEAT: XOR Problem</h3>
 				<div class="flex w-full flex-col gap-4 w-full items-center">
 					<h4 class="text-center">Controls:</h4>
-					<div class="inline-flex gap-4 w-full justify-center items-center">
+					<div class="flex flex-wrap gap-4 w-full justify-center items-center">
 						<label class="inline-flex gap-4 items-center">
 							<span class="font-light text-blue-500 text-xl">vizDelay:</span>
 							<input
