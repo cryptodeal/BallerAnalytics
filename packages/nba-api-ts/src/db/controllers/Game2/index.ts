@@ -360,6 +360,68 @@ const addGameRefs = async (game: Game2Document, seasonStage: string) => {
 	}
 };
 
+const removeGameRefs = async (_id: Game2Document['_id']) => {
+	const players = await Player2.find({
+		$or: [
+			{ 'seasons.regularSeason.games': { $elemMatch: _id } },
+			{ 'seasons.postseason.games': { $elemMatch: _id } }
+		]
+	});
+	const playerCount = players.length;
+	for (let i = 0; i < playerCount; i++) {
+		players[i].seasons.forEach((s) => {
+			if (s.regularSeason.games.includes(_id)) s.regularSeason.games.pull(_id);
+			if (s.postseason.games.includes(_id)) s.regularSeason.games.pull(_id);
+		});
+		await players[i].save();
+	}
+
+	const teams = await Team2.find({
+		$or: [
+			{ 'seasons.regularSeason.games': { $elemMatch: _id } },
+			{ 'seasons.postseason.games': { $elemMatch: _id } }
+		]
+	});
+	const teamCount = teams.length;
+	for (let j = 0; j < teamCount; j++) {
+		teams[j].seasons.forEach((s) => {
+			if (s.regularSeason.games.includes(_id)) s.regularSeason.games.pull(_id);
+			if (s.postseason.games.includes(_id)) s.regularSeason.games.pull(_id);
+		});
+		await teams[j].save();
+	}
+
+	const officials = await Official2.find({
+		$or: [
+			{ 'seasons.regularSeason.games': { $elemMatch: _id } },
+			{ 'seasons.postseason.games': { $elemMatch: _id } }
+		]
+	});
+	const officialCount = officials.length;
+	for (let k = 0; k < officialCount; k++) {
+		officials[k].seasons.forEach((s) => {
+			if (s.regularSeason.games.includes(_id)) s.regularSeason.games.pull(_id);
+			if (s.postseason.games.includes(_id)) s.regularSeason.games.pull(_id);
+		});
+		await officials[k].save();
+	}
+
+	const leagues = await League.find({
+		$or: [
+			{ 'seasons.games.regularSeason': { $elemMatch: _id } },
+			{ 'seasons.postseason.games': { $elemMatch: _id } }
+		]
+	});
+	const leagueCount = leagues.length;
+	for (let m = 0; m < leagueCount; m++) {
+		leagues[m].seasons.forEach((s) => {
+			if (s.games.regularSeason.includes(_id)) s.games.regularSeason.pull(_id);
+			if (s.games.postSeason.includes(_id)) s.games.postSeason.pull(_id);
+		});
+		await leagues[m].save();
+	}
+};
+
 export const addOrFindGame = async (
 	game: SeasonGameItem,
 	year: number,
@@ -558,6 +620,7 @@ export const importLatestGames = () => {
 				importedCount++;
 				console.log(importedCount);
 				const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
+				game.date = regularSeasonGame.date.utc().toDate();
 				if (regularSeasonGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
@@ -591,6 +654,7 @@ export const importLatestGames = () => {
 				importedCount++;
 				console.log(importedCount);
 				const game: Game2Document = await addOrFindGame(playoffGame, year, name);
+				game.date = playoffGame.date.utc().toDate();
 				if (playoffGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
@@ -618,6 +682,20 @@ export const importLatestGames = () => {
 					league.seasons[seasonIndex].games.postSeason.addToSet(game._id);
 					await league.save();
 				}
+			}
+			const allGameUrl = await Game2.find({ 'meta.helpers.bballRef.year': year })
+				.select('meta.helpers.bballRef')
+				.lean();
+			const cancelledGames = allGameUrl.filter(
+				(g) =>
+					!games.filter(({ boxScoreUrl }) => g.meta.helpers.bballRef.boxScoreUrl === boxScoreUrl)
+						.length
+			);
+			const cancelledCount = cancelledGames.length;
+			for (let i = 0; i < cancelledCount; i++) {
+				const { _id } = cancelledGames[i];
+				await Game2.findById(_id).remove();
+				await removeGameRefs(_id);
 			}
 		});
 };
