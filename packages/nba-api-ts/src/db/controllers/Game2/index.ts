@@ -719,7 +719,7 @@ export const importLatestGames = () => {
 			const cancelledCount = cancelledGames.length;
 			for (let i = 0; i < cancelledCount; i++) {
 				const { _id } = cancelledGames[i];
-				await Game2.findById(_id).remove();
+				await Game2.deleteOne({ _id: _id });
 				await removeGameRefs(_id);
 			}
 		});
