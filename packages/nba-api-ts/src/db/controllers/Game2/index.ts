@@ -630,8 +630,11 @@ export const importLatestGames = () => {
 			const i = league.seasons.findIndex((s) => s.year == 2022);
 			const { year } = league.seasons[i];
 			const games = await getSeasonGames(name, year);
-			const playoffGames = (await getPlayoffGames(name, year)).filter(
+			/*const playoffGames = (await getPlayoffGames(name, year)).filter(
 				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
+			);*/
+			const playoffGames = (await getPlayoffGames(name, year)).filter((g) =>
+				g.date.isBefore(dayjs())
 			);
 			const regularSeasonGames = games.filter(
 				(g) =>
@@ -647,7 +650,11 @@ export const importLatestGames = () => {
 				console.log(importedCount);
 				const game: Game2Document = await addOrFindGame(regularSeasonGame, year, name);
 				game.date = regularSeasonGame.date.utc().toDate();
-				if (regularSeasonGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
+				if (
+					regularSeasonGame.isBoxscore &&
+					!game.meta.helpers.bballRef.missingData &&
+					(game.home.players.length > 20 || game.visitor.players.length > 20)
+				) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
 							g.meta.helpers.isOver = true;
@@ -681,7 +688,11 @@ export const importLatestGames = () => {
 				console.log(importedCount);
 				const game: Game2Document = await addOrFindGame(playoffGame, year, name);
 				game.date = playoffGame.date.utc().toDate();
-				if (playoffGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
+				if (
+					playoffGame.isBoxscore &&
+					!game.meta.helpers.bballRef.missingData &&
+					(game.home.players.length > 20 || game.visitor.players.length > 20)
+				) {
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
 							g.meta.helpers.isOver = true;
