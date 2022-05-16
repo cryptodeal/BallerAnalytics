@@ -47,6 +47,7 @@
 	const enabled = writable(true);
 	$: if (neat && $enabled) runGen();
 	$: if (neat && $dropoff && $dropoffAge !== neat.dropoff) neat.dropoff = $dropoffAge;
+	$: if (neat && !$dropoff) neat.dropoff = undefined;
 
 	onMount(async () => {
 		startGen = new Genome();

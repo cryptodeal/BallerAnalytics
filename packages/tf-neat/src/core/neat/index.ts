@@ -1,6 +1,15 @@
 import { Species } from './Species';
 import type { Genome } from './Genome';
 
+export type NeatConfig = {
+	dropoff?: number;
+	mutationRates?: {
+		activation?: number;
+		connection?: number;
+		bias?: number;
+	};
+};
+
 export class Neat {
 	public dropoff?: number = undefined;
 	private compatibilityThreshold = 2;
@@ -51,16 +60,26 @@ export class Neat {
 
 			if (!foundSpecies) {
 				if (this.tempSpecies.length) {
+					let matchFound = false;
+					/* check for species match in prev gen */
 					for (const spe of this.tempSpecies) {
 						if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
 							const bestFitness = spe.getFittestGenome().fitness;
 							const species = new Species(genome, spe.genWithoutProgress, bestFitness);
 							if (this.dropoff) species.dropoff = this.dropoff;
 							this.species.push(species);
+							matchFound = true;
 							break;
 						}
 					}
+					/* if no match found, create new species */
+					if (!matchFound) {
+						const species = new Species(genome);
+						if (this.dropoff) species.dropoff = this.dropoff;
+						this.species.push(species);
+					}
 				} else {
+					/* if no species in prev gen, create new species */
 					const species = new Species(genome);
 					if (this.dropoff) species.dropoff = this.dropoff;
 					this.species.push(species);
@@ -96,7 +115,7 @@ export class Neat {
 	private keepBestGenomes() {
 		this.genomes = [];
 
-		for (const spe of this.dropoff ? this.species.filter((s) => !s.isDropoff()) : this.species) {
+		for (const spe of this.species.filter((s) => s.isNotDropoff())) {
 			this.genomes.push(spe.getFittestGenome());
 		}
 	}

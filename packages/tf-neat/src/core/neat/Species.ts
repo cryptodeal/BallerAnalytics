@@ -2,7 +2,7 @@ import { seededRandom } from '../../utils';
 import type { Genome } from './Genome';
 
 export class Species {
-	private dropoffRate = 15;
+	public dropoff: undefined | number = undefined;
 	public prevHighFitness = -Infinity;
 	public representative: Genome;
 	public genomes: Genome[];
@@ -43,15 +43,8 @@ export class Species {
 		this.genomes = [];
 	}
 
-	isDropoff() {
-		return this.genWithoutProgress >= this.dropoff;
-	}
-
-	get dropoff() {
-		return this.dropoffRate;
-	}
-
-	set dropoff(value: number) {
-		this.dropoffRate = value;
+	isNotDropoff() {
+		if (!this.dropoff) return true;
+		return this.genWithoutProgress < this.dropoff ? true : false;
 	}
 }
