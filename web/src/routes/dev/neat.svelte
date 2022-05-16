@@ -46,7 +46,7 @@
 	const dropoffAge = writable(15);
 	const enabled = writable(true);
 	$: if (neat && $enabled) runGen();
-	$: if (neat && dropoff && dropoffAge !== neat.dropoff) neat.dropoff = dropoffAge;
+	$: if (neat && $dropoff && $dropoffAge !== neat.dropoff) neat.dropoff = $dropoffAge;
 
 	onMount(async () => {
 		startGen = new Genome();
@@ -111,9 +111,9 @@
 								<span class="font-light text-blue-500 text-xl">Use Dropoff:</span>
 								<span class="text-xs font-light text-blue-500">dropoff starts next gen</span>
 							</div>
-							<input name="enabled" type="checkbox" bind:checked={$dropoff} />
+							<input name="dropoff" type="checkbox" bind:checked={$dropoff} />
 						</label>
-						{#if dropoff}
+						{#if $dropoff}
 							<label class="inline-flex mx-auto gap-4 items-center">
 								<div class="flex flex-col">
 									<span class="font-light text-blue-500 text-xl">Dropoff Age:</span>
