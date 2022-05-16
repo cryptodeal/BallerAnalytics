@@ -15,6 +15,11 @@
 		currentCxns = 0,
 		currentNodes = 0,
 		neat: Neat;
+
+	const dropoff = writable(false),
+		dropoffAge = writable(15),
+		enabled = writable(true);
+
 	async function runGen() {
 		while ($enabled) {
 			const { generation, highestFitness, species, connections, nodes } = neat.nextGeneration();
@@ -41,15 +46,13 @@
 			await new Promise((res) => setTimeout(res, vizDelay));
 		}
 	}
-	$: vizDelay = 2500;
-	const dropoff = writable(false);
-	const dropoffAge = writable(15);
-	const enabled = writable(true);
-	$: if (neat && $enabled) runGen();
-	$: if (neat && $dropoff && $dropoffAge !== neat.dropoff) neat.dropoff = $dropoffAge;
-	$: if (neat && !$dropoff) neat.dropoff = undefined;
 
-	onMount(async () => {
+	function resetDemo() {
+		currentGen = 0;
+		currentHighFitness = 0;
+		currentSpecies = 0;
+		currentCxns = 0;
+		currentNodes = 0;
 		startGen = new Genome();
 		startGen.addNode(new NodeGene(NodeType.INPUT, 0));
 		startGen.addNode(new NodeGene(NodeType.INPUT, 1));
@@ -59,21 +62,32 @@
 		startGen.addConnection(1, 2);
 		startGen.addConnection(2, 3);
 
-		neat = new Neat(startGen, (gen: Genome) => {
-			const inputs = [
-				[0, 1, 0, 1],
-				[0, 0, 1, 1]
-			];
-			const labels = [0, 1, 1, 0];
+		neat = new Neat(
+			startGen,
+			(gen: Genome) => {
+				const inputs = [
+					[0, 1, 0, 1],
+					[0, 0, 1, 1]
+				];
+				const labels = [0, 1, 1, 0];
 
-			const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
+				const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
 
-			const mse = (preds, labels) => preds.sub(labels).square().mean();
-			const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
+				const mse = (preds, labels) => preds.sub(labels).square().mean();
+				const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
 
-			return fitness;
-		});
-	});
+				return fitness;
+			},
+			$dropoff ? $dropoffAge : undefined
+		);
+	}
+
+	$: vizDelay = 2500;
+	$: if (neat && $enabled) runGen();
+
+	onMount(resetDemo);
+
+	$: if (neat && (($dropoff && $dropoffAge !== neat.dropoff) || !$dropoff)) resetDemo();
 </script>
 
 <div class="w-screen min-h-screen bg-hero-circuit-board-blue-30">
@@ -110,7 +124,9 @@
 						<label class="inline-flex mx-auto gap-4 items-center">
 							<div class="flex flex-col">
 								<span class="font-light text-blue-500 text-xl">Use Dropoff:</span>
-								<span class="text-xs font-light text-blue-500">dropoff starts next gen</span>
+								<span class="text-xs font-light text-blue-500"
+									>enabling/changing dropoffAge resets demo</span
+								>
 							</div>
 							<input name="dropoff" type="checkbox" bind:checked={$dropoff} />
 						</label>
@@ -127,14 +143,14 @@
 									type="number"
 									bind:value={$dropoffAge}
 									min="10"
-									max="1000"
+									max="100"
 								/>
 								<input
 									name="dropoffAge_slider"
 									type="range"
 									bind:value={$dropoffAge}
-									min="100"
-									max="1000"
+									min="10"
+									max="100"
 								/>
 							</label>
 						{/if}
