@@ -59,66 +59,6 @@
 	<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
 		<Chart {x1} {x2} {y1} {y2}>
 			<Svg>
-				{#each cxns as { source, target, label }}
-					{@const lineCenterX = (source.x + target.x) / 2}
-					{@const lineCenterY = (source.y + target.y) / 2}
-					{@const {
-						points: [{ x: endX, y: endY }]
-					} = intersect(
-						shape('circle', { cx: xScale(target.x), cy: yScale(target.y), r: 5 }),
-						shape('line', {
-							x1: xScale(source.x),
-							y1: yScale(source.y),
-							x2: xScale(target.x),
-							y2: yScale(target.y)
-						})
-					)}
-					{@const {
-						points: [{ x: startX, y: startY }]
-					} = intersect(
-						shape('circle', { cx: xScale(source.x), cy: yScale(source.y), r: 5 }),
-						shape('line', {
-							x1: xScale(source.x),
-							y1: yScale(source.y),
-							x2: xScale(target.x),
-							y2: yScale(target.y)
-						})
-					)}
-					{@const data = [
-						{ x: xScaleInv(startX), y: yScaleInv(startY) },
-						{ x: xScaleInv(endX), y: yScaleInv(endY) }
-					]}
-					{@const textProps = {
-						x: xScale(lineCenterX),
-						y: yScale(lineCenterY),
-						'transform-origin': `${xScale(lineCenterX)} ${yScale(lineCenterY)}`,
-						// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
-						'text-anchor': 'start',
-						'font-size': `2px`
-					}}
-					{@const angle = Math.atan2(target.y - source.y, target.x - source.x)}
-					{@const cX =
-						(((lineCenterX + xScaleInv(endX)) / 2 + xScaleInv(endX)) / 2 + xScaleInv(endX)) / 2}
-					{@const cY =
-						(((lineCenterY + yScaleInv(endY)) / 2 + yScaleInv(endY)) / 2 + yScaleInv(endY)) / 2}
-					{@const baseX = ((lineCenterX + cX) / 2 + cX) / 2}
-					{@const baseY = ((lineCenterY + cY) / 2 + cY) / 2}
-					{@const arrowHead = [
-						{ x: Math.sin(angle) + baseX, y: -Math.cos(angle) + baseY },
-						{ x: -Math.sin(angle) + baseX, y: Math.cos(angle) + baseY },
-						{ x: xScaleInv(endX), y: yScaleInv(endY) },
-						{ x: Math.sin(angle) + baseX, y: -Math.cos(angle) + baseY }
-					]}
-
-					<SvgPolygon data={arrowHead} let:d>
-						<path class="arrowHead fill-dark-800 dark:fill-light-200" {d} />
-					</SvgPolygon>
-					<SvgLine {data} let:d>
-						<path class="data stroke-dark-800 dark:stroke-light-200" {d} />
-					</SvgLine>
-					<text class="fill-blue-500" {...textProps}>{label}</text>
-				{/each}
-
 				{#each nodes as { x, y, type, activation }}
 					{@const nodeTypeProps = {
 						x: xScale(x),
@@ -138,7 +78,7 @@
 						class="node"
 						cx={xScale(x)}
 						cy={yScale(y)}
-						r={5}
+						r={4}
 						style:--fillColor={type === NodeType.INPUT
 							? '#87bdd8'
 							: type === NodeType.OUTPUT
@@ -150,6 +90,72 @@
 					{#if activation}
 						<text {...actProps}>{activation}</text>
 					{/if}
+				{/each}
+
+				{#each cxns as { source, target, label }}
+					{@const lineCenterX = (source.x + target.x) / 2}
+					{@const lineCenterY = (source.y + target.y) / 2}
+					{@const endIntersect = intersect(
+						shape('circle', { cx: xScale(target.x), cy: yScale(target.y), r: 4 }),
+						shape('line', {
+							x1: xScale(source.x),
+							y1: yScale(source.y),
+							x2: xScale(target.x),
+							y2: yScale(target.y)
+						})
+					)}
+					{@const endX = endIntersect?.points?.length
+						? xScaleInv(endIntersect.points[0].x)
+						: target.x}
+					{@const endY = endIntersect?.points?.length
+						? yScaleInv(endIntersect.points[0].y)
+						: target.y}
+					{@const startIntersect = intersect(
+						shape('circle', { cx: xScale(source.x), cy: yScale(source.y), r: 4 }),
+						shape('line', {
+							x1: xScale(source.x),
+							y1: yScale(source.y),
+							x2: xScale(target.x),
+							y2: yScale(target.y)
+						})
+					)}
+					{@const startX = startIntersect?.points?.length
+						? xScaleInv(startIntersect.points[0].x)
+						: source.x}
+					{@const startY = startIntersect?.points?.length
+						? yScaleInv(startIntersect.points[0].y)
+						: source.y}
+					{@const data = [
+						{ x: startX, y: startY },
+						{ x: endX, y: endY }
+					]}
+					{@const textProps = {
+						x: xScale(lineCenterX),
+						y: yScale(lineCenterY),
+						'transform-origin': `${xScale(lineCenterX)} ${yScale(lineCenterY)}`,
+						// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
+						'text-anchor': 'start',
+						'font-size': `2px`
+					}}
+					{@const angle = Math.atan2(target.y - source.y, target.x - source.x)}
+					{@const cX = (((lineCenterX + endX) / 2 + endX) / 2 + endX) / 2}
+					{@const cY = (((lineCenterY + endY) / 2 + endY) / 2 + endY) / 2}
+					{@const baseX = ((lineCenterX + cX) / 2 + cX) / 2}
+					{@const baseY = ((lineCenterY + cY) / 2 + cY) / 2}
+					{@const arrowHead = [
+						{ x: Math.sin(angle) + baseX, y: -Math.cos(angle) + baseY },
+						{ x: -Math.sin(angle) + baseX, y: Math.cos(angle) + baseY },
+						{ x: endX, y: endY },
+						{ x: Math.sin(angle) + baseX, y: -Math.cos(angle) + baseY }
+					]}
+
+					<SvgPolygon data={arrowHead} let:d>
+						<path class="arrowHead fill-dark-800 dark:fill-light-200" {d} />
+					</SvgPolygon>
+					<SvgLine {data} let:d>
+						<path class="data stroke-dark-800 dark:stroke-light-200" {d} />
+					</SvgLine>
+					<text class="fill-blue-500" {...textProps}>{label}</text>
 				{/each}
 			</Svg>
 		</Chart>

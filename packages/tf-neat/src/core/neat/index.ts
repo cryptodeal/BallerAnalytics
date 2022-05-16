@@ -2,6 +2,9 @@ import { Species } from './Species';
 import type { Genome } from './Genome';
 
 export class Neat {
+	public dropoff?: number = undefined;
+	private compatibilityThreshold = 2;
+	private tempSpecies: Species[] = [];
 	public species: Species[] = [];
 	public genomes: Genome[];
 	public evaluator: (gen: Genome) => number;
@@ -10,7 +13,8 @@ export class Neat {
 	public populationSize = 50;
 	public generation = 0;
 
-	constructor(genome: Genome, evaluator: (gen: Genome) => number) {
+	constructor(genome: Genome, evaluator: (gen: Genome) => number, dropoff?: number) {
+		if (dropoff) this.dropoff = dropoff;
 		this.genomes = [genome];
 		this.evaluator = evaluator;
 	}
@@ -35,12 +39,10 @@ export class Neat {
 	}
 
 	private classifyPopulationIntoSpecies() {
-		const compatibilityThreshold = 2;
-
 		for (const genome of this.genomes) {
 			let foundSpecies = false;
 			for (const spe of this.species) {
-				if (genome.compatibilityDistance(spe.representative) < compatibilityThreshold) {
+				if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
 					spe.add(genome);
 					foundSpecies = true;
 					break;
@@ -48,7 +50,21 @@ export class Neat {
 			}
 
 			if (!foundSpecies) {
-				this.species.push(new Species(genome));
+				if (this.tempSpecies.length) {
+					for (const spe of this.tempSpecies) {
+						if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
+							const bestFitness = spe.getFittestGenome().fitness;
+							const species = new Species(genome, spe.genWithoutProgress, bestFitness);
+							if (this.dropoff) species.dropoff = this.dropoff;
+							this.species.push(species);
+							break;
+						}
+					}
+				} else {
+					const species = new Species(genome);
+					if (this.dropoff) species.dropoff = this.dropoff;
+					this.species.push(species);
+				}
 			}
 		}
 
@@ -80,7 +96,7 @@ export class Neat {
 	private keepBestGenomes() {
 		this.genomes = [];
 
-		for (const spe of this.species) {
+		for (const spe of this.dropoff ? this.species.filter((s) => !s.isDropoff()) : this.species) {
 			this.genomes.push(spe.getFittestGenome());
 		}
 	}
@@ -99,6 +115,7 @@ export class Neat {
 	}
 
 	private clearSpecies() {
+		this.tempSpecies = this.species.slice();
 		this.species = [];
 	}
 }

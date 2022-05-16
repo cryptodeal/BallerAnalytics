@@ -1,13 +1,16 @@
 import { seededRandom } from '../../utils';
 import type { Genome } from './Genome';
-const DROPOFF_AGE = 15; // TODO
 
 export class Species {
+	private dropoffRate = 15;
+	public prevHighFitness = -Infinity;
 	public representative: Genome;
 	public genomes: Genome[];
 	public genWithoutProgress = 0;
 
-	constructor(representative) {
+	constructor(representative: Genome, genWithoutProgress = 0, prevHighFitness?: number) {
+		if (prevHighFitness) this.prevHighFitness = prevHighFitness;
+		this.genWithoutProgress = genWithoutProgress;
 		this.representative = representative;
 		this.genomes = [representative];
 	}
@@ -25,9 +28,10 @@ export class Species {
 		this.genomes.forEach((gen) => {
 			gen.fitness /= this.size();
 		});
+		if (this.getFittestGenome().fitness <= this.prevHighFitness) this.genWithoutProgress++;
 	}
 
-	add(genome) {
+	add(genome: Genome) {
 		this.genomes.push(genome);
 	}
 
@@ -37,5 +41,17 @@ export class Species {
 
 	clear() {
 		this.genomes = [];
+	}
+
+	isDropoff() {
+		return this.genWithoutProgress >= this.dropoff;
+	}
+
+	get dropoff() {
+		return this.dropoffRate;
+	}
+
+	set dropoff(value: number) {
+		this.dropoffRate = value;
 	}
 }
