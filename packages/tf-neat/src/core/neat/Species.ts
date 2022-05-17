@@ -6,7 +6,7 @@ export class Species {
 	public prevHighFitness = -Infinity;
 	public representative: Genome;
 	public genomes: Genome[];
-	public genWithoutProgress = 0;
+	public genWithoutProgress: number;
 
 	constructor(representative: Genome, genWithoutProgress = 0, prevHighFitness?: number) {
 		if (prevHighFitness) this.prevHighFitness = prevHighFitness;
