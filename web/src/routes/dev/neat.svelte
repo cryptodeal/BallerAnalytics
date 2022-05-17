@@ -173,7 +173,7 @@
 				</div>
 			</div>
 			<div class="flex w-full">
-				<FDG {nodeData} {cxnData} />
+				<FDG nodes={nodeData} cxns={cxnData} />
 			</div>
 		</div>
 	</div>

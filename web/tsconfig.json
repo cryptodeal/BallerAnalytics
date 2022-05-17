@@ -33,7 +33,13 @@
 			"$lexical": ["src/lexical"],
 			"$lexical/*": ["src/lexical/*"]
 		},
-		"types": ["unplugin-obj/obj", "unplugin-mtl/mtl", "@types/offscreencanvas"]
+		"types": [
+			"unplugin-obj/obj",
+			"unplugin-mtl/mtl",
+			"@types/offscreencanvas",
+			"@types/d3-drag",
+			"@types/d3-force"
+		]
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]
 }
