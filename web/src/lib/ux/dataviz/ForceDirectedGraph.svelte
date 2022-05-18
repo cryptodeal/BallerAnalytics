@@ -58,8 +58,8 @@
 
 	function simulationUpdate() {
 		simulation.tick();
-		nodes = [...nodes];
-		cxns = [...cxns];
+		nodeData = [...nodes] as unknown as NodeData[];
+		cxnData = [...cxns] as unknown as CXNData[];
 	}
 
 	function zoomed(currentEvent) {
@@ -96,9 +96,6 @@
 		currentEvent.subject.fx = null;
 		currentEvent.subject.fy = null;
 	}
-
-	$: nodeData = nodes as unknown as NodeData[];
-	$: cxnData = cxns as unknown as CXNData[];
 </script>
 
 <div class="flex mx-auto h-400px w-400px md:(h-600px w-600px) xl:(h-750px w-full)">
@@ -204,14 +201,6 @@
 	.chart {
 		height: 100%;
 		width: 100%;
-		padding: 2rem;
-		overflow: hidden;
-		position: relative;
-	}
-
-	svg {
-		width: 100%;
-		height: 100%;
 	}
 
 	circle.node {
