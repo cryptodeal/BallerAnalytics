@@ -9,6 +9,9 @@ export default defineConfig({
 		enableAll: true
 	},
 	theme: {
+		cursor: {
+			grab: 'grab'
+		},
 		extend: {
 			typography: {
 				DEFAULT: {

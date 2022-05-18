@@ -207,6 +207,7 @@ importers:
       cookie: ^0.4.2
       d3-drag: ^3.0.0
       d3-force: ^3.0.0
+      d3-force-boundary: ^0.0.3
       d3-interpolate: ^3.0.1
       d3-scale: ^4.0.2
       d3-selection: ^3.0.0
@@ -291,6 +292,7 @@ importers:
       cookie: 0.4.2
       d3-drag: 3.0.0
       d3-force: 3.0.0
+      d3-force-boundary: 0.0.3
       d3-interpolate: 3.0.1
       d3-scale: 4.0.2
       d3-selection: 3.0.0
@@ -3064,6 +3066,10 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
+  /d3-dispatch/2.0.0:
+    resolution: {integrity: sha512-S/m2VsXI7gAti2pBoLClFFTMOO1HTtT0j99AuXLoGFKO6deHDdnv6ZGTxSTTUTgO1zVcv82fCOtDjYK4EECmWA==}
+    dev: true
+
   /d3-dispatch/3.0.1:
     resolution: {integrity: sha512-rzUyPU/S7rwUflMyLc1ETDeBj0NRuHKKAcvukozwhshr6g6c5d8zh4c2gQjY2bZ0dXeGLWc1PF174P2tVvKhfg==}
     engines: {node: '>=12'}
@@ -3080,6 +3086,20 @@ packages:
   /d3-ease/3.0.1:
     resolution: {integrity: sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==}
     engines: {node: '>=12'}
+    dev: true
+
+  /d3-force-boundary/0.0.3:
+    resolution: {integrity: sha512-NeqhtsM0VaiC8xQQoiMoFLB+ToNINZ4FkAlBB7oMMymEHrIBfYMDNTl2CKML79II8TAgCc/1k7UhyswjN3y4mA==}
+    dependencies:
+      d3-force: 2.1.1
+    dev: true
+
+  /d3-force/2.1.1:
+    resolution: {integrity: sha512-nAuHEzBqMvpFVMf9OX75d00OxvOXdxY+xECIXjW6Gv8BRrXu6gAWbv/9XKrvfJ5i5DCokDW7RYE50LRoK092ew==}
+    dependencies:
+      d3-dispatch: 2.0.0
+      d3-quadtree: 2.0.0
+      d3-timer: 2.0.0
     dev: true
 
   /d3-force/3.0.0:
@@ -3101,6 +3121,10 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       d3-color: 3.1.0
+    dev: true
+
+  /d3-quadtree/2.0.0:
+    resolution: {integrity: sha512-b0Ed2t1UUalJpc3qXzKi+cPGxeXRr4KU9YSlocN74aTzp6R/Ud43t79yLLqxHRWZfsvWXmbDWPpoENK1K539xw==}
     dev: true
 
   /d3-quadtree/3.0.1:
@@ -3136,6 +3160,10 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       d3-array: 3.1.6
+    dev: true
+
+  /d3-timer/2.0.0:
+    resolution: {integrity: sha512-TO4VLh0/420Y/9dO3+f9abDEFYeCUr2WZRlxJvbp4HPTQcSylXNiL6yZa9FIUvV1yRiFufl1bszTCLDqv9PWNA==}
     dev: true
 
   /d3-timer/3.0.1:
