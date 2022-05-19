@@ -44,9 +44,11 @@
 			if (itemA && itemB) {
 				return itemA < itemB ? -1 * sortModifier : itemA > itemB ? 1 * sortModifier : 0;
 			} else if (!itemA && itemB) {
+				return -1 * sortModifier;
+			} else if (itemA && !itemB) {
 				return 1 * sortModifier;
 			} else {
-				return -1 * sortModifier;
+				return 0;
 			}
 		};
 		roster = roster.sort(sort);
