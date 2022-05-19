@@ -9,7 +9,7 @@ class DataImportScripts {
 	cronJob: CronJob;
 	nbaGamesCron: CronJob;
 	constructor(year: number) {
-		this.cronJob = new CronJob('30 * * * *', async () => {
+		this.cronJob = new CronJob('10 * * * *', async () => {
 			try {
 				await this.connect();
 				await this.importWeekGames();
