@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@balleranalytics/tf-neat": "workspace:*",
-		"@iconify/json": "^2.1.44",
+		"@iconify/json": "^2.1.46",
 		"@lexical/clipboard": "^0.2.9",
 		"@lexical/dragon": "^0.2.9",
 		"@lexical/link": "^0.2.9",
@@ -44,8 +44,8 @@
 		"@types/tinycolor2": "^1.4.3",
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/yup": "^0.29.14",
-		"@typescript-eslint/eslint-plugin": "^5.24.0",
-		"@typescript-eslint/parser": "^5.24.0",
+		"@typescript-eslint/eslint-plugin": "^5.25.0",
+		"@typescript-eslint/parser": "^5.25.0",
 		"@windicss/plugin-heropatterns": "^0.0.8",
 		"color": "^4.2.3",
 		"cookie": "^0.4.2",
@@ -93,7 +93,7 @@
 		"unplugin-mtl": "latest",
 		"unplugin-obj": "^0.1.2",
 		"vite-plugin-windicss": "^1.8.4",
-		"windicss": "^3.5.3",
+		"windicss": "^3.5.4",
 		"yootils": "^0.3.1",
 		"yup": "^0.32.11"
 	},

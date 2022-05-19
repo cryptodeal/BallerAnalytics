@@ -127,7 +127,7 @@
 					y: lineCy,
 					// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor
 					'text-anchor': 'start',
-					'font-size': `2px`
+					'font-size': `3px`
 				}}
 				<g transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})">
 					<line
@@ -143,7 +143,7 @@
 						class="fill-dark-800 dark:fill-light-200"
 						points={arrowHead.map(({ x, y }) => `${x},${y}`).join(' ')}
 					/>
-					<text class="fill-blue-500 cursor-not-allowed" {...textProps}>{label}</text>
+					<text class="fill-blue-500 cursor-grab" {...textProps}>{label}</text>
 				</g>
 			{/each}
 

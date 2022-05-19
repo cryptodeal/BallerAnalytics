@@ -620,9 +620,6 @@ export const importLatestGames = () => {
 			const i = league.seasons.findIndex((s) => s.year == 2022);
 			const { year } = league.seasons[i];
 			const games = await getSeasonGames(name, year);
-			/*const playoffGames = (await getPlayoffGames(name, year)).filter(
-				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
-			);*/
 			const tempPlayoffGames = await getPlayoffGames(name, year);
 			const playoffGames = tempPlayoffGames.filter(
 				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
