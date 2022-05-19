@@ -8,7 +8,7 @@
 	import { shape, intersect } from 'svg-intersections';
 	import { NodeType } from '@balleranalytics/tf-neat';
 
-	import type { CXNData, NodeData } from './types';
+	import type { CXNData, NodeData, Vector2D } from './types';
 	import type { SimulationNodeDatum, Simulation } from 'd3-force';
 	import { onMount } from 'svelte';
 
@@ -28,33 +28,41 @@
 			'link',
 			forceLink(cxns).id((d: any) => d.id)
 		)
+		.force('center', forceCenter(width / 2, height / 2))
 		.force('charge', forceManyBody())
-		.force(
-			'boundary',
-			forceBoundary(-width / 2 + 10, -height / 2 + 10, width / 2 - 10, height / 2 - 10)
-		)
+		.force('boundary', forceBoundary(0, 0, width, height))
 		.on('tick', simulationUpdate);
 
-	onMount(() =>
-		select(svg)
-			.call(
-				drag()
-					.container(svg)
-					.subject(dragsubject)
-					.on('start', dragstarted)
-					.on('drag', dragged)
-					.on('end', dragended)
-			)
-			.call(
-				zoom()
-					.scaleExtent([1 / 5, 10])
-					.on('zoom', zoomed)
-			)
-	);
+	$: select(svg)
+		.call(
+			drag()
+				.container(svg)
+				.subject(dragsubject)
+				.on('start', dragstarted)
+				.on('drag', dragged)
+				.on('end', dragended)
+		)
+		.call(
+			zoom()
+				.scaleExtent([1 / 5, 10])
+				.on('zoom', zoomed)
+		);
 
 	/* TODO: Test repl version of demo w drag */
 	let nodeData: NodeData[] = [],
 		cxnData: CXNData[] = [];
+
+	function checkXBounds(x: number) {
+		if (x < 0) x = 0;
+		if (x > width) x = width;
+		return x;
+	}
+
+	function checkYBounds(y: number) {
+		if (y < 0) y = 0;
+		if (y > height) y = height;
+		return y;
+	}
 
 	function simulationUpdate() {
 		simulation.tick();
@@ -98,9 +106,9 @@
 	}
 </script>
 
-<div class="flex mx-auto h-400px w-400px md:(h-600px w-600px) xl:(h-750px w-full)">
+<div class="flex mx-auto h-300px w-300px md:(h-600px w-600px) xl:(h-750px w-full)">
 	<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
-		<svg bind:this={svg} {width} {height} viewBox="{-width / 2} {-height / 2} {width} {height}">
+		<svg bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
 			{#each cxnData as { source: { x: x1, y: y1 }, target: { x: x2, y: y2 }, label }}
 				{@const lineCx = (x1 + x2) / 2}
 				{@const lineCy = (y1 + y2) / 2}
