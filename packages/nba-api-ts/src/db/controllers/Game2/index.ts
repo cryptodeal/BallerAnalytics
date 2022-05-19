@@ -625,7 +625,7 @@ export const importLatestGames = () => {
 			);*/
 			const tempPlayoffGames = await getPlayoffGames(name, year);
 			const playoffGames = tempPlayoffGames.filter(
-				(g) => g.date.isBefore(dayjs()) /*&& g.date.isAfter(dayjs().subtract(7, 'day'))*/
+				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
 			);
 
 			const tempRegSeason = games.filter(
