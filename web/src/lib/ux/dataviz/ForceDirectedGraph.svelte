@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { forceSimulation, forceLink, forceManyBody, forceCenter } from 'd3-force';
-	import { browser } from '$app/env';
 	import { select } from 'd3-selection';
 	import forceBoundary from 'd3-force-boundary';
 	import { zoom, zoomIdentity } from 'd3-zoom';
@@ -8,9 +7,8 @@
 	import { shape, intersect } from 'svg-intersections';
 	import { NodeType } from '@balleranalytics/tf-neat';
 
-	import type { CXNData, NodeData, Vector2D } from './types';
+	import type { CXNData, NodeData } from './types';
 	import type { SimulationNodeDatum, Simulation } from 'd3-force';
-	import { onMount } from 'svelte';
 
 	export let nodes: { type: NodeType; id: number; label: number }[],
 		cxns: { id: number; enabled: boolean; source: number; target: number; label: string }[];
@@ -51,18 +49,6 @@
 	/* TODO: Test repl version of demo w drag */
 	let nodeData: NodeData[] = [],
 		cxnData: CXNData[] = [];
-
-	function checkXBounds(x: number) {
-		if (x < 0) x = 0;
-		if (x > width) x = width;
-		return x;
-	}
-
-	function checkYBounds(y: number) {
-		if (y < 0) y = 0;
-		if (y > height) y = height;
-		return y;
-	}
 
 	function simulationUpdate() {
 		simulation.tick();
