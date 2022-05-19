@@ -690,6 +690,8 @@ export const importLatestGames = () => {
 				const game: Game2Document = await addOrFindGame(playoffGame, year, name);
 				game.date = playoffGame.date.utc().toDate();
 				if (playoffGame.isBoxscore && !game.meta.helpers.bballRef.missingData) {
+					game.home.players.splice(0);
+					game.visitor.players.splice(0);
 					await importBoxScore(game).then(async (g) => {
 						if (g) {
 							g.meta.helpers.isOver = true;
