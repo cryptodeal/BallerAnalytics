@@ -24,6 +24,7 @@
 	$: simulation = forceSimulation(nodes as SimulationNodeDatum[])
 		.force(
 			'link',
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			forceLink(cxns).id((d: any) => d.id)
 		)
 		.force('center', forceCenter(width / 2, height / 2))

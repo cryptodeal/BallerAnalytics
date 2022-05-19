@@ -37,6 +37,8 @@ import type {
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+export type SeasonStage = 'regular' | 'post';
+
 export const importBoxScore = async (game: Game2Document) => {
 	const populatedGame = await game.populate('home.team visitor.team');
 	const boxScore = await getBoxScore(populatedGame);
@@ -621,15 +623,30 @@ export const importLatestGames = () => {
 			/*const playoffGames = (await getPlayoffGames(name, year)).filter(
 				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
 			);*/
-			const playoffGames = (await getPlayoffGames(name, year)).filter((g) =>
-				g.date.isBefore(dayjs())
+			const tempPlayoffGames = await getPlayoffGames(name, year);
+			const playoffGames = tempPlayoffGames.filter(
+				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
 			);
-			const regularSeasonGames = games.filter(
-				(g) =>
-					g.date.isBefore(dayjs()) &&
-					g.date.isAfter(dayjs().subtract(7, 'day')) &&
-					playoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) === -1
+
+			const tempRegSeason = games.filter(
+				(g) => tempPlayoffGames.findIndex((p) => p.boxScoreUrl === g.boxScoreUrl) !== -1
 			);
+			const regularSeasonGames = tempRegSeason.filter(
+				(g) => g.date.isBefore(dayjs()) && g.date.isAfter(dayjs().subtract(7, 'day'))
+			);
+
+			const futureRegGames = tempRegSeason.filter((g) => g.date.isAfter(dayjs()));
+			const futurePlayoffGames = tempPlayoffGames.filter((g) => g.date.isAfter(dayjs()));
+			const regFuture = futureRegGames.length;
+			const playoffFuture = futurePlayoffGames.length;
+			for (let i = 0; i < regFuture; i++) {
+				await addOrFindGame(futureRegGames[i], year, name);
+			}
+			for (let i = 0; i < playoffFuture; i++) {
+				const tempGame = await addOrFindGame(futurePlayoffGames[i], year, name);
+				tempGame.postseason = true;
+				await tempGame.save();
+			}
 			console.log(regularSeasonGames.length);
 			const regGameCount = regularSeasonGames.length;
 			for (let j = 0; j < regGameCount; j++) {
