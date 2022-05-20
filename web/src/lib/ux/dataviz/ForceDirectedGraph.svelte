@@ -48,8 +48,8 @@
 		);
 
 	/* TODO: Test repl version of demo w drag */
-	let nodeData: NodeData[] = [],
-		cxnData: CXNData[] = [];
+	$: nodeData = [];
+	$: cxnData = [];
 
 	function simulationUpdate() {
 		simulation.tick();
