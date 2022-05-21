@@ -1,6 +1,16 @@
 import { Species } from './Species';
 import type { Genome } from './Genome';
 
+export type ActivationOpts =
+	| 'elu'
+	| 'relu'
+	| 'relu6'
+	| 'selu'
+	| 'softmax'
+	| 'sigmoid'
+	| 'softplus'
+	| 'tanh';
+
 export type NeatConfig = {
 	dropoff?: number;
 	mutationRates?: {
@@ -8,24 +18,26 @@ export type NeatConfig = {
 		connection?: number;
 		bias?: number;
 	};
+	activationFns?: ActivationOpts[];
+	populationSize?: number;
 };
 
 export class Neat {
 	public dropoff?: number = undefined;
 	private compatibilityThreshold = 2;
-	/* TODO: droppedSpecies pool */
-	private droppedPool: Genome[] = [];
 	private tempSpecies: Species[] = [];
 	public species: Species[] = [];
 	public genomes: Genome[];
 	public evaluator: (gen: Genome) => number;
 	public fittestGenome: Genome | null = null;
 	public highestFitness = -Infinity;
-	public populationSize = 50;
+	public populationSize = 200;
 	public generation = 0;
 
-	constructor(genome: Genome, evaluator: (gen: Genome) => number, dropoff?: number) {
+	constructor(genome: Genome, evaluator: (gen: Genome) => number, config: NeatConfig = {}) {
+		const { dropoff, populationSize } = config;
 		if (dropoff) this.dropoff = dropoff;
+		if (populationSize) this.populationSize = populationSize;
 		this.genomes = [genome];
 		this.evaluator = evaluator;
 	}
@@ -51,46 +63,40 @@ export class Neat {
 
 	private classifyPopulationIntoSpecies() {
 		for (const genome of this.genomes) {
-			if (
-				!this.droppedPool.filter(
-					(g) => genome.compatibilityDistance(g) < this.compatibilityThreshold
-				).length
-			) {
-				let foundSpecies = false;
-				for (const spe of this.species) {
-					if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
-						spe.add(genome);
-						foundSpecies = true;
-						break;
-					}
+			let foundSpecies = false;
+			for (const spe of this.species) {
+				if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
+					spe.add(genome);
+					foundSpecies = true;
+					break;
 				}
+			}
 
-				if (!foundSpecies) {
-					if (this.tempSpecies.length) {
-						let matchFound = false;
-						/* check for species match in prev gen */
-						for (const spe of this.tempSpecies) {
-							if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
-								const bestFitness = spe.getFittestGenome().fitness;
-								const species = new Species(genome, spe.genWithoutProgress, bestFitness);
-								if (this.dropoff) species.dropoff = this.dropoff;
-								this.species.push(species);
-								matchFound = true;
-								break;
-							}
-						}
-						/* if no match found, create new species */
-						if (!matchFound) {
-							const species = new Species(genome);
+			if (!foundSpecies) {
+				if (this.tempSpecies.length) {
+					let matchFound = false;
+					/* check for species match in prev gen */
+					for (const spe of this.tempSpecies) {
+						if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
+							const bestFitness = spe.getFittestGenome().fitness;
+							const species = new Species(genome, spe.genWithoutProgress, bestFitness);
 							if (this.dropoff) species.dropoff = this.dropoff;
 							this.species.push(species);
+							matchFound = true;
+							break;
 						}
-					} else {
-						/* if no species in prev gen, create new species */
+					}
+					/* if no match found, create new species */
+					if (!matchFound) {
 						const species = new Species(genome);
 						if (this.dropoff) species.dropoff = this.dropoff;
 						this.species.push(species);
 					}
+				} else {
+					/* if no species in prev gen, create new species */
+					const species = new Species(genome);
+					if (this.dropoff) species.dropoff = this.dropoff;
+					this.species.push(species);
 				}
 			}
 		}
@@ -125,12 +131,6 @@ export class Neat {
 
 		for (const spe of this.species.filter((s) => s.isNotDropoff())) {
 			this.genomes.push(spe.getFittestGenome());
-		}
-	}
-
-	private updateDroppedPool() {
-		for (const spe of this.species.filter((s) => !s.isNotDropoff())) {
-			this.droppedPool.push(spe.getFittestGenome());
 		}
 	}
 

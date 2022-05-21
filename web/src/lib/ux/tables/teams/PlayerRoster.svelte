@@ -8,17 +8,17 @@
 	import type { IColHeader, ISortBy } from '../types';
 	export let roster: Player2StatsObject[], season: number;
 
-	let sortBy: ISortBy = { col: 'player.name.full', ascending: true };
+	let sortBy: ISortBy = { col: 'name.full', ascending: true };
 
-	$: if (season) sortBy = { col: 'player.name.full', ascending: true };
+	$: if (season) sortBy = { col: 'name.full', ascending: true };
 
 	const colHeaders: IColHeader[] = [
-		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'player.name.full' },
-		{ title: 'Pos', key: 'position' },
-		{ title: 'Age', key: 'player.birthDate' },
-		{ title: 'Ht', key: 'player.height' },
-		{ title: 'Wt', key: 'player.weight' },
-		{ title: 'College', key: 'player.college' }
+		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'name.full' },
+		{ title: 'Pos', key: 'stats.0.position' },
+		{ title: 'Age', key: 'birthDate' },
+		{ title: 'Ht', key: 'height' },
+		{ title: 'Wt', key: 'weight' },
+		{ title: 'College', key: 'college' }
 	];
 
 	$: sort = (column: string) => {

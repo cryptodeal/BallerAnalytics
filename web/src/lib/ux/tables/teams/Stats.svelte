@@ -103,40 +103,41 @@
 					},
 					twoWay
 				}
-			] = stats
-				? stats
-				: [
-						{
-							totals: {
-								games: undefined,
-								gamesStarted: undefined,
-								minutes: undefined,
-								fieldGoalsMade: undefined,
-								fieldGoalsAttempted: undefined,
-								fieldGoalsPct: undefined,
-								threePointersMade: undefined,
-								threePointersAttempted: undefined,
-								threePointersPct: undefined,
-								twoPointFGMade: undefined,
-								twoPointFGAttempted: undefined,
-								twoPointFGPct: undefined,
-								effectiveFieldGoalPct: undefined,
-								freeThrowsMade: undefined,
-								freeThrowsAttempted: undefined,
-								freeThrowsPct: undefined,
-								offReb: undefined,
-								defReb: undefined,
-								totalReb: undefined,
-								assists: undefined,
-								steals: undefined,
-								blocks: undefined,
-								turnovers: undefined,
-								personalFouls: undefined,
-								points: undefined
-							},
-							twoWay: false
-						}
-				  ]}
+			] =
+				stats && stats[0].totals
+					? stats
+					: [
+							{
+								totals: {
+									games: undefined,
+									gamesStarted: undefined,
+									minutes: undefined,
+									fieldGoalsMade: undefined,
+									fieldGoalsAttempted: undefined,
+									fieldGoalsPct: undefined,
+									threePointersMade: undefined,
+									threePointersAttempted: undefined,
+									threePointersPct: undefined,
+									twoPointFGMade: undefined,
+									twoPointFGAttempted: undefined,
+									twoPointFGPct: undefined,
+									effectiveFieldGoalPct: undefined,
+									freeThrowsMade: undefined,
+									freeThrowsAttempted: undefined,
+									freeThrowsPct: undefined,
+									offReb: undefined,
+									defReb: undefined,
+									totalReb: undefined,
+									assists: undefined,
+									steals: undefined,
+									blocks: undefined,
+									turnovers: undefined,
+									personalFouls: undefined,
+									points: undefined
+								},
+								twoWay: false
+							}
+					  ]}
 			<tr>
 				<!-- Display Player Name -->
 				<td

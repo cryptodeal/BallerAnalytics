@@ -83,6 +83,10 @@ export const getTeamBySlug = (
 					dayjs(a.date).isBefore(b.date) ? -1 : 1
 				);
 
+				team.seasons[seasonIdx].postseason.games.sort((a, b) =>
+					dayjs(a.date).isBefore(b.date) ? -1 : 1
+				);
+
 				team.seasons[seasonIdx].roster.players.sort((a, b) =>
 					a.player.name.full > b.player.name.full
 						? 1
