@@ -62,6 +62,7 @@
 		"eslint": "^8.15.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"html-minifier": "^4.0.0",
 		"jsonwebtoken": "^8.5.1",
 		"lexical": "^0.2.9",
 		"mdsvex": "^0.10.5",
