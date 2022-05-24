@@ -5,13 +5,13 @@ import {
 	scalar,
 	sigmoid,
 	Scalar,
-	type Tensor,
 	relu,
 	relu6,
 	softmax,
 	selu,
 	softplus,
-	tanh
+	tanh,
+	type Tensor
 } from '@tensorflow/tfjs';
 import { NodeType } from './gene';
 import type { CxnGene } from './gene/Connection';
@@ -73,9 +73,10 @@ export class TFGenome {
 					case 'tanh':
 						out = tanh(out.add(scalar(node.bias)));
 						break;
-					/* TODO: possibly remove default option */
+					/* TODO: remove default as shouldn't be necessary? */
 					default:
-						out = out.add(scalar(node.bias));
+						out = sigmoid(out.add(scalar(node.bias)));
+						break;
 				}
 				node.out = out;
 			}

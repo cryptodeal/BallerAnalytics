@@ -1,7 +1,6 @@
 import { seededRandom } from '../../../utils';
 import { NodeType } from '.';
 import type { Tensor } from '@tensorflow/tfjs';
-import type { ActivationIdentifier } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 import { getRandomInt } from '../../../DQN/utils';
 
 export type NodeGeneActivationId =
@@ -13,6 +12,7 @@ export type NodeGeneActivationId =
 	| 'sigmoid'
 	| 'softplus'
 	| 'tanh';
+
 export type NodeGeneConfig = {
 	activation?: NodeGeneActivationId;
 	bias?: number;
@@ -26,7 +26,7 @@ export class NodeGene {
 	public outCxnsId: number[] = [];
 	public inCxnsId: number[] = [];
 	public out!: Tensor;
-	public activation?: ActivationIdentifier = undefined;
+	public activation?: NodeGeneActivationId = undefined;
 	private units!: number;
 
 	private activationOpts: (NodeGeneActivationId | undefined)[] = [
@@ -36,14 +36,13 @@ export class NodeGene {
 		'selu',
 		'sigmoid',
 		'softplus',
-		'tanh',
-		undefined
+		'tanh'
 	];
 
-	constructor(type: NodeType, id: number, config?: NodeGeneConfig) {
+	constructor(type: NodeType, id: number, config: NodeGeneConfig = { activation: 'sigmoid' }) {
 		this.type = type;
 		this.id = id;
-		const { bias, activation, units } = config || {};
+		const { bias, activation, units } = config;
 		this.activation = type === NodeType.INPUT ? undefined : activation;
 		this.bias = bias || 0;
 
@@ -64,24 +63,22 @@ export class NodeGene {
 	}
 
 	resetActivation() {
-		this.activation = undefined;
+		this.activation = 'sigmoid';
 	}
 
 	perturbActivation() {
-		/* input nodes shouldn't have activation function */
-		if (this.type !== NodeType.INPUT) {
-			const activationFx = this.activationOpts.slice();
-			/* only output node can use softmax? */
-			if (this.type === NodeType.OUTPUT) activationFx.push('softmax');
-			this.activation = this.activationOpts[getRandomInt(0, activationFx.length)];
-		}
+		const activationFx = this.activationOpts.slice();
+		/* only output node can use softmax? */
+		if (this.type === NodeType.OUTPUT) activationFx.push('softmax');
+		this.activation = this.activationOpts[getRandomInt(0, activationFx.length)];
 	}
 
 	copy() {
-		const clone = new NodeGene(this.type, this.id);
+		const clone = new NodeGene(this.type, this.id, {
+			activation: this.activation,
+			bias: this.bias
+		});
 		clone.level = this.level;
-		clone.bias = this.bias;
-		clone.activation = this.activation;
 		clone.units = this.units;
 
 		clone.outCxnsId = this.outCxnsId.slice();

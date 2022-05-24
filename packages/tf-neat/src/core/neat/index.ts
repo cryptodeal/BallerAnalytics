@@ -1,5 +1,5 @@
 import { Species } from './Species';
-import type { Genome } from './Genome';
+import type { Genome, MutationRates } from './Genome';
 
 export type ActivationOpts =
 	| 'elu'
@@ -11,40 +11,64 @@ export type ActivationOpts =
 	| 'softplus'
 	| 'tanh';
 
+export type MutateBoostOpts = {
+	enabled?: boolean;
+	maxMutateRate?: number;
+	startThreshold?: number;
+};
+
+export type MutateBoostConfig = MutateBoostOpts & {
+	enabled: boolean;
+	maxMutateRate: number;
+	startThreshold: number;
+};
+
 export type NeatConfig = {
 	dropoff?: number;
-	mutationRates?: {
-		activation?: number;
-		connection?: number;
-		bias?: number;
-	};
+	mutateBoost?: MutateBoostOpts;
+	mutationRates?: MutationRates;
 	activationFns?: ActivationOpts[];
 	populationSize?: number;
 };
 
 export class Neat {
 	public dropoff?: number = undefined;
+	private mutateBoost: MutateBoostConfig = {
+		enabled: false,
+		maxMutateRate: 0.75,
+		startThreshold: 0.75
+	};
 	private compatibilityThreshold = 2;
 	private tempSpecies: Species[] = [];
 	public species: Species[] = [];
+	private initGenome: Genome;
 	public genomes: Genome[];
 	public evaluator: (gen: Genome) => number;
 	public fittestGenome: Genome | null = null;
 	public highestFitness = -Infinity;
 	public populationSize = 200;
 	public generation = 0;
+	public mutationRates!: MutationRates;
 
 	constructor(genome: Genome, evaluator: (gen: Genome) => number, config: NeatConfig = {}) {
-		const { dropoff, populationSize } = config;
+		const { dropoff, mutateBoost, populationSize, mutationRates } = config;
 		if (dropoff) this.dropoff = dropoff;
 		if (populationSize) this.populationSize = populationSize;
+		if (mutationRates) genome.setMutationRate(mutationRates);
+		if (mutateBoost) {
+			const { enabled, maxMutateRate, startThreshold } = mutateBoost;
+			if (enabled) this.mutateBoost.enabled = enabled;
+			if (maxMutateRate) this.mutateBoost.maxMutateRate = maxMutateRate;
+			if (startThreshold) this.mutateBoost.startThreshold = startThreshold;
+		}
 		this.genomes = [genome];
+		this.initGenome = genome;
+		this.crossOverAndMutate();
 		this.evaluator = evaluator;
 	}
 
 	nextGeneration() {
 		this.clearSpecies();
-
 		this.classifyPopulationIntoSpecies();
 		this.evaluateGenomes();
 		this.keepBestGenomes();
@@ -73,28 +97,35 @@ export class Neat {
 			}
 
 			if (!foundSpecies) {
+				/* if previous gen of species exists */
 				if (this.tempSpecies.length) {
 					let matchFound = false;
 					/* check for species match in prev gen */
 					for (const spe of this.tempSpecies) {
 						if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
-							const bestFitness = spe.getFittestGenome().fitness;
-							const species = new Species(genome, spe.genWithoutProgress, bestFitness);
-							if (this.dropoff) species.dropoff = this.dropoff;
-							this.species.push(species);
 							matchFound = true;
+							if (spe.isNotDropoff()) {
+								const bestFitness = spe.getFittestGenome().fitness;
+								const species = new Species(genome, spe.genWithoutProgress, bestFitness);
+								if (this.mutateBoost) species.mutateBoost = this.mutateBoost;
+								if (this.dropoff) species.dropoff = this.dropoff;
+								this.species.push(species);
+								break;
+							}
 							break;
 						}
 					}
 					/* if no match found, create new species */
 					if (!matchFound) {
 						const species = new Species(genome);
+						if (this.mutateBoost) species.mutateBoost = this.mutateBoost;
 						if (this.dropoff) species.dropoff = this.dropoff;
 						this.species.push(species);
 					}
 				} else {
 					/* if no species in prev gen, create new species */
 					const species = new Species(genome);
+					if (this.mutateBoost) species.mutateBoost = this.mutateBoost;
 					if (this.dropoff) species.dropoff = this.dropoff;
 					this.species.push(species);
 				}
@@ -128,27 +159,37 @@ export class Neat {
 
 	private keepBestGenomes() {
 		this.genomes = [];
-
 		for (const spe of this.species.filter((s) => s.isNotDropoff())) {
 			this.genomes.push(spe.getFittestGenome());
 		}
 	}
 
 	private crossOverAndMutate() {
+		const tempSpecies = this.species.filter((s) => s.isNotDropoff());
 		while (this.genomes.length < this.populationSize) {
-			const randomSpecies = this.species[Math.floor(Math.random() * this.species.length)];
-			const gen1 = randomSpecies.getRandomGenome();
-			const gen2 = randomSpecies.getRandomGenome();
+			if (!tempSpecies.length) {
+				const gen1 = this.initGenome;
+				const gen2 = this.initGenome;
 
-			const child = gen1.fitness > gen2.fitness ? gen1.crossover(gen2) : gen2.crossover(gen1);
-			child.mutate();
+				const child = gen1.fitness > gen2.fitness ? gen1.crossover(gen2) : gen2.crossover(gen1);
+				child.mutate();
 
-			this.genomes.push(child);
+				this.genomes.push(child);
+			} else {
+				const randomSpecies = tempSpecies[Math.floor(Math.random() * tempSpecies.length)];
+				const gen1 = randomSpecies.getRandomGenome();
+				const gen2 = randomSpecies.getRandomGenome();
+
+				const child = gen1.fitness > gen2.fitness ? gen1.crossover(gen2) : gen2.crossover(gen1);
+				child.mutate();
+
+				this.genomes.push(child);
+			}
 		}
 	}
 
 	private clearSpecies() {
-		this.tempSpecies = this.species.slice();
+		this.tempSpecies = this.species;
 		this.species = [];
 	}
 }

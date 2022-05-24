@@ -14,9 +14,9 @@ import { DraftAPI } from '../utils/Draft';
 
 /* TODO: tune parameters */
 export const VALID_ROSTER_REWARD = 5;
-export const INVALID_ROSTER_REWARD = -5;
+export const INVALID_ROSTER_REWARD = -15;
 export const AVAIL_PLAYER_REWARD = 5;
-export const UNAVAIL_PLAYER_REWARD = -5;
+export const UNAVAIL_PLAYER_REWARD = -15;
 export const FAILED_DRAFT_REWARD = -5;
 export const COMPLETED_DRAFT_REWARD = 10;
 
@@ -333,7 +333,7 @@ export class DraftTask {
 			done = true;
 			reward += UNAVAIL_PLAYER_REWARD;
 			/* TODO: Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
-			// if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD;
+			if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD / 3;
 		} else {
 			reward = AVAIL_PLAYER_REWARD;
 		}
@@ -342,7 +342,7 @@ export class DraftTask {
 			done = true;
 			reward += INVALID_ROSTER_REWARD;
 			/* TODO: Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
-			// if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD;
+			if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD / 3;
 		} else {
 			reward += VALID_ROSTER_REWARD;
 		}

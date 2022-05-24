@@ -24,7 +24,7 @@ export class DraftAPI {
 		return this.players[idx];
 	}
 
-	public getReward(idx: number, scale = 10) {
+	public getReward(idx: number, scale = 15) {
 		return this.rewards[idx] * scale;
 	}
 

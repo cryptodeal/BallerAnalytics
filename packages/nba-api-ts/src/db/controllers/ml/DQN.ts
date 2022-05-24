@@ -48,6 +48,10 @@ export class DQNPlayer {
 		return this._id.toString() === id;
 	}
 
+	public getId() {
+		return this._id.toString();
+	}
+
 	private calcStatSums(games: DQNParsedGame[], count: number) {
 		let min = 0,
 			fg = 0,

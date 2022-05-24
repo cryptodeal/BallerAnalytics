@@ -10,12 +10,28 @@ export type MutationItem = {
 	mutation: () => void;
 };
 
+export type MutationRates = {
+	activation?: number;
+	node?: number;
+	cxn?: number;
+	cxnWeight?: number;
+	bias?: number;
+};
+
 export class Genome {
 	public nodes = new Map<number, NodeGene>();
 	public cxns = new Map<number, CxnGene>();
 	public fitness = 0;
+	private mutationRates = {
+		activation: 0.2,
+		node: 0.33,
+		cxn: 0.33,
+		cxnWeight: 0.2,
+		bias: 0.2
+	};
 
 	compatibilityDistance(gen2: Genome, c1 = 1, c2 = 1, c3 = 0.3) {
+		/* TODO: activation functions should factor into speciation? */
 		const innovations1 = Array.from(this.cxns.keys());
 		const innovations2 = Array.from(gen2.cxns.keys());
 
@@ -44,21 +60,24 @@ export class Genome {
 			}
 		}
 
+		averageWeightDiff /= matching || 1;
+
+		const N = Math.max(innovations1.length, innovations2.length);
+		const compatibilityDistance = (c1 * excess + c2 * disjoint) / N + c3 * averageWeightDiff;
+
 		/*
       console.log(innovations1)
       console.log(innovations2)
       console.log('Excess:', excess, 'Disjoint:', disjoint, 'Matching:', matching)
+      console.log(compatibilityDistance)
     */
 
-		averageWeightDiff /= matching || 1;
-
-		const N = Math.max(innovations1.length, innovations2.length);
-
-		return (c1 * excess + c2 * disjoint) / N + c3 * averageWeightDiff;
+		return compatibilityDistance;
 	}
 
 	crossover(gen2: Genome) {
 		const child = new Genome();
+		child.setMutationRate(this.mutationRates);
 		child.nodes = new Map(
 			Array.from(this.nodes.entries()).map((entry) => [entry[0], entry[1].copy()])
 		);
@@ -93,9 +112,9 @@ export class Genome {
 		let selectedMutation = this.weightMutation;
 
 		const mutations: MutationItem[] = [];
-		mutations.push({ proba: 0.33, mutation: this.addNodeMutation });
-		mutations.push({ proba: 0.33, mutation: this.addConnectionMutation });
-		mutations.push({ proba: 0.33, mutation: this.disableConnectionMutation });
+		mutations.push({ proba: this.mutationRates.node, mutation: this.addNodeMutation });
+		mutations.push({ proba: this.mutationRates.cxn, mutation: this.addConnectionMutation });
+		mutations.push({ proba: this.mutationRates.cxn, mutation: this.disableConnectionMutation });
 
 		mutations.every((object) => {
 			const proba = object.proba;
@@ -109,22 +128,20 @@ export class Genome {
 		});
 
 		this.getNodes().forEach((node) => {
-			if (seededRandom() > 0.2) {
+			if (seededRandom() > this.mutationRates.bias) {
 				node.perturbBias();
 			} else {
 				node.resetBias();
 			}
 
-			if (node.type !== NodeType.INPUT && seededRandom() > 0.2) {
+			/* input nodes shouldn't have activation function */
+			if (node.type !== NodeType.INPUT && seededRandom() > this.mutationRates.activation) {
 				node.perturbActivation();
-			} else {
-				node.resetActivation();
 			}
 		});
 
-		/* this.getNodes().forEach(node => { if (seededRandom() > 0.2) node.perturbBias() }) */
 		this.getConnections().forEach((con) => {
-			if (seededRandom() > 0.2) con.perturbWeight();
+			if (seededRandom() > this.mutationRates.cxnWeight) con.perturbWeight();
 		});
 
 		selectedMutation.call(this);
@@ -149,6 +166,7 @@ export class Genome {
 		disabledCon.disable();
 
 		const node = new NodeGene(NodeType.HIDDEN, this.nodes.size);
+		node.perturbActivation();
 		this.addNode(node);
 
 		this.addConnection(disabledCon.inNodeId, node.id).weight = 1;
@@ -157,7 +175,7 @@ export class Genome {
 
 	addConnectionMutation() {
 		let attempt = 0;
-		const MAX_ATTEMPT = 100;
+		const MAX_ATTEMPT = 256;
 		while (attempt++ < MAX_ATTEMPT) {
 			const inNode = this.getRandomNode();
 			const acceptableNodes = this.getNodes().filter((node) => node.level >= inNode.level);
@@ -184,7 +202,7 @@ export class Genome {
 		console.log('Add connection mutation failed :(');
 	}
 
-	addConnection(inNodeId, outNodeId, enabled = true) {
+	addConnection(inNodeId: number, outNodeId: number, enabled = true) {
 		const newCon = new CxnGene(inNodeId, outNodeId, enabled, INNOVATION++);
 		this.cxns.set(newCon.innovation, newCon);
 		const inNode = this.nodes.get(inNodeId);
@@ -246,8 +264,22 @@ export class Genome {
 		return Array.from(this.cxns.values());
 	}
 
+	setMutationRate(opts: MutationRates) {
+		const { activation, cxn, bias, cxnWeight, node } = opts;
+		if (activation) this.mutationRates.activation = activation;
+		if (cxn) this.mutationRates.cxn = cxn;
+		if (bias) this.mutationRates.bias = bias;
+		if (cxnWeight) this.mutationRates.cxnWeight = cxnWeight;
+		if (node) this.mutationRates.node = node;
+	}
+
+	getMutationRate() {
+		return this.mutationRates;
+	}
+
 	copy() {
 		const clone = new Genome();
+		clone.setMutationRate(this.mutationRates);
 		clone.nodes = new Map(
 			Array.from(this.nodes.entries()).map((entry) => [entry[0], entry[1].copy()])
 		);
