@@ -9,6 +9,7 @@ export class Species {
 		maxMutateRate: 0.75,
 		startThreshold: 0.75
 	};
+	public mutateBoostThreshold!: number;
 	public prevHighFitness = -Infinity;
 	public representative: Genome;
 	public genomes: Genome[];
@@ -43,8 +44,15 @@ export class Species {
 	}
 
 	boostMutateRate(r: number, boost: number) {
-		if (r + boost < 1) return r + boost;
-		return 1;
+		return r + boost * (this.genWithoutProgress + 1 - this.mutateBoostThreshold);
+	}
+
+	useMutateBoost() {
+		return (
+			this.mutateBoost.enabled &&
+			this.dropoff &&
+			this.genWithoutProgress / this.dropoff >= this.mutateBoost.startThreshold
+		);
 	}
 
 	add(genome: Genome) {
@@ -54,19 +62,18 @@ export class Species {
 		 * or equal to `startThreshold` until reaching dropoff age;
 		 * simulates increasing evolutionary pressure
 		 */
-		if (
-			this.mutateBoost.enabled &&
-			this.dropoff &&
-			this.genWithoutProgress / this.dropoff >= this.mutateBoost.startThreshold
-		) {
+		if (this.useMutateBoost()) {
+			this.mutateBoostThreshold = this.genWithoutProgress;
 			const mutateRates = genome.getMutationRate();
 			for (const [key, value] of Object.entries(mutateRates)) {
 				mutateRates[key] = this.boostMutateRate(
 					value,
-					(this.mutateBoost.maxMutateRate - value) / (this.dropoff - this.genWithoutProgress)
+					(this.mutateBoost.maxMutateRate - value) /
+						((this.dropoff as number) - this.genWithoutProgress)
 				);
 			}
-			genome.setMutationRate(mutateRates);
+			genome.setMutateBoostRate(mutateRates);
+			genome.mutateBoost = true;
 		}
 		this.genomes.push(genome);
 	}

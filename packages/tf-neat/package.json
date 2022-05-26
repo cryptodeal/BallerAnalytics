@@ -68,6 +68,7 @@
     "@tensorflow/tfjs-core": "^3.18.0",
     "@tensorflow/tfjs-layers": "^3.18.0",
     "@tensorflow/tfjs-node": "^3.18.0",
+    "danfojs-node": "^1.1.1",
     "dayjs": "^1.11.2",
     "dotenv": "^16.0.1",
     "nanoid": "^3.3.4",

@@ -1,13 +1,12 @@
 <script lang="ts">
 	import FDG from '$lib/ux/dataviz/ForceDirectedGraph.svelte';
-	import { Genome, Neat, NodeGene, NodeType, TFGenome } from '@balleranalytics/tf-neat';
+	import { Genome, Neat, NodeType, TFGenome } from '@balleranalytics/tf-neat';
 	import { tensor } from '@tensorflow/tfjs';
 	import { onMount } from 'svelte';
 	import StatLabel from '$lib/ux/dataviz/StatLabel.svelte';
 	import { writable } from 'svelte/store';
 
-	let startGen: Genome,
-		nodeData: { type: NodeType; id: number; label: number }[] = [],
+	let nodeData: { type: NodeType; id: number; label: number }[] = [],
 		cxnData: { id: number; enabled: boolean; source: number; target: number; label: string }[] = [],
 		currentGen = 0,
 		currentHighFitness = 0,
@@ -18,7 +17,21 @@
 
 	const dropoff = writable(false),
 		dropoffAge = writable(15),
-		enabled = writable(true);
+		enabled = writable(true),
+		evalFitness = (gen: Genome) => {
+			const inputs = [
+				[0, 1, 0, 1],
+				[0, 0, 1, 1]
+			];
+			const labels = [0, 1, 1, 0];
+
+			const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
+
+			const mse = (preds, labels) => preds.sub(labels).square().mean();
+			const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
+
+			return fitness;
+		};
 
 	async function runGen() {
 		while ($enabled) {
@@ -53,32 +66,11 @@
 		currentSpecies = 0;
 		currentCxns = 0;
 		currentNodes = 0;
-		startGen = new Genome();
-		startGen.addNode(new NodeGene(NodeType.INPUT, 0));
-		startGen.addNode(new NodeGene(NodeType.INPUT, 1));
-		startGen.addNode(new NodeGene(NodeType.HIDDEN, 2));
-		startGen.addNode(new NodeGene(NodeType.OUTPUT, 3));
-		startGen.addConnection(0, 2);
-		startGen.addConnection(1, 2);
-		startGen.addConnection(2, 3);
 
 		neat = new Neat(
-			startGen,
-			(gen: Genome) => {
-				const inputs = [
-					[0, 1, 0, 1],
-					[0, 0, 1, 1]
-				];
-				const labels = [0, 1, 1, 0];
-
-				const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
-
-				const mse = (preds, labels) => preds.sub(labels).square().mean();
-				const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
-
-				return fitness;
-			},
-			$dropoff ? $dropoffAge : undefined
+			{ input: 2, out: 1, maxHidden: 1, linkProb: 1 },
+			evalFitness,
+			$dropoff ? { dropoff: $dropoffAge } : undefined
 		);
 	}
 

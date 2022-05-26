@@ -2,6 +2,7 @@ import { NodeGene } from './gene/Node';
 import { NodeType } from './gene';
 import { CxnGene } from './gene/Connection';
 import { seededRandom } from '../../utils';
+import { getRandomInt } from '../../DQN/utils';
 
 let INNOVATION = 0;
 
@@ -23,6 +24,14 @@ export class Genome {
 	public cxns = new Map<number, CxnGene>();
 	public fitness = 0;
 	private mutationRates = {
+		activation: 0.2,
+		node: 0.33,
+		cxn: 0.33,
+		cxnWeight: 0.2,
+		bias: 0.2
+	};
+	public mutateBoost = false;
+	private mutateBoostRates = {
 		activation: 0.2,
 		node: 0.33,
 		cxn: 0.33,
@@ -112,9 +121,18 @@ export class Genome {
 		let selectedMutation = this.weightMutation;
 
 		const mutations: MutationItem[] = [];
-		mutations.push({ proba: this.mutationRates.node, mutation: this.addNodeMutation });
-		mutations.push({ proba: this.mutationRates.cxn, mutation: this.addConnectionMutation });
-		mutations.push({ proba: this.mutationRates.cxn, mutation: this.disableConnectionMutation });
+		mutations.push({
+			proba: !this.mutateBoost ? this.mutationRates.node : this.mutateBoostRates.node,
+			mutation: this.addNodeMutation
+		});
+		mutations.push({
+			proba: !this.mutateBoost ? this.mutationRates.cxn : this.mutateBoostRates.cxn,
+			mutation: this.addConnectionMutation
+		});
+		mutations.push({
+			proba: !this.mutateBoost ? this.mutationRates.cxn : this.mutateBoostRates.cxn,
+			mutation: this.disableConnectionMutation
+		});
 
 		mutations.every((object) => {
 			const proba = object.proba;
@@ -128,20 +146,30 @@ export class Genome {
 		});
 
 		this.getNodes().forEach((node) => {
-			if (seededRandom() > this.mutationRates.bias) {
+			if (
+				seededRandom() > (!this.mutateBoost ? this.mutationRates.bias : this.mutateBoostRates.bias)
+			) {
 				node.perturbBias();
 			} else {
 				node.resetBias();
 			}
 
 			/* input nodes shouldn't have activation function */
-			if (node.type !== NodeType.INPUT && seededRandom() > this.mutationRates.activation) {
+			if (
+				node.type !== NodeType.INPUT &&
+				seededRandom() >
+					(!this.mutateBoost ? this.mutationRates.activation : this.mutateBoostRates.activation)
+			) {
 				node.perturbActivation();
 			}
 		});
 
 		this.getConnections().forEach((con) => {
-			if (seededRandom() > this.mutationRates.cxnWeight) con.perturbWeight();
+			if (
+				seededRandom() >
+				(!this.mutateBoost ? this.mutationRates.cxnWeight : this.mutateBoostRates.cxnWeight)
+			)
+				con.perturbWeight();
 		});
 
 		selectedMutation.call(this);
@@ -175,7 +203,7 @@ export class Genome {
 
 	addConnectionMutation() {
 		let attempt = 0;
-		const MAX_ATTEMPT = 256;
+		const MAX_ATTEMPT = 128;
 		while (attempt++ < MAX_ATTEMPT) {
 			const inNode = this.getRandomNode();
 			const acceptableNodes = this.getNodes().filter((node) => node.level >= inNode.level);
@@ -277,6 +305,19 @@ export class Genome {
 		return this.mutationRates;
 	}
 
+	setMutateBoostRate(opts: MutationRates) {
+		const { activation, cxn, bias, cxnWeight, node } = opts;
+		if (activation) this.mutateBoostRates.activation = activation;
+		if (cxn) this.mutateBoostRates.cxn = cxn;
+		if (bias) this.mutateBoostRates.bias = bias;
+		if (cxnWeight) this.mutateBoostRates.cxnWeight = cxnWeight;
+		if (node) this.mutateBoostRates.node = node;
+	}
+
+	getMutateBoostRate() {
+		return this.mutateBoostRates;
+	}
+
 	copy() {
 		const clone = new Genome();
 		clone.setMutationRate(this.mutationRates);
@@ -287,5 +328,64 @@ export class Genome {
 			Array.from(this.cxns.entries()).map((entry) => [entry[0], entry[1].copy()])
 		);
 		return clone;
+	}
+
+	static newRandGenome(input: number, out: number, maxHidden: number, linkProb: number) {
+		const genome = new Genome();
+		let nodeCount = 0;
+
+		/* input layer */
+		for (let i = 0; i < input; i++) {
+			genome.addNode(new NodeGene(NodeType.INPUT, nodeCount));
+			nodeCount++;
+		}
+		const lastInputNode = nodeCount - 1;
+
+		/* hidden layer */
+		const firstHiddenNode = nodeCount;
+		const hiddenCount = getRandomInt(1, maxHidden + 1);
+		for (let i = 0; i < hiddenCount; i++) {
+			genome.addNode(new NodeGene(NodeType.HIDDEN, nodeCount));
+			nodeCount++;
+		}
+		const lastHiddenNode = nodeCount - 1;
+
+		/* output layer */
+		const firstOutputNode = nodeCount;
+		for (let i = 0; i < out; i++) {
+			genome.addNode(new NodeGene(NodeType.OUTPUT, nodeCount));
+			nodeCount++;
+		}
+		const lastOutputNode = nodeCount - 1;
+
+		/* connections */
+
+		/* input to hidden cxns */
+		for (let i = 0; i <= lastInputNode; i++) {
+			for (let j = firstHiddenNode; j <= lastHiddenNode; j++) {
+				genome.addConnection(i, j);
+			}
+		}
+
+		/* TODO: hidden to hidden cxns
+		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {
+			if (seededRandom() < linkProb) {
+				let cxnToId: number | undefined = undefined;
+				while (!cxnToId) {
+					const node = getRandomInt(firstHiddenNode, lastHiddenNode + 1);
+					if (node !== i) cxnToId = node;
+				}
+				genome.addConnection(i, cxnToId);
+			}
+		}
+    */
+
+		/* hidden to output cxns */
+		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {
+			for (let j = firstOutputNode; j <= lastOutputNode; j++) {
+				if (seededRandom() < linkProb) genome.addConnection(i, j);
+			}
+		}
+		return genome;
 	}
 }

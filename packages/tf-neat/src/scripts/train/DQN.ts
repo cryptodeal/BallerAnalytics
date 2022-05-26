@@ -1,5 +1,5 @@
 import { loadDQNPlayers } from '@balleranalytics/nba-api-ts';
-import { loadLayersModel } from '@tensorflow/tfjs-node';
+// import { loadLayersModel } from '@tensorflow/tfjs-node';
 import { DraftTask } from '../../DQN/tasks';
 import { Agent } from '../../DQN/Agent';
 import type { TeamOpts } from '../../DQN/tasks/types';
@@ -22,7 +22,7 @@ const trainDQN = async () => {
 		// cachedOnlineNet
 	});
 
-	await train(agent, 64, 0.99, 1e3, 150, 1e6, 5e2, `${process.cwd()}/data/models/DQN`, null);
+	await train(agent, 64, 0.99, 1e3, 150, 1e6, 1.5e3, `${process.cwd()}/data/models/DQN`, null);
 };
 
 trainDQN();

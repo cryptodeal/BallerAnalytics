@@ -1,5 +1,5 @@
 import { Species } from './Species';
-import type { Genome, MutationRates } from './Genome';
+import { Genome, type MutationRates } from './Genome';
 
 export type ActivationOpts =
 	| 'elu'
@@ -31,6 +31,13 @@ export type NeatConfig = {
 	populationSize?: number;
 };
 
+export type RandGenomeOpts = {
+	input: number;
+	out: number;
+	maxHidden: number;
+	linkProb: number;
+};
+
 export class Neat {
 	public dropoff?: number = undefined;
 	private mutateBoost: MutateBoostConfig = {
@@ -41,7 +48,7 @@ export class Neat {
 	private compatibilityThreshold = 2;
 	private tempSpecies: Species[] = [];
 	public species: Species[] = [];
-	private initGenome: Genome;
+	private randGenome: RandGenomeOpts;
 	public genomes: Genome[];
 	public evaluator: (gen: Genome) => number;
 	public fittestGenome: Genome | null = null;
@@ -50,20 +57,30 @@ export class Neat {
 	public generation = 0;
 	public mutationRates!: MutationRates;
 
-	constructor(genome: Genome, evaluator: (gen: Genome) => number, config: NeatConfig = {}) {
+	constructor(
+		genomeOpts: RandGenomeOpts,
+		evaluator: (gen: Genome) => number,
+		config: NeatConfig = {}
+	) {
+		this.randGenome = genomeOpts;
 		const { dropoff, mutateBoost, populationSize, mutationRates } = config;
 		if (dropoff) this.dropoff = dropoff;
 		if (populationSize) this.populationSize = populationSize;
-		if (mutationRates) genome.setMutationRate(mutationRates);
+		if (mutationRates) this.mutationRates = mutationRates;
+
 		if (mutateBoost) {
 			const { enabled, maxMutateRate, startThreshold } = mutateBoost;
 			if (enabled) this.mutateBoost.enabled = enabled;
 			if (maxMutateRate) this.mutateBoost.maxMutateRate = maxMutateRate;
 			if (startThreshold) this.mutateBoost.startThreshold = startThreshold;
 		}
-		this.genomes = [genome];
-		this.initGenome = genome;
-		this.crossOverAndMutate();
+		const { input, out, maxHidden, linkProb } = genomeOpts;
+		this.genomes = new Array(this.populationSize);
+		for (let i = 0; i < this.populationSize; i++) {
+			this.genomes[i] = Genome.newRandGenome(input, out, maxHidden, linkProb);
+		}
+		this.classifyPopulationIntoSpecies();
+
 		this.evaluator = evaluator;
 	}
 
@@ -168,8 +185,9 @@ export class Neat {
 		const tempSpecies = this.species.filter((s) => s.isNotDropoff());
 		while (this.genomes.length < this.populationSize) {
 			if (!tempSpecies.length) {
-				const gen1 = this.initGenome;
-				const gen2 = this.initGenome;
+				const { input, out, maxHidden, linkProb } = this.randGenome;
+				const gen1 = Genome.newRandGenome(input, out, maxHidden, linkProb);
+				const gen2 = Genome.newRandGenome(input, out, maxHidden, linkProb);
 
 				const child = gen1.fitness > gen2.fitness ? gen1.crossover(gen2) : gen2.crossover(gen1);
 				child.mutate();

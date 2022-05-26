@@ -39,14 +39,30 @@ export class NodeGene {
 		'tanh'
 	];
 
-	constructor(type: NodeType, id: number, config: NodeGeneConfig = { activation: 'sigmoid' }) {
+	constructor(type: NodeType, id: number, config?: NodeGeneConfig) {
 		this.type = type;
 		this.id = id;
-		const { bias, activation, units } = config;
-		this.activation = type === NodeType.INPUT ? undefined : activation;
-		this.bias = bias || 0;
+		if (config) {
+			const { bias, activation, units } = config;
+			this.bias = bias || 0;
+			if (this.type === NodeType.HIDDEN && units) this.units = units;
+			if (activation) {
+				switch (type) {
+					case NodeType.INPUT:
+						this.activation = undefined;
+						break;
+					case NodeType.HIDDEN:
+						this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
+						break;
+					case NodeType.OUTPUT:
+						const tempActivations = this.activationOpts.splice(0);
+						tempActivations.push('softmax');
+						this.activation = tempActivations[getRandomInt(0, tempActivations.length)];
+						break;
+				}
+			}
+		}
 
-		if (this.type === NodeType.HIDDEN && units) this.units = units;
 		/* used by addCnxMutation to not generate cycle */
 		this.level = 0;
 
