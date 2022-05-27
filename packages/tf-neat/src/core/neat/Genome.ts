@@ -330,7 +330,7 @@ export class Genome {
 		return clone;
 	}
 
-	static newRandGenome(input: number, out: number, maxHidden: number, linkProb: number) {
+	static newRandGenome(input: number, out: number, maxHidden: number, linkProb?: number) {
 		const genome = new Genome();
 		let nodeCount = 0;
 
@@ -343,7 +343,7 @@ export class Genome {
 
 		/* hidden layer */
 		const firstHiddenNode = nodeCount;
-		const hiddenCount = getRandomInt(1, maxHidden + 1);
+		const hiddenCount = maxHidden <= 1 ? 1 : getRandomInt(1, maxHidden + 1);
 		for (let i = 0; i < hiddenCount; i++) {
 			genome.addNode(new NodeGene(NodeType.HIDDEN, nodeCount));
 			nodeCount++;
@@ -383,7 +383,7 @@ export class Genome {
 		/* hidden to output cxns */
 		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {
 			for (let j = firstOutputNode; j <= lastOutputNode; j++) {
-				if (seededRandom() < linkProb) genome.addConnection(i, j);
+				if (linkProb && seededRandom() < linkProb) genome.addConnection(i, j);
 			}
 		}
 		return genome;

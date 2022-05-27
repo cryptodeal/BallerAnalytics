@@ -17,21 +17,7 @@
 
 	const dropoff = writable(false),
 		dropoffAge = writable(15),
-		enabled = writable(true),
-		evalFitness = (gen: Genome) => {
-			const inputs = [
-				[0, 1, 0, 1],
-				[0, 0, 1, 1]
-			];
-			const labels = [0, 1, 1, 0];
-
-			const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
-
-			const mse = (preds, labels) => preds.sub(labels).square().mean();
-			const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
-
-			return fitness;
-		};
+		enabled = writable(true);
 
 	async function runGen() {
 		while ($enabled) {
@@ -66,11 +52,25 @@
 		currentSpecies = 0;
 		currentCxns = 0;
 		currentNodes = 0;
+		const evalFitness = (gen: Genome) => {
+			const inputs = [
+				[0, 1, 0, 1],
+				[0, 0, 1, 1]
+			];
+			const labels = [0, 1, 1, 0];
+
+			const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
+
+			const mse = (preds, labels) => preds.sub(labels).square().mean();
+			const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
+
+			return fitness;
+		};
 
 		neat = new Neat(
 			{ input: 2, out: 1, maxHidden: 1, linkProb: 1 },
 			evalFitness,
-			$dropoff ? { dropoff: $dropoffAge } : undefined
+			$dropoff ? { dropoff: $dropoffAge } : {}
 		);
 	}
 
