@@ -25,6 +25,7 @@ export type MutateBoostConfig = MutateBoostOpts & {
 
 export type NeatConfig = {
 	dropoff?: number;
+	fillInitGen?: boolean;
 	mutateBoost?: MutateBoostOpts;
 	mutationRates?: MutationRates;
 	activationFns?: ActivationOpts[];
@@ -63,7 +64,7 @@ export class Neat {
 		config: NeatConfig = {}
 	) {
 		this.randGenome = genomeOpts;
-		const { dropoff, mutateBoost, populationSize, mutationRates } = config;
+		const { dropoff, mutateBoost, populationSize, mutationRates, fillInitGen } = config;
 		if (dropoff) this.dropoff = dropoff;
 		if (populationSize) this.populationSize = populationSize;
 		if (mutationRates) this.mutationRates = mutationRates;
@@ -75,9 +76,13 @@ export class Neat {
 			if (startThreshold) this.mutateBoost.startThreshold = startThreshold;
 		}
 		const { input, out, maxHidden, linkProb } = genomeOpts;
-		this.genomes = new Array(this.populationSize).fill(
-			Genome.newRandGenome(input, out, maxHidden, linkProb)
-		);
+		if (fillInitGen) {
+			this.genomes = new Array(this.populationSize).fill(
+				Genome.newRandGenome(input, out, maxHidden, linkProb)
+			);
+		} else {
+			this.genomes = [Genome.newRandGenome(input, out, maxHidden, linkProb)];
+		}
 		this.evaluator = evaluator;
 	}
 
