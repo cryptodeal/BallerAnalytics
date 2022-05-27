@@ -75,7 +75,9 @@ export class Neat {
 			if (startThreshold) this.mutateBoost.startThreshold = startThreshold;
 		}
 		const { input, out, maxHidden, linkProb } = genomeOpts;
-		this.genomes = [Genome.newRandGenome(input, out, maxHidden, linkProb)];
+		this.genomes = new Array(this.populationSize).fill(
+			Genome.newRandGenome(input, out, maxHidden, linkProb)
+		);
 		this.evaluator = evaluator;
 	}
 

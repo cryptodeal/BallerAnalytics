@@ -358,7 +358,7 @@ export class Genome {
 		}
 		const lastOutputNode = nodeCount - 1;
 
-		/* connections */
+		/* init connections */
 
 		/* input to hidden cxns */
 		for (let i = 0; i <= lastInputNode; i++) {
@@ -378,7 +378,7 @@ export class Genome {
 				genome.addConnection(i, cxnToId);
 			}
 		}
-    */
+     */
 
 		/* hidden to output cxns */
 		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {

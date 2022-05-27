@@ -13,6 +13,6 @@
     "noImplicitAny": false,
     "paths": {}
 	},
-	"include": ["src/**/*", "src/global.d.ts"],
+	"include": ["src/**/*", "src/global.d.ts", "@types/stdlib"],
 	"exclude": ["./node_modules", "dist"]
 }

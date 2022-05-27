@@ -42,16 +42,16 @@ const trainNeat = async () => {
 		return fitness;
 	};
 
-	const randGenomeOpts: RandGenomeOpts = { input: 75, out: 1, maxHidden: 25, linkProb: 0.67 };
+	const randGenomeOpts: RandGenomeOpts = { input: 75, out: 1, maxHidden: 15, linkProb: 0.75 };
 
 	const neat = new Neat(randGenomeOpts, evalFitness, {
-		dropoff: 15,
+		dropoff: 25,
 		mutateBoost: {
 			enabled: true,
-			startThreshold: 0.65,
-			maxMutateRate: 0.75
+			startThreshold: 0.5,
+			maxMutateRate: 0.6
 		},
-		populationSize: 64
+		populationSize: 256
 	});
 
 	let bestFitness = -Infinity;
