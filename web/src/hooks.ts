@@ -3,31 +3,29 @@ import { serverlessConnect } from '@balleranalytics/nba-api-ts';
 import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
-// import { minify } from 'html-minifier';
-// import { prerendering } from '$app/env';
+import { minify } from 'html-minifier';
+import { prerendering } from '$app/env';
 
 import type { Handle, GetSession } from '@sveltejs/kit';
 
-/*
-  const minification_options = {
-    collapseBooleanAttributes: true,
-    collapseWhitespace: true,
-    conservativeCollapse: true,
-    decodeEntities: true,
-    html5: true,
-    ignoreCustomComments: [/^#/],
-    minifyCSS: true,
-    minifyJS: false,
-    removeAttributeQuotes: true,
-    removeComments: true,
-    removeOptionalTags: true,
-    removeRedundantAttributes: true,
-    removeScriptTypeAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    sortAttributes: true,
-    sortClassName: true
-  };
-*/
+const minification_options = {
+	collapseBooleanAttributes: true,
+	collapseWhitespace: true,
+	conservativeCollapse: true,
+	decodeEntities: true,
+	html5: true,
+	ignoreCustomComments: [/^#/],
+	minifyCSS: true,
+	minifyJS: false,
+	removeAttributeQuotes: true,
+	removeComments: true,
+	removeOptionalTags: true,
+	removeRedundantAttributes: true,
+	removeScriptTypeAttributes: true,
+	removeStyleLinkTypeAttributes: true,
+	sortAttributes: true,
+	sortClassName: true
+};
 
 export const handle: Handle = async ({ event, resolve }) => {
 	await serverlessConnect(config.MONGO_URI);
@@ -55,14 +53,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
 	if (refreshedAccessToken) response.headers.set('set-cookie', refreshedAccessToken);
 
-	/* TODO: pending see: https://github.com/sveltejs/kit/issues/4247
-    if (prerendering && response.headers.get('content-type') === 'text/html') {
-      return new Response(minify(await response.text(), minification_options), {
-        status: response.status,
-        headers: response.headers
-      });
-    }
-  */
+	/* TODO: pending see: https://github.com/sveltejs/kit/issues/4247 */
+	if (prerendering && response.headers.get('content-type') === 'text/html') {
+		return new Response(minify(await response.text(), minification_options), {
+			status: response.status,
+			headers: response.headers
+		});
+	}
 
 	return response;
 };
