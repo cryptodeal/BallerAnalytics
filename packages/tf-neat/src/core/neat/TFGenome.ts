@@ -76,7 +76,7 @@ export class TFGenome {
 						break;
 					/* TODO: remove default as shouldn't be necessary? */
 					default:
-						out = sigmoid(out.add(scalar(node.bias)));
+						out.add(scalar(node.bias));
 						break;
 				}
 				node.out = out;

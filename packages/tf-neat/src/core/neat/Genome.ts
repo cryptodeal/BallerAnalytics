@@ -338,7 +338,7 @@ export class Genome {
 			genome.addNode(new NodeGene(NodeType.INPUT, nodeCount));
 			nodeCount++;
 		}
-		const lastInputNode = nodeCount - 1;
+		const lastInputNode = nodeCount;
 
 		/* hidden layer */
 		const firstHiddenNode = nodeCount;
@@ -347,7 +347,7 @@ export class Genome {
 			genome.addNode(new NodeGene(NodeType.HIDDEN, nodeCount));
 			nodeCount++;
 		}
-		const lastHiddenNode = nodeCount - 1;
+		const lastHiddenNode = nodeCount;
 
 		/* output layer */
 		const firstOutputNode = nodeCount;
@@ -355,34 +355,29 @@ export class Genome {
 			genome.addNode(new NodeGene(NodeType.OUTPUT, nodeCount));
 			nodeCount++;
 		}
-		const lastOutputNode = nodeCount - 1;
+		const lastOutputNode = nodeCount;
 
 		/* init connections */
 
 		/* input to hidden cxns */
-		for (let i = 0; i <= lastInputNode; i++) {
-			for (let j = firstHiddenNode; j <= lastHiddenNode; j++) {
-				if (!linkProb || (linkProb && seededRandom() < linkProb)) genome.addConnection(i, j);
-			}
-		}
-
-		/* TODO: hidden to hidden cxns
-		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {
-			if (seededRandom() < linkProb) {
-				let cxnToId: number | undefined = undefined;
-				while (!cxnToId) {
-					const node = getRandomInt(firstHiddenNode, lastHiddenNode + 1);
-					if (node !== i) cxnToId = node;
+		for (let i = 0; i < lastInputNode; i++) {
+			for (let j = firstHiddenNode; j < lastHiddenNode; j++) {
+				if (!linkProb) {
+					genome.addConnection(i, j);
+				} else {
+					if (linkProb && seededRandom() < linkProb) genome.addConnection(i, j);
 				}
-				genome.addConnection(i, cxnToId);
 			}
 		}
-     */
 
 		/* hidden to output cxns */
-		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {
-			for (let j = firstOutputNode; j <= lastOutputNode; j++) {
-				if (!linkProb || (linkProb && seededRandom() < linkProb)) genome.addConnection(i, j);
+		for (let i = firstHiddenNode; i < lastHiddenNode; i++) {
+			for (let j = firstOutputNode; j < lastOutputNode; j++) {
+				if (!linkProb) {
+					genome.addConnection(i, j);
+				} else {
+					if (linkProb && seededRandom() < linkProb) genome.addConnection(i, j);
+				}
 			}
 		}
 		return genome;
