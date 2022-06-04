@@ -68,7 +68,7 @@
 		};
 
 		neat = new Neat(
-			{ input: 2, out: 1, maxHidden: 1 },
+			{ input: 2, out: 1, maxHidden: 2 },
 			evalFitness,
 			$dropoff ? { dropoff: $dropoffAge } : {}
 		);
