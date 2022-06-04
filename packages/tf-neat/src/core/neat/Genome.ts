@@ -357,15 +357,13 @@ export class Genome {
 		}
 		const lastOutputNode = nodeCount;
 
-		/* init connections */
-
 		/* input to hidden cxns */
 		for (let i = 0; i < lastInputNode; i++) {
 			for (let j = firstHiddenNode; j < lastHiddenNode; j++) {
 				if (!linkProb) {
 					genome.addConnection(i, j);
 				} else {
-					if (linkProb && seededRandom() < linkProb) genome.addConnection(i, j);
+					if (seededRandom() < linkProb) genome.addConnection(i, j);
 				}
 			}
 		}
@@ -376,7 +374,7 @@ export class Genome {
 				if (!linkProb) {
 					genome.addConnection(i, j);
 				} else {
-					if (linkProb && seededRandom() < linkProb) genome.addConnection(i, j);
+					if (seededRandom() < linkProb) genome.addConnection(i, j);
 				}
 			}
 		}

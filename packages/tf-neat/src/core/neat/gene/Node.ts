@@ -94,8 +94,8 @@ export class NodeGene {
 		clone.level = this.level;
 		clone.units = this.units;
 
-		clone.outCxnsId = new Map(JSON.parse(JSON.stringify([...this.outCxnsId])));
-		clone.inCxnsId = new Map(JSON.parse(JSON.stringify([...this.inCxnsId])));
+		clone.outCxnsId = structuredClone(this.outCxnsId);
+		clone.inCxnsId = structuredClone(this.inCxnsId);
 
 		return clone;
 	}
