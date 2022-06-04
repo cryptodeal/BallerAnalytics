@@ -36,7 +36,7 @@ export type RandGenomeOpts = {
 	input: number;
 	out: number;
 	maxHidden: number;
-	linkProb: number;
+	linkProb?: number;
 };
 
 export class Neat {
@@ -77,9 +77,10 @@ export class Neat {
 		}
 		const { input, out, maxHidden, linkProb } = genomeOpts;
 		if (fillInitGen) {
-			this.genomes = new Array(this.populationSize).fill(
-				Genome.newRandGenome(input, out, maxHidden, linkProb)
-			);
+			this.genomes = new Array(this.populationSize);
+			for (let i = 0; i < this.populationSize; i++) {
+				this.genomes[i] = Genome.newRandGenome(input, out, maxHidden, linkProb);
+			}
 		} else {
 			this.genomes = [Genome.newRandGenome(input, out, maxHidden, linkProb)];
 		}

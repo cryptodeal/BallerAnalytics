@@ -25,20 +25,21 @@ export class TFGenome {
 			const inputNodes = nodes.filter((node) => node.type === NodeType.INPUT);
 			const outputsNodes = nodes.filter((node) => node.type === NodeType.OUTPUT);
 			nodes = nodes.filter((node) => node.type !== NodeType.INPUT);
-
-			if (inputs.length !== inputNodes.length) {
-				throw new Error('mismatch inputs length' + inputs.length + ' vs ' + inputNodes.length);
+			const inputNodeCount = inputs.length;
+			if (inputs.length !== inputNodeCount) {
+				throw new Error('mismatch inputs length' + inputs.length + ' vs ' + inputNodeCount);
 			}
 
-			for (let i = 0; i < inputNodes.length; i++) {
+			for (let i = 0; i < inputNodeCount; i++) {
 				inputNodes[i].out = tensor(inputs[i]);
 			}
 
 			nodes.sort((a, b) => a.level - b.level);
-
-			for (const node of nodes) {
+			const nodeCount = nodes.length;
+			for (let i = 0; i < nodeCount; i++) {
+				const node = nodes[i];
 				let out: Tensor | Scalar = scalar(0);
-				for (const conId of node.inCxnsId) {
+				for (const [, conId] of node.inCxnsId) {
 					const con = genome.cxns.get(conId);
 					if (con !== undefined && !con.enabled) {
 						continue;

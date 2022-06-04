@@ -60,7 +60,7 @@ NEATTest('create 2 genomes w nodes and connections; compatibilityDistance()', ()
 	startGen.addConnection(1, 2);
 	startGen.addConnection(2, 3);
 
-	const neat = new Neat(startGen, (gen: Genome) => {
+	const neat = new Neat({ input: 2, maxHidden: 3, out: 1 }, (gen: Genome) => {
 		const inputs = [
 			[0, 1, 0, 1],
 			[0, 0, 1, 1]
@@ -92,4 +92,4 @@ NEATTest('create 2 genomes w nodes and connections; compatibilityDistance()', ()
 	console.log('Took ' + (t1 - t0) + ' milliseconds.');
 });
 
-NEATTest.run();
+// NEATTest.run();

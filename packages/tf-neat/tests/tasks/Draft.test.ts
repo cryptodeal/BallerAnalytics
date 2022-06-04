@@ -26,7 +26,7 @@ DraftApiTest('load Players; initialize Draft', async () => {
 	draft.rewards.map((r) => assert.is(r >= 0 && r <= 1, true));
 });
 
-DraftApiTest.run();
+// DraftApiTest.run();
 
 RosterTest('load Players; initRoster w 0 size and check if `roster.done = true`', async () => {
 	const roster = new Roster({ pg: 0, sg: 0, sf: 0, pf: 0, f: 0, c: 0, g: 0, util: 0, be: 0 });
@@ -58,7 +58,7 @@ RosterTest('load Players; use defaults w random players', async () => {
 	assert.is(pass, true);
 });
 
-RosterTest.run();
+// RosterTest.run();
 
 DraftTaskTest('getRandomAction', () => {
 	for (let i = 0; i < 40; i++) {
@@ -103,7 +103,7 @@ DraftTaskTest('test basic step and associated state', () => {
 	}
 });
 
-DraftTaskTest.run();
+// DraftTaskTest.run();
 
 DraftAgentTest('playStep', () => {
 	const actionCount = players.length;
@@ -196,4 +196,4 @@ DraftAgentTest('trainOnReplayBatch', () => {
 	}
 });
 
-DraftAgentTest.run();
+// DraftAgentTest.run();

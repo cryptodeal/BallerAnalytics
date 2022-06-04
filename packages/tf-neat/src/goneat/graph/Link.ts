@@ -1,5 +1,14 @@
 import { array, type NDArray } from 'vectorious';
 import { NNode } from './NNode';
+import type { EdgeSingular, ElementDefinition } from 'cytoscape';
+
+export type EdgeAttributes = Record<string, number | string | boolean> & {
+	weight: number;
+	recurrent: boolean;
+	isTimeDelayed: boolean;
+	trait?: string;
+	params?: NDArray;
+};
 
 export type LinkAttributes = 'weight' | 'recurrent' | 'parameters';
 
@@ -39,45 +48,22 @@ export class Link {
 		return `${this.inNode.id}-${this.outNode.id}`;
 	}
 
-	/* graph implementation methods */
-
-	/* returns from node of the edge */
-	public from() {
-		return this.inNode;
-	}
-
-	/* returns to node of the edge */
-	public to() {
-		return this.outNode;
-	}
-
-	/* returns weight of link */
-	public weight() {
-		return this.cxnWeight;
-	}
-
-	/**
-	 * returns the edge reversal of the receiver
-	 * if a reversal is valid for dataType; When
-	 * a reversal is valid, an edge of same type as
-	 * receiver with nodes of the receiver swapped
-	 * should be returned unaltered.
-	 */
-	public reversedEdge() {
-		/* reversal is invalid, so return unaltered */
-		return this;
-	}
-
-	/**
-	 * attributes returns list of standard attributes
-	 * associated with graph edge
-	 */
-	public attributes() {
-		const attr: Map<LinkAttributes, number | boolean | NDArray> = new Map();
-		attr.set('weight', this.cxnWeight);
-		attr.set('recurrent', this.isRecurrent);
-		if (this.params?.length) attr.set('parameters', this.params);
-		return attr;
+	static linkToCyJsEdge(link: Link): ElementDefinition {
+		const attr: EdgeAttributes = {
+			weight: link.cxnWeight,
+			recurrent: link.isRecurrent,
+			isTimeDelayed: link.isTimeDelayed
+		};
+		if (link.trait) attr.trait = link.trait.string();
+		return {
+			group: 'edges',
+			data: {
+				id: link.getCyJsID(),
+				source: link.inNode.getCyJsID(),
+				target: link.outNode.getCyJsID(),
+				...attr
+			}
+		};
 	}
 
 	/* creates new link w specified trait */
@@ -90,7 +76,7 @@ export class Link {
 	) {
 		const link = new Link(weight, inputNode, outputNode, recurrent);
 		link.trait = trait;
-		link.deriveTrait(trait);
+		link.initDeriveTrait(trait);
 		return link;
 	}
 
@@ -98,7 +84,7 @@ export class Link {
 	static newLinkCopy(l: Link, inputNode: NNode, outNode: NNode) {
 		const link = new Link(l.cxnWeight, inputNode, outNode, l.isRecurrent);
 		link.trait = l.trait;
-		link.deriveTrait(l.trait);
+		link.initDeriveTrait(l.trait);
 		return link;
 	}
 
@@ -107,30 +93,36 @@ export class Link {
 	 * identical to provided link; i.e. connects nodes w same
 	 * IDs and has equal recurrent flag (both links represent the same Gene)
 	 */
-	public isEqualGenetically(ol: Link) {
-		const sameInNode = this.inNode.id == ol.inNode.id;
-		const sameOutNode = this.outNode.id == ol.outNode.id;
-		const sameRecurrent = this.isRecurrent == ol.isRecurrent;
-		return sameInNode && sameOutNode && sameRecurrent;
+	static isEqualGenetically(e1: EdgeSingular, e2: EdgeSingular) {
+		const sameSource = e1.data('source') == e2.data('source');
+		const sameTarget = e1.data('target') == e2.data('target');
+		const sameRecurrent = e1.data('recurrent') === e2.data('recurrent');
+		return sameSource && sameTarget && sameRecurrent;
 	}
 
 	/* link methods */
-	public string(): string {
-		return `[Link: (${this.inNode} <-> ${this.outNode}), weight: ${this.cxnWeight.toFixed(
-			3
-		)}, recurrent: ${this.isRecurrent}, time delayed: ${this.isTimeDelayed}]`;
+	static string(e: EdgeSingular): string {
+		return `[Link: (${e.data('source')} <-> ${e.data('target')}, weight: ${e
+			.data('weight')
+			.toFixed(5)}, recurrent: ${e.data('recurrent')}, time delayed: ${e.data('isTimeDelayed')}]`;
 	}
 
-	public idString(): string {
-		return `${this.inNode.id}-${this.outNode.id}`;
-	}
-
-	public deriveTrait(t?: any) {
+	public initDeriveTrait(t?: any) {
 		if (t !== null) {
 			this.params = array({ length: t.params.length }).fill(0);
 			for (const [i, p] of t.params) {
 				this.params.set(i, p);
 			}
+		}
+	}
+
+	static deriveTrait(e: EdgeSingular, t?: any) {
+		if (t !== null) {
+			const params = array({ length: t.params.length }).fill(0);
+			for (const [i, p] of t.params) {
+				params.set(i, p);
+			}
+			e.data('params', params);
 		}
 	}
 }

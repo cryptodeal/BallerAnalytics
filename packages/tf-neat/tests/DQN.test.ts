@@ -43,7 +43,7 @@ DQNTest('Invalid numActions leads to Error', () => {
 	assert.throws(() => createDeepQNetwork(10, 10, 10, undefined), /numActions/);
 });
 
-DQNTest.run();
+// DQNTest.run();
 
 const CopyWeightsTest = suite('CopyWeightsTest');
 
@@ -118,4 +118,4 @@ CopyWeightsTest('Copy from trainable source to untrainable dest works', () => {
 	assert.is(srcNetwork.trainable, true);
 });
 
-CopyWeightsTest.run();
+// CopyWeightsTest.run();

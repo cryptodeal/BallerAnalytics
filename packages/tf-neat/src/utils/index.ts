@@ -39,6 +39,8 @@ const seed = seedrandom(seedString) as unknown as RNG;
 Random.use(seed);
 export const seededRandom = () => Random.float();
 
+export const seededRandomInt = () => Random.int(0, Number.MAX_SAFE_INTEGER);
+
 export const clone = (obj: unknown) => {
 	if (null == obj || 'object' != typeof obj) return obj;
 	return rfdc({ proto: true })(obj);

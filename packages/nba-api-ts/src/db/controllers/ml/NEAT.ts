@@ -6,7 +6,7 @@ import type { /*Player2Object,*/ Game2Object, Player2Document /*, Game2Document*
 import type { MlFantasyPlayerData } from '../../models/Player2';
 
 /* TODO: Write class of player for DQN Model API */
-export class DQNPlayer {
+export class NeatPlayer {
 	private _id: Player2Document['_id'];
 	private gpSum: number;
 	private gsSum: number;
@@ -20,13 +20,8 @@ export class DQNPlayer {
 
 	public positionEncd: PositionEncoded = [0, 0, 0, 0, 0, 0, 0];
 	public inputs: number[] = [];
-	public neatData: {
-		inputs: number[];
-		labels: number[];
-	} = { inputs: [], labels: [] };
 	public labels: number[] = [];
 	public isInvalid = false;
-	public rawData!: { inputs: number[]; labels: number[] };
 	constructor(playerData: MlFantasyPlayerData) {
 		const { _id, gpSum, gsSum, birthDate, position, name, latestGameStats, trainingGameStats } =
 			playerData;
@@ -45,7 +40,6 @@ export class DQNPlayer {
 	public reset() {
 		this.inputs = [];
 		this.labels = [];
-		this.rawData = { inputs: [], labels: [] };
 	}
 
 	public isIdMatch(id: string) {
@@ -303,34 +297,23 @@ export class DQNPlayer {
 			lastSznStl, // 63 - lastSznAvgStl
 			lastSznBlk, // 64 - lastSznAvgBlk
 			lastSznTov, // 65 - lastSznAvgTov
-			lastSznFppg, // 66 - lastSzn Avg Fantasy Points Per Game
-			0, // 67 - encoded onRoster (0 = false, else = # of team)
-			...this.positionEncd // position one hot encoded (occupies index: 68 - 74)
+			lastSznFppg // 66 - lastSzn Avg Fantasy Points Per Game
+			/* 
+        TODO: add lastSznUsg && lastSznValOverBackup 
+        lastSznUsg,
+        lastSznValOnBackup,
+      */
 		];
 		this.validate();
+
 		const { fp: labelFp } = this.calcStatSums(labels, labels.length);
 		this.labels = [labelFp];
-		this.rawData = {
-			inputs: this.inputs,
-			labels: this.labels
-		};
+		this.latestGameStats.splice(0);
+		this.trainParsedGameStats.splice(0);
 	}
 
 	get reward() {
 		return this.labels[0];
-	}
-
-	public isDraftable(): boolean {
-		return this.inputs[67] === 0 ? true : false;
-	}
-	public flagDrafted(teamNum: number) {
-		this.inputs[67] = teamNum;
-		this.rawData.inputs = this.inputs;
-	}
-
-	public resetDrafted() {
-		this.inputs[67] = 0;
-		this.rawData.inputs = this.inputs;
 	}
 
 	public validate() {
@@ -454,11 +437,11 @@ export class DQNPlayer {
 	}
 
 	public lean(position?: string) {
-		return new DQNPlayerLean(this.name.full, this._id.toString(), this.positionEncd, position);
+		return new NeatPlayerLean(this.name.full, this._id.toString(), this.positionEncd, position);
 	}
 }
 
-export class DQNPlayerLean {
+export class NeatPlayerLean {
 	public _id: string;
 	public name: string;
 	public position!: string;

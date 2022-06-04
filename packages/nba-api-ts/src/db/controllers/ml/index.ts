@@ -14,6 +14,7 @@ import type {
 	PositionEncoded
 } from './types';
 import { MlFantasyPlayerData } from '../../models/Player2';
+import { NeatPlayer } from './NEAT';
 
 export enum EspnScoring {
 	POINT = 1,
@@ -64,7 +65,7 @@ export const loadPlayerData = async (year: number, batch = 10) => {
 	return { players, data };
 };
 
-export const loadDQNData = async (year: number, limit?: number) => {
+export const loadMlData = async (year: number, limit?: number) => {
 	await serverlessConnect(config.MONGO_URI);
 	const players = !limit
 		? await Player2.fantasyDataOpt(year)
@@ -92,8 +93,14 @@ export const loadDQNData = async (year: number, limit?: number) => {
 };
 
 export const loadDQNPlayers = (year = 2021, limit?: number) => {
-	return loadDQNData(year, limit).then((players) => {
+	return loadMlData(year, limit).then((players) => {
 		return players.map((p) => new DQNPlayer(p)).filter((p) => p !== undefined);
+	});
+};
+
+export const loadNEATPlayers = (year = 2021, limit?: number) => {
+	return loadMlData(year, limit).then((players) => {
+		return players.map((p) => new NeatPlayer(p)).filter((p) => p !== undefined);
 	});
 };
 

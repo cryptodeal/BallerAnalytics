@@ -1,5 +1,5 @@
 import { tensor, concat, util } from '@tensorflow/tfjs-node';
-import { loadDQNPlayers, type DQNPlayer } from '@balleranalytics/nba-api-ts';
+import { loadNEATPlayers, type NeatPlayer } from '@balleranalytics/nba-api-ts';
 import { Genome } from '../../../src/core/neat/Genome';
 import { TFGenome } from '../../../src/core/neat/TFGenome';
 import { Neat, type RandGenomeOpts } from '../../../src/core/neat';
@@ -8,19 +8,20 @@ import { getRandomInt } from '../../DQN/utils';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
 /* TODO: write function to train NEAT model on draft */
 const trainNeat = async () => {
-	const players = (await loadDQNPlayers(2021, 128)).filter(
+	const players = (await loadNEATPlayers(2021)).filter(
 		(p) => p.labels[0] > 500 && !p.inputs.filter((i) => Number.isNaN(i)).length
 	);
+	util.shuffle(players);
+	players.map((p, i) => console.log(i + ':', p ? p.name : p));
 	const playerCount = players.length;
 
 	const evalFitness = (gen: Genome) => {
-		util.shuffle(players);
-		const testPlayers: DQNPlayer[] = [];
+		const testPlayers: NeatPlayer[] = [];
 
 		/* select 4 unique random players */
 		while (testPlayers.length < 3) {
 			const player = players[getRandomInt(0, players.length)];
-			if (!testPlayers.find((p) => p.isIdMatch(player.getId()))) {
+			if (!testPlayers.find((p) => p && p.isIdMatch(player.getId()))) {
 				testPlayers.push(player);
 			}
 		}
@@ -42,20 +43,22 @@ const trainNeat = async () => {
 		return fitness;
 	};
 
-	const randGenomeOpts: RandGenomeOpts = { input: 75, out: 1, maxHidden: 15, linkProb: 0.75 };
+	const randGenomeOpts: RandGenomeOpts = { input: 67, out: 1, maxHidden: 50, linkProb: 0.6 };
 
 	const neat = new Neat(randGenomeOpts, evalFitness, {
+		fillInitGen: true,
 		dropoff: 25,
 		mutateBoost: {
 			enabled: true,
 			startThreshold: 0.5,
-			maxMutateRate: 0.6
+			maxMutateRate: 0.75
 		},
-		populationSize: 256
+		populationSize: 128
 	});
 
 	let bestFitness = -Infinity;
 	while (bestFitness < -10) {
+		util.shuffle(players);
 		const { generation, highestFitness, species, connections, nodes } = neat.nextGeneration();
 		if (highestFitness > bestFitness) bestFitness = highestFitness;
 		console.log(

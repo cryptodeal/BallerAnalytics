@@ -23,8 +23,8 @@ export class NodeGene {
 	public type: NodeType;
 	public bias = 0;
 	public level = 0;
-	public outCxnsId: number[] = [];
-	public inCxnsId: number[] = [];
+	public outCxnsId: Map<number, number> = new Map();
+	public inCxnsId: Map<number, number> = new Map();
 	public out!: Tensor;
 	public activation?: NodeGeneActivationId = undefined;
 	private units!: number;
@@ -46,7 +46,7 @@ export class NodeGene {
 			const { bias, activation, units } = config;
 			this.bias = bias || 0;
 			if (this.type === NodeType.HIDDEN && units) this.units = units;
-			if (activation) {
+			if (!activation) {
 				switch (type) {
 					case NodeType.INPUT:
 						this.activation = undefined;
@@ -65,9 +65,6 @@ export class NodeGene {
 
 		/* used by addCnxMutation to not generate cycle */
 		this.level = 0;
-
-		this.outCxnsId = [];
-		this.inCxnsId = [];
 	}
 
 	resetBias() {
@@ -97,8 +94,8 @@ export class NodeGene {
 		clone.level = this.level;
 		clone.units = this.units;
 
-		clone.outCxnsId = this.outCxnsId.slice();
-		clone.inCxnsId = this.inCxnsId.slice();
+		clone.outCxnsId = new Map(JSON.parse(JSON.stringify([...this.outCxnsId])));
+		clone.inCxnsId = new Map(JSON.parse(JSON.stringify([...this.inCxnsId])));
 
 		return clone;
 	}

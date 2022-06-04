@@ -1,4 +1,4 @@
-import zeros from '@stdlib/array-base-zeros';
+import zeros from '@stdlib/array/base/zeros';
 import { seededRandom } from '../utils';
 import equal from 'deep-equal';
 

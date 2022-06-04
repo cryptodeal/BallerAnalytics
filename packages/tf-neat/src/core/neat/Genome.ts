@@ -90,7 +90,6 @@ export class Genome {
 		child.nodes = new Map(
 			Array.from(this.nodes.entries()).map((entry) => [entry[0], entry[1].copy()])
 		);
-
 		for (const entry of this.cxns) {
 			const innovation = entry[0];
 			const con = entry[1];
@@ -237,8 +236,8 @@ export class Genome {
 		const outNode = this.nodes.get(outNodeId);
 
 		if (inNode !== undefined && outNode !== undefined) {
-			inNode.outCxnsId.push(newCon.innovation);
-			outNode.inCxnsId.push(newCon.innovation);
+			inNode.outCxnsId.set(inNode.outCxnsId.size, newCon.innovation);
+			outNode.inCxnsId.set(outNode.inCxnsId.size, newCon.innovation);
 
 			if (inNode.level >= outNode.level) {
 				this.calculateNodeLevelRecur(outNode, inNode.level);
@@ -265,7 +264,7 @@ export class Genome {
 		level++;
 		node.level = Math.max(node.level, level);
 
-		for (const id of node.outCxnsId) {
+		for (const [, id] of node.outCxnsId) {
 			const con = this.cxns.get(id);
 			if (con !== undefined) {
 				const childNode = this.nodes.get(con.outNodeId);
@@ -275,7 +274,7 @@ export class Genome {
 	}
 
 	private existConnection(nodeIn: NodeGene, nodeOut: NodeGene) {
-		for (const conId of nodeIn.outCxnsId) {
+		for (const [, conId] of nodeIn.outCxnsId) {
 			const tempCxn = this.cxns.get(conId);
 			if (tempCxn !== undefined && tempCxn.outNodeId === nodeOut.id) {
 				return true;
@@ -363,7 +362,7 @@ export class Genome {
 		/* input to hidden cxns */
 		for (let i = 0; i <= lastInputNode; i++) {
 			for (let j = firstHiddenNode; j <= lastHiddenNode; j++) {
-				genome.addConnection(i, j);
+				if (!linkProb || (linkProb && seededRandom() < linkProb)) genome.addConnection(i, j);
 			}
 		}
 
@@ -383,7 +382,7 @@ export class Genome {
 		/* hidden to output cxns */
 		for (let i = firstHiddenNode; i <= lastHiddenNode; i++) {
 			for (let j = firstOutputNode; j <= lastOutputNode; j++) {
-				if (linkProb && seededRandom() < linkProb) genome.addConnection(i, j);
+				if (!linkProb || (linkProb && seededRandom() < linkProb)) genome.addConnection(i, j);
 			}
 		}
 		return genome;
