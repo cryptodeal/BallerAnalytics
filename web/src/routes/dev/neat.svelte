@@ -98,14 +98,14 @@
 								name="vizDelay_input"
 								type="number"
 								bind:value={vizDelay}
-								min="100"
+								min="500"
 								max="10000"
 							/>
 							<input
 								name="vizDelay_slider"
 								type="range"
 								bind:value={vizDelay}
-								min="100"
+								min="500"
 								max="10000"
 							/>
 						</label>
@@ -134,14 +134,14 @@
 									name="dropoffAge_input"
 									type="number"
 									bind:value={$dropoffAge}
-									min="10"
+									min="5"
 									max="100"
 								/>
 								<input
 									name="dropoffAge_slider"
 									type="range"
 									bind:value={$dropoffAge}
-									min="10"
+									min="5"
 									max="100"
 								/>
 							</label>
