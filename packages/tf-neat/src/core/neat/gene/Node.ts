@@ -8,7 +8,6 @@ export type NodeGeneActivationId =
 	| 'relu'
 	| 'relu6'
 	| 'selu'
-	| 'softmax'
 	| 'sigmoid'
 	| 'softplus'
 	| 'tanh';
@@ -39,17 +38,6 @@ export class NodeGene {
 		'tanh'
 	];
 
-	private outputActivationOpts: NodeGeneActivationId[] = [
-		'elu',
-		'relu',
-		'relu6',
-		'selu',
-		'sigmoid',
-		'softmax',
-		'softplus',
-		'tanh'
-	];
-
 	constructor(type: NodeType, id: number, config?: NodeGeneConfig) {
 		this.type = type;
 		this.id = id;
@@ -66,8 +54,7 @@ export class NodeGene {
 						this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
 						break;
 					case NodeType.OUTPUT:
-						this.activation =
-							this.outputActivationOpts[getRandomInt(0, this.outputActivationOpts.length)];
+						this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
 						break;
 				}
 			}
@@ -90,16 +77,13 @@ export class NodeGene {
 	}
 
 	perturbActivation() {
-		/* only output node can use softmax? */
-		if (this.type === NodeType.OUTPUT) {
-			this.activation =
-				this.outputActivationOpts[getRandomInt(0, this.outputActivationOpts.length)];
-		} else {
-			this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
-		}
+		this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
 	}
 	private mapFromForLoop = (x: Map<number, number>) => {
-		const y: Map<number, number> = structuredClone(x);
+		const y: Map<number, number> = new Map();
+		for (const entry of x) {
+			y.set(...entry);
+		}
 		return y;
 	};
 

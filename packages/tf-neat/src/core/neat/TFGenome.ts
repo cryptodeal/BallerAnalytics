@@ -4,14 +4,13 @@ import {
 	tidy,
 	scalar,
 	sigmoid,
-	Scalar,
 	relu,
 	relu6,
-	softmax,
 	selu,
 	softplus,
 	tanh,
-	type Tensor
+	type Tensor,
+	type Scalar
 } from '@tensorflow/tfjs';
 import { NodeType } from './gene';
 import type { CxnGene } from './gene/Connection';
@@ -68,13 +67,9 @@ export class TFGenome {
 					case 'softplus':
 						out = softplus(out.add(scalar(node.bias)));
 						break;
-					case 'softmax':
-						out = softmax(out.add(scalar(node.bias)));
-						break;
 					case 'tanh':
 						out = tanh(out.add(scalar(node.bias)));
 						break;
-					/* TODO: remove default as shouldn't be necessary? */
 					default:
 						out = out.add(scalar(node.bias));
 						break;
