@@ -9,7 +9,10 @@ import type { Tensor, Rank } from '@tensorflow/tfjs-node';
 /* TODO: write function to train NEAT model on draft */
 const trainNeat = async () => {
 	const players = (await loadNEATPlayers(2021)).filter(
-		(p) => p.labels[0] > 500 && !p.inputs.filter((i) => Number.isNaN(i)).length
+		(p) =>
+			p.labels[0] > 500 &&
+			!p.inputs.filter((i) => Number.isNaN(i)).length &&
+			!p.labels.filter((i) => Number.isNaN(i)).length
 	);
 	util.shuffle(players);
 	players.map((p, i) => console.log(i + ':', p ? p.name : p));
@@ -18,8 +21,8 @@ const trainNeat = async () => {
 	const evalFitness = (gen: Genome) => {
 		const testPlayers: NeatPlayer[] = [];
 
-		/* select 4 unique random players */
-		while (testPlayers.length < 3) {
+		/* select 8 unique random players */
+		while (testPlayers.length < 8) {
 			const player = players[getRandomInt(0, players.length)];
 			if (!testPlayers.find((p) => p && p.isIdMatch(player.getId()))) {
 				testPlayers.push(player);
@@ -43,11 +46,11 @@ const trainNeat = async () => {
 		return fitness;
 	};
 
-	const randGenomeOpts: RandGenomeOpts = { input: 67, out: 1, maxHidden: 50, linkProb: 0.6 };
+	const randGenomeOpts: RandGenomeOpts = { input: 67, out: 1, maxHidden: 25, linkProb: 0.65 };
 
 	const neat = new Neat(randGenomeOpts, evalFitness, {
 		fillInitGen: true,
-		dropoff: 25,
+		dropoff: 50,
 		mutateBoost: {
 			enabled: true,
 			startThreshold: 0.5,

@@ -39,6 +39,17 @@ export class NodeGene {
 		'tanh'
 	];
 
+	private outputActivationOpts: NodeGeneActivationId[] = [
+		'elu',
+		'relu',
+		'relu6',
+		'selu',
+		'sigmoid',
+		'softmax',
+		'softplus',
+		'tanh'
+	];
+
 	constructor(type: NodeType, id: number, config?: NodeGeneConfig) {
 		this.type = type;
 		this.id = id;
@@ -55,9 +66,8 @@ export class NodeGene {
 						this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
 						break;
 					case NodeType.OUTPUT:
-						const tempActivations = this.activationOpts.splice(0);
-						tempActivations.push('softmax');
-						this.activation = tempActivations[getRandomInt(0, tempActivations.length)];
+						this.activation =
+							this.outputActivationOpts[getRandomInt(0, this.outputActivationOpts.length)];
 						break;
 				}
 			}
@@ -85,6 +95,10 @@ export class NodeGene {
 		if (this.type === NodeType.OUTPUT) activationFx.push('softmax');
 		this.activation = this.activationOpts[getRandomInt(0, activationFx.length)];
 	}
+	private mapFromForLoop = (x: Map<number, number>) => {
+		const y: Map<number, number> = structuredClone(x);
+		return y;
+	};
 
 	copy() {
 		const clone = new NodeGene(this.type, this.id, {
@@ -94,8 +108,8 @@ export class NodeGene {
 		clone.level = this.level;
 		clone.units = this.units;
 
-		clone.outCxnsId = structuredClone(this.outCxnsId);
-		clone.inCxnsId = structuredClone(this.inCxnsId);
+		clone.outCxnsId = this.mapFromForLoop(this.outCxnsId);
+		clone.inCxnsId = this.mapFromForLoop(this.inCxnsId);
 
 		return clone;
 	}
