@@ -90,10 +90,13 @@ export class NodeGene {
 	}
 
 	perturbActivation() {
-		const activationFx = this.activationOpts.slice();
 		/* only output node can use softmax? */
-		if (this.type === NodeType.OUTPUT) activationFx.push('softmax');
-		this.activation = this.activationOpts[getRandomInt(0, activationFx.length)];
+		if (this.type === NodeType.OUTPUT) {
+			this.activation =
+				this.outputActivationOpts[getRandomInt(0, this.outputActivationOpts.length)];
+		} else {
+			this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
+		}
 	}
 	private mapFromForLoop = (x: Map<number, number>) => {
 		const y: Map<number, number> = structuredClone(x);
