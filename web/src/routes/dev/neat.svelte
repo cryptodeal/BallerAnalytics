@@ -79,7 +79,7 @@
 
 	onMount(resetDemo);
 
-	$: if ((neat && $dropoff && $dropoffAge !== neat.dropoff) || (neat && !dropoff)) resetDemo();
+	$: if ((neat && $dropoff && $dropoffAge !== neat.dropoff) || (neat && !$dropoff)) resetDemo();
 </script>
 
 <div class="w-screen min-h-screen bg-hero-circuit-board-blue-30">

@@ -29,7 +29,7 @@ export class NodeGene {
 	public activation?: NodeGeneActivationId = undefined;
 	private units!: number;
 
-	private activationOpts: (NodeGeneActivationId | undefined)[] = [
+	private activationOpts: NodeGeneActivationId[] = [
 		'elu',
 		'relu',
 		'relu6',
