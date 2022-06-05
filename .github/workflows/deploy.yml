@@ -16,12 +16,9 @@ jobs:
             pnpm add -g pm2
             pm2 stop all
             pm2 delete all
-            rm -rf BallerAnalytics
-            git clone git@github.com:cryptodeal/BallerAnalytics.git
-            cp .env ./BallerAnalytics
-            cp .env ./BallerAnalytics/web
-            cp .env ./BallerAnalytics/packages/nba-api-ts
-            cd BallerAnalytics/packages/nba-api-ts
-            pnpm i
+            cd BallerAnalytics
+            git pull
+            pnpm install
+            cd packages/nba-api-ts
             pnpm build
             pm2 start "node --experimental-specifier-resolution=node dist/scripts/cron" --name cron

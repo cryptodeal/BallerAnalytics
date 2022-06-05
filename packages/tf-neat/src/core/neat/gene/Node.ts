@@ -79,13 +79,8 @@ export class NodeGene {
 	perturbActivation() {
 		this.activation = this.activationOpts[getRandomInt(0, this.activationOpts.length)];
 	}
-	private mapFromForLoop = (x: Map<number, number>) => {
-		const y: Map<number, number> = new Map();
-		for (const entry of x) {
-			y.set(...entry);
-		}
-		return y;
-	};
+
+	private mapFromForLoop = (x: Map<number, number>) => structuredClone(x);
 
 	copy() {
 		const clone = new NodeGene(this.type, this.id, {
