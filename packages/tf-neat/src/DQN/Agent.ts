@@ -12,7 +12,6 @@ import {
 
 import { createDeepQNetwork } from '.';
 import { getRandomAction, DraftTask, getStateTensor } from './tasks';
-// import { getRandomAction, Snaketask, NUM_ACTIONS, ALL_ACTIONS, getStateTensor } from './snake_task';
 import { ReplayMemory } from './utils/ReplayMemory';
 import { assertPositiveInt } from './utils';
 
@@ -104,7 +103,7 @@ export class Agent {
       }
     */
 		/* epsilon-greedy algo */
-		/* TODO: optimize by increasing exploration as roster becomes increasingly full */
+		/* TODO: optimize by increasing exploration as roster becomes increasingly full?? */
 		let action: number;
 		const state = this.task.getState();
 		if (seededRandom() < this.epsilon) {
@@ -206,5 +205,6 @@ export class Agent {
 		optimizer.applyGradients(grads.grads);
 		dispose(grads);
 		/* TODO: Return the loss value here? */
+		return grads.value;
 	}
 }

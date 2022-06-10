@@ -1,18 +1,43 @@
-import typography from 'windicss/plugin/typography';
-import forms from 'windicss/plugin/forms';
-import heroPatterns from '@windicss/plugin-heropatterns';
-import { defineConfig } from 'vite-plugin-windicss';
+const colors = require('tailwindcss/colors');
+const daisyui = require('daisyui');
+const typography = require('@tailwindcss/typography');
+const forms = require('@tailwindcss/forms');
+const heroPatterns = require('tailwind-heropatterns');
 
-export default defineConfig({
+module.exports = {
 	darkMode: 'class',
-	preflight: {
-		enableAll: true
-	},
+	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
-		cursor: {
-			grab: 'grab'
-		},
 		extend: {
+			cursor: {
+				grab: 'grab'
+			},
+			colors: {
+				dark: {
+					50: '#4a4a4a',
+					100: '#3c3c3c',
+					200: '#323232',
+					300: '#2d2d2d',
+					400: '#222222',
+					500: '#1f1f1f',
+					600: '#1c1c1e',
+					700: '#1b1b1b',
+					800: '#181818',
+					900: '#0f0f0f'
+				},
+				light: {
+					50: '#fdfdfd',
+					100: '#fcfcfc',
+					200: '#fafafa',
+					300: '#f8f9fa',
+					400: '#f6f6f6',
+					500: '#f2f2f2',
+					600: '#f1f3f5',
+					700: '#e9ecef',
+					800: '#dee2e6',
+					900: '#dde1e3'
+				}
+			},
 			typography: {
 				DEFAULT: {
 					css: {
@@ -94,25 +119,25 @@ export default defineConfig({
 		}
 	},
 	plugins: [
+		daisyui,
 		typography,
 		forms,
 		heroPatterns({
-			// the list of patterns you want to generate a class for
-			// the names must be in kebab-case
-			// an empty array will generate all 87 patterns
-			patterns: ['polka-dots', 'wiggle', 'texture', 'circuit-board'],
+			patterns: ['circuit-board'],
 
 			// The foreground colors of the pattern
 			colors: {
-				default: '#000044',
-				blue: '#2563EB' // also works with rgb(0,0,205)
+				default: '#1d4ed8'
 			},
 
 			// The foreground opacity
 			opacity: {
-				default: '0.2',
-				30: '0.3'
+				default: '0.4',
+				100: '1.0'
 			}
 		})
-	]
-});
+	],
+	daisyui: {
+		themes: ['light', 'dark']
+	}
+};

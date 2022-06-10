@@ -33,7 +33,7 @@
 	{/each}
 </ul>
 
-<style>
+<style lang="postcss">
 	.tabBorder {
 		border-bottom-color: var(--borderColor);
 	}

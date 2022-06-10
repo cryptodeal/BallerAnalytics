@@ -47,7 +47,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.editor_container {
 		background: #fff;
 		margin: 20px auto 20px auto;

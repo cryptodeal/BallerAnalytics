@@ -55,7 +55,7 @@
 			<tr>
 				<!-- Display Game Date and Time -->
 				<td
-					class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if time}
@@ -69,11 +69,11 @@
 				<td
 					class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
-					<div class="flex inline-flex items-center whitespace-nowrap">
+					<div class="inline-flex items-center whitespace-nowrap">
 						{#if teamId == home.team._id}
 							<div class="text-sm leading-5 mr-2">vs</div>
 							<div class="flex flex-col w-auto justify-center">
-								<div class="h-13 w-13">
+								<div class="h-14 w-14">
 									<TeamLogo {logoModules} slug={visitor.team.infoCommon.slug} />
 								</div>
 								<div class="text-sm text-center leading-5">
@@ -83,7 +83,7 @@
 						{:else}
 							<div class="text-sm leading-5 mr-2">@</div>
 							<div class="flex flex-col w-auto justify-center">
-								<div class="h-13 w-13">
+								<div class="h-14 w-14">
 									<TeamLogo {logoModules} slug={home.team.infoCommon.slug} />
 								</div>
 								<div class="text-sm text-center leading-5">
@@ -95,9 +95,7 @@
 				</td>
 				{#if home.stats.totals?.points && visitor.stats.totals?.points}
 					<td class="px-2 py-4 border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6">
-						<div
-							class="text-sm leading-5 whitespace-nowrap flex inline-flex items-center text-wrap"
-						>
+						<div class="text-sm leading-5 whitespace-nowrap inline-flex items-center text-wrap">
 							{#if !$dailyGames || !$dailyGames[_id.toString()]}
 								<div>
 									{#if (teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points && meta.helpers.isOver) || (teamId == visitor.team._id && visitor.stats.totals.points > home.stats.totals.points && meta.helpers.isOver)}
@@ -125,7 +123,7 @@
 							{/if}
 
 							{#if $dailyGames && $dailyGames[_id.toString()]}
-								<div class="flex inline-flex">
+								<div class="inline-flex">
 									{#if $dailyGames[_id.toString()].home.score === $dailyGames[_id.toString()].visitor.score}
 										{$dailyGames[_id.toString()].home.score}&nbsp;-&nbsp;{$dailyGames[
 											_id.toString()
@@ -153,7 +151,7 @@
 									{/if}
 								</div>
 							{:else}
-								<div class="flex inline-flex">
+								<div class="inline-flex">
 									{#if home.stats.totals.points === visitor.stats.totals.points}
 										{home.stats.totals.points}&nbsp;-&nbsp;{visitor.stats.totals.points}
 									{:else if teamId == home.team._id && home.stats.totals.points > visitor.stats.totals.points}

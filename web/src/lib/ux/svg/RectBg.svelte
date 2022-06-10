@@ -4,7 +4,7 @@
 	import { interpolateLab as interpolate } from 'd3-interpolate';
 	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import { tweened } from 'svelte/motion';
+	import { tweened, type Tweened } from 'svelte/motion';
 	import darkMode from '$lib/data/stores/theme';
 	import type { Team2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
 	export let selectedTeam:
@@ -20,8 +20,14 @@
 		teamSecondary: string,
 		rectCount: number,
 		colorPalette: string[] = [],
-		bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 250, interpolate }),
-		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 250, interpolate });
+		bgInner = tweened(darkMode ? '#000' : '#fff', {
+			duration: 250,
+			interpolate
+		}) as Tweened<string>,
+		bgOuter = tweened(darkMode ? '#000' : '#fff', {
+			duration: 250,
+			interpolate
+		}) as Tweened<string>;
 
 	$: if (selectedTeam && w & h) rectCount = Math.round((w * h) / 4000);
 
@@ -44,7 +50,7 @@
 		style:--bg-inner={$bgInner}
 		style:--bg-outer={$bgOuter}
 	>
-		<svg class="w-full h-full">
+		<svg class="w-screen h-screen">
 			{#if w && h && colorPalette.length && rectCount}
 				{#each new Array(rectCount) as { }, i}
 					<rect
@@ -61,13 +67,13 @@
 	</div>
 {/if}
 
-<style>
+<style lang="postcss">
 	.container {
 		background-image: radial-gradient(var(--bg-inner) 0%, var(--bg-outer) 100%);
 		min-width: 100vw;
 		height: 100vh;
 		position: fixed;
-		z-index: -10;
+		z-index: 0;
 	}
 
 	.opaqueGradient {

@@ -66,8 +66,8 @@
 				<td
 					class="py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
 				>
-					<div class="flex inline-flex items-center">
-						<div class="flex-shrink-0 w-30 h-20">
+					<div class="inline-flex items-center">
+						<div class="flex-shrink-0 w-28 h-20">
 							<Headshot {avif} {png} {webp} alt="{name.full} headshot" />
 						</div>
 

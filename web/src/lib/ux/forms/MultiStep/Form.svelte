@@ -2,8 +2,9 @@
 	import InputField from './InputField.svelte';
 	import { getNotificationsContext } from 'svelte-notifications';
 	import type { ObjectId } from 'mongoose';
+	import type { UserDocument } from '@balleranalytics/nba-api-ts';
 	export let active_step: string;
-	export let userId: ObjectId;
+	export let userId: UserDocument['_id'];
 	export let myForm;
 	export let firstName;
 	export let lastName;
@@ -86,7 +87,7 @@
 	{/if}
 </form>
 
-<style>
+<style lang="postcss">
 	.message {
 		text-align: center;
 	}

@@ -103,7 +103,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	.teamTickerItem {
 		background-color: var(--teamBg);
 		color: var(--teamColor);

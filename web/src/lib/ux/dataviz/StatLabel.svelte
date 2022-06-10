@@ -4,7 +4,7 @@
 		subtitle: string = undefined;
 </script>
 
-<div class="flex inline-flex gap-2 items-center">
+<div class="inline-flex gap-2 items-center">
 	<div class="flex flex-col">
 		<h4>{title}:</h4>
 		{#if subtitle}

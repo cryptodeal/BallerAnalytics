@@ -106,9 +106,13 @@ export class Neat {
 	}
 
 	private classifyPopulationIntoSpecies() {
-		for (const genome of this.genomes) {
+		const genomeCount = this.genomes.length;
+		for (let i = 0; i < genomeCount; i++) {
+			const genome = this.genomes[i];
 			let foundSpecies = false;
-			for (const spe of this.species) {
+			const speciesCount = this.species.length;
+			for (let j = 0; j < speciesCount; j++) {
+				const spe = this.species[j];
 				if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
 					spe.add(genome);
 					foundSpecies = true;
@@ -118,20 +122,19 @@ export class Neat {
 
 			if (!foundSpecies) {
 				/* if previous gen of species exists */
-				if (this.tempSpecies.length) {
+				const tempSpeciesCount = this.tempSpecies.length;
+				if (tempSpeciesCount) {
 					let matchFound = false;
 					/* check for species match in prev gen */
-					for (const spe of this.tempSpecies) {
+					for (let j = 0; j < tempSpeciesCount; j++) {
+						const spe = this.tempSpecies[j];
 						if (genome.compatibilityDistance(spe.representative) < this.compatibilityThreshold) {
 							matchFound = true;
-							if (spe.isNotDropoff()) {
-								const bestFitness = spe.getFittestGenome().fitness;
-								const species = new Species(genome, spe.genWithoutProgress, bestFitness);
-								if (this.mutateBoost) species.mutateBoost = this.mutateBoost;
-								if (this.dropoff) species.dropoff = this.dropoff;
-								this.species.push(species);
-								break;
-							}
+							const bestFitness = spe.getFittestGenome().fitness;
+							const species = new Species(genome, spe.genWithoutProgress, bestFitness);
+							if (this.mutateBoost) species.mutateBoost = this.mutateBoost;
+							if (this.dropoff) species.dropoff = this.dropoff;
+							this.species.push(species);
 							break;
 						}
 					}
@@ -143,7 +146,7 @@ export class Neat {
 						this.species.push(species);
 					}
 				} else {
-					/* if no species in prev gen, create new species */
+					/* if no species in prev gen, i.e. init gen, create new species */
 					const species = new Species(genome);
 					if (this.mutateBoost) species.mutateBoost = this.mutateBoost;
 					if (this.dropoff) species.dropoff = this.dropoff;
@@ -164,23 +167,28 @@ export class Neat {
 	}
 
 	private evaluateGenomes() {
-		this.genomes.forEach((gen) => {
+		const genomeCount = this.genomes.length;
+		for (let i = 0; i < genomeCount; i++) {
+			const gen = this.genomes[i];
 			gen.fitness = this.evaluator(gen);
 			if (gen.fitness > this.highestFitness) {
 				this.fittestGenome = gen;
 				this.highestFitness = gen.fitness;
 			}
-		});
+		}
 
-		this.species.forEach((spe) => {
-			spe.adjustFitness();
-		});
+		const speciesCount = this.species.length;
+		for (let i = 0; i < speciesCount; i++) {
+			this.species[i].adjustFitness();
+		}
 	}
 
 	private keepBestGenomes() {
 		this.genomes = [];
-		for (const spe of this.species.filter((s) => s.isNotDropoff())) {
-			this.genomes.push(spe.getFittestGenome());
+		const tempSpecies = this.species.filter((s) => s.isNotDropoff());
+		const speciesCount = tempSpecies.length;
+		for (let i = 0; i < speciesCount; i++) {
+			this.genomes.push(tempSpecies[i].getFittestGenome());
 		}
 	}
 

@@ -27,7 +27,7 @@
 {/if}
 <Decorators decorators={$decorators} />
 
-<style>
+<style lang="postcss">
 	.editor-placeholder {
 		position: absolute;
 		top: 10px;

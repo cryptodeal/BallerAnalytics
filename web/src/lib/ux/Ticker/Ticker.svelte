@@ -59,7 +59,7 @@
 	{/each}
 </div>
 
-<style>
+<style lang="postcss">
 	div {
 		transform: translate3d(0, 0, 0);
 		will-change: transform;

@@ -89,7 +89,7 @@
 	</div>
 </main>
 
-<style>
+<style lang="postcss">
 	@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 
 	* {
@@ -107,7 +107,7 @@
 	}
 
 	button:active {
-		@apply scale-98;
+		transform: scale(0.98);
 	}
 
 	button:focus {

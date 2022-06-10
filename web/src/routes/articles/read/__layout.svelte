@@ -1,7 +1,9 @@
 <svelte:head>
 	<meta property="og:type" content="article" />
 </svelte:head>
-<div class="mx-auto max-w-3xl py-5 px-4 sm:(px-6 py-12) lg:(max-w-4xl py-16 px-8) xl:max-w-6xl">
+<div
+	class="mx-auto max-w-3xl py-5 px-4 sm:px-6 sm:py-12 lg:max-w-4xl lg:py-16 lg:px-8 xl:max-w-6xl"
+>
 	<article class="flex-grow glassmorphicBg mx-1 rounded-md sm:(mx-auto p-10) p-2 prose lg:prose-xl">
 		<slot />
 	</article>

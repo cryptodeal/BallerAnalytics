@@ -3,32 +3,22 @@ import { loadNEATPlayers, type NeatPlayer } from '@balleranalytics/nba-api-ts';
 import { Genome } from '../../../src/core/neat/Genome';
 import { TFGenome } from '../../../src/core/neat/TFGenome';
 import { Neat, type RandGenomeOpts } from '../../../src/core/neat';
-import { getRandomInt } from '../../DQN/utils';
-
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
-/* TODO: write function to train NEAT model on draft */
-const trainNeat = async () => {
+
+/* TODO: rewrite function to train NEAT model on draft */
+const trainNeat = async (batchSize = 8) => {
 	const players = (await loadNEATPlayers(2021)).filter(
 		(p) =>
 			p.labels[0] > 500 &&
 			!p.inputs.filter((i) => Number.isNaN(i)).length &&
 			!p.labels.filter((i) => Number.isNaN(i)).length
 	);
-	util.shuffle(players);
-	players.map((p, i) => console.log(i + ':', p ? p.name : p));
+	// players.map((p, i) => console.log(i + ':', p ? p.name : p));
 	const playerCount = players.length;
 
 	const evalFitness = (gen: Genome) => {
-		const testPlayers: NeatPlayer[] = [];
-
-		/* select 8 unique random players */
-		while (testPlayers.length < 8) {
-			const player = players[getRandomInt(0, players.length)];
-			if (!testPlayers.find((p) => p && p.isIdMatch(player.getId()))) {
-				testPlayers.push(player);
-			}
-		}
-
+		/* select batch, size `batchSize`, unique random players */
+		const testPlayers: NeatPlayer[] = players.slice(0, batchSize);
 		/* batch predictions */
 		const batchPreds: Tensor<Rank> = concat(
 			testPlayers.map(
@@ -46,15 +36,15 @@ const trainNeat = async () => {
 		return fitness;
 	};
 
-	const randGenomeOpts: RandGenomeOpts = { input: 67, out: 1, maxHidden: 50, linkProb: 0.5 };
+	const randGenomeOpts: RandGenomeOpts = { input: 67, out: 1, maxHidden: 100, linkProb: 0.65 };
 
 	const neat = new Neat(randGenomeOpts, evalFitness, {
 		fillInitGen: true,
 		dropoff: 25,
 		mutateBoost: {
 			enabled: true,
-			startThreshold: 0.5,
-			maxMutateRate: 0.6
+			startThreshold: 0.6,
+			maxMutateRate: 0.5
 		},
 		populationSize: 128
 	});

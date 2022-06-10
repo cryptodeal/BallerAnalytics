@@ -46,7 +46,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	svg path {
 		fill: transparent;
 		stroke: rgba(59, 130, 246, 1);

@@ -34,28 +34,25 @@
 	)}`.substring(-2)} NBA season."
 />
 
-<div class="appContent flex">
-	<div class="flex-grow mb-10">
+<div class="appContent">
+	<div class="flex-grow w-full mb-10">
 		{#each teams as { infoCommon, seasons }}
 			{@const mainColor = getMainColor(infoCommon.nbaAbbreviation).hex}
 			{@const secondaryColor = getSecondaryColor(infoCommon.nbaAbbreviation).hex}
 			{@const invertedColor = invertColor(mainColor, true)}
 			{@const backdropBg = tinycolor(invertedColor).setAlpha(0.4).toRgbString()}
 			<div class="container mx-auto my-4">
-				<a sveltekit:prefetch href="teams/{infoCommon.slug}">
+				<a class="w-full" sveltekit:prefetch href="teams/{infoCommon.slug}">
 					<div
 						style:--teamBg={mainColor}
 						style:--teamBorder={secondaryColor}
-						class="teamItem rounded-lg shadow-lg border-2 w-full flex flex-wrap gap-y-4 p-3 md:(flex-row)"
+						class="teamItem rounded-lg shadow-lg border-2 w-full flex flex-col md:flex md:flex-row gap-y-4 p-3"
 					>
-						<div
-							style:--logoBg={backdropBg}
-							class="logoBackdrop rounded-lg mx-auto w-1/2 px-2 md:(w-1/8)"
-						>
+						<div style:--logoBg={backdropBg} class="logoBackdrop rounded-lg mx-auto w-48 h-48">
 							<TeamLogo {logoModules} slug={infoCommon.slug} />
 						</div>
 						<div
-							class="md:(w-7/8 justify-end) w-full mx-auto px-3 flex inline-flex h-auto justify-center"
+							class="md:w-7/8 md:justify-end w-full mx-auto px-3 inline-flex h-auto justify-center"
 						>
 							<div
 								style:--backdropBg={backdropBg}
@@ -85,7 +82,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.logoBackdrop {
 		background-color: var(--logoBg);
 	}

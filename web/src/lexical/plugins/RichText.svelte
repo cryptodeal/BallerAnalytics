@@ -26,7 +26,7 @@
 {/if}
 <Decorators decorators={$decorators} />
 
-<style>
+<style lang="postcss">
 	.editor-placeholder {
 		color: #999;
 		overflow: hidden;

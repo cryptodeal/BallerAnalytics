@@ -65,7 +65,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.chart {
 		height: 100%;
 		width: 100%;

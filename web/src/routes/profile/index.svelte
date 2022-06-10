@@ -42,7 +42,7 @@
 		<div class="container mx-auto p-5">
 			<div class="md:flex no-wrap md:-mx-2">
 				<!-- Left Side -->
-				<div class="w-full md:(w-3/12 mx-2 my-auto)">
+				<div class="w-full md:w-3/12 md:mx-2 md:my-auto">
 					<!-- Profile Card -->
 					<div class="glassmorphicBg p-3 my-4 border-t-4 border-green-400">
 						<div class="image overflow-hidden">
@@ -82,7 +82,7 @@
 								<span>My Teams</span>
 							</div>
 							<button
-								class="flex inline-flex items-center text-white font-bold py-1 px-2 rounded"
+								class="inline-flex items-center text-white font-bold py-1 px-2 rounded"
 								on:click={() => (edit = !edit)}
 							>
 								<IconCirclePlus />
@@ -134,7 +134,7 @@
 								<span class="tracking-wide">About</span>
 							</div>
 							<button
-								class="flex inline-flex items-center font-bold py-1 px-2 rounded"
+								class="inline-flex items-center font-bold py-1 px-2 rounded"
 								on:click={() => (edit = !edit)}
 							>
 								<IconEdit />
@@ -235,7 +235,7 @@
 						<div class="grid grid-cols-2">
 							<div>
 								<div
-									class="flex inline-flex items-center space-x-2 font-semibold text-blue-600 leading-8 mb-3"
+									class="inline-flex items-center space-x-2 font-semibold text-blue-600 leading-8 mb-3"
 								>
 									<IconClipboard class="fill-current" />
 									<span class="text-blue-600 tracking-wide">Experience</span>
@@ -261,7 +261,7 @@
 							</div>
 							<div>
 								<div
-									class="flex inline-flex items-center space-x-2 font-semibold text-blue-600 leading-8 mb-3"
+									class="inline-flex items-center space-x-2 font-semibold text-blue-600 leading-8 mb-3"
 								>
 									<IconGradHat class="fill-current" />
 									<span class="tracking-wide">Education</span>

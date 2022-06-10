@@ -16,7 +16,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	#wrapper {
 		position: relative;
 		/*background:#333;*/

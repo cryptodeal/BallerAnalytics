@@ -155,19 +155,17 @@
 <div class="appContent">
 	<div class="p-2">
 		<div
-			class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:(container mx-auto)"
+			class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:container md:mx-auto"
 		>
-			<div
-				class="h-50 w-50 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
-			>
-				<TeamLogo size={200} {logoModules} slug={team.infoCommon.slug} />
+			<div class="h-44 h-44rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm">
+				<TeamLogo size={176} {logoModules} slug={team.infoCommon.slug} />
 			</div>
 			<h1 class="text-dark-600 dark:text-light-200">
 				{team.infoCommon.name}
 			</h1>
 		</div>
-		<div class="p-2 md:(container mx-auto)">
-			<div class="glassmorphicCard flex inline-flex items-center px-4 py-2 text-black mb-6">
+		<div class="p-2 md:container md:mx-auto">
+			<div class="glassmorphicCard inline-flex items-center px-4 py-2 text-black mb-6">
 				<label class="text-dark-600 dark:text-light-200 text-lg mr-4" for="season-select"
 					>Season:</label
 				>
@@ -179,7 +177,7 @@
 				</select>
 			</div>
 			<Tabs>
-				<div class="w-full glassmorphicCard mx-1 px-2 py-1 md:w-auto">
+				<div class="w-full glassmorphicCard mx-1 px-2 py-1">
 					<TabList
 						primaryColor={color1}
 						secondaryColor={color2}
@@ -195,9 +193,7 @@
 								{team.seasons[seasonIdx].season} Regular Season:
 							</h2>
 						</div>
-						<div class="my-4">
-							<ScheduleTable {logoModules} schedule={games.regularSeason} teamId={team._id} />
-						</div>
+						<ScheduleTable {logoModules} schedule={games.regularSeason} teamId={team._id} />
 					{:else}
 						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
 							No games played in {team.seasons[seasonIdx].season}
@@ -209,9 +205,7 @@
 								{team.seasons[seasonIdx].season} Postseason:
 							</h2>
 						</div>
-						<div class="my-4">
-							<ScheduleTable {logoModules} schedule={games.postseason} teamId={team._id} />
-						</div>
+						<ScheduleTable {logoModules} schedule={games.postseason} teamId={team._id} />
 					{/if}
 				</TabPanel>
 
@@ -239,7 +233,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.tabPanelTitle {
 		@apply text-center m-4;
 	}

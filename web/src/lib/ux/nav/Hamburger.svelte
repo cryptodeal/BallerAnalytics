@@ -15,7 +15,7 @@
 	</svg>
 </button>
 
-<style>
+<style lang="postcss">
 	svg {
 		min-height: 18px;
 		transition: transform 0.3s ease-in-out;

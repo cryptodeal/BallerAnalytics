@@ -79,7 +79,7 @@
 				<td
 					class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
 				>
-					<div class="flex w-full inline-flex items-center">
+					<div class="w-full inline-flex items-center">
 						<div class="flex-shrink-0 w-30 h-20">
 							<Headshot
 								avif={player.meta.images.headshot.avif}

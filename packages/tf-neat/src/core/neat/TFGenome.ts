@@ -76,7 +76,6 @@ export class TFGenome {
 				}
 				node.out = out;
 			}
-
 			return outputsNodes.map((node) => node.out);
 		});
 	}

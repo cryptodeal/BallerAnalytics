@@ -90,9 +90,9 @@ export class Genome {
 		child.nodes = new Map(
 			Array.from(this.nodes.entries()).map((entry) => [entry[0], entry[1].copy()])
 		);
-		for (const entry of this.cxns) {
-			const innovation = entry[0];
-			const con = entry[1];
+		for (const [inn, conn] of this.cxns) {
+			const innovation = inn;
+			const con = conn;
 
 			/* matching */
 			const tempGen2Cxn = gen2.cxns.get(innovation);

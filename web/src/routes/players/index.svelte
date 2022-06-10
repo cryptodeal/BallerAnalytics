@@ -133,12 +133,12 @@
 />
 
 <div class="listContainer flex flex-col gap-2">
-	<div class="glassmorphicBg rounded-lg flex flex-col gap-2 p-2 w-full md:(container mx-auto)">
+	<div class="glassmorphicBg rounded-lg flex flex-col gap-2 p-2 w-full md:container md:mx-auto">
 		<h2 class="text-dark-600 text-center dark:text-light-200">
 			NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players
 		</h2>
 		<div class="flex flex-wrap gap-4 justify-start sm:justify-evenly">
-			<div class="flex inline-flex items-center text-black gap-4">
+			<div class="inline-flex items-center text-black gap-4">
 				<label class="text-dark-600 dark:text-light-200 text-lg" for="season-select">
 					Season:
 				</label>
@@ -150,7 +150,7 @@
 				</select>
 			</div>
 			<div class="flex flex-col">
-				<div class="flex inline-flex gap-4 items-center">
+				<div class="inline-flex gap-4 items-center">
 					<label class="text-dark-600 dark:text-light-200 text-lg" for="name-search">
 						Player Name:
 					</label>
@@ -163,7 +163,7 @@
 		</div>
 	</div>
 	{#if players.length}
-		<div class="list h-9/10 w-full sm:(container mx-auto)" bind:clientHeight={listHeight}>
+		<div class="list h-9/10 w-full sm:container sm:mx-auto" bind:clientHeight={listHeight}>
 			<VirtualList overscanCount={20} height={listHeight} itemCount={players.length} itemSize={75}>
 				<a
 					slot="item"
@@ -171,7 +171,7 @@
 					let:style
 					{style}
 					href="/players/{players[index].meta.slug}"
-					class="flex inline-flex max-h-75px h-75px w-full border-t-1 border-b-1 border-t-blue-600 border-b-blue-600"
+					class="inline-flex max-h-[75px] h-[75px] w-full border-t border-b border-t-blue-600 border-b-blue-600"
 				>
 					<PlayerListItem player={players[index]} />
 				</a>

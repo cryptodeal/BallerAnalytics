@@ -8,7 +8,7 @@
 <div class="w-full">
 	{#if pages > 1}
 		<div class="w-full">
-			<div class="flex inline-flex items-center gap-4 mx-auto">
+			<div class="inline-flex items-center gap-4 mx-auto">
 				{#if currentPage > 0}
 					<LeftArrow />
 				{/if}

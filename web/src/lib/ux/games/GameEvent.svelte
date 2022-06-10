@@ -22,20 +22,24 @@
 	$: if (game) estDate = dayjs(game.date).utc().tz();
 </script>
 
-<div class="mx-auto rounded-lg glassmorphicBg h-35 my-6 sm:w-120">
-	<div class="h-25 w-full flex inline-flex items-center ">
-		<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
+<div class="mx-auto rounded-lg glassmorphicBg h-34 my-6 sm:w-[30rem]">
+	<div class="h-24 w-full inline-flex items-center">
+		<div class="flex flex-col justify-center h-full w-1/4">
 			<div
-				class="h-6/10 w-full mb-1 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
+				class="h-3/5 w-full rounded-lg p-1 dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 			>
 				<TeamLogo slug={game.visitor.team.infoCommon.slug} {logoModules} />
 			</div>
-			<h6 class="h-4/10 text-dark-800 dark:text-light-200">
-				{capitalizeFirstLetter(game.visitor.team.infoCommon.slug)}
-			</h6>
+			<div class="h-2/5 inline-flex align-middle items-center justify-center">
+				<h6
+					class="inline-flex align-middle items-center justify-center text-dark-800 dark:text-light-200"
+				>
+					{capitalizeFirstLetter(game.visitor.team.infoCommon.slug)}
+				</h6>
+			</div>
 		</div>
 		<div
-			class="flex inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
+			class="inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
 		>
 			<div class="w-1/4 text-dark-800 dark:text-light-200">
 				{#if $dailyGames[game._id.toString()] && $dailyGames[game._id.toString()].visitor.score}
@@ -94,19 +98,23 @@
 				{/if}
 			</div>
 		</div>
-		<div class="flex flex-wrap justify-center p-1 h-full w-1/4">
+		<div class="flex flex-col justify-center h-full w-1/4">
 			<div
-				class="h-6/10 w-full mb-1 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
+				class="h-3/5 p-1 w-full rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 			>
 				<TeamLogo slug={game.home.team.infoCommon.slug} {logoModules} />
 			</div>
-			<h6 class="h-4/10 text-dark-800 dark:text-light-200">
-				{capitalizeFirstLetter(game.home.team.infoCommon.slug)}
-			</h6>
+			<div class="h-2/5 inline-flex items-center justify-center">
+				<h6
+					class="inline-flex align-middle items-center justify-center text-dark-800 dark:text-light-200"
+				>
+					{capitalizeFirstLetter(game.home.team.infoCommon.slug)}
+				</h6>
+			</div>
 		</div>
 	</div>
 	<div
-		class="h-10 border-t-1 border-dark-50 flex w-full inline-flex align-middle items-center justify-center"
+		class="h-10 border-t border-dark-50 w-full inline-flex align-middle items-center justify-center"
 	>
 		<a
 			class="text-dark-800 dark:text-light-200"

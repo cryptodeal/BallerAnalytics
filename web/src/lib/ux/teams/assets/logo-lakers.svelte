@@ -255,7 +255,7 @@
 	/>
 </svg>
 
-<style>
+<style lang="postcss">
 	.tickerItem {
 		display: inline-block;
 	}

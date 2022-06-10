@@ -243,6 +243,10 @@ export class Roster {
 			be: this.roster.be
 		};
 	}
+
+	public getOppRoster() {
+		return this.leanRosters[0];
+	}
 }
 
 export class DraftTask {
@@ -310,9 +314,24 @@ export class DraftTask {
 		return this.getState();
 	}
 
-	simulatePick(teamNo: number) {
-		const pick = this.draftApi.simulatePick(teamNo);
-		this.envState[pick] = this.draftApi.getPlayerInputs(pick);
+	simulatePriorPicks(teamNo: number) {
+		const endIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
+		const priorTeams = this.draftApi.draftOrder.slice(0, endIdx);
+		const priorCount = priorTeams.length;
+		for (let i = 0; i < priorCount; i++) {
+			const pick = this.draftApi.simulatePick(teamNo);
+			this.envState[pick] = this.draftApi.getPlayerInputs(pick);
+		}
+	}
+
+	simulateLaterPicks(teamNo: number) {
+		const startIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo) + 1;
+		const laterTeams = this.draftApi.draftOrder.slice(startIdx);
+		const laterCount = laterTeams.length;
+		for (let i = 0; i < laterCount; i++) {
+			const pick = this.draftApi.simulatePick(teamNo);
+			this.envState[pick] = this.draftApi.getPlayerInputs(pick);
+		}
 	}
 
 	/**
@@ -323,16 +342,19 @@ export class DraftTask {
 	 *     number: 0, 1, 2, etc... === idx of draftPick
 	 */
 	step(action: number): TaskStepOutput {
+		/* TODO: simulate picks for all teams prior to DQN Agent in round */
 		let done = false,
 			reward = 0;
 		const validPick = this.draftPlayer(action);
 		this.teamRoster.addPick(this.pick);
+		/* TODO: capture state here, but only return if not done */
+		// const state = this.getState(),
 
 		/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 		if (!validPick) {
 			done = true;
 			reward += UNAVAIL_PLAYER_REWARD;
-			/* TODO: Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
+			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 			if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD / 3;
 		} else {
 			reward = AVAIL_PLAYER_REWARD;
@@ -341,7 +363,7 @@ export class DraftTask {
 		if (this.teamRoster.done) {
 			done = true;
 			reward += INVALID_ROSTER_REWARD;
-			/* TODO: Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
+			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 			if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD / 3;
 		} else {
 			reward += VALID_ROSTER_REWARD;

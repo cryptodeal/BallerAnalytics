@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Hamburger from '$lib/ux/nav/Hamburger.svelte';
-	import { session } from '$app/stores';
 	import ThemeToggle from '$lib/ux/nav/ThemeToggle.svelte';
 	import AuthButton from '$lib/ux/nav/AuthButton.svelte';
 	import Logo from '$lib/ux/nav/Logo.svelte';
@@ -15,7 +14,7 @@
 	});
 
 	function toggleNav() {
-		const navToggle = document.getElementsByClassName('toggle');
+		const navToggle = document.getElementsByClassName('toggleHidden');
 		for (let i = 0; i < navToggle.length; i++) {
 			navToggle.item(i)?.classList.toggle('hidden');
 		}
@@ -23,27 +22,22 @@
 </script>
 
 <nav
-	class="fixed px-1 top-0 left-0 right-0 z-10 text-bold flex flex-wrap md:(flex inline-flex items-center) w-full justify-evenly bg-gray-400 bg-opacity-20 backdrop-filter backdrop-blur-lg border-bottom-1 border-gray-100"
+	class="fixed px-1 top-0 max-h-15 z-10 text-bold flex flex-wrap md:inline-flex md:items-center w-full justify-evenly bg-gray-400/20 backdrop-filter backdrop-blur-lg border-b border-gray-100 dark:border-gray-800"
 >
-	<div
-		class="flex justify-start text-dark-700 dark:text-light-200 md:(hidden)"
-		on:click={toggleNav}
-	>
+	<div class="flex justify-start text-dark-700 dark:text-light-200 md:hidden" on:click={toggleNav}>
 		<Hamburger />
 	</div>
-	<div class="flex inline-flex h-full items-center w-4/5 px-5 md:(flex justify-start w-1/3 px-1)">
-		<div class="flex inline-flex h-full items-center w-full">
-			<Logo {isVisible} {segment} />
-		</div>
+	<div class="flex w-4/5 px-5 md:w-1/3 md:px-1">
+		<Logo {isVisible} {segment} />
 	</div>
 
 	<div
-		class="toggle px-2 hidden font-medium w-full text-right border-blue-900 md:(flex flex-row w-1/3 gap-4 justify-center border-none)"
+		class="toggleHidden px-2 hidden font-medium w-full text-right border-blue-900 md:flex md:flex-row md:w-1/3 md:gap-2 md:justify-center md:border-none"
 	>
 		<a
 			sveltekit:prefetch
 			href="/games"
-			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:w-auto md:text-center md:border-none dark:text-light-200"
 			aria-current={segment === 'games' ? 'page' : undefined}
 		>
 			games
@@ -51,7 +45,7 @@
 		<a
 			sveltekit:prefetch
 			href="/players"
-			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:w-auto md:text-center md:border-none dark:text-light-200"
 			aria-current={segment === 'players' ? 'page' : undefined}
 		>
 			players
@@ -59,7 +53,7 @@
 		<a
 			sveltekit:prefetch
 			href="/teams"
-			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:w-auto md:text-center md:border-none dark:text-light-200"
 			aria-current={segment === 'teams' ? 'page' : undefined}
 		>
 			teams
@@ -67,7 +61,7 @@
 		<a
 			sveltekit:prefetch
 			href="/articles"
-			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:w-auto md:text-center md:border-none dark:text-light-200"
 			aria-current={segment === 'articles' ? 'page' : undefined}
 		>
 			articles
@@ -75,27 +69,17 @@
 		<a
 			sveltekit:prefetch
 			href="/dev/neat"
-			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:(w-auto text-center border-none) dark:text-light-200"
+			class="flex justify-end border-b-2 border-blue-900 my-1 uppercase text-dark-900 text-right w-full md:w-auto md:text-center md:border-none dark:text-light-200"
 			aria-current={segment === 'dev' ? 'page' : undefined}
 		>
-			Ml demo
+			NEAT
 		</a>
-		{#if $session.user}
-			<a
-				sveltekit:prefetch
-				href="/profile"
-				class="flex border-b-2 border-blue-900 my-1 uppercase text-dark-900 justify-end w-full md:(w-auto text-center border-none) dark:text-light-200"
-				aria-current={segment === 'profile' ? 'page' : undefined}
-			>
-				profile
-			</a>
-		{/if}
 	</div>
 
-	<div
-		class="toggle p-2 hidden w-full h-full flex inline-flex items-center justify-between md:(flex flex-row justify-end w-1/3)"
-	>
-		<ThemeToggle />
-		<AuthButton />
+	<div class="toggleHidden w-full h-full hidden md:flex md:flex-row md:w-1/3">
+		<div class="flex w-full justify-between md:justify-end">
+			<ThemeToggle />
+			<AuthButton />
+		</div>
 	</div>
 </nav>

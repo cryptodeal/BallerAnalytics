@@ -54,20 +54,20 @@
 </script>
 
 <div class="appContent w-screen flex flex-col gap-6 pb-10">
-	<div class="mx-2 my-6 rounded-lg glassmorphicBg lg:(container mx-auto)">
-		<div class="h-25 w-full flex inline-flex items-center ">
+	<div class="mx-2 my-6 rounded-lg glassmorphicBg lg:container lg:mx-auto">
+		<div class="h-40 w-full inline-flex items-center ">
 			<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
 				<div
-					class="h-6/10 w-full mb-1 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
+					class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 				>
 					<TeamLogo slug={boxscore.visitor.team.infoCommon.slug} {logoModules} />
 				</div>
-				<h6 class="h-4/10 text-dark-800 dark:text-light-200">
+				<h4 class="h-2/5 text-dark-800 dark:text-light-200">
 					{capitalizeFirstLetter(boxscore.visitor.team.infoCommon.slug)}
-				</h6>
+				</h4>
 			</div>
 			<div
-				class="flex inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
+				class="inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
 			>
 				<div class="w-1/4 text-dark-800 dark:text-light-200">
 					{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].visitor.score}
@@ -128,17 +128,17 @@
 			</div>
 			<div class="flex flex-wrap justify-center p-1 h-full w-1/4">
 				<div
-					class="h-6/10 w-full mb-1 rounded-lg dark:(bg-white backdrop-filter backdrop-blur-sm bg-opacity-10)"
+					class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 				>
 					<TeamLogo slug={boxscore.home.team.infoCommon.slug} {logoModules} />
 				</div>
-				<h6 class="h-4/10 text-dark-800 dark:text-light-200">
+				<h4 class="h-2/5 text-dark-800 dark:text-light-200">
 					{capitalizeFirstLetter(boxscore.home.team.infoCommon.slug)}
-				</h6>
+				</h4>
 			</div>
 		</div>
 	</div>
-	<div class="w-full mx-2 glassmorphicCard lg:(container mx-auto)">
+	<div class="w-full mx-2 glassmorphicCard lg:container lg:mx-auto">
 		<Tabs>
 			<div class="w-full overflow-hidden">
 				<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />

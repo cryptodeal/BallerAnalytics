@@ -16,7 +16,7 @@
 	description="Providing NBA, ABA, and BAA historical and current statistics, analytics, and information and leveraging Artificial Intelligence to provide unique advanced insight into fantasy basketball management."
 />
 
-<div class="w-full min-h-screen bg-hero-circuit-board-blue-30">
+<div class="w-full h-screen bg-hero-circuit-board">
 	<div class="appContent w-full">
 		<div
 			class="mt-10 w-full flex flex-wrap items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:(w-3/4 p-4) 2xl:w-1/2"

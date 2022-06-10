@@ -74,7 +74,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	img {
 		object-position: center;
 		position: absolute;

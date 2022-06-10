@@ -52,7 +52,7 @@
 	$: if (png.length > 0 || avif.length > 0 || webp.length > 0) updateImgData();
 </script>
 
-{#if png.length > 0 || avif.length > 0 || webp.length > 0}
+{#if png.length && avif.length && webp.length}
 	<LazySrcset
 		{srcsetWebP}
 		{srcsetAvif}

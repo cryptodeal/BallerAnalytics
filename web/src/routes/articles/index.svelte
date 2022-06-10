@@ -32,8 +32,8 @@
 />
 
 <section class="w-full mt-10">
-	<div class="glassmorphicBg rounded-lg flex flex-col p-2 md:(container flex-col mx-auto)">
-		<h1 class="text-center font-light md:(pl-10 py-3 text-left)">Articles</h1>
+	<div class="glassmorphicBg rounded-lg flex flex-col p-2 md:container md:mx-auto">
+		<h1 class="text-center font-light md:pl-10 md:py-3 md:text-left">Articles</h1>
 		<div class="p-3 w-full flex flex-col">
 			{#each posts as { slug, title, author, prefetch }}
 				{#if prefetch}

@@ -93,7 +93,7 @@
 	}
 </script>
 
-<div class="flex mx-auto h-300px w-300px md:(h-600px w-600px) xl:(h-750px w-full)">
+<div class="flex mx-auto h-[300px] w-[300px] md:h-[600px] md:w-[600px] xl:h-[750px] xl:w-full">
 	<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
 		<svg bind:this={svg} {width} {height} viewBox="0 0 {width} {height}">
 			{#each cxnData as { source: { x: x1, y: y1 }, target: { x: x2, y: y2 }, label }}
@@ -192,7 +192,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.chart {
 		height: 100%;
 		width: 100%;

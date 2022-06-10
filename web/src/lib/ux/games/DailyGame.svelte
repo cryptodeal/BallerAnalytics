@@ -6,7 +6,7 @@
 	$: console.log(game);
 </script>
 
-<div class="w-100 flex inline-flex bg-red-400">
+<div class="w-100 inline-flex bg-red-400">
 	<div class="flex flex-col w-auto justify-center">
 		<img
 			class="antialiased mx-auto"

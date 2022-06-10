@@ -7,7 +7,7 @@
 
 <div class="h-full">
 	{#if isVisible}
-		<div class="font-light leading-relaxed text-2xl sm:text-3xl text-blue-500 md:(text-5xl)">
+		<div class="font-light leading-relaxed text-2xl sm:text-3xl text-blue-500 md:text-5xl">
 			{#each wordClouds.split('') as character, i}
 				{#if character == '/'}
 					<br />
@@ -19,7 +19,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="postcss">
 	span {
 		margin-top: 1rem;
 		margin-bottom: 1rem;

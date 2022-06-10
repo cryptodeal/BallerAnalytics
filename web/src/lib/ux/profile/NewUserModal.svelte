@@ -54,7 +54,7 @@
 	<div slot="footer" let:store={{ close }} />
 </Modal>
 
-<style>
+<style lang="postcss">
 	:root {
 		--primary-light: #a6f9d6;
 		--primary: #5be2a9;

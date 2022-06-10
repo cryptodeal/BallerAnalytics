@@ -46,7 +46,7 @@
 	</li>
 {/if}
 
-<style>
+<style lang="postcss">
 	.tabItem {
 		border-color: var(--borderColor);
 		background-color: var(--bgColor);

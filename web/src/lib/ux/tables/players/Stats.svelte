@@ -81,7 +81,7 @@
 			<tr>
 				<!-- Display Season Year -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if year}
@@ -92,7 +92,7 @@
 
 				<!-- Display Player Age -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if age}
@@ -103,7 +103,7 @@
 
 				<!-- Display Player Team/Totals (if teamSplit) -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if teamSplits.length}
@@ -116,7 +116,7 @@
 
 				<!-- Display Player Games Played -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if games}
@@ -127,7 +127,7 @@
 
 				<!-- Display Player Games Started -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if gamesStarted}
@@ -140,7 +140,7 @@
 
 				<!-- Display Player Minutes -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if minutes}
@@ -151,7 +151,7 @@
 
 				<!-- Display Player fieldGoalsMade -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if fieldGoalsMade}
@@ -164,7 +164,7 @@
 
 				<!-- Display Player fieldGoalsAttempted -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if fieldGoalsAttempted}
@@ -177,7 +177,7 @@
 
 				<!-- Display Player fieldGoalsPct -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if fieldGoalsPct}
@@ -192,7 +192,7 @@
 
 				<!-- Display Player threePointersMade -->
 				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
+					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
 				>
 					<div class="text-sm font-bold leading-5">
 						{#if threePointersMade}

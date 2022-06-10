@@ -65,7 +65,10 @@ export class Species {
 		if (this.useMutateBoost()) {
 			this.mutateBoostThreshold = this.genWithoutProgress;
 			const mutateRates = genome.getMutationRate();
-			for (const [key, value] of Object.entries(mutateRates)) {
+			const tempEntries = Object.entries(mutateRates);
+			const entryCount = tempEntries.length;
+			for (let i = 0; i < entryCount; i++) {
+				const [key, value] = tempEntries[i];
 				mutateRates[key] = this.boostMutateRate(
 					value,
 					(this.mutateBoost.maxMutateRate - value) /

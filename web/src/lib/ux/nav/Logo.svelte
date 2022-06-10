@@ -26,7 +26,7 @@
 </script>
 
 <a
-	class="h-full w-full min-h-6 bg-gray-200 dark:bg-gray-900 backdrop-filter backdrop-blur-lg bg-opacity-80 p-1 rounded md:(max-w-120)"
+	class="w-full min-h-4 sm:min-h-6 bg-gray-200/80 dark:bg-gray-900/80 backdrop-filter backdrop-blur-lg p-1 rounded md:max-w-[25rem]"
 	href="/"
 	sveltekit:prefetch
 	aria-current={segment === '' ? 'page' : undefined}
@@ -56,7 +56,7 @@
 	{/if}
 </a>
 
-<style>
+<style lang="postcss">
 	svg path {
 		fill: transparent;
 		stroke: rgba(63, 132, 243, 1);
