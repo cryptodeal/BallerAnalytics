@@ -28,14 +28,12 @@
 		<Chart {x1} {x2} {y1} {y2}>
 			<Grid horizontal count={4} let:value>
 				<div class="grid-line horizontal">
-					<span class="text-xs text-dark-800 dark:text-light-200">{format_y(value)} {yLabel}</span>
+					<span class="text-xs">{format_y(value)} {yLabel}</span>
 				</div>
 			</Grid>
 
 			<Grid vertical count={4} let:value let:first>
-				<span class="x-label text-xs text-dark-800 dark:text-light-200" class:first
-					>{xLabel} {value}</span
-				>
+				<span class="x-label text-xs" class:first>{xLabel} {value}</span>
 			</Grid>
 			<Svg>
 				{#if data.length > 2}
@@ -54,8 +52,8 @@
 							: 'locTop'}"
 						style="transform: translate(-{100 * ((closest.x - x1) / (x2 - x1))}%,0);"
 					>
-						<strong class="text-dark-800 dark:text-light-200">{xLabel}: {closest.x}</strong>
-						<span class="text-dark-800 dark:text-light-200">{yLabel}: {format_y(closest.y)}</span>
+						<strong>{xLabel}: {closest.x}</strong>
+						<span>{yLabel}: {format_y(closest.y)}</span>
 					</div>
 				</Point>
 			{/if}

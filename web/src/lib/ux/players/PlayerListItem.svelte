@@ -14,5 +14,5 @@
 			ratio="60px"
 		/>
 	</div>
-	<h5 class="p-4 text-dark-600 dark:text-light-600">{player.name.full}</h5>
+	<h5 class="p-4">{player.name.full}</h5>
 </div>

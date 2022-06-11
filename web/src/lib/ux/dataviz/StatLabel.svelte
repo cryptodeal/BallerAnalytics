@@ -8,8 +8,8 @@
 	<div class="flex flex-col">
 		<h4>{title}:</h4>
 		{#if subtitle}
-			<span class="text-xs font-light text-blue-500">{subtitle}</span>
+			<span class="text-xs font-light">{subtitle}</span>
 		{/if}
 	</div>
-	<span class="font-light text-2xl text-dark-800 dark:text-light-200">{value}</span>
+	<span class="font-light text-2xl">{value}</span>
 </div>

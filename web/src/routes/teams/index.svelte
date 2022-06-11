@@ -35,7 +35,7 @@
 />
 
 <div class="appContent">
-	<div class="flex-grow w-full mb-10">
+	<div class="overflow-y-auto w-full mb-10">
 		{#each teams as { infoCommon, seasons }}
 			{@const mainColor = getMainColor(infoCommon.nbaAbbreviation).hex}
 			{@const secondaryColor = getSecondaryColor(infoCommon.nbaAbbreviation).hex}

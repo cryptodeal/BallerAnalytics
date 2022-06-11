@@ -83,13 +83,13 @@
 	description="Index of NBA Games and boxscore data from {dayjs(date).tz().format('MMM	D, YYYY')}."
 />
 
-<div class="appContent flex flex-col w-full">
+<div class="appContent flex flex-col gap-10 w-full">
 	<div
 		class="mx-auto flex flex-col items-center gap-4"
 		style:--date-picker-background={$darkMode ? '#1b1e27' : '#ffffff'}
 		style:--date-picker-foreground={$darkMode ? '#f7f7f7' : '#000000'}
 	>
-		<h1 class="text-dark-800 dark:text-light-200 text-center">
+		<h1 class="text-center">
 			Games: {dayjs(date).tz().format('MMM	D, YYYY')}
 		</h1>
 
@@ -102,14 +102,14 @@
 			{format}
 		/>
 	</div>
-	<div class="w-full overflow-scroll flex-grow mb-10">
+	<div class="w-full gap-5 flex-grow mb-10">
 		{#if games.length}
 			{#each games as game}
 				<GameEvent {game} {logoModules} />
 			{/each}
 		{:else}
 			<div class="flex justify-center">
-				<h1 class="text-dark-800 dark:text-light-200">No games found</h1>
+				<h1>No games found</h1>
 			</div>
 		{/if}
 	</div>

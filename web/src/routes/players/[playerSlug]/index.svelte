@@ -40,9 +40,7 @@
 
 <div class="appContent min-h-screen flex flex-col w-full">
 	<div class="mt-4 grid grid-cols-1 gap-10 sm:container sm:mx-auto sm:grid-cols-2">
-		<div
-			class="text-black glassmorphicBg rounded-lg flex flex-wrap justify-center items-center sm:col-span-2"
-		>
+		<div class="glassmorphicBg rounded-lg flex flex-wrap justify-center items-center sm:col-span-2">
 			<div class="w-24 md:w-32 lg:w-36 xl:w-40 2xl:w-48">
 				<Headshot
 					avif={player.meta.images.headshot.avif}
@@ -51,14 +49,12 @@
 					webp={player.meta.images.headshot.webp}
 				/>
 			</div>
-			<h1 class="text-dark-800 dark:text-light-200">{player.name.full}</h1>
+			<h1>{player.name.full}</h1>
 		</div>
 
 		<!--Player Bio-->
-		<div
-			class="p-4 text-black rounded-lg glassmorphicBg flex flex-col gap-2 sm:m-auto justify-center"
-		>
-			<h2 class="text-dark-800 mb-6 text-center dark:text-light-200">Bio</h2>
+		<div class="p-4 rounded-lg glassmorphicBg flex flex-col gap-2 sm:m-auto justify-center">
+			<h2 class="mb-6 text-center">Bio</h2>
 			<div class="grid grid-cols-2 gap-2 px-4">
 				<BioItem title={'full name'} data={player.name.full} />
 				{#if player.name.pronunciation}
@@ -107,9 +103,9 @@
 		</div>
 		{#if player.socials?.twitter || player.socials?.instagram}
 			<div
-				class="flex flex-col gap-1 py-10 px-10 text-black rounded-lg glassmorphicBg sm:m-auto justify-center text-center"
+				class="flex flex-col gap-1 py-10 px-10 rounded-lg glassmorphicBg sm:m-auto justify-center text-center"
 			>
-				<h3 class="text-dark-800 dark:text-light-200">Socials</h3>
+				<h3>Socials</h3>
 				<div class="inline-flex items-center justify-evenly">
 					{#if player.socials.twitter}
 						<Twitter handle={player.socials.twitter} />
@@ -121,9 +117,9 @@
 			</div>
 		{/if}
 		<div
-			class="p-4 text-black rounded-lg glassmorphicBg flex flex-col sm:container sm:mx-auto sm:col-span-2 justify-center"
+			class="p-4 rounded-lg glassmorphicBg flex flex-col sm:container sm:mx-auto sm:col-span-2 justify-center"
 		>
-			<h2 class="text-dark-800 mb-6 text-center dark:text-light-200">Career Stats:</h2>
+			<h2 class="mb-6 text-center">Career Stats:</h2>
 			<PlayerStats {player} />
 		</div>
 	</div>

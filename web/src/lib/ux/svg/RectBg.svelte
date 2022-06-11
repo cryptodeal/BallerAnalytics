@@ -20,11 +20,11 @@
 		teamSecondary: string,
 		rectCount: number,
 		colorPalette: string[] = [],
-		bgInner = tweened(darkMode ? '#000' : '#fff', {
+		bgInner = tweened($darkMode ? '#000' : '#fff', {
 			duration: 250,
 			interpolate
 		}) as Tweened<string>,
-		bgOuter = tweened(darkMode ? '#000' : '#fff', {
+		bgOuter = tweened($darkMode ? '#000' : '#fff', {
 			duration: 250,
 			interpolate
 		}) as Tweened<string>;
@@ -50,7 +50,7 @@
 		style:--bg-inner={$bgInner}
 		style:--bg-outer={$bgOuter}
 	>
-		<svg class="w-screen h-screen">
+		<svg class="w-full h-full">
 			{#if w && h && colorPalette.length && rectCount}
 				{#each new Array(rectCount) as { }, i}
 					<rect
@@ -72,6 +72,8 @@
 		background-image: radial-gradient(var(--bg-inner) 0%, var(--bg-outer) 100%);
 		min-width: 100vw;
 		height: 100vh;
+		top: 0;
+		left: 0;
 		position: fixed;
 		z-index: 0;
 	}

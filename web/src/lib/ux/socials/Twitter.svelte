@@ -4,5 +4,5 @@
 </script>
 
 <a href="https://twitter.com/{handle}" target="_blank">
-	<Twitter class="fill-dark-800 h-7 w-7 dark:fill-light-200" />
+	<Twitter class="fill-current h-7 w-7" />
 </a>

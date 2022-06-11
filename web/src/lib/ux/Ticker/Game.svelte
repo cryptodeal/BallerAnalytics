@@ -30,9 +30,7 @@
 			Live
 		</div>
 		{#if game.periodValue && game.displayClock}
-			<div
-				class="inline-block leading-10 font-semibold text-dark-800 dark:text-light-200 text-2xl px-2"
-			>
+			<div class="inline-block leading-10 font-semibold text-2xl px-2">
 				{game.periodValue < 5 ? `Q${game.periodValue}` : `OT${game.periodValue - 4}`}
 				{game.displayClock}
 			</div>
@@ -45,7 +43,7 @@
 		style:--teamBg={getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex}
 		style:--teamColor={invertColor(getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex, true)}
 	>
-		<div class="glassmorphicBg text-dark-800 inline-block h-10 w-10 px-1 dark:text-light-200">
+		<div class="glassmorphicBg inline-block h-10 w-10 px-1">
 			<TeamLogo {isTicker} {logoModules} slug={game.visitor.infoCommon.slug} />
 		</div>
 
@@ -53,27 +51,25 @@
 	</div>
 	{#if game.visitor.score && game.visitor.score !== null}
 		<div
-			class="inline-block leading-10 px-2 text-dark-800 dark:text-light-200  bg-red-600 text-2xl font-semibold"
+			class="inline-block leading-10 px-2 text-dark-800 dark:text-light-200 bg-red-600 text-2xl font-semibold"
 		>
 			{game.visitor.score}
 		</div>
 	{:else if game.home.score && game.home.score !== null}
 		<div
-			class="inline-block leading-10 text-dark-800 dark:text-light-200  bg-red-600 px-2 text-2xl font-semibold"
+			class="inline-block leading-10 text-dark-800 dark:text-light-200 bg-red-600 px-2 text-2xl font-semibold"
 		>
 			0
 		</div>
 	{/if}
 
-	<div class="inline-block leading-10 text-2xl text-dark-800 dark:text-light-200 font-semibold">
-		&nbsp;@&nbsp;
-	</div>
+	<div class="inline-block leading-10 text-2xl font-semibold">&nbsp;@&nbsp;</div>
 	<div
 		class="teamTickerItem inline-block leading-10 text-2xl px-2 font-semibold"
 		style:--teamBg={getMainColor(game.home.infoCommon.nbaAbbreviation).hex}
 		style:--teamColor={invertColor(getMainColor(game.home.infoCommon.nbaAbbreviation).hex, true)}
 	>
-		<div class="glassmorphicBg text-dark-800 inline-block h-10 w-10 px-1 dark:text-light-200">
+		<div class="glassmorphicBg inline-block h-10 w-10 px-1">
 			<TeamLogo {isTicker} {logoModules} slug={game.home.infoCommon.slug} />
 		</div>
 		{game.home.infoCommon.nbaAbbreviation}
@@ -93,9 +89,7 @@
 	{/if}
 
 	{#if game.home.score == null && game.home.score == null}
-		<div
-			class="inline-block text-dark-800 dark:text-light-200 leading-10 px-2 text-2xl font-normal"
-		>
+		<div class="inline-blockleading-10 px-2 text-2xl font-normal">
 			{estDate.minute() !== 0
 				? estDate.tz(localTz).format('h:mm A z')
 				: estDate.tz(localTz).format('h A z')}

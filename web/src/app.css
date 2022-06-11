@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-	z-index: -100;
-}
-
-html,
-body {
-	@apply bg-white dark:bg-dark-800;
-}
-
 /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
 @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
 	.backdrop-filter {
@@ -46,21 +36,13 @@ body {
 	margin-bottom: 2rem;
 }
 
-p {
-	@apply text-dark-700 dark:text-light-200;
-}
-
-a {
-	@apply text-black dark:text-light-200;
-}
-
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-	@apply leading-tight text-blue-500 font-extralight;
+	@apply leading-tight text-primary font-extralight;
 }
 
 h1 {
@@ -85,12 +67,6 @@ h5 {
 
 h6 {
 	@apply text-base;
-}
-
-nav a::after {
-	content: '';
-	vertical-align: center;
-	clear: both;
 }
 
 nav a[aria-current] {

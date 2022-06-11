@@ -31,17 +31,13 @@
 				<TeamLogo slug={game.visitor.team.infoCommon.slug} {logoModules} />
 			</div>
 			<div class="h-2/5 inline-flex align-middle items-center justify-center">
-				<h6
-					class="inline-flex align-middle items-center justify-center text-dark-800 dark:text-light-200"
-				>
+				<h6 class="inline-flex align-middle items-center justify-center ">
 					{capitalizeFirstLetter(game.visitor.team.infoCommon.slug)}
 				</h6>
 			</div>
 		</div>
-		<div
-			class="inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
-		>
-			<div class="w-1/4 text-dark-800 dark:text-light-200">
+		<div class="inline-flex items-center justify-center h-full w-1/2 text-center ">
+			<div class="w-1/4 ">
 				{#if $dailyGames[game._id.toString()] && $dailyGames[game._id.toString()].visitor.score}
 					{$dailyGames[game._id.toString()].visitor.score}
 				{:else if game.visitor.score && game.visitor.score !== null}
@@ -54,9 +50,9 @@
 			</div>
 
 			<div class="flex flex-col w-1/2">
-				<div class="text-dark-800 dark:text-light-200">@</div>
+				<div>@</div>
 				{#if !game.meta.helpers.isOver && dayjs().tz().isBefore(dayjs(game.date).tz())}
-					<div class="text-dark-800 text-lg dark:text-light-200">
+					<div>
 						{estDate.minute() !== 0
 							? estDate.tz(localTz).format('h:mm A z')
 							: estDate.tz(localTz).format('h A z')}
@@ -81,12 +77,10 @@
 						</div>
 					{/if}
 				{:else}
-					<div class="leading-10 font-semibold px-2 text-dark-800 text-xl dark:text-light-200">
-						Final
-					</div>
+					<div class="leading-10 font-semibold px-2 text-xl">Final</div>
 				{/if}
 			</div>
-			<div class="w-1/4 text-dark-800 dark:text-light-200">
+			<div class="w-1/4 ">
 				{#if $dailyGames[game._id.toString()] && $dailyGames[game._id.toString()].home.score}
 					{$dailyGames[game._id.toString()].home.score}
 				{:else if game.visitor.score && game.visitor.score !== null}
@@ -105,9 +99,7 @@
 				<TeamLogo slug={game.home.team.infoCommon.slug} {logoModules} />
 			</div>
 			<div class="h-2/5 inline-flex items-center justify-center">
-				<h6
-					class="inline-flex align-middle items-center justify-center text-dark-800 dark:text-light-200"
-				>
+				<h6 class="inline-flex align-middle items-center justify-center ">
 					{capitalizeFirstLetter(game.home.team.infoCommon.slug)}
 				</h6>
 			</div>
@@ -117,7 +109,7 @@
 		class="h-10 border-t border-dark-50 w-full inline-flex align-middle items-center justify-center"
 	>
 		<a
-			class="text-dark-800 dark:text-light-200"
+			class=""
 			sveltekit:prefetch
 			href="/games/boxscore/{estDate.format('YYYYMMDD')}/{game.visitor.team.seasons.find(
 				(s) => s.season === game.meta.helpers.bballRef.year

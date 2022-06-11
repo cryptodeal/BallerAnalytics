@@ -62,14 +62,12 @@
 				>
 					<TeamLogo slug={boxscore.visitor.team.infoCommon.slug} {logoModules} />
 				</div>
-				<h4 class="h-2/5 text-dark-800 dark:text-light-200">
+				<h4 class="h-2/5 ">
 					{capitalizeFirstLetter(boxscore.visitor.team.infoCommon.slug)}
 				</h4>
 			</div>
-			<div
-				class="inline-flex items-center justify-center h-full w-1/2 text-center text-dark-800 dark:text-light-200"
-			>
-				<div class="w-1/4 text-dark-800 dark:text-light-200">
+			<div class="inline-flex items-center justify-center h-full w-1/2 text-center ">
+				<div class="w-1/4 ">
 					{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].visitor.score}
 						{$dailyGames[boxscore._id.toString()].visitor.score}
 					{:else if boxscore.visitor.score && boxscore.visitor.score !== null}
@@ -82,9 +80,9 @@
 				</div>
 
 				<div class="flex flex-col w-1/2">
-					<div class="text-dark-800 dark:text-light-200">@</div>
+					<div class="">@</div>
 					{#if !boxscore.meta.helpers.isOver && dayjs().tz().isBefore(dayjs(boxscore.date).tz())}
-						<div class="text-dark-800 text-lg dark:text-light-200">
+						<div>
 							{estDate.minute() !== 0
 								? estDate.tz(localTz).format('h:mm A z')
 								: estDate.tz(localTz).format('h A z')}
@@ -109,12 +107,10 @@
 							</div>
 						{/if}
 					{:else}
-						<div class="leading-10 font-semibold px-2 text-dark-800 text-xl dark:text-light-200">
-							Final
-						</div>
+						<div class="leading-10 font-semibold px-2">Final</div>
 					{/if}
 				</div>
-				<div class="w-1/4 text-dark-800 dark:text-light-200">
+				<div class="w-1/4 ">
 					{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].home.score}
 						{$dailyGames[boxscore._id.toString()].home.score}
 					{:else if boxscore.visitor.score && boxscore.visitor.score !== null}
@@ -132,15 +128,15 @@
 				>
 					<TeamLogo slug={boxscore.home.team.infoCommon.slug} {logoModules} />
 				</div>
-				<h4 class="h-2/5 text-dark-800 dark:text-light-200">
+				<h4 class="h-2/5 ">
 					{capitalizeFirstLetter(boxscore.home.team.infoCommon.slug)}
 				</h4>
 			</div>
 		</div>
 	</div>
-	<div class="w-full mx-2 glassmorphicCard lg:container lg:mx-auto">
+	<div class="w-full mx-auto md:container md:mx-auto">
 		<Tabs>
-			<div class="w-full overflow-hidden">
+			<div class="w-full overflow-hidden glassmorphicCard">
 				<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />
 			</div>
 
@@ -148,14 +144,12 @@
 			<TabPanel>
 				<div class="flex flex-col gap-6">
 					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">Home Team Basic Stats:</h2>
+						<h2 class="tabPanelTitle">Home Team Basic Stats:</h2>
 						<BoxScoreTable {boxscore} isHome={true} />
 					</div>
 
 					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-							Visitor Team Basic Stats:
-						</h2>
+						<h2 class="tabPanelTitle">Visitor Team Basic Stats:</h2>
 						<BoxScoreTable {boxscore} isHome={false} />
 					</div>
 				</div>
@@ -165,14 +159,12 @@
 			<TabPanel>
 				<div class="flex flex-col gap-6">
 					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
-							Home Team Advanced Stats:
-						</h2>
+						<h2 class="tabPanelTitle">Home Team Advanced Stats:</h2>
 						<BoxScoreTable {boxscore} isHome={true} />
 					</div>
 
 					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle text-dark-600 dark:text-light-200">
+						<h2 class="tabPanelTitle">
 							Visitor Team Advanced Stats:
 							<BoxScoreTable {boxscore} isHome={false} />
 						</h2>

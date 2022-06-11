@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { themeChange } from 'theme-change';
 	import '../app.css';
 	import { page } from '$app/stores';
 	import Notifications from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-
 	import Nav from '$lib/ux/nav/Navbar.svelte';
 	import SideNav from '$lib/ux/nav/SideNav.svelte';
 	import { dailyGames } from '$lib/data/stores/games';
@@ -37,25 +38,11 @@
 			});
 		}
 	};
+	onMount(() => {
+		themeChange(false);
+	});
 </script>
 
-<svelte:head>
-	<script>
-		(function () {
-			/* return if SSR */
-			if (typeof document === 'undefined') return;
-			if (
-				localStorage.theme === 'dark' ||
-				(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-			) {
-				document.documentElement.classList.add('dark');
-				localStorage.setItem('theme', 'dark');
-			} else {
-				document.documentElement.classList.remove('dark');
-			}
-		})();
-	</script>
-</svelte:head>
 <Notifications>
 	<div class="drawer">
 		<input id="navDrawer" type="checkbox" class="drawer-toggle" />

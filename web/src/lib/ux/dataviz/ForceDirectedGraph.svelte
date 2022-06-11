@@ -130,17 +130,11 @@
 					'font-size': `3px`
 				}}
 				<g transform="translate({transform.x} {transform.y}) scale({transform.k} {transform.k})">
-					<line
-						class="stroke-dark-800 dark:stroke-light-200"
-						x1={startX}
-						y1={startY}
-						x2={baseX}
-						y2={baseY}
-					>
+					<line class="stroke-current" x1={startX} y1={startY} x2={baseX} y2={baseY}>
 						<title>Weight: {label}</title>
 					</line>
 					<polygon
-						class="fill-dark-800 dark:fill-light-200"
+						class="fill-current"
 						points={arrowHead.map(({ x, y }) => `${x},${y}`).join(' ')}
 					/>
 					<text class="fill-blue-500 cursor-grab" {...textProps}>{label}</text>

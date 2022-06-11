@@ -38,18 +38,18 @@
 			{#each posts as { slug, title, author, prefetch }}
 				{#if prefetch}
 					<a class="no-underline" sveltekit:prefetch href="articles/read/{slug}">
-						<h2 class="font-extralight font-sans hover:text-blue-700 dark:hover:text-blue-300">
+						<h2 class="font-extralight font-sans">
 							{title}
 						</h2>
 					</a>
 				{:else}
 					<a class="no-underline" href="articles/read/{slug}">
-						<h2 class="font-extralight font-sans hover:text-blue-700 dark:hover:text-blue-300">
+						<h2 class="font-extralight font-sans">
 							{title}
 						</h2>
 					</a>
 				{/if}
-				<h6 class="pl-5 font-light text-dark-800 dark:text-light-200">By: {author}</h6>
+				<h6 class="pl-5 font-light">By: {author}</h6>
 			{/each}
 			<div class="flex mx-auto pt-3">
 				<Paginate {pages} />

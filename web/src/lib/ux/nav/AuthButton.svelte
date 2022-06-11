@@ -15,16 +15,12 @@
 			<div class="p-1 mt-1 glassmorphicCard shadow-lg rounded-xl">
 				<div class="flex flex-col gap-2 py-3 px-2 max-w-[200px]">
 					<a href="/profile" class="w-full m-0">
-						<button
-							class="btn text-dark-800 dark:text-white bg-transparent glassmorphicCard hover:bg-transparent hover:text-gray-700 dark:hover:text-gray-400"
-						>
+						<button class="btn bg-transparent glassmorphicCard hover:bg-transparent">
 							profile
 						</button>
 					</a>
 					<a href="/logout" class="w-full m-0">
-						<button
-							class="btn text-dark-800 dark:text-white bg-transparent glassmorphicCard hover:bg-transparent hover:text-gray-700 dark:hover:text-gray-400"
-						>
+						<button class="btn bg-transparent glassmorphicCard hover:bg-transparent">
 							logout
 						</button>
 					</a>

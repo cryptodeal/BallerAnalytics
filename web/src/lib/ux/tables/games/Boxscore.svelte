@@ -80,7 +80,7 @@
 					class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
 				>
 					<div class="w-full inline-flex items-center">
-						<div class="flex-shrink-0 w-30 h-20">
+						<div class="flex-shrink-0 w-28 h-20">
 							<Headshot
 								avif={player.meta.images.headshot.avif}
 								png={player.meta.images.headshot.png}
@@ -90,13 +90,13 @@
 						</div>
 
 						<div class="ml-2 w-auto">
-							<div class="text-sm font-medium leading-5 text-gray-900 dark:text-light-200">
+							<div class="text-sm font-medium leading-5">
 								{#if player}
 									{player.name.full}
 								{/if}
 							</div>
 							{#if jerseyNumber}
-								<div class="text-xs font-small leading-5 text-gray-700 dark:text-gray-300">
+								<div class="text-xs font-small leading-5">
 									{jerseyNumber}
 								</div>
 							{/if}

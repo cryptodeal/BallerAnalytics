@@ -93,7 +93,7 @@
 					<h4 class="text-center">Controls:</h4>
 					<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
 						<label class="inline-flex mx-auto gap-4 items-center">
-							<span class="font-light text-blue-500 text-xl">vizDelay:</span>
+							<span class="font-light text-xl">vizDelay:</span>
 							<input
 								name="vizDelay_input"
 								type="number"
@@ -110,25 +110,21 @@
 							/>
 						</label>
 						<label class="inline-flex mx-auto gap-4 items-center">
-							<span class="font-light text-blue-500 text-xl">Demo Enabled:</span>
+							<span class="font-light text-xl">Demo Enabled:</span>
 							<input name="enabled" type="checkbox" bind:checked={$enabled} />
 						</label>
 						<label class="inline-flex mx-auto gap-4 items-center">
 							<div class="flex flex-col">
-								<span class="font-light text-blue-500 text-xl">Use Dropoff:</span>
-								<span class="text-xs font-light text-blue-500"
-									>enabling/changing dropoffAge resets demo</span
-								>
+								<span class="font-light text-xl">Use Dropoff:</span>
+								<span class="text-xs font-light">enabling/changing dropoffAge resets demo</span>
 							</div>
 							<input name="dropoff" type="checkbox" bind:checked={$dropoff} />
 						</label>
 						{#if $dropoff}
 							<label class="inline-flex mx-auto gap-4 items-center">
 								<div class="flex flex-col">
-									<span class="font-light text-blue-500 text-xl">Dropoff Age:</span>
-									<span class="text-xs font-light text-blue-500"
-										># gens w/o progress drop species</span
-									>
+									<span class="font-light text-xl">Dropoff Age:</span>
+									<span class="text-xs font-light"># gens w/o progress drop species</span>
 								</div>
 								<input
 									name="dropoffAge_input"
@@ -148,7 +144,7 @@
 						{/if}
 					</div>
 				</div>
-				<div class="flex w-full flex-col gap-4 w-full justify-evenly">
+				<div class="flex w-full flex-col gap-4 justify-evenly">
 					<div class="inline-flex gap-4 w-full justify-around items-center">
 						<StatLabel title="Generation" value={currentGen.toString()} />
 						<StatLabel title="Species" value={currentSpecies.toString()} />

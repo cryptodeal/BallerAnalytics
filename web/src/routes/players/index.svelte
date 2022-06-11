@@ -134,14 +134,12 @@
 
 <div class="listContainer flex flex-col gap-2">
 	<div class="glassmorphicBg rounded-lg flex flex-col gap-2 p-2 w-full md:container md:mx-auto">
-		<h2 class="text-dark-600 text-center dark:text-light-200">
+		<h2 class="text-center ">
 			NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players
 		</h2>
 		<div class="flex flex-wrap gap-4 justify-start sm:justify-evenly">
-			<div class="inline-flex items-center text-black gap-4">
-				<label class="text-dark-600 dark:text-light-200 text-lg" for="season-select">
-					Season:
-				</label>
+			<div class="inline-flex items-center gap-4">
+				<label class="text-lg" for="season-select"> Season: </label>
 
 				<select type="select" id="season-select" bind:value={seasonYear} on:change={loadSeason}>
 					{#each seasons as season}
@@ -151,14 +149,10 @@
 			</div>
 			<div class="flex flex-col">
 				<div class="inline-flex gap-4 items-center">
-					<label class="text-dark-600 dark:text-light-200 text-lg" for="name-search">
-						Player Name:
-					</label>
+					<label class="text-lg" for="name-search"> Player Name: </label>
 					<input type="text" id="name-search" bind:value={name} on:input={nameQuery} />
 				</div>
-				<div class="text-sm self-end text-dark-600 dark:text-light-200">
-					Enter at least 3 characters
-				</div>
+				<div class="text-sm self-end">Enter at least 3 characters</div>
 			</div>
 		</div>
 	</div>
@@ -182,6 +176,6 @@
 			</VirtualList>
 		</div>
 	{:else}
-		<h4 class="text-dark-600 m-10 text-center dark:text-light-200">No Results Found</h4>
+		<h4 class="m-10 text-center">No Results Found</h4>
 	{/if}
 </div>

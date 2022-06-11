@@ -7,7 +7,10 @@ import {
 	variableGrads,
 	dispose,
 	losses,
-	type LayersModel
+	type LayersModel,
+	RMSPropOptimizer,
+	AdamOptimizer,
+	SGDOptimizer
 } from '@tensorflow/tfjs-node';
 
 import { createDeepQNetwork } from '.';
@@ -80,6 +83,16 @@ export class Agent {
 		this.replayBufferSize = config.replayBufferSize;
 		this.replayMemory = new ReplayMemory(config.replayBufferSize);
 		this.reset();
+	}
+
+	public resetNetworks() {
+		const task = this.task;
+		this.onlineNetwork = createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
+		this.targetNetwork = createDeepQNetwork(task.dims1, task.dims2, task.dims3, task.num_actions);
+	}
+
+	public setOptimizer(opt: RMSPropOptimizer | AdamOptimizer | SGDOptimizer) {
+		this.optimizer = opt;
 	}
 
 	reset() {
@@ -205,6 +218,8 @@ export class Agent {
 		optimizer.applyGradients(grads.grads);
 		dispose(grads);
 		/* TODO: Return the loss value here? */
-		return grads.value;
+		const lossVal = lossFunction();
+		lossVal.print();
+		return lossVal.dataSync()[0];
 	}
 }

@@ -72,7 +72,7 @@
 						</div>
 
 						<div class="ml-2 w-auto">
-							<div class="text-sm font-medium leading-5 text-gray-900 dark:text-light-200">
+							<div class="text-sm font-medium leading-5 ">
 								{name.full}
 
 								{#if twoWay}
@@ -80,7 +80,7 @@
 								{/if}
 							</div>
 							{#if number}
-								<div class="text-xs font-small leading-5 text-gray-700 dark:text-gray-300">
+								<div class="text-xs font-small leading-5 ">
 									{number}
 								</div>
 							{/if}

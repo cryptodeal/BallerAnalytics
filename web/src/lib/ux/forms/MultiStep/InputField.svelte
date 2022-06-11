@@ -13,7 +13,7 @@
 <p class="my-2 mx-0 text-left">
 	<label class="font-semibold" for={camelize(label)}>{label}:</label>
 	<input
-		class="w-full block text-gray-700 text-right py-2 px-2 mt-2 rounded-sm border-1 glassmorphicBg dark:text-light-200"
+		class="w-full block text-right py-2 px-2 mt-2 rounded-sm border-1 glassmorphicBg"
 		use:typeAction
 		id={camelize(label)}
 		bind:value

@@ -44,9 +44,9 @@ const trainNeat = async (batchSize = 8) => {
 		mutateBoost: {
 			enabled: true,
 			startThreshold: 0.6,
-			maxMutateRate: 0.5
+			maxMutateRate: 0.7
 		},
-		populationSize: 128
+		populationSize: 64
 	});
 
 	let bestFitness = -Infinity;

@@ -11,92 +11,96 @@
 	export let segment: string, modalId: string, triggerTxt: string;
 </script>
 
-<!-- Navbar -->
-<div class="w-full navbar fixed top-0 min-h-6 z-10 bg-gray-400/20 backdrop-filter backdrop-blur-lg">
-	<div class="flex-none lg:hidden">
-		<label for="navDrawer" class="btn btn-square btn-ghost">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				class="inline-block w-6 h-6 stroke-current"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M4 6h16M4 12h16M4 18h16"
-				/></svg
-			>
-		</label>
-	</div>
-	<div class="w-3/4 justify-start lg:w-1/2">
-		<Logo {isVisible} {segment} />
-	</div>
-
-	<div class="navbar-center hidden lg:flex">
-		<ul class="menu menu-horizontal">
-			<!-- Navbar menu content here -->
-			<li>
-				<a
-					sveltekit:prefetch
-					href="/games"
-					class="uppercase"
-					aria-current={segment === 'games' ? 'page' : undefined}
+<div
+	class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100"
+>
+	<!-- Navbar -->
+	<nav class="w-full navbar">
+		<div class="flex-none lg:hidden">
+			<label for="navDrawer" class="btn btn-square btn-ghost">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					class="inline-block w-6 h-6 stroke-current"
+					><path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M4 6h16M4 12h16M4 18h16"
+					/></svg
 				>
-					games
-				</a>
-			</li>
-			<li>
-				<a
-					sveltekit:prefetch
-					href="/players"
-					class="uppercase"
-					aria-current={segment === 'players' ? 'page' : undefined}
-				>
-					players
-				</a>
-			</li>
-
-			<li>
-				<a
-					sveltekit:prefetch
-					href="/teams"
-					class="uppercase"
-					aria-current={segment === 'teams' ? 'page' : undefined}
-				>
-					teams
-				</a>
-			</li>
-
-			<li>
-				<a
-					sveltekit:prefetch
-					href="/articles"
-					class="uppercase"
-					aria-current={segment === 'articles' ? 'page' : undefined}
-				>
-					articles
-				</a>
-			</li>
-
-			<li>
-				<a
-					sveltekit:prefetch
-					href="/dev/neat"
-					class="uppercase"
-					aria-current={segment === 'dev' ? 'page' : undefined}
-				>
-					NEAT
-				</a>
-			</li>
-		</ul>
-	</div>
-	<div class="navbar-end">
-		<ThemeToggle />
-		<div class="hidden lg:inline-flex">
-			<AuthButton {modalId} {triggerTxt} />
+			</label>
 		</div>
-	</div>
+		<div class="w-3/4 justify-start lg:w-1/2">
+			<Logo {isVisible} {segment} />
+		</div>
+
+		<div class="navbar-center hidden lg:flex">
+			<ul class="menu menu-horizontal p-0">
+				<!-- Navbar menu content here -->
+				<li>
+					<a
+						sveltekit:prefetch
+						href="/games"
+						class="uppercase"
+						aria-current={segment === 'games' ? 'page' : undefined}
+					>
+						games
+					</a>
+				</li>
+				<li>
+					<a
+						sveltekit:prefetch
+						href="/players"
+						class="uppercase"
+						aria-current={segment === 'players' ? 'page' : undefined}
+					>
+						players
+					</a>
+				</li>
+
+				<li>
+					<a
+						sveltekit:prefetch
+						href="/teams"
+						class="uppercase"
+						aria-current={segment === 'teams' ? 'page' : undefined}
+					>
+						teams
+					</a>
+				</li>
+
+				<li>
+					<a
+						sveltekit:prefetch
+						href="/articles"
+						class="uppercase"
+						aria-current={segment === 'articles' ? 'page' : undefined}
+					>
+						articles
+					</a>
+				</li>
+
+				<li>
+					<a
+						sveltekit:prefetch
+						href="/dev/neat"
+						class="uppercase"
+						aria-current={segment === 'dev' ? 'page' : undefined}
+					>
+						NEAT
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-end">
+			<ThemeToggle />
+			<div class="hidden lg:inline-flex">
+				<AuthButton {modalId} {triggerTxt} />
+			</div>
+		</div>
+	</nav>
 </div>
 
 <style lang="postcss">
