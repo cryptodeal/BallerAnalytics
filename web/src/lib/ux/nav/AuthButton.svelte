@@ -30,5 +30,5 @@
 	</div>
 	<!--End TailwindCSS dropdown menu-->
 {:else}
-	<label for={modalId} class="btn mx-2 modal-button">{triggerTxt}</label>
+	<label for={modalId} class="btn mx-2" on:click={closeDrawer}>{triggerTxt}</label>
 {/if}

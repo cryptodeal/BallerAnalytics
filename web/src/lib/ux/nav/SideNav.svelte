@@ -6,18 +6,23 @@
 	export let closeDrawer: () => void;
 </script>
 
+<div
+	class="bg-base-200 sticky top-0 z-10 grid grid-row-2 gap-y-2 w-full bg-opacity-90 py-3 px-2 backdrop-blur lg:hidden"
+>
+	<AuthButton {modalId} {triggerTxt} {closeDrawer} />
+</div>
+
+<div class="h-4" />
+
 <ul class="menu p-4 overflow-y-auto w-80 bg-base-100">
 	<!-- Sidebar content here -->
-	<li>
-		<AuthButton {modalId} {triggerTxt} {closeDrawer} />
-	</li>
 	<li>
 		<a
 			sveltekit:prefetch
 			on:click={closeDrawer}
 			href="/games"
 			class="uppercase"
-			aria-current={segment === 'games' ? 'page' : undefined}
+			class:active={segment === 'games' ? true : false}
 		>
 			games
 		</a>
@@ -28,7 +33,7 @@
 			on:click={closeDrawer}
 			href="/players"
 			class="uppercase"
-			aria-current={segment === 'players' ? 'page' : undefined}
+			class:active={segment === 'players' ? true : false}
 		>
 			players
 		</a>
@@ -40,7 +45,7 @@
 			on:click={closeDrawer}
 			href="/teams"
 			class="uppercase"
-			aria-current={segment === 'teams' ? 'page' : undefined}
+			class:active={segment === 'teams' ? true : false}
 		>
 			teams
 		</a>
@@ -52,7 +57,7 @@
 			on:click={closeDrawer}
 			href="/articles"
 			class="uppercase"
-			aria-current={segment === 'articles' ? 'page' : undefined}
+			class:active={segment === 'articles' ? true : false}
 		>
 			articles
 		</a>
@@ -64,7 +69,7 @@
 			on:click={closeDrawer}
 			href="/dev/neat"
 			class="uppercase"
-			aria-current={segment === 'dev' ? 'page' : undefined}
+			class:active={segment === 'dev' ? true : false}
 		>
 			NEAT
 		</a>

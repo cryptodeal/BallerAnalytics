@@ -14,7 +14,7 @@
 	$: if (season) sortBy = { col: 'name.full', ascending: true };
 
 	const colHeaders: IColHeader[] = [
-		{ title: 'Name', subtext: '* denotes player on 2-Way contract', key: 'name.full' },
+		{ title: 'Name', subtext: '* 2-Way contract', key: 'name.full' },
 		{ title: 'Age', key: 'birthDate' },
 		{ title: 'G', key: 'stats.0.totals.games' },
 		{ title: 'GS', key: 'stats.0.totals.gamesStarted' },
@@ -154,10 +154,12 @@
 							</div>
 						</div>
 						<div>
-							<div class="font-bold">{name.full}</div>
-							{#if twoWay}
-								<div class="text-sm opacity-50">*</div>
-							{/if}
+							<div class="font-bold">
+								{name.full}
+								{#if twoWay}
+									<span class="text-sm opacity-50">*</span>
+								{/if}
+							</div>
 						</div>
 					</div>
 				</td>

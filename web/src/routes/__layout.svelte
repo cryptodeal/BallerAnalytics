@@ -21,7 +21,7 @@
 		drawerContentScrollY = 0,
 		drawersidebar,
 		drawerSidebarScrollY = 0,
-		checked = false;
+		checked: boolean = '' as unknown as boolean;
 
 	function parseContentScroll() {
 		drawerContentScrollY = drawercontent.scrollTop;
@@ -32,7 +32,7 @@
 	}
 
 	function closeDrawer() {
-		checked = false;
+		checked = '' as unknown as boolean;
 	}
 
 	onMount(() => {
@@ -69,16 +69,36 @@
 	};
 </script>
 
+<svelte:head>
+	<script>
+		(function () {
+			/* return if SSR */
+			if (typeof document === 'undefined') return;
+			const theme = localStorage.getItem('theme');
+			if (
+				theme === 'night' ||
+				(!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+			) {
+				document.documentElement.setAttribute('data-theme', 'night');
+				localStorage.setItem('theme', 'night');
+			} else {
+				document.documentElement.setAttribute('data-theme', 'corporate');
+				localStorage.setItem('theme', 'corporate');
+			}
+		})();
+	</script>
+</svelte:head>
+
 <Notifications>
 	<div class="drawer">
-		<input id="navDrawer" type="checkbox" class="drawer-toggle" />
+		<input id="navDrawer" type="checkbox" class="drawer-toggle" bind:checked />
 		<div
 			bind:this={drawercontent}
 			on:scroll={parseContentScroll}
 			class="drawer-content flex flex-col"
 			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
 		>
-			<Nav {segment} {modalId} {triggerTxt} />
+			<Nav {segment} {modalId} {triggerTxt} {closeDrawer} />
 			<div class="p-6 pb-10">
 				<slot />
 			</div>
@@ -107,7 +127,7 @@
 			</aside>
 		</div>
 	</div>
-	<input type="checkbox" id={modalId} class="modal-toggle" bind:checked />
+	<input type="checkbox" id={modalId} class="modal-toggle" />
 	<label for={modalId} class="modal modal-bottom sm:modal-middle cursor-pointer">
 		<label class="modal-box relative" for="">
 			<h3 class="text-lg font-bold text-center text-gray-400">Login / Register</h3>

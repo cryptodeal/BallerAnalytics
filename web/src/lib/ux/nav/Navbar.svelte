@@ -8,11 +8,11 @@
 		isVisible = true;
 	});
 
-	export let segment: string, modalId: string, triggerTxt: string;
+	export let segment: string, modalId: string, triggerTxt: string, closeDrawer: () => void;
 </script>
 
 <div
-	class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100"
+	class="sticky top-0 z-30 flex h-16 w-full justify-center bg-opacity-90 backdrop-blur transition-all duration-100 bg-base-100 text-base-content shadow-sm"
 >
 	<!-- Navbar -->
 	<nav class="w-full navbar">
@@ -44,7 +44,7 @@
 						sveltekit:prefetch
 						href="/games"
 						class="uppercase"
-						aria-current={segment === 'games' ? 'page' : undefined}
+						class:active={segment === 'games' ? true : false}
 					>
 						games
 					</a>
@@ -54,7 +54,7 @@
 						sveltekit:prefetch
 						href="/players"
 						class="uppercase"
-						aria-current={segment === 'players' ? 'page' : undefined}
+						class:active={segment === 'players' ? true : false}
 					>
 						players
 					</a>
@@ -65,7 +65,7 @@
 						sveltekit:prefetch
 						href="/teams"
 						class="uppercase"
-						aria-current={segment === 'teams' ? 'page' : undefined}
+						class:active={segment === 'teams' ? true : false}
 					>
 						teams
 					</a>
@@ -76,7 +76,7 @@
 						sveltekit:prefetch
 						href="/articles"
 						class="uppercase"
-						aria-current={segment === 'articles' ? 'page' : undefined}
+						class:active={segment === 'articles' ? true : false}
 					>
 						articles
 					</a>
@@ -87,7 +87,7 @@
 						sveltekit:prefetch
 						href="/dev/neat"
 						class="uppercase"
-						aria-current={segment === 'dev' ? 'page' : undefined}
+						class:active={segment === 'dev' ? true : false}
 					>
 						NEAT
 					</a>
@@ -97,7 +97,7 @@
 		<div class="navbar-end">
 			<ThemeToggle />
 			<div class="hidden lg:inline-flex">
-				<AuthButton {modalId} {triggerTxt} />
+				<AuthButton {modalId} {triggerTxt} {closeDrawer} />
 			</div>
 		</div>
 	</nav>

@@ -1861,7 +1861,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/f2ecd4590078c992b9b0d75f90ce6bb305407986
       '@stdlib/constants': github.com/stdlib-js/constants/e13add9ca31ff9da34ef6c30996f27205a3be842
       '@stdlib/datasets': github.com/stdlib-js/datasets/d6deaf517410c9d972af44e0ebfa6b397447671e
-      '@stdlib/error': github.com/stdlib-js/error/c0162f5646d3d5c1353b8c06484aa651e15e53e4
+      '@stdlib/error': github.com/stdlib-js/error/65882964922fbde2beab8de6933f797536bb1049
       '@stdlib/fs': github.com/stdlib-js/fs/9eebf95d8beeddb7954271b1c998e3cb8e3fa955
       '@stdlib/iter': github.com/stdlib-js/iter/31dca35fe061f3b60d764a92d5c621bb16a8f5a7
       '@stdlib/math': github.com/stdlib-js/math/387a1c7314551e779da0f5aa92c36311d318793e
@@ -2283,7 +2283,6 @@ packages:
 
   /@types/node/16.11.39:
     resolution: {integrity: sha512-K0MsdV42vPwm9L6UwhIxMAOmcvH/1OoVkZyCgEtVu4Wx7sElGloy/W7kMBNe/oJ7V/jW9BVt1F6RahH6e7tPXw==}
-    dev: true
 
   /@types/node/17.0.42:
     resolution: {integrity: sha512-Q5BPGyGKcvQgAMbsr7qEGN/kIPN6zZecYYABeTDBizOsau+2NMdSVTar9UQw21A2+JyA2KRNDYaYrPB0Rpk2oQ==}
@@ -2355,7 +2354,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.42
+      '@types/node': 16.11.39
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.14:
@@ -8890,8 +8889,8 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/error/c0162f5646d3d5c1353b8c06484aa651e15e53e4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/error/tar.gz/c0162f5646d3d5c1353b8c06484aa651e15e53e4}
+  github.com/stdlib-js/error/65882964922fbde2beab8de6933f797536bb1049:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/error/tar.gz/65882964922fbde2beab8de6933f797536bb1049}
     name: '@stdlib/error'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9006,7 +9005,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/f2ecd4590078c992b9b0d75f90ce6bb305407986
       '@stdlib/constants': github.com/stdlib-js/constants/e13add9ca31ff9da34ef6c30996f27205a3be842
       '@stdlib/datasets': github.com/stdlib-js/datasets/d6deaf517410c9d972af44e0ebfa6b397447671e
-      '@stdlib/error': github.com/stdlib-js/error/c0162f5646d3d5c1353b8c06484aa651e15e53e4
+      '@stdlib/error': github.com/stdlib-js/error/65882964922fbde2beab8de6933f797536bb1049
       '@stdlib/fs': github.com/stdlib-js/fs/9eebf95d8beeddb7954271b1c998e3cb8e3fa955
       '@stdlib/iter': github.com/stdlib-js/iter/31dca35fe061f3b60d764a92d5c621bb16a8f5a7
       '@stdlib/math': github.com/stdlib-js/math/387a1c7314551e779da0f5aa92c36311d318793e

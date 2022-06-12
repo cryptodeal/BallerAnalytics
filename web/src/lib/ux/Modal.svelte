@@ -1,11 +1,12 @@
 <script lang="ts">
 	export let modalId: string;
 	export let triggerTxt: string;
+	export let onClick: () => void;
 </script>
 
 <label for={modalId} class="btn mx-2 modal-button">{triggerTxt}</label>
 <!-- Put this part before </body> tag -->
-<input type="checkbox" id={modalId} class="modal-toggle" />
+<input type="checkbox" id={modalId} class="modal-toggle" on:click={onClick} />
 <label for={modalId} class="modal modal-bottom sm:modal-middle cursor-pointer">
 	<label class="modal-box relative" for="">
 		<slot name="header">

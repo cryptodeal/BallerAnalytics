@@ -86,7 +86,6 @@
 	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
 	import PlayerStats from '$lib/ux/tables/teams/Stats.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import RectBg from '$lib/ux/svg/RectBg.svelte';
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import type {
 		Team2Document,
@@ -149,7 +148,6 @@
 	description="Team Schedule, Roster, and Statistics for the {team.infoCommon
 		.name}'s {seasonYear} season."
 />
-<RectBg selectedTeam={team} />
 <div
 	class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:container md:mx-auto"
 >
