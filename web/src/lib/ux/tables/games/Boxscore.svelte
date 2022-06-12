@@ -74,243 +74,160 @@
 	<THead slot="thead" {colHeaders} {sort} {sortBy} />
 	<svelte:fragment slot="tbody">
 		{#each data as { player, stats, jerseyNumber }, i}
-			<tr>
+			<tr class="hover">
 				<!-- Display Player Name -->
-				<td
-					class="w-full py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
-				>
-					<div class="w-full inline-flex items-center">
-						<div class="flex-shrink-0 w-28 h-20">
-							<Headshot
-								avif={player.meta.images.headshot.avif}
-								png={player.meta.images.headshot.png}
-								webp={player.meta.images.headshot.webp}
-								alt="{player.name.full} headshot"
-							/>
-						</div>
-
-						<div class="ml-2 w-auto">
-							<div class="text-sm font-medium leading-5">
-								{#if player}
-									{player.name.full}
-								{/if}
+				<td>
+					<div class="flex items-center space-x-3">
+						<div class="avatar">
+							<div class="mask mask-squircle w-12 h-12">
+								<Headshot
+									avif={player.meta.images.headshot.avif}
+									png={player.meta.images.headshot.png}
+									webp={player.meta.images.headshot.webp}
+									alt="{player.name.full} headshot"
+								/>
 							</div>
+						</div>
+						<div>
+							<div class="font-bold">{player.name.full}</div>
 							{#if jerseyNumber}
-								<div class="text-xs font-small leading-5">
-									{jerseyNumber}
-								</div>
+								<div class="text-sm opacity-50">{jerseyNumber}</div>
 							{/if}
 						</div>
 					</div>
 				</td>
 
 				<!-- Display Player Min (Min) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.minutes}
-							{stats.totals?.minutes}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.minutes}
+						{stats.totals?.minutes}
+					{/if}
 				</td>
 
 				<!-- Display Player FieldGoalsMade (FG) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.fieldGoalsMade}
-							{stats.totals?.fieldGoalsMade}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.fieldGoalsMade}
+						{stats.totals?.fieldGoalsMade}
+					{/if}
 				</td>
 
 				<!-- Display Player FieldGoalsAttempted (FGA) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.fieldGoalsAttempted}
-							{stats.totals?.fieldGoalsAttempted}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.fieldGoalsAttempted}
+						{stats.totals?.fieldGoalsAttempted}
+					{/if}
 				</td>
 
 				<!-- Display Player FieldGoalPct (FG%) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.fieldGoalsPct}
-							{formatPct(stats.totals?.fieldGoalsPct)}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.fieldGoalsPct}
+						{formatPct(stats.totals?.fieldGoalsPct)}
+					{/if}
 				</td>
 
 				<!-- Display Player threePointersMade (3PM) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.threePointersMade}
-							{stats.totals?.threePointersMade}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.threePointersMade}
+						{stats.totals?.threePointersMade}
+					{/if}
 				</td>
 
 				<!-- Display Player threePointersAttempted (3PA) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.threePointersAttempted}
-							{stats.totals?.threePointersAttempted}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.threePointersAttempted}
+						{stats.totals?.threePointersAttempted}
+					{/if}
 				</td>
 
 				<!-- Display Player threePointersPct (3P%) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.threePointersPct}
-							{formatPct(stats.totals?.threePointersPct)}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.threePointersPct}
+						{formatPct(stats.totals?.threePointersPct)}
+					{/if}
 				</td>
 
 				<!-- Display Player freeThrowsMade (FTM) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.freeThrowsMade}
-							{stats.totals?.freeThrowsMade}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.freeThrowsMade}
+						{stats.totals?.freeThrowsMade}
+					{/if}
 				</td>
 
 				<!-- Display Player freeThrowsAttempted (FTA) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.freeThrowsAttempted}
-							{stats.totals?.freeThrowsAttempted}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.freeThrowsAttempted}
+						{stats.totals?.freeThrowsAttempted}
+					{/if}
 				</td>
 
 				<!-- Display Player freeThrowsPct (FT%) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.freeThrowsPct}
-							{formatPct(stats.totals?.freeThrowsPct)}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.freeThrowsPct}
+						{formatPct(stats.totals?.freeThrowsPct)}
+					{/if}
 				</td>
 
 				<!-- Display Player offReb (ORB) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.offReb}
-							{stats.totals?.offReb}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.offReb}
+						{stats.totals?.offReb}
+					{/if}
 				</td>
 
 				<!-- Display Player defReb (DRB) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.defReb}
-							{stats.totals?.defReb}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.defReb}
+						{stats.totals?.defReb}
+					{/if}
 				</td>
 
 				<!-- Display Player totalReb (TRB) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.totalReb}
-							{stats.totals?.totalReb}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.totalReb}
+						{stats.totals?.totalReb}
+					{/if}
 				</td>
 
 				<!-- Display Player totalReb (AST) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.assists}
-							{stats.totals?.assists}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.assists}
+						{stats.totals?.assists}
+					{/if}
 				</td>
 
 				<!-- Display Player steals (STL) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.steals}
-							{stats.totals?.steals}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.steals}
+						{stats.totals?.steals}
+					{/if}
 				</td>
 
 				<!-- Display Player blocks (BLK) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.blocks}
-							{stats.totals?.blocks}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.blocks}
+						{stats.totals?.blocks}
+					{/if}
 				</td>
 
 				<!-- Display Player personalFouls (PF) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.personalFouls}
-							{stats.totals?.personalFouls}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.personalFouls}
+						{stats.totals?.personalFouls}
+					{/if}
 				</td>
 
 				<!-- Display Player points (PTS) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.points}
-							{stats.totals?.points}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.points}
+						{stats.totals?.points}
+					{/if}
 				</td>
 
 				<!-- Display Player plusMinus (+/-) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if stats.totals?.plusMinus}
-							{stats.totals?.plusMinus}
-						{/if}
-					</div>
+				<td>
+					{#if stats.totals?.plusMinus}
+						{stats.totals?.plusMinus}
+					{/if}
 				</td>
 			</tr>
 		{/each}

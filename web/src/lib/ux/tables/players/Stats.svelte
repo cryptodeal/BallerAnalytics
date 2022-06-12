@@ -78,368 +78,258 @@
 			{@const birthDate = new Date(player.birthDate)}
 			{@const sznBday = dayjs(birthDate).year(year).toDate()}
 			{@const age = getAge(birthDate.toString(), sznBday)}
-			<tr>
+			<tr class="hover">
 				<!-- Display Season Year -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if year}
+				<td>
+					{#if year}
+						<div class="font-bold">
 							{year - 1}-{year.toString().slice(-2)}
-						{/if}
-					</div>
+						</div>
+					{/if}
 				</td>
 
 				<!-- Display Player Age -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if age}
-							{age}
-						{/if}
-					</div>
+				<td>
+					{#if age}
+						{age}
+					{/if}
 				</td>
 
 				<!-- Display Player Team/Totals (if teamSplit) -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if teamSplits.length}
-							TOT
-						{:else if teams.length}
-							{teams[0].id.infoCommon.nbaAbbreviation}
-						{/if}
-					</div>
+				<td>
+					{#if teamSplits.length}
+						TOT
+					{:else if teams.length}
+						{teams[0].id.infoCommon.nbaAbbreviation}
+					{/if}
 				</td>
 
 				<!-- Display Player Games Played -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if games}
-							{games}
-						{/if}
-					</div>
+				<td>
+					{#if games}
+						{games}
+					{/if}
 				</td>
 
 				<!-- Display Player Games Started -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if gamesStarted}
-							{gamesStarted}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if gamesStarted}
+						{gamesStarted}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player Minutes -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if minutes}
-							{minutes}
-						{/if}
-					</div>
+				<td>
+					{#if minutes}
+						{minutes}
+					{/if}
 				</td>
 
 				<!-- Display Player fieldGoalsMade -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if fieldGoalsMade}
-							{fieldGoalsMade}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if fieldGoalsMade}
+						{fieldGoalsMade}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player fieldGoalsAttempted -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if fieldGoalsAttempted}
-							{fieldGoalsAttempted}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if fieldGoalsAttempted}
+						{fieldGoalsAttempted}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player fieldGoalsPct -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if fieldGoalsPct}
-							{formatPct(fieldGoalsPct)}
-						{:else if fieldGoalsAttempted && fieldGoalsMade}
-							{formatPct(fieldGoalsMade / fieldGoalsAttempted)}
-						{:else if fieldGoalsAttempted && !fieldGoalsMade}
-							{formatPct(0)}
-						{/if}
-					</div>
+				<td>
+					{#if fieldGoalsPct}
+						{formatPct(fieldGoalsPct)}
+					{:else if fieldGoalsAttempted && fieldGoalsMade}
+						{formatPct(fieldGoalsMade / fieldGoalsAttempted)}
+					{:else if fieldGoalsAttempted && !fieldGoalsMade}
+						{formatPct(0)}
+					{/if}
 				</td>
 
 				<!-- Display Player threePointersMade -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if threePointersMade}
-							{threePointersMade}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if threePointersMade}
+						{threePointersMade}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player threePointersAttempted -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if threePointersAttempted}
-							{threePointersAttempted}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if threePointersAttempted}
+						{threePointersAttempted}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player threePointersPct -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if threePointersPct}
-							{formatPct(threePointersPct)}
-						{:else if threePointersAttempted && threePointersMade}
-							{formatPct(threePointersMade / threePointersAttempted)}
-						{:else if threePointersAttempted && !threePointersMade}
-							{formatPct(0)}
-						{/if}
-					</div>
+				<td>
+					{#if threePointersPct}
+						{formatPct(threePointersPct)}
+					{:else if threePointersAttempted && threePointersMade}
+						{formatPct(threePointersMade / threePointersAttempted)}
+					{:else if threePointersAttempted && !threePointersMade}
+						{formatPct(0)}
+					{/if}
 				</td>
 
 				<!-- Display Player twoPointFGMade -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if twoPointFGMade}
-							{twoPointFGMade}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if twoPointFGMade}
+						{twoPointFGMade}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player twoPointFGAttempted -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if twoPointFGAttempted}
-							{twoPointFGAttempted}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if twoPointFGAttempted}
+						{twoPointFGAttempted}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player twoPointFGPct -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if twoPointFGPct}
-							{formatPct(twoPointFGPct)}
-						{:else if twoPointFGAttempted && twoPointFGMade}
-							{formatPct(twoPointFGMade / twoPointFGAttempted)}
-						{:else if twoPointFGAttempted && !twoPointFGMade}
-							{formatPct(0)}
-						{/if}
-					</div>
+				<td>
+					{#if twoPointFGPct}
+						{formatPct(twoPointFGPct)}
+					{:else if twoPointFGAttempted && twoPointFGMade}
+						{formatPct(twoPointFGMade / twoPointFGAttempted)}
+					{:else if twoPointFGAttempted && !twoPointFGMade}
+						{formatPct(0)}
+					{/if}
 				</td>
 				<!-- Display Player effectiveFieldGoalPct -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if effectiveFieldGoalPct}
-							{formatPct(effectiveFieldGoalPct)}
-						{:else if fieldGoalsMade && threePointersMade && fieldGoalsAttempted}
-							{formatPct((fieldGoalsMade + 0.5 * threePointersMade) / fieldGoalsAttempted)}
-						{:else if (!fieldGoalsMade || !threePointersMade) && fieldGoalsAttempted && fieldGoalsAttempted > 0}
-							{formatPct(0)}
-						{/if}
-					</div>
+				<td>
+					{#if effectiveFieldGoalPct}
+						{formatPct(effectiveFieldGoalPct)}
+					{:else if fieldGoalsMade && threePointersMade && fieldGoalsAttempted}
+						{formatPct((fieldGoalsMade + 0.5 * threePointersMade) / fieldGoalsAttempted)}
+					{:else if (!fieldGoalsMade || !threePointersMade) && fieldGoalsAttempted && fieldGoalsAttempted > 0}
+						{formatPct(0)}
+					{/if}
 				</td>
 				<!-- Display Player freeThrowsMade -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if freeThrowsMade}
-							{freeThrowsMade}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if freeThrowsMade}
+						{freeThrowsMade}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 				<!-- Display Player freeThrowsAttempted -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if freeThrowsAttempted}
-							{freeThrowsAttempted}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if freeThrowsAttempted}
+						{freeThrowsAttempted}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player freeThrowsPct -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if freeThrowsPct}
-							{formatPct(freeThrowsPct)}
-						{:else if freeThrowsAttempted && freeThrowsMade}
-							{formatPct(freeThrowsMade / freeThrowsAttempted)}
-						{:else if freeThrowsAttempted && !freeThrowsMade}
-							{formatPct(0)}
-						{/if}
-					</div>
+				<td>
+					{#if freeThrowsPct}
+						{formatPct(freeThrowsPct)}
+					{:else if freeThrowsAttempted && freeThrowsMade}
+						{formatPct(freeThrowsMade / freeThrowsAttempted)}
+					{:else if freeThrowsAttempted && !freeThrowsMade}
+						{formatPct(0)}
+					{/if}
 				</td>
 
 				<!-- Display Player offReb -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if offReb}
-							{offReb}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if offReb}
+						{offReb}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player defReb -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if defReb}
-							{defReb}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if defReb}
+						{defReb}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player totalReb -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if totalReb}
-							{totalReb}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if totalReb}
+						{totalReb}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player assists -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if assists}
-							{assists}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if assists}
+						{assists}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player steals -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if steals}
-							{steals}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if steals}
+						{steals}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player blocks -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if blocks}
-							{blocks}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if blocks}
+						{blocks}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player turnovers -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if turnovers}
-							{turnovers}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if turnovers}
+						{turnovers}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player personalFouls -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if personalFouls}
-							{personalFouls}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if personalFouls}
+						{personalFouls}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 
 				<!-- Display Player points -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if points}
-							{points}
-						{:else if games && games > 0}
-							0
-						{/if}
-					</div>
+				<td>
+					{#if points}
+						{points}
+					{:else if games && games > 0}
+						0
+					{/if}
 				</td>
 			</tr>
 			{#if teamSplits.length}
@@ -475,367 +365,255 @@
 						}
 					} = split}
 
-					<tr>
+					<tr class="hover">
 						<!-- Display Season Year -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if year}
-									{year - 1}-{year.toString().slice(-2)}
-								{/if}
+						<td>
+							<div class="font-bold">
+								{year - 1}-{year.toString().slice(-2)}
 							</div>
 						</td>
 
 						<!-- Display Player Age -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if age}
-									{age}
-								{/if}
-							</div>
+						<td>
+							{#if age}
+								{age}
+							{/if}
 						</td>
 
 						<!-- Display Player Team/Totals (if teamSplit) -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if teams.find((t) => t.id._id.toString() === team.toString())}
-									{teams.find((t) => t.id._id.toString() === team.toString()).id.infoCommon
-										.nbaAbbreviation}
-								{/if}
-							</div>
+						<td>
+							{#if teams.find((t) => t.id._id.toString() === team.toString())}
+								{teams.find((t) => t.id._id.toString() === team.toString()).id.infoCommon
+									.nbaAbbreviation}
+							{/if}
 						</td>
 
 						<!-- Display Player Games Played -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if games}
-									{games}
-								{/if}
-							</div>
+						<td>
+							{#if games}
+								{games}
+							{/if}
 						</td>
 
 						<!-- Display Player Games Started -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if gamesStarted}
-									{gamesStarted}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if gamesStarted}
+								{gamesStarted}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player Minutes -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if minutes}
-									{minutes}
-								{/if}
-							</div>
+						<td>
+							{#if minutes}
+								{minutes}
+							{/if}
 						</td>
 
 						<!-- Display Player fieldGoalsMade -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if fieldGoalsMade}
-									{fieldGoalsMade}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if fieldGoalsMade}
+								{fieldGoalsMade}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player fieldGoalsAttempted -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if fieldGoalsAttempted}
-									{fieldGoalsAttempted}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if fieldGoalsAttempted}
+								{fieldGoalsAttempted}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player fieldGoalsPct -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if fieldGoalsPct}
-									{formatPct(fieldGoalsPct)}
-								{:else if fieldGoalsAttempted && fieldGoalsMade}
-									{formatPct(fieldGoalsMade / fieldGoalsAttempted)}
-								{:else if fieldGoalsAttempted && !fieldGoalsMade}
-									{formatPct(0)}
-								{/if}
-							</div>
+						<td>
+							{#if fieldGoalsPct}
+								{formatPct(fieldGoalsPct)}
+							{:else if fieldGoalsAttempted && fieldGoalsMade}
+								{formatPct(fieldGoalsMade / fieldGoalsAttempted)}
+							{:else if fieldGoalsAttempted && !fieldGoalsMade}
+								{formatPct(0)}
+							{/if}
 						</td>
 
 						<!-- Display Player threePointersMade -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if threePointersMade}
-									{threePointersMade}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if threePointersMade}
+								{threePointersMade}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player threePointersAttempted -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if threePointersAttempted}
-									{threePointersAttempted}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if threePointersAttempted}
+								{threePointersAttempted}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player threePointersPct -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if threePointersPct}
-									{formatPct(threePointersPct)}
-								{:else if threePointersAttempted && threePointersMade}
-									{formatPct(threePointersMade / threePointersAttempted)}
-								{:else if threePointersAttempted && !threePointersMade}
-									{formatPct(0)}
-								{/if}
-							</div>
+						<td>
+							{#if threePointersPct}
+								{formatPct(threePointersPct)}
+							{:else if threePointersAttempted && threePointersMade}
+								{formatPct(threePointersMade / threePointersAttempted)}
+							{:else if threePointersAttempted && !threePointersMade}
+								{formatPct(0)}
+							{/if}
 						</td>
 
 						<!-- Display Player twoPointFGMade -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if twoPointFGMade}
-									{twoPointFGMade}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if twoPointFGMade}
+								{twoPointFGMade}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player twoPointFGAttempted -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if twoPointFGAttempted}
-									{twoPointFGAttempted}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if twoPointFGAttempted}
+								{twoPointFGAttempted}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player twoPointFGPct -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if twoPointFGPct}
-									{formatPct(twoPointFGPct)}
-								{:else if twoPointFGAttempted && twoPointFGMade}
-									{formatPct(twoPointFGMade / twoPointFGAttempted)}
-								{:else if twoPointFGAttempted && !twoPointFGMade}
-									{formatPct(0)}
-								{/if}
-							</div>
+						<td>
+							{#if twoPointFGPct}
+								{formatPct(twoPointFGPct)}
+							{:else if twoPointFGAttempted && twoPointFGMade}
+								{formatPct(twoPointFGMade / twoPointFGAttempted)}
+							{:else if twoPointFGAttempted && !twoPointFGMade}
+								{formatPct(0)}
+							{/if}
 						</td>
 						<!-- Display Player effectiveFieldGoalPct -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if effectiveFieldGoalPct}
-									{formatPct(effectiveFieldGoalPct)}
-								{:else if fieldGoalsMade && threePointersMade && fieldGoalsAttempted}
-									{formatPct((fieldGoalsMade + 0.5 * threePointersMade) / fieldGoalsAttempted)}
-								{:else if !fieldGoalsMade || (!threePointersMade && fieldGoalsAttempted && fieldGoalsAttempted > 0)}
-									{formatPct(0)}
-								{/if}
-							</div>
+						<td>
+							{#if effectiveFieldGoalPct}
+								{formatPct(effectiveFieldGoalPct)}
+							{:else if fieldGoalsMade && threePointersMade && fieldGoalsAttempted}
+								{formatPct((fieldGoalsMade + 0.5 * threePointersMade) / fieldGoalsAttempted)}
+							{:else if !fieldGoalsMade || (!threePointersMade && fieldGoalsAttempted && fieldGoalsAttempted > 0)}
+								{formatPct(0)}
+							{/if}
 						</td>
 						<!-- Display Player freeThrowsMade -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if freeThrowsMade}
-									{freeThrowsMade}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if freeThrowsMade}
+								{freeThrowsMade}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 						<!-- Display Player freeThrowsAttempted -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if freeThrowsAttempted}
-									{freeThrowsAttempted}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if freeThrowsAttempted}
+								{freeThrowsAttempted}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player freeThrowsPct -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if freeThrowsPct}
-									{formatPct(freeThrowsPct)}
-								{:else if freeThrowsAttempted && freeThrowsMade}
-									{formatPct(freeThrowsMade / freeThrowsAttempted)}
-								{:else if freeThrowsAttempted && !freeThrowsMade}
-									{formatPct(0)}
-								{/if}
-							</div>
+						<td>
+							{#if freeThrowsPct}
+								{formatPct(freeThrowsPct)}
+							{:else if freeThrowsAttempted && freeThrowsMade}
+								{formatPct(freeThrowsMade / freeThrowsAttempted)}
+							{:else if freeThrowsAttempted && !freeThrowsMade}
+								{formatPct(0)}
+							{/if}
 						</td>
 
 						<!-- Display Player offReb -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if offReb}
-									{offReb}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if offReb}
+								{offReb}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player defReb -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if defReb}
-									{defReb}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if defReb}
+								{defReb}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player totalReb -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if totalReb}
-									{totalReb}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if totalReb}
+								{totalReb}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player assists -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if assists}
-									{assists}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if assists}
+								{assists}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player steals -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if steals}
-									{steals}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if steals}
+								{steals}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player blocks -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if blocks}
-									{blocks}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if blocks}
+								{blocks}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player turnovers -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if turnovers}
-									{turnovers}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if turnovers}
+								{turnovers}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player personalFouls -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if personalFouls}
-									{personalFouls}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if personalFouls}
+								{personalFouls}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 
 						<!-- Display Player points -->
-						<td
-							class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-						>
-							<div class="text-sm font-bold leading-5">
-								{#if points}
-									{points}
-								{:else if games && games > 0}
-									0
-								{/if}
-							</div>
+						<td>
+							{#if points}
+								{points}
+							{:else if games && games > 0}
+								0
+							{/if}
 						</td>
 					</tr>
 				{/each}

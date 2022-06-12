@@ -52,11 +52,9 @@
 	<THead slot="thead" {colHeaders} />
 	<svelte:fragment slot="tbody">
 		{#each schedule as { home, visitor, date, time, meta, _id }, i}
-			<tr>
+			<tr class="hover">
 				<!-- Display Game Date and Time -->
-				<td
-					class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
+				<td>
 					<div class="text-sm font-bold leading-5">
 						{#if time}
 							{dayjs(date).format('ddd, MMM D @ h:mm A')}
@@ -66,9 +64,7 @@
 					</div>
 				</td>
 				<!-- Display Opposing Team -->
-				<td
-					class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
+				<td>
 					<div class="inline-flex items-center whitespace-nowrap">
 						{#if teamId == home.team._id}
 							<div class="text-sm leading-5 mr-2">vs</div>
@@ -94,7 +90,7 @@
 					</div>
 				</td>
 				{#if home.stats.totals?.points && visitor.stats.totals?.points}
-					<td class="px-2 py-4 border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6">
+					<td>
 						<div class="text-sm leading-5 whitespace-nowrap inline-flex items-center text-wrap">
 							{#if !$dailyGames || !$dailyGames[_id.toString()]}
 								<div>
@@ -180,26 +176,16 @@
 						</div>
 					</td>
 				{:else}
-					<td
-						class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-					>
+					<td>
 						<div class="text-sm leading-5">--</div>
 					</td>
 				{/if}
 				{#if meta.helpers.isOver}
-					<td
-						class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-					>
-						<div class="text-sm leading-5">
-							{`${getRecord(i).wins} - ${getRecord(i).losses}`}
-						</div>
+					<td>
+						{`${getRecord(i).wins} - ${getRecord(i).losses}`}
 					</td>
 				{:else}
-					<td
-						class="px-2 py-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-					>
-						<div class="text-sm leading-5">--</div>
-					</td>
+					<td> -- </td>
 				{/if}
 			</tr>
 		{/each}

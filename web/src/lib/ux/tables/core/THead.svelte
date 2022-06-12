@@ -8,33 +8,34 @@
 
 {#each colHeaders as { title, subtext, key }, i}
 	{#if sort && sortBy}
-		<th
-			on:click={sort(key)}
-			class="px-2 py-3 text-base cursor-pointer font-medium leading-4 tracking-wider text-left uppercase border-b whitespace-nowrap border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-		>
-			<div class="inline-flex items-center">
-				{title}
-				{#if subtext}
-					<div class="text-xs">{subtext}</div>
-				{/if}
-				{#if sortBy && sortBy.col === key}
-					{#if sortBy.ascending}
-						<Triangle class="stroke-current" />
-					{:else}
-						<Triangle class="stroke-current" style="transform:rotate(180deg);" />
+		<th on:click={sort(key)}>
+			<div class="flex items-center space-x-3">
+				<div class="avatar">
+					{#if sortBy && sortBy.col === key}
+						{#if sortBy.ascending}
+							<Triangle class="stroke-current w-6 h-6" />
+						{:else}
+							<Triangle class="stroke-current w-6 h-6" style="transform:rotate(180deg);" />
+						{/if}
 					{/if}
-				{/if}
-			</div>
-		</th>
-	{:else}
-		<th
-			class="px-2 py-3 text-base font-medium leading-4 tracking-wider text-left uppercase border-b whitespace-nowrap border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
+				</div>
+				<div>
+					<div class="font-bold">{title}</div>
+					{#if subtext}
+						<div class="text-sm opacity-50">{subtext}</div>
+					{/if}
+				</div>
+			</div></th
 		>
+	{:else}
+		<th>
 			<div class="inline-flex items-center">
-				{title}
-				{#if subtext}
-					<div class="text-xs">{subtext}</div>
-				{/if}
+				<div>
+					<div class="font-bold">{title}</div>
+					{#if subtext}
+						<div class="text-sm opacity-50">{subtext}</div>
+					{/if}
+				</div>
 			</div>
 		</th>
 	{/if}

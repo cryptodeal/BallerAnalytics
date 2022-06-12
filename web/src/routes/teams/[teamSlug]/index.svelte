@@ -86,7 +86,7 @@
 	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
 	import PlayerStats from '$lib/ux/tables/teams/Stats.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import RectBg from '$lib/ux/svg/RectBg.svelte';
+	// import RectBg from '$lib/ux/svg/RectBg.svelte';
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import type {
 		Team2Document,

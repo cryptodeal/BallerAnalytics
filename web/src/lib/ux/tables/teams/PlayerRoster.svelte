@@ -61,90 +61,64 @@
 		{#each roster as { birthDate, college, meta, stats: [{ twoWay, position, number }], name, height, weight }, i}
 			{@const { avif, png, webp } = meta.images.headshot}
 			{@const { feet, inches } = height}
-			<tr>
+			<tr class="hover">
 				<!-- Display Player Name -->
-				<td
-					class="py-2 px-4 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 xl:px-6"
-				>
-					<div class="inline-flex items-center">
-						<div class="flex-shrink-0 w-28 h-20">
-							<Headshot {avif} {png} {webp} alt="{name.full} headshot" />
-						</div>
-
-						<div class="ml-2 w-auto">
-							<div class="text-sm font-medium leading-5 ">
-								{name.full}
-
-								{#if twoWay}
-									<span class="text-xs">*</span>
-								{/if}
+				<td>
+					<div class="flex items-center space-x-3">
+						<div class="avatar">
+							<div class="mask mask-squircle w-12 h-12">
+								<Headshot {avif} {png} {webp} alt="{name.full} headshot" />
 							</div>
+						</div>
+						<div>
+							<div class="font-bold">{name.full}</div>
+							{#if twoWay}
+								<div class="text-sm opacity-50">*</div>
+							{/if}
 							{#if number}
-								<div class="text-xs font-small leading-5 ">
-									{number}
-								</div>
+								<div class="text-sm opacity-50">{number}</div>
 							{/if}
 						</div>
 					</div>
 				</td>
 
 				<!-- Display Player Position (POS) -->
-				<td
-					class="w-auto px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100 md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if position}
-							{position}
-						{/if}
-					</div>
+				<td>
+					{#if position}
+						{position}
+					{/if}
 				</td>
 
 				<!-- Display Player Age -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if birthDate}
-							{getAge(new Date(birthDate).toString())}
-						{/if}
-					</div>
+				<td>
+					{#if birthDate}
+						{getAge(new Date(birthDate).toString())}
+					{/if}
 				</td>
 
 				<!-- Display Player Height -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if feet}
-							{feet}-{#if inches}
-								{inches}
-							{:else}
-								0
-							{/if}
+				<td>
+					{#if feet}
+						{feet}-{#if inches}
+							{inches}
+						{:else}
+							0
 						{/if}
-					</div>
+					{/if}
 				</td>
 
 				<!-- Display Player Weight -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if weight}
-							{weight}
-						{/if}
-					</div>
+				<td>
+					{#if weight}
+						{weight}
+					{/if}
 				</td>
 
 				<!-- Display Player College -->
-				<td
-					class="px-2 py-2 whitespace-nowrap border-b border-gray-200 dark:border-dark-100  md:px-4 xl:px-6"
-				>
-					<div class="text-sm font-bold leading-5">
-						{#if college}
-							{college}
-						{/if}
-					</div>
+				<td>
+					{#if college}
+						{college}
+					{/if}
 				</td>
 			</tr>
 		{/each}

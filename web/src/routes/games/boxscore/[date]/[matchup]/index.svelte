@@ -53,7 +53,7 @@
 	const estDate = dayjs(boxscore.date).tz();
 </script>
 
-<div class="appContent w-screen flex flex-col gap-6 pb-10">
+<div class="appContent">
 	<div class="mx-2 my-6 rounded-lg glassmorphicBg lg:container lg:mx-auto">
 		<div class="h-40 w-full inline-flex items-center ">
 			<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
@@ -134,9 +134,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="w-full mx-auto md:container md:mx-auto">
+	<div class="p-2 md:container md:mx-auto">
 		<Tabs>
-			<div class="w-full overflow-hidden glassmorphicCard">
+			<div class="w-full glassmorphicCard mx-1 px-2 py-1">
 				<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />
 			</div>
 
@@ -157,19 +157,16 @@
 
 			<!-- Advanced Stats Data Tab -->
 			<TabPanel>
-				<div class="flex flex-col gap-6">
-					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle">Home Team Advanced Stats:</h2>
-						<BoxScoreTable {boxscore} isHome={true} />
-					</div>
-
-					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle">
-							Visitor Team Advanced Stats:
-							<BoxScoreTable {boxscore} isHome={false} />
-						</h2>
-					</div>
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle">Home Team Advanced Stats:</h2>
 				</div>
+
+				<BoxScoreTable {boxscore} isHome={true} />
+
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle">Visitor Team Advanced Stats:</h2>
+				</div>
+				<BoxScoreTable {boxscore} isHome={false} />
 			</TabPanel>
 		</Tabs>
 	</div>
