@@ -82,87 +82,71 @@
 	$: if ((neat && $dropoff && $dropoffAge !== neat.dropoff) || (neat && !$dropoff)) resetDemo();
 </script>
 
-<div class="w-screen min-h-screen">
-	<div class="appContent w-full">
-		<div
-			class="mt-10 w-full flex flex-wrap gap-10 items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:(w-3/4 p-4) 2xl:w-1/2"
-		>
-			<div class="flex gap-4 w-full flex-col">
-				<h3 class="text-center">NEAT: XOR Problem</h3>
-				<div class="flex w-full flex-col gap-4 mb-10 items-center">
-					<h4 class="text-center">Controls:</h4>
-					<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
-						<label class="inline-flex mx-auto gap-4 items-center">
-							<span class="font-light text-xl">vizDelay:</span>
-							<input
-								name="vizDelay_input"
-								type="number"
-								bind:value={vizDelay}
-								min="500"
-								max="10000"
-							/>
-							<input
-								name="vizDelay_slider"
-								type="range"
-								bind:value={vizDelay}
-								min="500"
-								max="10000"
-							/>
-						</label>
-						<label class="inline-flex mx-auto gap-4 items-center">
-							<span class="font-light text-xl">Demo Enabled:</span>
-							<input name="enabled" type="checkbox" bind:checked={$enabled} />
-						</label>
-						<label class="inline-flex mx-auto gap-4 items-center">
-							<div class="flex flex-col">
-								<span class="font-light text-xl">Use Dropoff:</span>
-								<span class="text-xs font-light">enabling/changing dropoffAge resets demo</span>
-							</div>
-							<input name="dropoff" type="checkbox" bind:checked={$dropoff} />
-						</label>
-						{#if $dropoff}
-							<label class="inline-flex mx-auto gap-4 items-center">
-								<div class="flex flex-col">
-									<span class="font-light text-xl">Dropoff Age:</span>
-									<span class="text-xs font-light"># gens w/o progress drop species</span>
-								</div>
-								<input
-									name="dropoffAge_input"
-									type="number"
-									bind:value={$dropoffAge}
-									min="5"
-									max="100"
-								/>
-								<input
-									name="dropoffAge_slider"
-									type="range"
-									bind:value={$dropoffAge}
-									min="5"
-									max="100"
-								/>
-							</label>
-						{/if}
+<div
+	class="mt-10 w-full flex flex-wrap gap-10 items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:(w-3/4 p-4) 2xl:w-1/2"
+>
+	<div class="flex gap-4 w-full flex-col">
+		<h3 class="text-center">NEAT: XOR Problem</h3>
+		<div class="flex w-full flex-col gap-4 mb-10 items-center">
+			<h4 class="text-center">Controls:</h4>
+			<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
+				<label class="inline-flex mx-auto gap-4 items-center">
+					<span class="font-light text-xl">vizDelay:</span>
+					<input name="vizDelay_input" type="number" bind:value={vizDelay} min="500" max="10000" />
+					<input name="vizDelay_slider" type="range" bind:value={vizDelay} min="500" max="10000" />
+				</label>
+				<label class="inline-flex mx-auto gap-4 items-center">
+					<span class="font-light text-xl">Demo Enabled:</span>
+					<input name="enabled" type="checkbox" bind:checked={$enabled} />
+				</label>
+				<label class="inline-flex mx-auto gap-4 items-center">
+					<div class="flex flex-col">
+						<span class="font-light text-xl">Use Dropoff:</span>
+						<span class="text-xs font-light">enabling/changing dropoffAge resets demo</span>
 					</div>
-				</div>
-				<div class="flex w-full flex-col gap-4 justify-evenly">
-					<div class="inline-flex gap-4 w-full justify-around items-center">
-						<StatLabel title="Generation" value={currentGen.toString()} />
-						<StatLabel title="Species" value={currentSpecies.toString()} />
-					</div>
-					<div class="flex flex-wrap gap-4 justify-around items-center">
-						<StatLabel
-							title="Best Fitness"
-							subtitle="-MSE (Mean Squared Error)"
-							value={currentHighFitness.toFixed(8)}
+					<input name="dropoff" type="checkbox" bind:checked={$dropoff} />
+				</label>
+				{#if $dropoff}
+					<label class="inline-flex mx-auto gap-4 items-center">
+						<div class="flex flex-col">
+							<span class="font-light text-xl">Dropoff Age:</span>
+							<span class="text-xs font-light"># gens w/o progress drop species</span>
+						</div>
+						<input
+							name="dropoffAge_input"
+							type="number"
+							bind:value={$dropoffAge}
+							min="5"
+							max="100"
 						/>
-						<StatLabel title="Connections" value={currentCxns.toString()} />
-						<StatLabel title="Nodes" value={currentNodes.toString()} />
-					</div>
-				</div>
-			</div>
-			<div class="flex w-full">
-				<FDG nodes={nodeData} cxns={cxnData} />
+						<input
+							name="dropoffAge_slider"
+							type="range"
+							bind:value={$dropoffAge}
+							min="5"
+							max="100"
+						/>
+					</label>
+				{/if}
 			</div>
 		</div>
+		<div class="flex w-full flex-col gap-4 justify-evenly">
+			<div class="inline-flex gap-4 w-full justify-around items-center">
+				<StatLabel title="Generation" value={currentGen.toString()} />
+				<StatLabel title="Species" value={currentSpecies.toString()} />
+			</div>
+			<div class="flex flex-wrap gap-4 justify-around items-center">
+				<StatLabel
+					title="Best Fitness"
+					subtitle="-MSE (Mean Squared Error)"
+					value={currentHighFitness.toFixed(8)}
+				/>
+				<StatLabel title="Connections" value={currentCxns.toString()} />
+				<StatLabel title="Nodes" value={currentNodes.toString()} />
+			</div>
+		</div>
+	</div>
+	<div class="flex w-full">
+		<FDG nodes={nodeData} cxns={cxnData} />
 	</div>
 </div>

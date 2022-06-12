@@ -31,25 +31,27 @@
 	description="List of articles and posts written by the team behind BallerAnalytics.ai."
 />
 
-<section class="w-full mt-10">
-	<div class="glassmorphicBg rounded-lg flex flex-col p-2 md:container md:mx-auto">
-		<h1 class="text-center font-light md:pl-10 md:py-3 md:text-left">Articles</h1>
-		<div class="p-3 w-full flex flex-col">
+<section class="w-full">
+	<div class="glassmorphicBg rounded-lg flex flex-col p-2 sm:p-10 md:container md:mx-auto">
+		<h1 class="text-center font-light md:py-3 md:text-left">Articles</h1>
+		<div class="w-full flex flex-col">
 			{#each posts as { slug, title, author, prefetch }}
-				{#if prefetch}
-					<a class="no-underline" sveltekit:prefetch href="articles/read/{slug}">
-						<h2 class="font-extralight font-sans">
-							{title}
-						</h2>
-					</a>
-				{:else}
-					<a class="no-underline" href="articles/read/{slug}">
-						<h2 class="font-extralight font-sans">
-							{title}
-						</h2>
-					</a>
-				{/if}
-				<h6 class="pl-5 font-light">By: {author}</h6>
+				<div class="flex flex-col gap-1">
+					{#if prefetch}
+						<a class="no-underline  md:pl-6" sveltekit:prefetch href="articles/read/{slug}">
+							<h2 class="font-extralight font-sans">
+								{title}
+							</h2>
+						</a>
+					{:else}
+						<a class="no-underline md:pl-6" href="articles/read/{slug}">
+							<h2 class="font-extralight font-sans">
+								{title}
+							</h2>
+						</a>
+					{/if}
+					<h6 class="pl-10 font-light">By: {author}</h6>
+				</div>
 			{/each}
 			<div class="flex mx-auto pt-3">
 				<Paginate {pages} />

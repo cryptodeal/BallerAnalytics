@@ -6,6 +6,7 @@
 	import { resolve } from '$lib/functions/helpers';
 	import type { Player2StatsObject } from '@balleranalytics/nba-api-ts';
 	import type { IColHeader, ISortBy } from '../types';
+	import TFoot from '../core/TFoot.svelte';
 	export let roster: Player2StatsObject[], season: number;
 
 	let sortBy: ISortBy = { col: 'name.full', ascending: true };
@@ -405,4 +406,5 @@
 			</tr>
 		{/each}
 	</svelte:fragment>
+	<TFoot slot="tfoot" {colHeaders} />
 </Table>

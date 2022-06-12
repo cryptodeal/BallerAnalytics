@@ -6,6 +6,7 @@
 
 	import type { IColHeader, ISortBy } from '../types';
 	import type { BoxScoreData } from '$lib/types';
+	import TFoot from '../core/TFoot.svelte';
 
 	export let boxscore: BoxScoreData, isHome: boolean;
 	$: data = isHome ? boxscore.home.players : boxscore.visitor.players;
@@ -232,4 +233,5 @@
 			</tr>
 		{/each}
 	</svelte:fragment>
+	<TFoot slot="tfoot" {colHeaders} />
 </Table>

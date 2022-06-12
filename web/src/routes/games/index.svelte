@@ -83,7 +83,7 @@
 	description="Index of NBA Games and boxscore data from {dayjs(date).tz().format('MMM	D, YYYY')}."
 />
 
-<div class="appContent flex flex-col gap-10 w-full">
+<div class="flex flex-col gap-10 w-full">
 	<div
 		class="mx-auto flex flex-col items-center gap-4"
 		style:--date-picker-background={$darkMode ? '#1b1e27' : '#ffffff'}

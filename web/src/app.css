@@ -22,18 +22,16 @@
 
 @media (min-width: 768px) {
 	.listContainer {
-		height: 100vh;
+		height: calc(100vh - 8rem);
 		display: flex;
 		flex-direction: column;
 	}
 }
 
 .listContainer {
+	height: calc(100vh - 10.5rem);
 	display: flex;
 	flex-direction: column;
-	height: calc(100vh - 4rem);
-	margin-top: 3rem;
-	margin-bottom: 2rem;
 }
 
 h1,

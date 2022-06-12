@@ -41,12 +41,12 @@
 	}
 </script>
 
+<svelte:window bind:innerHeight={h} bind:innerWidth={w} />
+
 {#if selectedTeam}
 	<div
 		class="container"
 		class:opaqueGradient={$darkMode}
-		bind:offsetWidth={w}
-		bind:offsetHeight={h}
 		style:--bg-inner={$bgInner}
 		style:--bg-outer={$bgOuter}
 	>
@@ -74,11 +74,13 @@
 		height: 100vh;
 		top: 0;
 		left: 0;
+		right: 0;
+		bottom: 0;
 		position: fixed;
 		z-index: 0;
 	}
 
 	.opaqueGradient {
-		opacity: 0.6;
+		opacity: 0.4;
 	}
 </style>

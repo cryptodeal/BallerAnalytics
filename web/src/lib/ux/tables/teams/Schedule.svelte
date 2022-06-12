@@ -10,6 +10,7 @@
 	import type { MetaGlobImport } from '$lib/types';
 	import type { IColHeader } from '../types';
 	import type { Types } from 'mongoose';
+	import TFoot from '../core/TFoot.svelte';
 	export let logoModules: MetaGlobImport;
 	export let teamId: Types.ObjectId;
 	export let schedule: PopulatedDocument<
@@ -190,4 +191,5 @@
 			</tr>
 		{/each}
 	</svelte:fragment>
+	<TFoot slot="tfoot" {colHeaders} />
 </Table>

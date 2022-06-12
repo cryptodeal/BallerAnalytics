@@ -53,121 +53,118 @@
 	const estDate = dayjs(boxscore.date).tz();
 </script>
 
-<div class="appContent">
-	<div class="mx-2 my-6 rounded-lg glassmorphicBg lg:container lg:mx-auto">
-		<div class="h-40 w-full inline-flex items-center ">
-			<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
-				<div
-					class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
-				>
-					<TeamLogo slug={boxscore.visitor.team.infoCommon.slug} {logoModules} />
-				</div>
-				<h4 class="h-2/5 ">
-					{capitalizeFirstLetter(boxscore.visitor.team.infoCommon.slug)}
-				</h4>
+<div class="p-1 rounded-lg glassmorphicBg md:container md:mx-auto">
+	<div class="h-40 w-full inline-flex items-center ">
+		<div class="flex flex-wrap justify-center p-1 h-full w-1/4 ">
+			<div
+				class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
+			>
+				<TeamLogo slug={boxscore.visitor.team.infoCommon.slug} {logoModules} />
 			</div>
-			<div class="inline-flex items-center justify-center h-full w-1/2 text-center ">
-				<div class="w-1/4 ">
-					{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].visitor.score}
-						{$dailyGames[boxscore._id.toString()].visitor.score}
-					{:else if boxscore.visitor.score && boxscore.visitor.score !== null}
-						{boxscore.visitor.score}
-					{:else if boxscore.visitor.stats.totals?.points && boxscore.visitor.stats.totals.points !== null}
-						{boxscore.visitor.stats.totals.points}
-					{:else if boxscore.home.score || (boxscore.home.stats.totals?.points && boxscore.home.stats.totals.points !== null)}
-						0
-					{/if}
-				</div>
+			<h4 class="h-2/5 ">
+				{capitalizeFirstLetter(boxscore.visitor.team.infoCommon.slug)}
+			</h4>
+		</div>
+		<div class="inline-flex items-center justify-center h-full w-1/2 text-center ">
+			<div class="w-1/4 ">
+				{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].visitor.score}
+					{$dailyGames[boxscore._id.toString()].visitor.score}
+				{:else if boxscore.visitor.score && boxscore.visitor.score !== null}
+					{boxscore.visitor.score}
+				{:else if boxscore.visitor.stats.totals?.points && boxscore.visitor.stats.totals.points !== null}
+					{boxscore.visitor.stats.totals.points}
+				{:else if boxscore.home.score || (boxscore.home.stats.totals?.points && boxscore.home.stats.totals.points !== null)}
+					0
+				{/if}
+			</div>
 
-				<div class="flex flex-col w-1/2">
-					<div class="">@</div>
-					{#if !boxscore.meta.helpers.isOver && dayjs().tz().isBefore(dayjs(boxscore.date).tz())}
-						<div>
-							{estDate.minute() !== 0
-								? estDate.tz(localTz).format('h:mm A z')
-								: estDate.tz(localTz).format('h A z')}
+			<div class="flex flex-col w-1/2">
+				<div class="">@</div>
+				{#if !boxscore.meta.helpers.isOver && dayjs().tz().isBefore(dayjs(boxscore.date).tz())}
+					<div>
+						{estDate.minute() !== 0
+							? estDate.tz(localTz).format('h:mm A z')
+							: estDate.tz(localTz).format('h A z')}
+					</div>
+				{:else if (!boxscore.meta.helpers.isOver && dayjs(boxscore.date)
+						.tz()
+						.isBefore(dayjs().tz())) || (!boxscore.meta.helpers.isOver && boxscore.home.stats.totals?.points && boxscore.visitor.stats.totals?.points)}
+					<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
+					{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].periodValue && $dailyGames[boxscore._id.toString()].displayClock}
+						<div class="font-semibold px-2">
+							{$dailyGames[boxscore._id.toString()].periodValue < 5
+								? `Q${$dailyGames[boxscore._id.toString()].periodValue}`
+								: `OT${$dailyGames[boxscore._id.toString()].periodValue - 4}`}
+							{$dailyGames[boxscore._id.toString()].displayClock}
 						</div>
-					{:else if (!boxscore.meta.helpers.isOver && dayjs(boxscore.date)
-							.tz()
-							.isBefore(dayjs().tz())) || (!boxscore.meta.helpers.isOver && boxscore.home.stats.totals?.points && boxscore.visitor.stats.totals?.points)}
-						<div class="leading-10 text-red-600 font-semibold animate-pulse text-xl px-2">Live</div>
-						{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].periodValue && $dailyGames[boxscore._id.toString()].displayClock}
-							<div class="font-semibold px-2">
-								{$dailyGames[boxscore._id.toString()].periodValue < 5
-									? `Q${$dailyGames[boxscore._id.toString()].periodValue}`
-									: `OT${$dailyGames[boxscore._id.toString()].periodValue - 4}`}
-								{$dailyGames[boxscore._id.toString()].displayClock}
-							</div>
-						{:else if boxscore.meta.status?.period && boxscore.meta.status?.displayClock}
-							<div class="font-semibold px-2">
-								{boxscore.meta.status.period < 5
-									? `Q${boxscore.meta.status.period}`
-									: `OT${boxscore.meta.status.period - 4}`}
-								{boxscore.meta.status.displayClock}
-							</div>
-						{/if}
-					{:else}
-						<div class="leading-10 font-semibold px-2">Final</div>
+					{:else if boxscore.meta.status?.period && boxscore.meta.status?.displayClock}
+						<div class="font-semibold px-2">
+							{boxscore.meta.status.period < 5
+								? `Q${boxscore.meta.status.period}`
+								: `OT${boxscore.meta.status.period - 4}`}
+							{boxscore.meta.status.displayClock}
+						</div>
 					{/if}
-				</div>
-				<div class="w-1/4 ">
-					{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].home.score}
-						{$dailyGames[boxscore._id.toString()].home.score}
-					{:else if boxscore.visitor.score && boxscore.visitor.score !== null}
-						{boxscore.home.score}
-					{:else if boxscore.home.stats.totals?.points && boxscore.home.stats.totals.points !== null}
-						{boxscore.home.stats.totals.points}
-					{:else if (boxscore.visitor.score && boxscore.visitor.score !== null) || (boxscore.visitor.stats.totals?.points && boxscore.visitor.stats.totals.points !== null)}
-						0
-					{/if}
-				</div>
+				{:else}
+					<div class="leading-10 font-semibold px-2">Final</div>
+				{/if}
 			</div>
-			<div class="flex flex-wrap justify-center p-1 h-full w-1/4">
-				<div
-					class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
-				>
-					<TeamLogo slug={boxscore.home.team.infoCommon.slug} {logoModules} />
-				</div>
-				<h4 class="h-2/5 ">
-					{capitalizeFirstLetter(boxscore.home.team.infoCommon.slug)}
-				</h4>
+			<div class="w-1/4 ">
+				{#if $dailyGames[boxscore._id.toString()] && $dailyGames[boxscore._id.toString()].home.score}
+					{$dailyGames[boxscore._id.toString()].home.score}
+				{:else if boxscore.visitor.score && boxscore.visitor.score !== null}
+					{boxscore.home.score}
+				{:else if boxscore.home.stats.totals?.points && boxscore.home.stats.totals.points !== null}
+					{boxscore.home.stats.totals.points}
+				{:else if (boxscore.visitor.score && boxscore.visitor.score !== null) || (boxscore.visitor.stats.totals?.points && boxscore.visitor.stats.totals.points !== null)}
+					0
+				{/if}
 			</div>
 		</div>
+		<div class="flex flex-wrap justify-center p-1 h-full w-1/4">
+			<div
+				class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
+			>
+				<TeamLogo slug={boxscore.home.team.infoCommon.slug} {logoModules} />
+			</div>
+			<h4 class="h-2/5 ">
+				{capitalizeFirstLetter(boxscore.home.team.infoCommon.slug)}
+			</h4>
+		</div>
 	</div>
-	<div class="p-2 md:container md:mx-auto">
-		<Tabs>
-			<div class="w-full glassmorphicCard mx-1 px-2 py-1">
-				<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />
+</div>
+<div class="p-2 md:container md:mx-auto">
+	<Tabs>
+		<div class="w-full glassmorphicCard mx-1 px-2 py-1">
+			<TabList links={[{ title: 'Basic Stats' }, { title: 'Advanced Stats' }]} />
+		</div>
+
+		<!-- Basic Stats Data Tab -->
+		<TabPanel>
+			<div class="glassmorphicCard px-4 py-2 my-5">
+				<h2 class="tabPanelTitle">Home Team Basic Stats:</h2>
 			</div>
 
-			<!-- Basic Stats Data Tab -->
-			<TabPanel>
-				<div class="flex flex-col gap-6">
-					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle">Home Team Basic Stats:</h2>
-						<BoxScoreTable {boxscore} isHome={true} />
-					</div>
+			<BoxScoreTable {boxscore} isHome={true} />
 
-					<div class="w-full overflow-hidden">
-						<h2 class="tabPanelTitle">Visitor Team Basic Stats:</h2>
-						<BoxScoreTable {boxscore} isHome={false} />
-					</div>
-				</div>
-			</TabPanel>
+			<div class="glassmorphicCard px-4 py-2 my-5">
+				<h2 class="tabPanelTitle">Visitor Team Basic Stats:</h2>
+			</div>
+			<BoxScoreTable {boxscore} isHome={false} />
+		</TabPanel>
 
-			<!-- Advanced Stats Data Tab -->
-			<TabPanel>
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle">Home Team Advanced Stats:</h2>
-				</div>
+		<!-- Advanced Stats Data Tab -->
+		<TabPanel>
+			<div class="glassmorphicCard px-4 py-2 my-5">
+				<h2 class="tabPanelTitle">Home Team Advanced Stats:</h2>
+			</div>
 
-				<BoxScoreTable {boxscore} isHome={true} />
+			<BoxScoreTable {boxscore} isHome={true} />
 
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle">Visitor Team Advanced Stats:</h2>
-				</div>
-				<BoxScoreTable {boxscore} isHome={false} />
-			</TabPanel>
-		</Tabs>
-	</div>
+			<div class="glassmorphicCard px-4 py-2 my-5">
+				<h2 class="tabPanelTitle">Visitor Team Advanced Stats:</h2>
+			</div>
+			<BoxScoreTable {boxscore} isHome={false} />
+		</TabPanel>
+	</Tabs>
 </div>

@@ -13,7 +13,6 @@
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
 	dayjs.extend(advancedFormat);
-	dayjs.tz.setDefault('America/New_York');
 
 	export let game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>;
 	export let logoModules: MetaGlobImport;

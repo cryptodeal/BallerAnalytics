@@ -432,7 +432,11 @@ export const addOrFindGame = async (
 	league: string
 ): Promise<Game2Document> => {
 	const result: null | Game2Document = await Game2.findByUrl(game.boxScoreUrl);
-	if (result) return result;
+	if (result) {
+		result.date = game.date.utc().toDate();
+		return result.save();
+	}
+
 	const homeTeam = await Team2.findByName(game.home.name);
 	const visitorTeam = await Team2.findByName(game.visitor.name);
 	const leagueDoc = await League.findOne({ name: league });

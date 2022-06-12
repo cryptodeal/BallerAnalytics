@@ -133,13 +133,15 @@
 />
 
 <div class="listContainer flex flex-col gap-2">
-	<div class="glassmorphicBg rounded-lg flex flex-col gap-2 p-2 w-full md:container md:mx-auto">
-		<h2 class="text-center ">
-			NBA {seasonYear - 1}-{seasonYear.toString().slice(-2)} Season Players
+	<div
+		class="glassmorphicBg max-h-1/4 rounded-lg flex flex-col gap-2 p-2 w-full md:container md:mx-auto"
+	>
+		<h2 class="text-center">
+			NBA '{(seasonYear - 1).toString().slice(-2)}-'{seasonYear.toString().slice(-2)} Players
 		</h2>
 		<div class="flex flex-wrap gap-4 justify-start sm:justify-evenly">
-			<div class="inline-flex items-center gap-4">
-				<label class="text-lg" for="season-select"> Season: </label>
+			<div class="inline-flex items-center gap-2">
+				<label for="season-select">Szn: </label>
 
 				<select type="select" id="season-select" bind:value={seasonYear} on:change={loadSeason}>
 					{#each seasons as season}
@@ -148,16 +150,22 @@
 				</select>
 			</div>
 			<div class="flex flex-col">
-				<div class="inline-flex gap-4 items-center">
-					<label class="text-lg" for="name-search"> Player Name: </label>
-					<input type="text" id="name-search" bind:value={name} on:input={nameQuery} />
+				<div class="inline-flex gap-2 items-center">
+					<label for="name-search">Name: </label>
+					<input
+						class="w-full"
+						type="text"
+						id="name-search"
+						bind:value={name}
+						on:input={nameQuery}
+					/>
 				</div>
-				<div class="text-sm self-end">Enter at least 3 characters</div>
+				<div class="text-sm self-end">Enter at least 3 chars</div>
 			</div>
 		</div>
 	</div>
 	{#if players.length}
-		<div class="list h-9/10 w-full sm:container sm:mx-auto" bind:clientHeight={listHeight}>
+		<div class="list h-3/4 w-full sm:container sm:mx-auto" bind:clientHeight={listHeight}>
 			<VirtualList overscanCount={20} height={listHeight} itemCount={players.length} itemSize={75}>
 				<a
 					slot="item"

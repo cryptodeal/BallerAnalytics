@@ -2,13 +2,13 @@
 	import IconPerson from '~icons/fluent/person-24-regular';
 	import { session } from '$app/stores';
 
-	export let modalId: string, triggerTxt: string;
+	export let modalId: string, triggerTxt: string, closeDrawer: () => void;
 </script>
 
 {#if $session.user}
 	<!--Start TailwindCSS dropdown menu-->
 	<div class="group">
-		<button class="btn inline-flex items-center mx-2 focus:outline-none">
+		<button class="btn inline-flex items-center mx-2 focus:outline-none" on:click={closeDrawer}>
 			<IconPerson class="h-6 w-6" />
 		</button>
 		<div class="absolute right-4 z-10 hidden group-hover:block">

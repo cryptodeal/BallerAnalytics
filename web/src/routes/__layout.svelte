@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { afterNavigate } from '$app/navigation';
 	import { themeChange } from 'theme-change';
 	import '../app.css';
 	import { page } from '$app/stores';
@@ -15,7 +16,35 @@
 		triggerTxt = 'login / register';
 	$: segment = $page.url.pathname.split('/')[1];
 	let success = false,
-		failed = false;
+		failed = false,
+		drawercontent,
+		drawerContentScrollY = 0,
+		drawersidebar,
+		drawerSidebarScrollY = 0,
+		checked = false;
+
+	function parseContentScroll() {
+		drawerContentScrollY = drawercontent.scrollTop;
+	}
+
+	function parseSidebarScroll() {
+		drawerSidebarScrollY = drawersidebar.scrollTop;
+	}
+
+	function closeDrawer() {
+		checked = false;
+	}
+
+	onMount(() => {
+		themeChange(false);
+		parseContentScroll();
+		parseSidebarScroll();
+	});
+
+	afterNavigate(() => {
+		drawercontent.scrollTop = 0;
+	});
+
 	const formProps = {
 		initialValues: { email: '' },
 		validationSchema: yup.object().shape({
@@ -38,17 +67,21 @@
 			});
 		}
 	};
-	onMount(() => {
-		themeChange(false);
-	});
 </script>
 
 <Notifications>
 	<div class="drawer">
 		<input id="navDrawer" type="checkbox" class="drawer-toggle" />
-		<div class="drawer-content flex flex-col">
+		<div
+			bind:this={drawercontent}
+			on:scroll={parseContentScroll}
+			class="drawer-content flex flex-col"
+			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
+		>
 			<Nav {segment} {modalId} {triggerTxt} />
-			<slot />
+			<div class="p-6 pb-10">
+				<slot />
+			</div>
 			{#if Object.values($dailyGames).length}
 				<div class="ticker bg-gray-300/20 backdrop-filter backdrop-blur-sm dark:bg-gray-900/20">
 					<Ticker>
@@ -59,9 +92,22 @@
 				</div>
 			{/if}
 		</div>
-		<SideNav {segment} />
+		<div
+			class="drawer-side"
+			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
+			bind:this={drawersidebar}
+			on:scroll={parseSidebarScroll}
+		>
+			<label for="navDrawer" class="drawer-overlay" />
+			<aside class="bg-base-200 w-80">
+				<SideNav {closeDrawer} {segment} />
+				<div
+					class="from-base-200 pointer-events-none sticky bottom-0 flex h-20 bg-gradient-to-t to-transparent"
+				/>
+			</aside>
+		</div>
 	</div>
-	<input type="checkbox" id={modalId} class="modal-toggle" />
+	<input type="checkbox" id={modalId} class="modal-toggle" bind:checked />
 	<label for={modalId} class="modal modal-bottom sm:modal-middle cursor-pointer">
 		<label class="modal-box relative" for="">
 			<h3 class="text-lg font-bold text-center text-gray-400">Login / Register</h3>

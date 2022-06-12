@@ -6,6 +6,7 @@
 	import type { Player2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
 	import type { IColHeader } from '../types';
 	import dayjs from 'dayjs';
+	import TFoot from '../core/TFoot.svelte';
 	export let player: PopulatedDocument<Player2Document, 'seasons.teams.id'>;
 
 	const colHeaders: IColHeader[] = [
@@ -620,4 +621,5 @@
 			{/if}
 		{/each}
 	</svelte:fragment>
+	<TFoot slot="tfoot" {colHeaders} />
 </Table>

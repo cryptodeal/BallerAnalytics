@@ -86,7 +86,7 @@
 	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
 	import PlayerStats from '$lib/ux/tables/teams/Stats.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	// import RectBg from '$lib/ux/svg/RectBg.svelte';
+	import RectBg from '$lib/ux/svg/RectBg.svelte';
 	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import type {
 		Team2Document,
@@ -149,82 +149,80 @@
 	description="Team Schedule, Roster, and Statistics for the {team.infoCommon
 		.name}'s {seasonYear} season."
 />
-
-<div class="appContent">
-	<div
-		class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:container md:mx-auto"
-	>
-		<div class="h-44 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm">
-			<TeamLogo size={176} {logoModules} slug={team.infoCommon.slug} />
-		</div>
-		<h1>
-			{team.infoCommon.name}
-		</h1>
+<RectBg selectedTeam={team} />
+<div
+	class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:container md:mx-auto"
+>
+	<div class="h-44 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm">
+		<TeamLogo size={176} {logoModules} slug={team.infoCommon.slug} />
 	</div>
-	<div class="p-2 md:container md:mx-auto">
-		<div class="glassmorphicCard inline-flex items-center px-4 py-2 mb-6">
-			<label class="text-lg mr-4" for="season-select">Season:</label>
+	<h1>
+		{team.infoCommon.name}
+	</h1>
+</div>
+<div class="p-2 md:container md:mx-auto">
+	<div class="glassmorphicCard inline-flex items-center px-4 py-2 mb-6">
+		<label class="text-lg mr-4" for="season-select">Season:</label>
 
-			<select type="select" id="season-select" bind:value={seasonYear} on:change={loadRosterData}>
-				{#each seasons as { season }}
-					<option value={season}>{season}</option>
-				{/each}
-			</select>
+		<select type="select" id="season-select" bind:value={seasonYear} on:change={loadRosterData}>
+			{#each seasons as { season }}
+				<option value={season}>{season}</option>
+			{/each}
+		</select>
+	</div>
+	<Tabs>
+		<div class="w-full glassmorphicCard mx-1 px-2 py-1">
+			<TabList
+				primaryColor={color1}
+				secondaryColor={color2}
+				links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
+			/>
 		</div>
-		<Tabs>
-			<div class="w-full glassmorphicCard mx-1 px-2 py-1">
-				<TabList
-					primaryColor={color1}
-					secondaryColor={color2}
-					links={[{ title: 'Schedule' }, { title: 'Roster' }, { title: 'Stats' }]}
-				/>
+
+		<!-- Schedule Data Tab -->
+		<TabPanel>
+			{#if games.regularSeason.length}
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle">
+						{team.seasons[seasonIdx].season} Regular Season:
+					</h2>
+				</div>
+				<ScheduleTable {logoModules} schedule={games.regularSeason} teamId={team._id} />
+			{:else}
+				<h2 class="tabPanelTitle ">
+					No games played in {team.seasons[seasonIdx].season}
+				</h2>
+			{/if}
+			{#if games.postseason.length}
+				<div class="glassmorphicCard px-4 py-2 my-5">
+					<h2 class="tabPanelTitle ">
+						{team.seasons[seasonIdx].season} Postseason:
+					</h2>
+				</div>
+				<ScheduleTable {logoModules} schedule={games.postseason} teamId={team._id} />
+			{/if}
+		</TabPanel>
+
+		<!-- Roster Data Tab -->
+		<TabPanel>
+			<div class="glassmorphicCard px-4 py-2 my-5">
+				<h2 class="tabPanelTitle ">
+					{team.seasons[seasonIdx].season} Roster:
+				</h2>
 			</div>
+			<PlayerRoster roster={players} season={seasonYear} />
+		</TabPanel>
 
-			<!-- Schedule Data Tab -->
-			<TabPanel>
-				{#if games.regularSeason.length}
-					<div class="glassmorphicCard px-4 py-2 my-5">
-						<h2 class="tabPanelTitle">
-							{team.seasons[seasonIdx].season} Regular Season:
-						</h2>
-					</div>
-					<ScheduleTable {logoModules} schedule={games.regularSeason} teamId={team._id} />
-				{:else}
-					<h2 class="tabPanelTitle ">
-						No games played in {team.seasons[seasonIdx].season}
-					</h2>
-				{/if}
-				{#if games.postseason.length}
-					<div class="glassmorphicCard px-4 py-2 my-5">
-						<h2 class="tabPanelTitle ">
-							{team.seasons[seasonIdx].season} Postseason:
-						</h2>
-					</div>
-					<ScheduleTable {logoModules} schedule={games.postseason} teamId={team._id} />
-				{/if}
-			</TabPanel>
-
-			<!-- Roster Data Tab -->
-			<TabPanel>
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle ">
-						{team.seasons[seasonIdx].season} Roster:
-					</h2>
-				</div>
-				<PlayerRoster roster={players} season={seasonYear} />
-			</TabPanel>
-
-			<!-- Stats Data Tab -->
-			<TabPanel>
-				<div class="glassmorphicCard px-4 py-2 my-5">
-					<h2 class="tabPanelTitle ">
-						{team.seasons[seasonIdx].season} Team Stats:
-					</h2>
-				</div>
-				<PlayerStats roster={players} season={seasonYear} />
-			</TabPanel>
-		</Tabs>
-	</div>
+		<!-- Stats Data Tab -->
+		<TabPanel>
+			<div class="glassmorphicCard px-4 py-2 my-5">
+				<h2 class="tabPanelTitle ">
+					{team.seasons[seasonIdx].season} Team Stats:
+				</h2>
+			</div>
+			<PlayerStats roster={players} season={seasonYear} />
+		</TabPanel>
+	</Tabs>
 </div>
 
 <style lang="postcss">

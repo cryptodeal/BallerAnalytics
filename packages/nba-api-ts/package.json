@@ -61,7 +61,7 @@
 		"sportsdataverse": "^1.2.3"
 	},
 	"devDependencies": {
-		"@tsconfig/node14": "^1.0.1",
+		"@tsconfig/node14": "^1.0.2",
 		"@types/cheerio": "^0.22.31",
 		"@types/cron": "^1.7.3",
 		"@types/sharp": "^0.29.5",
