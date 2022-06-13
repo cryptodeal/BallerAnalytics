@@ -6,10 +6,11 @@
 	import ProgressBar from './ProgressBar.svelte';
 	import type { SvelteComponent } from 'svelte';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
+	import dayjs from 'dayjs';
 	export let user: UserDocument;
 	if (!user.name) user.name = {};
 	const { first, last } = user.name;
-	const dateOfBirth = user.birthdate;
+	const dateOfBirth = dayjs(user.birthdate || new Date()).format('YYYY-MM-DD');
 	const { players, teams } = user.subscriptions;
 	const firstName = field('firstName', first ? first : '', [required(), min(2)], {
 		valid: false,
@@ -25,7 +26,7 @@
 	});
 	const birthdate = field(
 		'birthdate',
-		dateOfBirth ? dateOfBirth : null,
+		dateOfBirth ? dateOfBirth : new Date(),
 		[required(), checkAge(18)],
 		{
 			valid: false,
@@ -78,12 +79,17 @@
 		/>
 
 		<div class="step-button">
-			<button on:click={() => handleProgress(-1)} disabled={currentActive == 1 || !$myForm.valid}
-				>Prev</button
-			>
 			<button
-				on:click={() => handleProgress(+1)}
-				disabled={currentActive == steps.length || !$myForm.valid}>Next</button
+				class="btn"
+				on:click={() => handleProgress(-1)}
+				class:btn-disabled={currentActive == steps.length || !$myForm.valid}
+			>
+				Prev
+			</button>
+			<button
+				class="btn"
+				class:btn-disabled={currentActive == steps.length || !$myForm.valid}
+				on:click={() => handleProgress(+1)}>Next</button
 			>
 		</div>
 	</div>

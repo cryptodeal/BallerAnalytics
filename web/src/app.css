@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+	--date-picker-background: hsl(var(--b1));
+	--date-picker-foreground: hsl(var(--bc));
+	--date-input-width: 100%;
+	--date-picker-highlight-border: 2px solid hsl(var(--p));
+}
+
 /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
 @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
 	.backdrop-filter {
@@ -40,7 +47,7 @@ h3,
 h4,
 h5,
 h6 {
-	@apply leading-tight text-primary font-extralight;
+	@apply leading-tight font-light;
 }
 
 h1 {
@@ -96,40 +103,11 @@ nav a[aria-current]::after {
 }
 
 .form-field {
-	font-family: inherit;
-	font-size: inherit;
-	width: 100%;
-	padding: 12px;
-	box-sizing: border-box;
-	border: 1px solid var(--grey);
-	border-radius: 4px;
-	transition: all 150ms ease;
-	background: var(--white);
-}
-
-.form-field:focus {
-	font-family: inherit;
-	font-size: inherit;
-	width: 100%;
-	padding: 12px;
-	box-sizing: border-box;
-	border: 1px solid var(--grey);
-	border-radius: 4px;
-	transition: all 150ms ease;
-	background: var(--white);
-}
-
-.form-field:focus {
-	outline: none;
-	box-shadow: 0 0 0 4px rgb(227, 227, 245);
-	border-color: var(--grey);
+	@apply input input-bordered input-primary w-full max-w-xs;
 }
 
 .form-error {
-	font-size: 12px;
-	color: var(--red);
-	margin-top: 10px;
-	word-wrap: break-word;
+	@apply text-error text-center text-sm;
 }
 
 .progress-container {

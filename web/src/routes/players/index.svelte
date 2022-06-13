@@ -143,7 +143,13 @@
 			<div class="inline-flex items-center gap-2">
 				<label for="season-select">Szn: </label>
 
-				<select type="select" id="season-select" bind:value={seasonYear} on:change={loadSeason}>
+				<select
+					class="select select-bordered"
+					type="select"
+					id="season-select"
+					bind:value={seasonYear}
+					on:change={loadSeason}
+				>
 					{#each seasons as season}
 						<option value={season}>{season}</option>
 					{/each}

@@ -19,6 +19,13 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
 	});
 };
 
+export const loadHelperData = (): Promise<Team2Object[]> => {
+	return Team2.getHelperData().then((teams) => {
+		teams.sort((a, b) => a.infoCommon.name - b.infoCommon.name);
+		return teams;
+	});
+};
+
 export type TeamPageGames = {
 	regularSeason: PopulatedDocument<
 		PopulatedDocument<

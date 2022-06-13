@@ -46,9 +46,10 @@
 	});
 
 	const formProps = {
-		initialValues: { email: '' },
+		initialValues: { email: '', toc: false },
 		validationSchema: yup.object().shape({
-			email: yup.string().email().required()
+			email: yup.string().email().required(),
+			toc: yup.bool().oneOf([true], 'Must accept the terms & conditions to register')
 		}),
 		onSubmit: (values) => {
 			fetch('/api/auth.json', {
@@ -130,21 +131,32 @@
 	<input type="checkbox" id={modalId} class="modal-toggle" />
 	<label for={modalId} class="modal modal-bottom sm:modal-middle cursor-pointer">
 		<label class="modal-box relative" for="">
-			<h3 class="text-lg font-bold text-center text-gray-400">Login / Register</h3>
-			<div class="w-full flex flex-col justify-center p-1">
+			<h3 class="text-lg font-bold text-center py-4">Login / Register</h3>
+			<div class="flex flex-col gap-4 items-center p-1">
 				<Form class="content" {...formProps}>
-					<div class="m-1">
-						<label class="block font-bold mt-[20px] mb-[4px] text-gray-400" for="email">email</label
-						>
-						<Field class="form-field" name="email" type="email" />
+					<div class="flex flex-col gap-4 items-center">
+						<div class="form-control">
+							<!-- svelte-ignore a11y-label-has-associated-control -->
+							<label class="label cursor-pointer gap-4">
+								<span class="label-text">Email:</span>
+								<Field class="form-field" id="email" name="email" type="email" />
+							</label>
+						</div>
 						<ErrorMessage class="form-error" name="email" />
-					</div>
-					<div class="flex flex-col mt-8 gap-2 justify-center">
+						<div class="form-control">
+							<!-- svelte-ignore a11y-label-has-associated-control -->
+							<label class="label cursor-pointer gap-4">
+								<span class="label-text text-xs"
+									>I have read & agree to the Terms & Conditions:</span
+								>
+								<Field class="checkbox checkbox-primary" id="toc" name="toc" type="checkbox" />
+							</label>
+						</div>
+						<ErrorMessage class="form-error" name="toc" />
 						{#if failed}
-							<span class="text-red-500 text-center">Something went wrong... Please try again.</span
-							>
+							<span class="text-error text-center text-sm"> Error... Please try again. </span>
 						{:else if success}
-							<span class="text-green-500 text-center">Success; check your email!</span>
+							<span class="text-success text-center text-sm"> Success; check your email! </span>
 						{/if}
 						<button class="btn" type="submit">submit</button>
 					</div>

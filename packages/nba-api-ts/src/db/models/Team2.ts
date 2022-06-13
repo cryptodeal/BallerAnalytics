@@ -292,6 +292,19 @@ Team2Schema.statics = {
 				}
 			}
 		]).exec();
+	},
+
+	getHelperData(): Promise<Team2Object[]> {
+		return this.find({
+			seasons: {
+				$elemMatch: {
+					season: 2022
+				}
+			}
+		})
+			.select('infoCommon.slug infoCommon.name')
+			.lean()
+			.exec();
 	}
 };
 

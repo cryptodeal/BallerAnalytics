@@ -1,7 +1,6 @@
 <script lang="ts">
 	import InputField from './InputField.svelte';
 	import { getNotificationsContext } from 'svelte-notifications';
-	import type { ObjectId } from 'mongoose';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
 	export let active_step: string;
 	export let userId: UserDocument['_id'];
@@ -58,24 +57,24 @@
 	{#if active_step == 'Info'}
 		<InputField label={'First Name'} bind:value={$firstName.value} />
 		{#if $myForm.hasError('firstName.required')}
-			<div class="text-red-600 text-sm">First name is required</div>
+			<div class="text-error text-sm">First name is required</div>
 		{/if}
 		{#if $myForm.hasError('firstName.min')}
-			<div class="text-red-600 text-sm">First name must be at least 2 characters</div>
+			<div class="text-error text-sm">First name must be at least 2 characters</div>
 		{/if}
 		<InputField label={'Last Name'} bind:value={$lastName.value} />
 		{#if $myForm.hasError('lastName.required')}
-			<div class="text-red-600 text-sm">Last name is required</div>
+			<div class="text-error text-sm">Last name is required</div>
 		{/if}
 		{#if $myForm.hasError('lastName.min')}
-			<div class="text-red-600 text-sm">Last name must be at least 2 characters</div>
+			<div class="text-error text-sm">Last name must be at least 2 characters</div>
 		{/if}
 		<InputField type="date" label={'Birthdate'} bind:value={$birthdate.value} />
 		{#if $myForm.hasError('birthdate.required')}
-			<div class="text-red-600 text-sm">Must be {minAge}+ to register</div>
+			<div class="text-error text-sm">Must be {minAge}+ to register</div>
 		{/if}
 		{#if $myForm.hasError('birthdate.min_age')}
-			<div class="text-red-600 text-sm">Must be {minAge}+ to register</div>
+			<div class="text-error text-sm">Must be {minAge}+ to register</div>
 		{/if}
 	{:else if active_step == 'Subscriptions'}
 		<InputField label={'Team Subscriptions'} type="select" bind:value={$teamSubs.value} />

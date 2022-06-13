@@ -3,7 +3,6 @@
 	import { getNotificationsContext } from 'svelte-notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
-	import IconX from '~icons/fluent/dismiss-24-regular';
 	const { addNotification } = getNotificationsContext();
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	export let modalId: string, triggerTxt: string, closeDrawer: () => void;

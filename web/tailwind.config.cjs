@@ -1,7 +1,5 @@
-const colors = require('tailwindcss/colors');
 const daisyui = require('daisyui');
 const typography = require('@tailwindcss/typography');
-const forms = require('@tailwindcss/forms');
 const heroPatterns = require('tailwind-heropatterns');
 
 module.exports = {
@@ -45,9 +43,7 @@ module.exports = {
 		}
 	},
 	plugins: [
-		daisyui,
 		typography,
-		forms,
 		heroPatterns({
 			patterns: ['circuit-board'],
 
@@ -61,7 +57,8 @@ module.exports = {
 				default: '0.4',
 				100: '1.0'
 			}
-		})
+		}),
+		daisyui
 	],
 	daisyui: {
 		themes: ['night', 'corporate']

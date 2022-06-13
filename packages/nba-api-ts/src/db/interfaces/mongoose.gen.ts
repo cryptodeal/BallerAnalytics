@@ -2629,6 +2629,7 @@ export type Team2Statics = {
 	loadTeamPage: (this: Team2Model, ...args: any[]) => any;
 	findByAbbrev: (this: Team2Model, ...args: any[]) => any;
 	getAllTeams: (this: Team2Model, ...args: any[]) => any;
+	getHelperData: (this: Team2Model, ...args: any[]) => any;
 };
 
 /**

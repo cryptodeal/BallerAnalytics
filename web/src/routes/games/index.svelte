@@ -103,14 +103,12 @@
 		/>
 	</div>
 	<div class="w-full gap-5 flex-grow mb-10">
-		{#if games.length}
-			{#each games as game}
-				<GameEvent {game} {logoModules} />
-			{/each}
+		{#each games as game}
+			<GameEvent {game} {logoModules} />
 		{:else}
 			<div class="flex justify-center">
 				<h1>No games found</h1>
 			</div>
-		{/if}
+		{/each}
 	</div>
 </div>

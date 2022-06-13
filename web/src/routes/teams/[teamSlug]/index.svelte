@@ -162,7 +162,13 @@
 	<div class="glassmorphicCard inline-flex items-center px-4 py-2 mb-6">
 		<label class="text-lg mr-4" for="season-select">Season:</label>
 
-		<select type="select" id="season-select" bind:value={seasonYear} on:change={loadRosterData}>
+		<select
+			class="select select-bordered"
+			type="select"
+			id="season-select"
+			bind:value={seasonYear}
+			on:change={loadRosterData}
+		>
 			{#each seasons as { season }}
 				<option value={season}>{season}</option>
 			{/each}

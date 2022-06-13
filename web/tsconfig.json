@@ -29,9 +29,7 @@
 			"$models": ["src/models"],
 			"$models/*": ["src/models/*"],
 			"$ml": ["src/ml"],
-			"$ml/*": ["src/ml/*"],
-			"$lexical": ["src/lexical"],
-			"$lexical/*": ["src/lexical/*"]
+			"$ml/*": ["src/ml/*"]
 		},
 		"types": [
 			"unplugin-obj/obj",

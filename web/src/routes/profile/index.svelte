@@ -22,14 +22,17 @@
 
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import type { UserDocument } from '@balleranalytics/nba-api-ts';
 	import IconCirclePlus from '~icons/fluent/add-circle-24-regular';
 	import IconEdit from '~icons/fluent/document-edit-24-regular';
 	import IconPerson from '~icons/fluent/person-24-regular';
 	import IconClipboard from '~icons/fluent/clipboard-text-ltr-24-regular';
 	import IconGradHat from '~icons/fluent/hat-graduation-24-regular';
 	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
-	export let user: UserDocument;
+	import Modal from '$lib/ux/Modal.svelte';
+	import { teams } from '$lib/data/stores/teams';
+	import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
+
+	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
 	let edit = false;
 	let dateString = dayjs(user.birthdate).format('YYYY-MM-DD');
 	$: user.birthdate = new Date(dateString);
@@ -60,31 +63,34 @@
                 dolorum sequi illum qui unde aspernatur non deserunt
               </p>
             -->
-						<ul class="glassmorphicBg hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
-							<li class="flex items-center py-3">
+						<ul class="glassmorphicBg gap-4 p-4 rounded shadow-sm">
+							<li class="flex items-center">
 								<span class="font-semibold">Status</span>
-								<span class="ml-auto">
-									<span class="bg-green-500 py-1 px-2 rounded text-white text-sm">Active</span>
-								</span>
+								<div class="badge badge-lg badge-success ml-auto">
+									<span class="text-sm">Active</span>
+								</div>
 							</li>
-							<li class="flex items-center py-3">
+							<div class="divider" />
+							<li class="flex items-center">
 								<span class="font-semibold">Member since</span>
 								<span class="ml-auto">{dayjs(user.createdAt).format('MMM DD, YYYY')}</span>
 							</li>
 						</ul>
 					</div>
 					<!-- Team card -->
-					<div class="glassmorphicBg p-3 hover:shadow my-4">
+					<div class="glassmorphicBg p-3 my-4">
 						<div class="flex items-center">
 							<div
-								class="flex-1 items-center inline-flex space-x-3 font-semibold text-blue-600 text-xl leading-8"
+								class="flex-1 items-center inline-flex space-x-3 font-semibold text-xl leading-8"
 							>
 								<span>My Teams</span>
 							</div>
-							<button
-								class="inline-flex items-center text-white font-bold py-1 px-2 rounded"
-								on:click={() => (edit = !edit)}
-							>
+							<Modal modalId={'teamSubs'} triggerTxt="Add Teams" onClick={() => null}>
+								<div slot="header">
+									<h3 class="text-lg font-bold text-center">Select Teams</h3>
+								</div>
+							</Modal>
+							<button class="inline-flex items-center font-bold py-1 px-2 rounded">
 								<IconCirclePlus />
 
 								<div class="ml-2">Add</div>
@@ -93,43 +99,30 @@
 						<div class="grid grid-cols-3">
 							<div class="text-center my-2">
 								{#each user.subscriptions.teams as team}
-									<!--
-									{#if team instanceof mongoose.Document && team.infoCommon}
-										<a
-											sveltekit:prefetch
-											href="teams/{team.infoCommon.slug}?seasonIdx={team.seasons.findIndex(
-												(s) =>
-													s.season ==
-													Math.max.apply(
-														Math,
-														team.seasons.map((s) => {
-															return s.season;
-														})
-													) -
-														1
-											)}"
-										>
-											<img
-												class="h-16 w-16 rounded-full mx-auto"
-												src="teams/{team.infoCommon.slug}.svg"
-												alt="{team.infoCommon.name} logo"
-											/>
-											{team.infoCommon.name}
-										</a>
-									{/if}
-                  -->
+									<div>
+										<img
+											class="h-16 w-16 rounded-full mx-auto"
+											src="teams/{team.infoCommon.slug}.svg"
+											alt="{team.infoCommon.name} logo"
+										/>
+										{team.infoCommon.name}
+									</div>
+								{:else}
+									<div class="flex justify-center">
+										<span class="text-sm">No team subs...</span>
+									</div>
 								{/each}
 							</div>
 						</div>
 					</div>
 				</div>
 				<!-- Right Side -->
-				<div class="w-full md:(w-9/12 px-2) h-64 mb-4">
+				<div class="w-full md:w-9/12 md:px-2 h-64 mb-4">
 					<!-- Profile tab -->
 					<!-- About Section -->
 					<div class="glassmorphicBg p-3 shadow-sm rounded-sm my-4">
 						<div class="flex items-center space-x-2 font-semibold leading-8">
-							<div class="flex-1 inline-flex text-blue-600 items-center">
+							<div class="flex-1 inline-flex items-center">
 								<IconPerson class="mr-2 fill-current" />
 								<span class="tracking-wide">About</span>
 							</div>
@@ -141,61 +134,59 @@
 								<div class="ml-2">Edit</div>
 							</button>
 						</div>
-						<div class="text-gray-700">
-							<div class="grid text-sm md:(grid-cols-2 gap-4 gap-y-4)">
+						<div>
+							<div class="grid text-sm md:grid-cols-2 md:gap-4 md:gap-y-4">
 								<div class="grid grid-cols-2">
 									{#if edit}
-										<label class="text-blue-600 px-2 my-2 font-semibold md:px-4" for="firstName"
-											>First Name</label
+										<label class="px-2 my-2 font-semibold md:px-4" for="firstName">First Name</label
 										>
 										<input
-											class="px-2 text-sm md:px-4"
 											type="text"
-											id="name"
+											placeholder="First name..."
+											id="firstName"
 											name="firstName"
+											class="input input-bordered input-primary w-full max-w-xs"
 											bind:value={user.name.first}
 										/>
 									{:else}
-										<div class="text-blue-600 px-2 my-2 font-semibold md:px-4">First Name</div>
-										<div class="px-2 my-2 text-gray-700 md:px-4 dark:text-gray-300">
+										<div class="px-2 my-2 font-semibold md:px-4">First Name</div>
+										<div class="px-2 my-2 md:px-4">
 											{user.name.first}
 										</div>
 									{/if}
 								</div>
 								<div class="grid grid-cols-2">
 									{#if edit}
-										<label class="text-blue-600 px-2 my-2 font-semibold md:px-4 " for="lastName"
-											>Last Name</label
-										>
+										<label class="px-2 my-2 font-semibold md:px-4" for="lastName">Last Name</label>
 										<input
-											class="px-2 text-sm md:px-4"
 											type="text"
-											id="name"
+											placeholder="Last name..."
+											id="lastName"
 											name="lastName"
+											class="input input-bordered input-primary w-full max-w-xs"
 											bind:value={user.name.last}
 										/>
 									{:else}
-										<div class="text-blue-600 px-2 ny-2 font-semibold md:px-4 ">Last Name</div>
-										<div class="px-2 my-2 text-gray-700 md:px-4 dark:text-gray-300">
+										<div class="px-2 my-2 font-semibold md:px-4">Last Name</div>
+										<div class="px-2 my-2 md:px-4">
 											{user.name.last}
 										</div>
 									{/if}
 								</div>
 								<div class="grid grid-cols-2">
 									{#if edit}
-										<label class="text-blue-600 px-2 my-2 font-semibold md:px-4" for="email"
-											>Email</label
-										>
+										<label class="px-2 my-2 font-semibold md:px-4" for="email">Email</label>
 										<input
-											class="px-2 text-sm md:px-4"
 											type="text"
+											class="input input-bordered input-primary w-full max-w-xs"
+											placeholder="Email..."
 											id="email"
 											name="email"
 											bind:value={user.email}
 										/>
 									{:else}
-										<div class="text-blue-600 px-2 my-2 font-semibold md:px-4 ">Email</div>
-										<div class="px-2 my-2 text-gray-700 dark:text-gray-300 md:px-4">
+										<div class="px-2 my-2 font-semibold md:px-4 ">Email</div>
+										<div class="px-2 my-2 md:px-4">
 											{user.email}
 										</div>
 									{/if}
@@ -203,19 +194,17 @@
 
 								<div class="grid grid-cols-2">
 									{#if edit}
-										<label class="text-blue-600 px-2 my-2 font-semibold md:px-4" for="birthday"
-											>Birthday</label
-										>
+										<label class="px-2 my-2 font-semibold md:px-4" for="birthday">Birthday</label>
 										<input
-											class="px-2 text-sm md:px-4"
 											type="date"
+											class="input input-bordered input-primary w-full max-w-xs"
 											id="birthday"
 											name="birthday"
 											bind:value={dateString}
 										/>
 									{:else}
-										<div class="text-blue-600 px-2 my-2 font-semibold md:px-4 ">Birthday</div>
-										<div class="px-2 my-2 text-gray-700 dark:text-gray-300 md:px-4">
+										<div class="px-2 my-2 font-semibold md:px-4 ">Birthday</div>
+										<div class="px-2 my-2 md:px-4">
 											{dayjs(dateString).format('MMM DD, YYYY')}
 										</div>
 									{/if}
@@ -234,46 +223,42 @@
 					<div class="glassmorphicBg p-3 shadow-sm rounded-sm my-4">
 						<div class="grid grid-cols-2">
 							<div>
-								<div
-									class="inline-flex items-center space-x-2 font-semibold text-blue-600 leading-8 mb-3"
-								>
+								<div class="inline-flex items-center space-x-2 font-semibold leading-8 mb-3">
 									<IconClipboard class="fill-current" />
-									<span class="text-blue-600 tracking-wide">Experience</span>
+									<span class="tracking-wide">Experience</span>
 								</div>
 								<ul class="list-inside space-y-2">
 									<li>
-										<div class="text-blue-600">Owner at Her Company Inc.</div>
-										<div class="text-gray-700 text-xs dark:text-gray-300">March 2020 - Now</div>
+										<div>Owner at Her Company Inc.</div>
+										<div class="text-xs">March 2020 - Now</div>
 									</li>
 									<li>
-										<div class="text-blue-600">Owner at Her Company Inc.</div>
-										<div class="text-gray-700 text-xs dark:text-gray-300">March 2020 - Now</div>
+										<div>Owner at Her Company Inc.</div>
+										<div class="text-xs">March 2020 - Now</div>
 									</li>
 									<li>
-										<div class="text-blue-600">Owner at Her Company Inc.</div>
-										<div class="text-gray-700 text-xs dark:text-gray-300">March 2020 - Now</div>
+										<div>Owner at Her Company Inc.</div>
+										<div class="text-xs">March 2020 - Now</div>
 									</li>
 									<li>
-										<div class="text-blue-600">Owner at Her Company Inc.</div>
-										<div class="text-gray-700 text-xs dark:text-gray-300">March 2020 - Now</div>
+										<div>Owner at Her Company Inc.</div>
+										<div class="text-xs">March 2020 - Now</div>
 									</li>
 								</ul>
 							</div>
 							<div>
-								<div
-									class="inline-flex items-center space-x-2 font-semibold text-blue-600 leading-8 mb-3"
-								>
+								<div class="inline-flex items-center space-x-2 font-semibold leading-8 mb-3">
 									<IconGradHat class="fill-current" />
 									<span class="tracking-wide">Education</span>
 								</div>
 								<ul class="list-inside space-y-2">
 									<li>
-										<div class="text-blue-600">Masters Degree in Oxford</div>
-										<div class="text-gray-700 text-xs dark:text-gray-300">March 2020 - Now</div>
+										<div>Masters Degree in Oxford</div>
+										<div class="text-xs">March 2020 - Now</div>
 									</li>
 									<li>
-										<div class="text-blue-600">Bachelors Degreen in LPU</div>
-										<div class="text-gray-700 text-xs dark:text-gray-300">March 2020 - Now</div>
+										<div>Bachelors Degreen in LPU</div>
+										<div class="text-xs">March 2020 - Now</div>
 									</li>
 								</ul>
 							</div>
