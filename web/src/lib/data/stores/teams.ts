@@ -1,4 +1,5 @@
 import { readable } from 'svelte/store';
+import { browser } from '$app/env';
 import type { Team2Document } from '@balleranalytics/nba-api-ts';
 
 let cachedVa = [];
@@ -14,7 +15,7 @@ function fetchTeamData() {
 	});
 }
 
-export const teams = readable<Team2Document[]>({}, (set) => {
+export const teams = readable<Team2Document[]>([], (set) => {
 	if (!browser) return;
 
 	fetchTeamData()

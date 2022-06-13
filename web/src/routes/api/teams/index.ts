@@ -1,8 +1,8 @@
-import { loadTeamHelperData } from '$lib/data/_db/controllers/team';
+import { loadHelperData } from '$lib/data/_db/controllers/team';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const get: RequestHandler = async () => {
-	const teams = await loadTeamHelperData();
+	const teams = await loadHelperData();
 
 	return {
 		headers: {
