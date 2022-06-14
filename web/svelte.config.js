@@ -41,24 +41,16 @@ const config = {
 				}
 			},
 			resolve: {
+        alias: {
+          $models: path.resolve('src/models'),
+          $ml: path.resolve('src/ml')
+        },
 				dedupe: ['mongoose', 'dayjs']
 			}
 		}
 	}
 };
 
-if (process.env.VITE_NODE_ENV === 'VercelDevelopment') {
-	config.kit.vite.resolve.alias = {
-		// '@balleranalytics/nba-api-ts': path.resolve('../packages/nba-api-ts/src'),
-		// '@balleranalytics/tf-neat': path.resolve('../packages/tf-neat/src'),
-		$models: path.resolve('src/models'),
-		$ml: path.resolve('src/ml')
-	};
-} else {
-	config.kit.vite.resolve.alias = {
-		$models: path.resolve('src/models'),
-		$ml: path.resolve('src/ml')
-	};
-}
+
 
 export default config;
