@@ -35,13 +35,13 @@
 			stopAtFirstError: false
 		}
 	);
-	const playerSubs = field('playerSubs', players, [required()], {
+	const playerSubs = field('playerSubs', players || [], [required()], {
 		valid: false,
 		checkOnInit: true,
 		validateOnChange: true,
 		stopAtFirstError: false
 	});
-	const teamSubs = field('teamSubs', teams, [required()], {
+	const teamSubs = field('teamSubs', teams || [], [required()], {
 		valid: false,
 		checkOnInit: true,
 		validateOnChange: true,

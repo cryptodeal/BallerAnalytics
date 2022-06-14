@@ -24,7 +24,7 @@
 	$: if (browser) localTz = dayjs.tz.guess();
 </script>
 
-<div class="glassmorphicCard inline-block h-10 mr-50 px-2 bg-opacity-75">
+<div class="inline-block h-10 mr-50 px-2">
 	{#if (!game.isOver && estDate.isBefore(dayjs().tz())) || (!game.isOver && game.home.score && game.visitor.score)}
 		<div class="inline-block leading-10 text-red-600 font-semibold animate-pulse text-2xl px-2">
 			Live
@@ -89,7 +89,7 @@
 	{/if}
 
 	{#if game.home.score == null && game.home.score == null}
-		<div class="inline-blockleading-10 px-2 text-2xl font-normal">
+		<div class="inline-block leading-10 px-2 text-2xl font-normal">
 			{estDate.minute() !== 0
 				? estDate.tz(localTz).format('h:mm A z')
 				: estDate.tz(localTz).format('h A z')}

@@ -18,7 +18,10 @@ const refreshAuth = async (cookies: { [key: string]: string }): Promise<string> 
 		'refreshTokens.expiration': { $gt: Date.now() },
 		'refreshTokens.token': hashedRefreshToken
 	});
-	if (!refreshUser) throw Error(`Error: could not find user with refreshTokens.token match`);
+	if (!refreshUser) {
+		console.log(`Error: could not find user with refreshTokens.token match`);
+		return;
+	}
 
 	// Create new token
 	const refreshAuthToken = signToken(refreshUser);

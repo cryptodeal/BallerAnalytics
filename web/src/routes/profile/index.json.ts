@@ -23,10 +23,11 @@ export const get: RequestHandler = async ({ url }) => {
 	};
 };
 
-export const post: RequestHandler<App.Locals> = async (event) => {
+export const post: RequestHandler = async (event) => {
 	const data = (await event.request.json()) as NewUserFormData;
 	const { valid, errors } = validateNewUserForm(data);
 	if (!valid) {
+		console.log(errors);
 		return {
 			status: 422,
 			body: {

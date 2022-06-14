@@ -1,4 +1,6 @@
 <script context="module" lang="ts">
+	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
+
 	import type { Load } from '@sveltejs/kit';
 	export const load: Load = async ({ fetch, session }) => {
 		if (!session.user) {
@@ -31,6 +33,7 @@
 	import Modal from '$lib/ux/Modal.svelte';
 	import { teams } from '$lib/data/stores/teams';
 	import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
+	import AnyTeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 
 	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
 	let edit = false;
@@ -47,7 +50,7 @@
 				<!-- Left Side -->
 				<div class="w-full md:w-3/12 md:mx-2 md:my-auto">
 					<!-- Profile Card -->
-					<div class="glassmorphicBg p-3 my-4 border-t-4 border-green-400">
+					<div class="glassmorphicBg p-3 my-4 border-t-4 border-primary">
 						<div class="image overflow-hidden">
 							<!--
               <img class="h-auto w-full mx-auto"
@@ -85,16 +88,25 @@
 							>
 								<span>My Teams</span>
 							</div>
-							<Modal modalId={'teamSubs'} triggerTxt="Add Teams" onClick={() => null}>
+							<Modal modalId={'teamSubs'} onClick={() => null}>
+								<svelte:fragment slot="trigger">
+									<IconCirclePlus class="h-4 w-4" />
+									Add Teams
+								</svelte:fragment>
 								<div slot="header">
 									<h3 class="text-lg font-bold text-center">Select Teams</h3>
 								</div>
+								<div slot="content" class="w-full grid-cols-3 gap-1">
+									{#each $teams as team}
+										<div class="flex flex-col items-center justify-center">
+											<div class="w-4 h-4">
+												<AnyTeamLogo {logoModules} slug={team.infoCommon.slug} />
+											</div>
+											{team.infoCommon.name}
+										</div>
+									{/each}
+								</div>
 							</Modal>
-							<button class="inline-flex items-center font-bold py-1 px-2 rounded">
-								<IconCirclePlus />
-
-								<div class="ml-2">Add</div>
-							</button>
 						</div>
 						<div class="grid grid-cols-3">
 							<div class="text-center my-2">
@@ -108,9 +120,7 @@
 										{team.infoCommon.name}
 									</div>
 								{:else}
-									<div class="flex justify-center">
-										<span class="text-sm">No team subs...</span>
-									</div>
+									<div class="text-center">No team subs...</div>
 								{/each}
 							</div>
 						</div>

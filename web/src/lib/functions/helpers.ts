@@ -91,19 +91,20 @@ export const checkAge = (minAge: number) => {
 };
 
 export const validateNewUserForm = (formData: NewUserFormData): ValidatedFormData => {
+	console.log(formData);
 	const result: ValidatedFormData = {
 		valid: true,
 		errors: []
 	};
 
 	//validate first name
-	if (requiredString(formData.name.first)) {
+	if (!requiredString(formData.name.first)) {
 		result.valid = false;
 		result.errors.push('First name is required!');
 	}
 
 	//validate last name
-	if (requiredString(formData.name.last)) {
+	if (!requiredString(formData.name.last)) {
 		result.valid = false;
 		result.errors.push('Last name is required!');
 	}
