@@ -100,7 +100,7 @@
 			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
 		>
 			<Nav {segment} {modalId} {triggerTxt} {closeDrawer} />
-			<div class="p-6 pb-10">
+			<div class="pt-6 px-2 sm:px-6 pb-10">
 				<slot />
 			</div>
 			{#if Object.values($dailyGames).length}
