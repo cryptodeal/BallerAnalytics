@@ -41,16 +41,14 @@ const config = {
 				}
 			},
 			resolve: {
-        alias: {
-          $models: path.resolve('src/models'),
-          $ml: path.resolve('src/ml')
-        },
+				alias: {
+					$models: path.resolve('src/models'),
+					$ml: path.resolve('src/ml')
+				},
 				dedupe: ['mongoose', 'dayjs']
 			}
 		}
 	}
 };
-
-
 
 export default config;

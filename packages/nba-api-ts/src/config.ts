@@ -13,7 +13,6 @@ interface ENV {
 	MONGO_DB: string | undefined;
 	MONGO_URI: string | undefined;
 	MONGO_CLUSTER_CERT: string | undefined;
-	VITE_NODE_ENV: string | undefined;
 	S3_ACCESS_KEY: string | undefined;
 	S3_SECRET: string | undefined;
 	S3_BUCKET: string | undefined;
@@ -25,7 +24,6 @@ interface Config {
 	MONGO_DB: string;
 	MONGO_URI: string;
 	MONGO_CLUSTER_CERT: string;
-	VITE_NODE_ENV: string;
 	S3_ACCESS_KEY: string;
 	S3_SECRET: string;
 	S3_BUCKET: string;
@@ -40,7 +38,6 @@ const getConfig = (): ENV => {
 		MONGO_DB: process.env.MONGO_DB,
 		MONGO_URI: process.env.MONGO_URI,
 		MONGO_CLUSTER_CERT: process.env.MONGO_CLUSTER_CERT,
-		VITE_NODE_ENV: process.env.VITE_NODE_ENV,
 		S3_ACCESS_KEY: process.env.S3_ACCESS_KEY,
 		S3_SECRET: process.env.S3_SECRET,
 		S3_BUCKET: process.env.S3_BUCKET
