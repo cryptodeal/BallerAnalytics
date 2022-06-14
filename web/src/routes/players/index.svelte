@@ -159,7 +159,7 @@
 				<div class="inline-flex gap-2 items-center">
 					<label for="name-search">Name: </label>
 					<input
-						class="w-full"
+						class="form-field"
 						type="text"
 						id="name-search"
 						bind:value={name}
