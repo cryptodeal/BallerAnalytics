@@ -81,13 +81,13 @@
 			{@const age = getAge(birthDate.toString(), sznBday)}
 			<tr class="hover">
 				<!-- Display Season Year -->
-				<td>
+				<th>
 					{#if year}
 						<div class="font-bold">
 							{year - 1}-{year.toString().slice(-2)}
 						</div>
 					{/if}
-				</td>
+				</th>
 
 				<!-- Display Player Age -->
 				<td>

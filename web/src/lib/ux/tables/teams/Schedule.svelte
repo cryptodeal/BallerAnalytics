@@ -55,7 +55,7 @@
 		{#each schedule as { home, visitor, date, time, meta, _id }, i}
 			<tr class="hover">
 				<!-- Display Game Date and Time -->
-				<td>
+				<th>
 					<div class="text-sm font-bold leading-5">
 						{#if time}
 							{dayjs(date).format('ddd, MMM D @ h:mm A')}
@@ -63,7 +63,7 @@
 							{dayjs(date).format('ddd, MMM D')}
 						{/if}
 					</div>
-				</td>
+				</th>
 				<!-- Display Opposing Team -->
 				<td>
 					<div class="inline-flex items-center whitespace-nowrap">

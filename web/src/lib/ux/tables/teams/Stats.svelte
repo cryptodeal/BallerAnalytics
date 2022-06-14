@@ -141,7 +141,7 @@
 					  ]}
 			<tr class="hover">
 				<!-- Display Player Name -->
-				<td>
+				<th>
 					<div class="flex items-center space-x-3">
 						<div class="avatar">
 							<div class="mask mask-squircle w-12 h-12">
@@ -162,7 +162,7 @@
 							</div>
 						</div>
 					</div>
-				</td>
+				</th>
 
 				<!-- Display Player Age -->
 				<td>

@@ -169,6 +169,7 @@
 <style lang="postcss">
 	.ticker {
 		width: 100vw;
+		z-index: 30;
 		overflow: hidden;
 		position: fixed;
 		bottom: 0;
