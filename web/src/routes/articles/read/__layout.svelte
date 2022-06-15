@@ -14,9 +14,9 @@
 	<meta property="og:type" content="article" />
 </svelte:head>
 <div
-	class="mx-auto max-w-3xl py-5 px-4 sm:px-6 sm:py-12 lg:max-w-4xl lg:py-16 lg:px-8 xl:max-w-6xl"
+	class="mx-auto prose max-w-3xl py-5 px-4 sm:px-6 sm:py-12 lg:py-16 lg:px-8 lg:max-w-1/2 2xl:prose-lg"
 >
-	<article class="prose flex-grow glassmorphicBg mx-1 rounded-md sm:mx-auto sm:p-10 p-2">
+	<article class="flex-grow glassmorphicBg mx-1 rounded-md sm:mx-auto sm:p-10 p-2">
 		<slot />
 	</article>
 	<div class="flex py-5 twitter justify-center">

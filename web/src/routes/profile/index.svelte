@@ -24,6 +24,7 @@
 
 <script lang="ts">
 	import dayjs from 'dayjs';
+	import TeamSelect from '$lib/ux/forms/Subscriptions/TeamSelect.svelte';
 	import IconCirclePlus from '~icons/fluent/add-circle-24-regular';
 	import IconEdit from '~icons/fluent/document-edit-24-regular';
 	import IconPerson from '~icons/fluent/person-24-regular';
@@ -31,9 +32,7 @@
 	import IconGradHat from '~icons/fluent/hat-graduation-24-regular';
 	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
 	import Modal from '$lib/ux/Modal.svelte';
-	import { teams } from '$lib/data/stores/teams';
 	import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
-	import AnyTeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 
 	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
 	let edit = false;
@@ -90,21 +89,14 @@
 							</div>
 							<Modal modalId={'teamSubs'} onClick={() => null}>
 								<svelte:fragment slot="trigger">
-									<IconCirclePlus class="h-4 w-4" />
+									<IconCirclePlus />
 									Add Teams
 								</svelte:fragment>
 								<div slot="header">
 									<h3 class="text-lg font-bold text-center">Select Teams</h3>
 								</div>
-								<div slot="content" class="w-full grid-cols-3 gap-1">
-									{#each $teams as team}
-										<div class="flex flex-col items-center justify-center">
-											<div class="w-4 h-4">
-												<AnyTeamLogo {logoModules} slug={team.infoCommon.slug} />
-											</div>
-											{team.infoCommon.name}
-										</div>
-									{/each}
+								<div slot="content" class="w-full">
+									<TeamSelect />
 								</div>
 							</Modal>
 						</div>

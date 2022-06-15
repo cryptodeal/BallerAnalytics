@@ -94,11 +94,9 @@
 				</li>
 			</ul>
 		</div>
-		<div class="navbar-end">
+		<div class="navbar-end gap-4">
+			<AuthButton {modalId} {triggerTxt} {closeDrawer} />
 			<ThemeToggle />
-			<div class="hidden lg:inline-flex">
-				<AuthButton {modalId} {triggerTxt} {closeDrawer} />
-			</div>
 		</div>
 	</nav>
 </div>

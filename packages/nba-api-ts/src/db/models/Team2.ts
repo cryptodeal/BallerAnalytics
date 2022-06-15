@@ -302,7 +302,7 @@ Team2Schema.statics = {
 				}
 			}
 		})
-			.select('infoCommon.slug infoCommon.name')
+			.select('infoCommon.slug infoCommon.name infoCommon.nbaAbbreviation')
 			.lean()
 			.exec();
 	}

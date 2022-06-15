@@ -7,26 +7,15 @@
 
 {#if $session.user}
 	<!--Start TailwindCSS dropdown menu-->
-	<div class="group">
-		<button class="btn inline-flex items-center mx-2 focus:outline-none" on:click={closeDrawer}>
-			<IconPerson class="h-6 w-6" />
-		</button>
-		<div class="absolute right-4 z-10 hidden group-hover:block">
-			<div class="p-1 mt-1 glassmorphicCard shadow-lg rounded-xl">
-				<div class="flex flex-col gap-2 py-3 px-2 max-w-[200px]">
-					<a href="/profile" class="w-full m-0">
-						<button class="btn bg-transparent glassmorphicCard hover:bg-transparent">
-							profile
-						</button>
-					</a>
-					<a href="/logout" class="w-full m-0">
-						<button class="btn bg-transparent glassmorphicCard hover:bg-transparent">
-							logout
-						</button>
-					</a>
-				</div>
-			</div>
-		</div>
+	<div class="dropdown dropdown-hover dropdown-end">
+		<!-- svelte-ignore a11y-label-has-associated-control -->
+		<label tabindex="0" class="btn m-1">
+			<IconPerson class="h-6 w-6 fill-current" />
+		</label>
+		<ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-300 rounded-box w-52">
+			<li><a href="/profile">profile</a></li>
+			<li><a href="/logout">logout</a></li>
+		</ul>
 	</div>
 	<!--End TailwindCSS dropdown menu-->
 {:else}

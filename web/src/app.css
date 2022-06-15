@@ -102,6 +102,10 @@ nav a[aria-current]::after {
 	}
 }
 
+div.multiselect {
+	@apply bg-base-100 min-h-12;
+}
+
 .form-field {
 	@apply input input-bordered input-primary w-full max-w-xs;
 }
