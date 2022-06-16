@@ -13,6 +13,12 @@
 	const { first, last } = user.name;
 	const dateOfBirth = dayjs(user.birthdate || new Date()).format('YYYY-MM-DD');
 	const { players, teams } = user.subscriptions;
+	const consentTandC = field('consentTandC', false, [required(), min(2)], {
+		valid: false,
+		checkOnInit: true,
+		validateOnChange: true,
+		stopAtFirstError: false
+	});
 	const firstName = field('firstName', first ? first : '', [required(), min(2)], {
 		valid: false,
 		checkOnInit: true,
@@ -53,7 +59,9 @@
 		progressBar: SvelteComponent;
 
 	$: myForm =
-		steps[currentActive - 1] == 'Info'
+		steps[currentActive - 1] == 'Terms & Conditions'
+			? form(consentTandC)
+			: steps[currentActive - 1] == 'Info'
 			? form(firstName, lastName, birthdate)
 			: steps[currentActive - 1] == 'Subscriptions'
 			? form(playerSubs, teamSubs)
@@ -72,6 +80,7 @@
 			active_step={steps[currentActive - 1]}
 			userId={user._id}
 			{myForm}
+			{consentTandC}
 			{firstName}
 			{lastName}
 			{birthdate}

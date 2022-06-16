@@ -32,7 +32,7 @@
 				>
 			</label>
 		</div>
-		<div class="w-3/4 justify-start lg:w-1/2">
+		<div class="w-full justify-start md:w-1/2">
 			<Logo {isVisible} {segment} />
 		</div>
 
@@ -95,7 +95,9 @@
 			</ul>
 		</div>
 		<div class="navbar-end gap-4">
-			<AuthButton {modalId} {triggerTxt} {closeDrawer} />
+			<div class="hidden lg:flex">
+				<AuthButton {modalId} {triggerTxt} {closeDrawer} />
+			</div>
 			<ThemeToggle />
 		</div>
 	</nav>

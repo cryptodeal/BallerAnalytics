@@ -6,6 +6,7 @@
 	export let active_step: string;
 	export let userId: UserDocument['_id'];
 	export let myForm;
+	export let consentTandC;
 	export let firstName;
 	export let lastName;
 	export let birthdate;
@@ -16,6 +17,7 @@
 
 	const handleSubmit = (): Promise<void> => {
 		const postData = {
+			consentTandC: $consentTandC.value,
 			userId,
 			name: {
 				first: $firstName.value,
@@ -55,10 +57,15 @@
 </script>
 
 <form
-	class="glassmorphicBg rounded-lg mx-auto py-10 px-5 text-center max-w-full"
+	class="glassmorphicBg flex flex-col justify-center gap-2 rounded-lg mx-auto py-10 px-5 text-center max-w-full"
 	on:submit={handleSubmit}
 >
-	{#if active_step == 'Info'}
+	{#if active_step == 'Terms & Conditions'}
+		<InputField label={'Terms & Conditions'} type="checkbox" bind:value={$consentTandC.value} />
+		{#if $myForm.hasError('consentTandC.required')}
+			<div class="text-error text-sm">Must agree to the terms and conditions</div>
+		{/if}
+	{:else if active_step == 'Info'}
 		<InputField label={'First Name'} bind:value={$firstName.value} />
 		{#if $myForm.hasError('firstName.required')}
 			<div class="text-error text-sm">First name is required</div>

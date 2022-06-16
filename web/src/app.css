@@ -118,6 +118,12 @@ div.multiselect > ul.selected {
 	@apply input input-bordered input-primary w-full max-w-xs;
 }
 
+@supports (-webkit-touch-callout: none) {
+	.form-field {
+		@apply text-base;
+	}
+}
+
 .form-error {
 	@apply text-error text-center text-sm;
 }

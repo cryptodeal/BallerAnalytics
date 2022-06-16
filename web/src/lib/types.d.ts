@@ -83,6 +83,7 @@ export interface SeasonList {
 }
 
 export interface NewUserFormData {
+	consentTandC?: boolean;
 	userId: Types.ObjectId;
 	name: {
 		first: string;

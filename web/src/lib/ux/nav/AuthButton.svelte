@@ -7,7 +7,7 @@
 
 {#if $session.user}
 	<!--Start TailwindCSS dropdown menu-->
-	<div class="dropdown dropdown-hover dropdown-end">
+	<div class="dropdown dropdown-hover dropdown-right lg:dropdown-end">
 		<!-- svelte-ignore a11y-label-has-associated-control -->
 		<label tabindex="0" class="btn m-1">
 			<IconPerson class="h-6 w-6 fill-current" />
@@ -19,5 +19,5 @@
 	</div>
 	<!--End TailwindCSS dropdown menu-->
 {:else}
-	<label for={modalId} class="btn mx-2" on:click={closeDrawer}>{triggerTxt}</label>
+	<label for={modalId} class="btn" on:click={closeDrawer}>{triggerTxt}</label>
 {/if}

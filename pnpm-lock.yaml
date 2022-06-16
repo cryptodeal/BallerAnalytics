@@ -33,7 +33,7 @@ importers:
   packages/nba-api-ts:
     specifiers:
       '@aws-sdk/client-s3': ^3.110.0
-      '@tsconfig/node14': ^1.0.2
+      '@tsconfig/node14': ^1.0.3
       '@types/cheerio': ^0.22.31
       '@types/cron': ^1.7.3
       '@types/sharp': ^0.29.5
@@ -82,7 +82,7 @@ importers:
       sharp: 0.30.6
       sportsdataverse: 1.2.3
     devDependencies:
-      '@tsconfig/node14': 1.0.2
+      '@tsconfig/node14': 1.0.3
       '@types/cheerio': 0.22.31
       '@types/cron': 1.7.3
       '@types/sharp': 0.29.5
@@ -113,7 +113,7 @@ importers:
       '@tensorflow/tfjs-core': ^3.18.0
       '@tensorflow/tfjs-layers': ^3.18.0
       '@tensorflow/tfjs-node': ^3.18.0
-      '@tsconfig/node14': ^1.0.2
+      '@tsconfig/node14': ^1.0.3
       '@types/cytoscape': ^3.19.4
       '@types/deep-equal': ^1.0.1
       '@typescript-eslint/eslint-plugin': ^5.28.0
@@ -167,7 +167,7 @@ importers:
       vectorious: 6.1.4
     devDependencies:
       '@stdlib/types': 0.0.14
-      '@tsconfig/node14': 1.0.2
+      '@tsconfig/node14': 1.0.3
       '@types/cytoscape': 3.19.4
       '@types/deep-equal': 1.0.1
       '@typescript-eslint/eslint-plugin': 5.28.0_7yumg2qjgbp7maccqlfhx2vudu
@@ -2110,8 +2110,8 @@ packages:
       typescript: 4.1.6
     dev: false
 
-  /@tsconfig/node14/1.0.2:
-    resolution: {integrity: sha512-YwrUA5ysDXHFYfL0Xed9x3sNS4P+aKlCOnnbqUa2E5HdQshHFleCJVrj1PlGTb4GgFUCDyte1v3JWLy2sz8Oqg==}
+  /@tsconfig/node14/1.0.3:
+    resolution: {integrity: sha512-ysT8mhdixWK6Hw3i1V2AeRqZ5WfXg1G43mqoYlM2nc6388Fq5jcXyr5mRsqViLx/GJYdoL0bfXD8nmF+Zn/Iow==}
     dev: true
 
   /@types/cacheable-request/6.0.2:
@@ -2266,6 +2266,7 @@ packages:
 
   /@types/node/16.11.41:
     resolution: {integrity: sha512-mqoYK2TnVjdkGk8qXAVGc/x9nSaTpSrFaGFm43BUH3IdoBV0nta6hYaGmdOvIMlbHJbUEVen3gvwpwovAZKNdQ==}
+    dev: true
 
   /@types/node/18.0.0:
     resolution: {integrity: sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==}
@@ -2337,7 +2338,7 @@ packages:
   /@types/whatwg-url/8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 16.11.41
+      '@types/node': 18.0.0
       '@types/webidl-conversions': 6.1.1
 
   /@types/yup/0.29.14:
@@ -2805,7 +2806,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001354
-      electron-to-chromium: 1.4.157
+      electron-to-chromium: 1.4.158
       escalade: 3.1.1
       node-releases: 2.0.5
       picocolors: 1.0.0
@@ -3882,8 +3883,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /electron-to-chromium/1.4.157:
-    resolution: {integrity: sha512-gteFnXPKsDAdm1U5vVuyrLnKOaR/x/SY+HjUQoHypLUYWJt4RaWU3PaiTBEkRDJh8/Zd8KC/EFjV+uPaHsjKFA==}
+  /electron-to-chromium/1.4.158:
+    resolution: {integrity: sha512-gppO3/+Y6sP432HtvwvuU8S+YYYLH4PmAYvQwqUtt9HDOmEsBwQfLnK9T8+1NIKwAS1BEygIjTaATC4H5EzvxQ==}
     dev: true
 
   /emoji-regex/8.0.0:

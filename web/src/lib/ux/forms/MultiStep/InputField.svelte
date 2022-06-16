@@ -23,10 +23,14 @@
 	}
 </script>
 
-<div class="my-2 mx-0 text-left">
-	<label class="font-semibold" for={camelize(label)}>{label}:</label>
+<div class="form-control w-full max-w-xs">
+	<label for="email" class="label cursor-pointer gap-4">
+		<span class="label-text">Email:</span>
+	</label>
 	{#if type === 'date'}
 		<DateInput {closeOnSelection} min={minDate} max={maxDate} bind:value {format} />
+	{:else if type === 'checkbox'}
+		<input class="checkbox checkbox-primary" id="toc" name="toc" type="checkbox" bind:value />
 	{:else}
 		<input class="form-field" use:typeAction id={camelize(label)} bind:value />
 	{/if}

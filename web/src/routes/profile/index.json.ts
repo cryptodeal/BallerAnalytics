@@ -25,30 +25,36 @@ export const get: RequestHandler = async ({ url }) => {
 
 export const post: RequestHandler = async (event) => {
 	const data = (await event.request.json()) as NewUserFormData;
-	const { valid, errors } = validateNewUserForm(data);
-	if (!valid) {
-		console.log(errors);
+	if (data.consentTandC) {
+		const { valid, errors } = validateNewUserForm(data);
+		if (!valid) {
+			console.log(errors);
+			return {
+				status: 422,
+				body: {
+					error: `Error: ${errors.join(', ')}`
+				}
+			};
+		}
+		const userAuth = (await protect(event.request.headers)) as JWTPayload;
+		if (!userAuth) {
+			throw new Error(`Error: unable to authenticate request`);
+		}
+
+		const user = await addNewUserFormData(userAuth.id, data);
+		if (user) {
+			return {
+				status: 200
+			};
+		}
+
 		return {
-			status: 422,
-			body: {
-				error: `Error: ${errors.join(', ')}`
-			}
+			status: 503
+		};
+	} else {
+		/* TODO: update user data */
+		return {
+			status: 503
 		};
 	}
-
-	const userAuth = (await protect(event.request.headers)) as JWTPayload;
-	if (!userAuth) {
-		throw new Error(`Error: unable to authenticate request`);
-	}
-
-	const user = await addNewUserFormData(userAuth.id, data);
-	if (user) {
-		return {
-			status: 200
-		};
-	}
-
-	return {
-		status: 503
-	};
 };

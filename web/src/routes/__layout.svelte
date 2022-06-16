@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { writable } from 'svelte/store';
 	import { afterNavigate } from '$app/navigation';
 	import { themeChange } from 'theme-change';
 	import '../app.css';
@@ -16,7 +15,6 @@
 	import TickerGame from '$lib/ux/Ticker/Game.svelte';
 	import Modal from '$lib/ux/Modal.svelte';
 	import { createTeamSubs, getTeamSubs } from '$lib/data/stores/teamSubs';
-	import type { ObjectOption } from 'svelte-multiselect';
 	const modalId = 'auth-modal',
 		triggerTxt = 'login / register';
 	$: segment = $page.url.pathname.split('/')[1];
@@ -53,10 +51,9 @@
 	});
 
 	const formProps = {
-		initialValues: { email: '', toc: false },
+		initialValues: { email: '' },
 		validationSchema: yup.object().shape({
-			email: yup.string().email().required(),
-			toc: yup.bool().oneOf([true], 'Must accept the terms & conditions to register')
+			email: yup.string().email().required()
 		}),
 		onSubmit: (values) => {
 			fetch('/api/auth.json', {
@@ -107,7 +104,7 @@
 			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
 		>
 			<Nav {segment} {modalId} {triggerTxt} {closeDrawer} />
-			<div class="pt-6 px-2 sm:px-6 pb-10">
+			<div class="pt-6 px-2 pb-10 md:px-6">
 				<slot />
 			</div>
 			{#if Object.values($dailyGames).length}
@@ -149,24 +146,13 @@
 			<div class="flex flex-col gap-4 items-center p-1">
 				<Form class="content" {...formProps}>
 					<div class="flex flex-col gap-4 items-center">
-						<div class="form-control">
-							<!-- svelte-ignore a11y-label-has-associated-control -->
-							<label class="label cursor-pointer gap-4">
+						<div class="form-control w-full max-w-xs">
+							<label for="email" class="label cursor-pointer gap-4">
 								<span class="label-text">Email:</span>
-								<Field class="form-field" id="email" name="email" type="email" />
 							</label>
+							<Field class="form-field" id="email" name="email" type="email" />
 						</div>
 						<ErrorMessage class="form-error" name="email" />
-						<div class="form-control">
-							<!-- svelte-ignore a11y-label-has-associated-control -->
-							<label class="label cursor-pointer gap-4">
-								<span class="label-text text-xs"
-									>I have read & agree to the Terms & Conditions:</span
-								>
-								<Field class="checkbox checkbox-primary" id="toc" name="toc" type="checkbox" />
-							</label>
-						</div>
-						<ErrorMessage class="form-error" name="toc" />
 						{#if failed}
 							<span class="text-error text-center text-sm"> Error... Please try again. </span>
 						{:else if success}

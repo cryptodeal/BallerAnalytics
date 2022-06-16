@@ -26,7 +26,7 @@
 </script>
 
 <a
-	class="w-full min-h-4 sm:min-h-6 bg-gray-200/80 dark:bg-gray-900/80 backdrop-filter backdrop-blur-lg p-1 rounded md:max-w-[25rem]"
+	class="ml-1 w-full min-h-4 sm:min-h-6 md:max-w-[25rem]"
 	href="/"
 	sveltekit:prefetch
 	aria-current={segment === '' ? 'page' : undefined}
@@ -38,14 +38,12 @@
 					<path
 						shape-rendering="crispEdges"
 						class:done
-						class:isCurrent
 						in:draw={{ delay: i * 150, duration: 500 }}
 						d={path}
 						on:introend={() => (done = true)}
 					/>
 				{/if}
 				<path
-					class:isCurrent
 					class:done
 					in:draw={{ delay: i * 150, duration: 500 }}
 					d={path}
@@ -59,21 +57,17 @@
 <style lang="postcss">
 	svg path {
 		fill: transparent;
-		stroke: rgba(63, 132, 243, 1);
 		stroke-width: 1px;
 		transition: fill 2s;
 		will-change: opacity;
+		@apply stroke-current;
 	}
 
 	path.done {
-		fill: rgba(63, 132, 243, 1);
+		@apply fill-current;
 	}
 
 	a[aria-current]::after {
 		display: none;
-	}
-
-	.isCurrent {
-		@apply stroke-amber-400;
 	}
 </style>
