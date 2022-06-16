@@ -2,6 +2,7 @@
 	import InputField from './InputField.svelte';
 	import { getNotificationsContext } from 'svelte-notifications';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
+	import TeamSelect from '../Subscriptions/TeamSelect.svelte';
 	export let active_step: string;
 	export let userId: UserDocument['_id'];
 	export let myForm;
@@ -53,7 +54,10 @@
 	};
 </script>
 
-<form class="glassmorphicBg rounded-lg py-10 px-5 text-center max-w-full" on:submit={handleSubmit}>
+<form
+	class="glassmorphicBg rounded-lg mx-auto py-10 px-5 text-center max-w-full"
+	on:submit={handleSubmit}
+>
 	{#if active_step == 'Info'}
 		<InputField label={'First Name'} bind:value={$firstName.value} />
 		{#if $myForm.hasError('firstName.required')}
@@ -77,7 +81,9 @@
 			<div class="text-error text-sm">Must be {minAge}+ to register</div>
 		{/if}
 	{:else if active_step == 'Subscriptions'}
-		<InputField label={'Team Subscriptions'} type="select" bind:value={$teamSubs.value} />
+		<div class="max-h-[3rem]">
+			<TeamSelect teamSubs={$teamSubs.value} />
+		</div>
 		<InputField label={'Player Subscriptions'} type="select" bind:value={$playerSubs.value} />
 	{:else if active_step == 'Confirmation'}
 		<div class="message">

@@ -7,6 +7,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
 	import dayjs from 'dayjs';
+	import { writable } from 'svelte/store';
 	export let user: UserDocument;
 	if (!user.name) user.name = {};
 	const { first, last } = user.name;
@@ -35,13 +36,13 @@
 			stopAtFirstError: false
 		}
 	);
-	const playerSubs = field('playerSubs', players || [], [required()], {
+	const playerSubs = field('playerSubs', writable(players) || writable([]), [required()], {
 		valid: false,
 		checkOnInit: true,
 		validateOnChange: true,
 		stopAtFirstError: false
 	});
-	const teamSubs = field('teamSubs', teams || [], [required()], {
+	const teamSubs = field('teamSubs', writable(teams) || writable([]), [required()], {
 		valid: false,
 		checkOnInit: true,
 		validateOnChange: true,
@@ -64,7 +65,7 @@
 </script>
 
 <main>
-	<div class="mx-auto">
+	<div class="mx-auto sm:max-w-[50%] lg:max-w-[33%] 2xl:max-w-[25%]">
 		<ProgressBar {steps} bind:currentActive bind:this={progressBar} />
 
 		<Form

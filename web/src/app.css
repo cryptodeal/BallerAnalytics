@@ -103,7 +103,15 @@ nav a[aria-current]::after {
 }
 
 div.multiselect {
-	@apply bg-base-100 min-h-12;
+	@apply form-field;
+}
+
+div.multiselect > ul.options {
+	@apply max-h-20 bg-base-100;
+}
+
+div.multiselect > ul.selected {
+	@apply h-full overflow-scroll;
 }
 
 .form-field {

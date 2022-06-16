@@ -1,24 +1,26 @@
 <script lang="ts">
-	import MultiSelect from 'svelte-multiselect';
+	import MultiSelect, { type ObjectOption } from 'svelte-multiselect';
 	import { teams } from '$lib/data/teams';
 	import TeamSlot from './TeamSlot.svelte';
-	const logoModules = import.meta.globEager('../teams/assets/logo-*.svelte');
+	import type { Writable } from 'svelte/store';
 	const teamOptions = teams.map((t) => {
 		return {
 			label: t.name,
-			value: t.name
+			value: t.id
 		};
 	});
-	let teamSubs: string[];
+	export let teamSubs: Writable<ObjectOption[]>;
 </script>
 
-<label for="teamSubs">Team Subscriptions</label>
+<label for="teamSubs" class="text-lg font-bold text-center"
+	>Manage Team Subscriptions" >Manage Team Subscriptions</label
+>
 {#if teamOptions.length}
 	<MultiSelect
 		id="teamSubs"
 		options={teamOptions}
-		placeholder="Select team subscriptions"
-		bind:selected={teamSubs}
+		placeholder="Select teams..."
+		bind:selected={$teamSubs}
 	>
 		<TeamSlot let:option {option} slot="selected" />
 	</MultiSelect>
