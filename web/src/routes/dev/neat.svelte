@@ -90,43 +90,90 @@
 		<div class="flex w-full flex-col gap-4 mb-10 items-center">
 			<h4 class="text-center">Controls:</h4>
 			<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
-				<label class="inline-flex mx-auto gap-4 items-center">
-					<span class="font-light text-xl">vizDelay:</span>
-					<input name="vizDelay_input" type="number" bind:value={vizDelay} min="500" max="10000" />
-					<input name="vizDelay_slider" type="range" bind:value={vizDelay} min="500" max="10000" />
-				</label>
-				<label class="inline-flex mx-auto gap-4 items-center">
-					<span class="font-light text-xl">Demo Enabled:</span>
-					<input name="enabled" type="checkbox" bind:checked={$enabled} />
-				</label>
-				<label class="inline-flex mx-auto gap-4 items-center">
-					<div class="flex flex-col">
-						<span class="font-light text-xl">Use Dropoff:</span>
-						<span class="text-xs font-light">enabling/changing dropoffAge resets demo</span>
-					</div>
-					<input name="dropoff" type="checkbox" bind:checked={$dropoff} />
-				</label>
-				{#if $dropoff}
-					<label class="inline-flex mx-auto gap-4 items-center">
-						<div class="flex flex-col">
-							<span class="font-light text-xl">Dropoff Age:</span>
-							<span class="text-xs font-light"># gens w/o progress drop species</span>
-						</div>
-						<input
-							name="dropoffAge_input"
-							type="number"
-							bind:value={$dropoffAge}
-							min="5"
-							max="100"
-						/>
-						<input
-							name="dropoffAge_slider"
-							type="range"
-							bind:value={$dropoffAge}
-							min="5"
-							max="100"
-						/>
+				<div class="form-control justify-center gap-4 w-full max-w-xs">
+					<label for="vizDelay" class="label justify-center">
+						<span class="label-text text-center text-xl">vizDelay:</span>
 					</label>
+					<div class="inline-flex gap-4 items-center">
+						<input
+							type="number"
+							id="vizDelay"
+							name="vizDelay"
+							bind:value={vizDelay}
+							min="500"
+							max="10000"
+							class="form-field"
+						/>
+						<input
+							type="range"
+							id="vizDelay"
+							name="vizDelay"
+							bind:value={vizDelay}
+							min="500"
+							max="10000"
+							class="range range-primary"
+						/>
+					</div>
+				</div>
+				<div class="form-control">
+					<label for="enabled" class="label justify-center items-center gap-4 cursor-pointer">
+						<span class="label-text text-xl">Demo Enabled:</span>
+					</label>
+					<div class="flex justify-center">
+						<input
+							id="enabled"
+							name="enabled"
+							type="checkbox"
+							bind:checked={$enabled}
+							class="checkbox checkbox-primary"
+						/>
+					</div>
+				</div>
+
+				<div class="form-control">
+					<label for="dropoff" class="label justify-center items-center gap-4 cursor-pointer">
+						<span class="label-text text-xl">Use Dropoff:</span>
+					</label>
+					<div class="flex justify-center">
+						<input
+							id="dropoff"
+							name="dropoff"
+							type="checkbox"
+							bind:checked={$dropoff}
+							class="checkbox checkbox-primary"
+						/>
+					</div>
+				</div>
+
+				{#if $dropoff}
+					<div class="form-control justify-center gap-4 w-full max-w-xs">
+						<label for="vizDelay" class="label justify-center">
+							<span class="label-text text-center text-xl">Dropoff Age:</span>
+						</label>
+						<div class="inline-flex gap-4 items-center">
+							<input
+								type="number"
+								id="dropoff"
+								name="dropoffText"
+								bind:value={$dropoffAge}
+								min="5"
+								max="100"
+								class="form-field"
+							/>
+							<input
+								type="range"
+								id="dropoff"
+								name="dropoffSlider"
+								bind:value={$dropoffAge}
+								min="5"
+								max="100"
+								class="range range-primary"
+							/>
+						</div>
+						<label for="dropoff" class="label">
+							<span class="label-text-alt text-xs"># gens w/o progress drop species</span>
+						</label>
+					</div>
 				{/if}
 			</div>
 		</div>

@@ -5,14 +5,14 @@
 	import Form from '$lib/ux/forms/MultiStep/Form.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import type { SvelteComponent } from 'svelte';
-	import type { UserDocument } from '@balleranalytics/nba-api-ts';
+	import type { UserDocument, PopulatedDocument } from '@balleranalytics/nba-api-ts';
 	import dayjs from 'dayjs';
-	import { writable } from 'svelte/store';
-	export let user: UserDocument;
+	import { getTeamSubs } from '$lib/data/stores/teamSubs';
+	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
 	if (!user.name) user.name = {};
 	const { first, last } = user.name;
 	const dateOfBirth = dayjs(user.birthdate || new Date()).format('YYYY-MM-DD');
-	const { players, teams } = user.subscriptions;
+	const { teams } = user.subscriptions;
 	const consentTandC = field('consentTandC', false, [required(), min(2)], {
 		valid: false,
 		checkOnInit: true,
@@ -42,19 +42,19 @@
 			stopAtFirstError: false
 		}
 	);
-	const playerSubs = field('playerSubs', writable(players) || writable([]), [required()], {
+	const fmtTeams = teams.map((t) => {
+		return {
+			label: t.infoCommon.name,
+			value: t.id.toString()
+		};
+	});
+	const teamSubs = field('teamSubs', getTeamSubs().set(fmtTeams || []), [required()], {
 		valid: false,
 		checkOnInit: true,
 		validateOnChange: true,
 		stopAtFirstError: false
 	});
-	const teamSubs = field('teamSubs', writable(teams) || writable([]), [required()], {
-		valid: false,
-		checkOnInit: true,
-		validateOnChange: true,
-		stopAtFirstError: false
-	});
-	let steps = ['Info', 'Subscriptions', 'Confirmation'],
+	let steps = ['Terms & Conditions', 'Info', 'Subscriptions', 'Confirmation'],
 		currentActive = 1,
 		progressBar: SvelteComponent;
 
@@ -64,8 +64,8 @@
 			: steps[currentActive - 1] == 'Info'
 			? form(firstName, lastName, birthdate)
 			: steps[currentActive - 1] == 'Subscriptions'
-			? form(playerSubs, teamSubs)
-			: form(firstName, lastName, birthdate, playerSubs, teamSubs);
+			? form(teamSubs)
+			: form(consentTandC, firstName, lastName, birthdate, teamSubs);
 
 	const handleProgress = (stepIncrement: number) => {
 		progressBar.handleProgress(stepIncrement);
@@ -84,7 +84,6 @@
 			{firstName}
 			{lastName}
 			{birthdate}
-			{playerSubs}
 			{teamSubs}
 		/>
 

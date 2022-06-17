@@ -7,12 +7,12 @@
 </script>
 
 <div
-	class="bg-base-200 sticky top-0 z-10 grid grid-row-2 gap-y-2 w-full bg-opacity-90 py-3 px-2 backdrop-blur lg:hidden"
+	class="bg-base-200 sticky top-0 z-10 grid grid-row-2 gap-y-2 w-full bg-opacity-90 py-3 px-2 backdrop-blur justify-end lg:hidden"
 >
 	<AuthButton {modalId} {triggerTxt} {closeDrawer} />
 </div>
 
-<div class="h-4" />
+<div class="h-12" />
 
 <ul class="menu p-4 overflow-y-auto w-80 bg-base-100">
 	<!-- Sidebar content here -->

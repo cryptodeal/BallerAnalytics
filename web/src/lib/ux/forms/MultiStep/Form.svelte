@@ -11,7 +11,6 @@
 	export let lastName;
 	export let birthdate;
 	export let teamSubs;
-	export let playerSubs;
 	export let minAge = 18;
 	const { addNotification } = getNotificationsContext();
 
@@ -25,8 +24,7 @@
 			},
 			birthdate: $birthdate.value,
 			subscriptions: {
-				teams: $teamSubs.value,
-				players: $playerSubs.value
+				teams: $teamSubs.value
 			}
 		};
 		return fetch('/profile.json', {
@@ -91,7 +89,6 @@
 		<div class="max-h-[3rem]">
 			<TeamSelect teamSubs={$teamSubs.value} />
 		</div>
-		<InputField label={'Player Subscriptions'} type="select" bind:value={$playerSubs.value} />
 	{:else if active_step == 'Confirmation'}
 		<div class="message">
 			<button disabled={!$myForm.valid}>Finish</button>

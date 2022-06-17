@@ -12,7 +12,7 @@
 	export let teamSubs: Writable<ObjectOption[]>;
 </script>
 
-<label for="teamSubs" class="text-lg font-bold text-center"> Manage Team subscriptions </label>
+<label for="teamSubs" class="text-lg font-bold text-center">Manage Team Subscriptions</label>
 {#if teamOptions.length}
 	<MultiSelect
 		id="teamSubs"

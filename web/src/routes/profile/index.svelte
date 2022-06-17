@@ -100,7 +100,7 @@
 						</label>
 					</div>
 					<div class="p-2 grid grid-cols-4">
-						{#each $teamSubs as { value }}
+						{#each $teamSubs.sort((a, b) => (a.label > b.label ? 1 : -1)) as { value }}
 							{@const { name, abbrev, slug } = teams[teams.findIndex((t) => t.id === value)]}
 							<div class="flex flex-col gap-1 items-center text-sm">
 								<img class="h-8 w-8" src={`/teams/assets/logo-${slug}.svg`} alt="{name}'s' logo" />
