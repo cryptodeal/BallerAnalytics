@@ -90,10 +90,7 @@ export interface NewUserFormData {
 		last: string;
 	};
 	birthdate: Date;
-	subscriptions: {
-		teams: Types.Array<Types.ObjectId | Team2Document>;
-		players: Types.Array<Types.ObjectId | Player2Document>;
-	};
+	teamSubs: string[];
 }
 
 export type MetaGlobImport = Record<

@@ -1,4 +1,4 @@
-import { findUserById, addNewUserFormData } from '$lib/data/_db/controllers/user';
+import { findUserById, addNewUserFormData, updateUserData } from '$lib/data/_db/controllers/user';
 import protect from '$lib/functions/_api/auth/protect';
 import { validateNewUserForm } from '$lib/functions/helpers';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -53,6 +53,18 @@ export const post: RequestHandler = async (event) => {
 		};
 	} else {
 		/* TODO: update user data */
+		const userAuth = (await protect(event.request.headers)) as JWTPayload;
+		if (!userAuth) {
+			throw new Error(`Error: unable to authenticate request`);
+		}
+
+		const user = await updateUserData(userAuth.id, data);
+		if (user) {
+			return {
+				status: 200
+			};
+		}
+
 		return {
 			status: 503
 		};

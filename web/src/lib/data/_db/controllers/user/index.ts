@@ -1,4 +1,4 @@
-import { User } from '@balleranalytics/nba-api-ts';
+import { User, castToObjectId } from '@balleranalytics/nba-api-ts';
 import type { UserDocument } from '@balleranalytics/nba-api-ts';
 import type { NewUserFormData } from '$lib/types';
 
@@ -17,11 +17,31 @@ export const addNewUserFormData = (
 		.exec()
 		.then((user) => {
 			if (!user) throw Error('no user found with matching userId');
-			const { first, last } = formData.name;
-			const { teams, players } = formData.subscriptions;
+			const { name, teamSubs, birthdate } = formData;
+			const { first, last } = name;
 			user.name = { first, last };
-			user.birthdate = formData.birthdate;
-			user.subscriptions = { teams, players };
+			user.birthdate = birthdate;
+			user.subscriptions.teams.splice(0);
+			for (let i = 0; i < teamSubs.length; i++) {
+				user.subscriptions.teams.addToSet(castToObjectId(teamSubs[i]));
+			}
+			return user.save();
+		});
+};
+
+export const updateUserData = (
+	userId: string,
+	formData: NewUserFormData
+): Promise<UserDocument> => {
+	return User.findById(userId)
+		.exec()
+		.then((user) => {
+			if (!user) throw Error('no user found with matching userId');
+			const { teamSubs } = formData;
+			user.subscriptions.teams.splice(0);
+			for (let i = 0; i < teamSubs.length; i++) {
+				user.subscriptions.teams.addToSet(castToObjectId(teamSubs[i]));
+			}
 			return user.save();
 		});
 };

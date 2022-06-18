@@ -12,7 +12,6 @@
 	if (!user.name) user.name = {};
 	const { first, last } = user.name;
 	const dateOfBirth = dayjs(user.birthdate || new Date()).format('YYYY-MM-DD');
-	const { teams } = user.subscriptions;
 	const consentTandC = field('consentTandC', false, [required(), min(2)], {
 		valid: false,
 		checkOnInit: true,
@@ -42,18 +41,8 @@
 			stopAtFirstError: false
 		}
 	);
-	const fmtTeams = teams.map((t) => {
-		return {
-			label: t.infoCommon.name,
-			value: t.id.toString()
-		};
-	});
-	const teamSubs = field('teamSubs', getTeamSubs().set(fmtTeams || []), [required()], {
-		valid: false,
-		checkOnInit: true,
-		validateOnChange: true,
-		stopAtFirstError: false
-	});
+	const teamSubs = getTeamSubs();
+
 	let steps = ['Terms & Conditions', 'Info', 'Subscriptions', 'Confirmation'],
 		currentActive = 1,
 		progressBar: SvelteComponent;
@@ -64,8 +53,8 @@
 			: steps[currentActive - 1] == 'Info'
 			? form(firstName, lastName, birthdate)
 			: steps[currentActive - 1] == 'Subscriptions'
-			? form(teamSubs)
-			: form(consentTandC, firstName, lastName, birthdate, teamSubs);
+			? form()
+			: form(consentTandC, firstName, lastName, birthdate);
 
 	const handleProgress = (stepIncrement: number) => {
 		progressBar.handleProgress(stepIncrement);

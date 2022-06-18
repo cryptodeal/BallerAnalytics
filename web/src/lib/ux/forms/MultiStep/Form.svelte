@@ -14,6 +14,8 @@
 	export let minAge = 18;
 	const { addNotification } = getNotificationsContext();
 
+	$: console.log($teamSubs);
+
 	const handleSubmit = (): Promise<void> => {
 		const postData = {
 			consentTandC: $consentTandC.value,
@@ -23,9 +25,7 @@
 				last: $lastName.value
 			},
 			birthdate: $birthdate.value,
-			subscriptions: {
-				teams: $teamSubs.value
-			}
+			teamSubs: $teamSubs.map((t) => t.value)
 		};
 		return fetch('/profile.json', {
 			method: 'POST',
@@ -86,8 +86,8 @@
 			<div class="text-error text-sm">Must be {minAge}+ to register</div>
 		{/if}
 	{:else if active_step == 'Subscriptions'}
-		<div class="max-h-[3rem]">
-			<TeamSelect teamSubs={$teamSubs.value} />
+		<div class="flex gap-2 flex-col items-center pb-12">
+			<TeamSelect {teamSubs} />
 		</div>
 	{:else if active_step == 'Confirmation'}
 		<div class="message">

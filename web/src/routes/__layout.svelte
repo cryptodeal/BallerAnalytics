@@ -135,7 +135,7 @@
 	<Modal modalId={'teamSubs'} onClick={() => null}>
 		<svelte:fragment slot="content">
 			<div class="w-full flex gap-2 flex-col items-center pb-12">
-				<TeamSelect {teamSubs} />
+				<TeamSelect {teamSubs} saveBtn={true} />
 			</div>
 		</svelte:fragment>
 	</Modal>

@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
-
 	import type { Load } from '@sveltejs/kit';
 	export const load: Load = async ({ fetch, session }) => {
 		if (!session.user) {
@@ -36,18 +34,20 @@
 	import type { ObjectOption } from 'svelte-multiselect';
 
 	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
+	$: console.log(user);
 	const teamSubs = getTeamSubs();
 	if (user.subscriptions.teams.length) {
 		const teamSubSelect: ObjectOption[] = [];
 		user.subscriptions.teams.map((t) => {
-			const teamOption = teams.find((t2) => t2.id === t.toString()) as unknown as ObjectOption;
-			teamSubSelect.push(teamOption);
+			const teamOption = teams[teams.findIndex((t2) => t2.id === t._id.toString())];
+			teamSubSelect.push({ value: teamOption.id, label: teamOption.name });
 		});
 		teamSubs.set(teamSubSelect);
 	}
 	let edit = false;
 	let dateString = dayjs(user.birthdate).format('YYYY-MM-DD');
 	$: user.birthdate = new Date(dateString);
+	$: sortedTeamSubs = $teamSubs.slice().sort((a, b) => (a.label > b.label ? 1 : -1));
 </script>
 
 {#if !user.name?.first || !user.name?.last || !user.birthdate}
@@ -100,10 +100,11 @@
 						</label>
 					</div>
 					<div class="p-2 grid grid-cols-4">
-						{#each $teamSubs.sort((a, b) => (a.label > b.label ? 1 : -1)) as { value }}
+						{#each sortedTeamSubs as { value }}
 							{@const { name, abbrev, slug } = teams[teams.findIndex((t) => t.id === value)]}
+							{@const src = `/teams/assets/logo-${slug}.svg`}
 							<div class="flex flex-col gap-1 items-center text-sm">
-								<img class="h-8 w-8" src={`/teams/assets/logo-${slug}.svg`} alt="{name}'s' logo" />
+								<img class="h-8 w-8" {src} alt="{name}'s' logo" />
 								{abbrev}
 							</div>
 						{:else}
