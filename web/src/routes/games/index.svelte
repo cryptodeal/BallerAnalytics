@@ -43,7 +43,6 @@
 	import timezone from 'dayjs/plugin/timezone.js';
 	import GameEvent from '$lib/ux/games/GameEvent.svelte';
 	import { DateInput } from 'date-picker-svelte';
-	import darkMode from '$lib/data/stores/theme';
 	import { MetaTags } from 'svelte-meta-tags';
 
 	dayjs.extend(utc);
@@ -57,7 +56,7 @@
 		min: Date,
 		max: Date;
 
-	let date = games.length ? dayjs(games[0].date).tz().toDate() : dayjs().tz().toDate();
+	let date = games.length ? dayjs(games[0].date).utc().tz().toDate() : dayjs().utc().tz().toDate();
 
 	const closeOnSelection = true;
 
@@ -66,7 +65,7 @@
 	$: maxDate = new Date(max);
 
 	function loadGames() {
-		const strDate = dayjs.tz(date).format('YYYY-MM-DD');
+		const strDate = dayjs(date).utc().tz().format('YYYY-MM-DD');
 		// console.log('client', strDate);
 		const url = `/games.json?date=${strDate}`;
 		return fetch(url)
@@ -84,11 +83,7 @@
 />
 
 <div class="flex flex-col gap-10 w-full">
-	<div
-		class="mx-auto flex flex-col items-center gap-4"
-		style:--date-picker-background={$darkMode ? '#1b1e27' : '#ffffff'}
-		style:--date-picker-foreground={$darkMode ? '#f7f7f7' : '#000000'}
-	>
+	<div class="mx-auto flex flex-col items-center gap-4">
 		<h1 class="text-center">
 			Games: {dayjs(date).tz().format('MMM	D, YYYY')}
 		</h1>
@@ -107,7 +102,7 @@
 			<GameEvent {game} {logoModules} />
 		{:else}
 			<div class="flex justify-center">
-				<h1>No games found</h1>
+				<h1 class="text-center">No games found</h1>
 			</div>
 		{/each}
 	</div>

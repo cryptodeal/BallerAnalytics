@@ -3,10 +3,15 @@
 @tailwind utilities;
 
 :root {
+	--tw-border-opacity: 1;
 	--date-picker-background: hsl(var(--b1));
 	--date-picker-foreground: hsl(var(--bc));
 	--date-input-width: 100%;
-	--date-picker-highlight-border: 2px solid hsl(var(--p));
+	--date-picker-highlight-border: hsl(var(--p) / var(--tw-border-opacity));
+}
+
+.date-time-field > input {
+	@apply px-1 h-[3rem] input-bordered input-primary;
 }
 
 /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
@@ -111,7 +116,7 @@ div.multiselect > ul.options {
 }
 
 div.multiselect > ul.selected {
-	@apply h-full overflow-scroll;
+	@apply h-full overflow-scroll text-base;
 }
 
 .form-field {

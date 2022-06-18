@@ -28,7 +28,7 @@
 		}).then((res) => {
 			if (res.status === 200) {
 				addNotification({
-					text: `Successfully update your data! :)`,
+					text: `Successfully updated your data! :)`,
 					position: 'top-right',
 					type: 'success',
 					removeAfter: 4000

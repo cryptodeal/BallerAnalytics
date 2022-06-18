@@ -7,7 +7,7 @@
 </script>
 
 <div
-	class="bg-base-200 sticky top-0 z-10 grid grid-row-2 gap-y-2 w-full bg-opacity-90 py-3 px-2 backdrop-blur justify-end lg:hidden"
+	class="bg-base-200 sticky top-0 z-10 grid grid-row-2 gap-y-2 w-full bg-opacity-90 py-3 px-2 backdrop-blur"
 >
 	<AuthButton {modalId} {triggerTxt} {closeDrawer} />
 </div>

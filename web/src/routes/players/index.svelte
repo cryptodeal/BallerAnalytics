@@ -144,7 +144,7 @@
 				<label for="season-select">Szn: </label>
 
 				<select
-					class="select select-bordered"
+					class="select select-bordered select-primary"
 					type="select"
 					id="season-select"
 					bind:value={seasonYear}

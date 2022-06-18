@@ -38,5 +38,7 @@
 	</div>
 	<!--End TailwindCSS dropdown menu-->
 {:else}
-	<label for={modalId} class="btn" on:click={closeDrawer}>{triggerTxt}</label>
+	<div class="flex w-full justify-center">
+		<label for={modalId} class="btn" on:click={closeDrawer}>{triggerTxt}</label>
+	</div>
 {/if}

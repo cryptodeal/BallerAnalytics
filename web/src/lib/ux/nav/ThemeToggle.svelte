@@ -12,7 +12,7 @@
 <!-- svelte-ignore a11y-label-has-associated-control -->
 <label
 	data-toggle-theme="night,corporate"
-	class="swap swap-rotate {theme === 'corporate' ? 'swap-active' : ''}"
+	class="btn swap swap-rotate {theme === 'corporate' ? 'swap-active' : ''}"
 	on:click={toggleTheme}
 >
 	<svg class="swap-on fill-current w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

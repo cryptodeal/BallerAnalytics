@@ -90,11 +90,11 @@
 		<div class="flex w-full flex-col gap-4 mb-10 items-center">
 			<h4 class="text-center">Controls:</h4>
 			<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
-				<div class="form-control justify-center gap-4 w-full max-w-xs">
-					<label for="vizDelay" class="label justify-center">
+				<div class="form-control justify-center">
+					<label for="vizDelay" class="label justify-center items-center">
 						<span class="label-text text-center text-xl">vizDelay:</span>
 					</label>
-					<div class="inline-flex gap-4 items-center">
+					<div class="flex flex-col md:flex-row justify-center gap-4 items-center">
 						<input
 							type="number"
 							id="vizDelay"
@@ -116,7 +116,7 @@
 					</div>
 				</div>
 				<div class="form-control">
-					<label for="enabled" class="label justify-center items-center gap-4 cursor-pointer">
+					<label for="enabled" class="label justify-center items-center gap-4">
 						<span class="label-text text-xl">Demo Enabled:</span>
 					</label>
 					<div class="flex justify-center">
@@ -146,11 +146,11 @@
 				</div>
 
 				{#if $dropoff}
-					<div class="form-control justify-center gap-4 w-full max-w-xs">
-						<label for="vizDelay" class="label justify-center">
+					<div class="form-control justify-center">
+						<label for="dropoff" class="label justify-center items-center gap-4 cursor-pointer">
 							<span class="label-text text-center text-xl">Dropoff Age:</span>
 						</label>
-						<div class="inline-flex gap-4 items-center">
+						<div class="flex flex-col md:flex-row justify-center gap-4 items-center">
 							<input
 								type="number"
 								id="dropoff"
