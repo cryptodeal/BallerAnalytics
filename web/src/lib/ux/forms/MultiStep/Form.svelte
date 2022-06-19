@@ -1,6 +1,6 @@
 <script lang="ts">
 	import InputField from './InputField.svelte';
-	import { getNotificationsContext } from 'svelte-notifications';
+	import { getNotificationsStore } from '$lib/data/stores/notifications';
 	import type { UserDocument } from '@balleranalytics/nba-api-ts';
 	import TeamSelect from '../Subscriptions/TeamSelect.svelte';
 	export let active_step: string;
@@ -12,9 +12,8 @@
 	export let birthdate;
 	export let teamSubs;
 	export let minAge = 18;
-	const { addNotification } = getNotificationsContext();
 
-	$: console.log($teamSubs);
+	const notifications = getNotificationsStore();
 
 	const handleSubmit = (): Promise<void> => {
 		const postData = {
@@ -36,19 +35,9 @@
 			body: JSON.stringify(postData)
 		}).then((res) => {
 			if (res.status === 200) {
-				addNotification({
-					text: `Success: Check Email for Auth Link`,
-					position: 'top-right',
-					type: 'success',
-					removeAfter: 4000
-				});
+				notifications.success('Success: Check Email for Auth Link');
 			} else {
-				addNotification({
-					text: `Error: Login Error; Please Try Again`,
-					position: 'top-right',
-					type: 'danger',
-					removeAfter: 4000
-				});
+				notifications.error('Error: Login Error; Please Try Again');
 			}
 		});
 	};
@@ -59,7 +48,11 @@
 	on:submit={handleSubmit}
 >
 	{#if active_step == 'Terms & Conditions'}
-		<InputField label={'Terms & Conditions'} type="checkbox" bind:value={$consentTandC.value} />
+		<InputField
+			label={'I have read and agree to the Terms & Conditions:'}
+			type="checkbox"
+			bind:value={$consentTandC.value}
+		/>
 		{#if $myForm.hasError('consentTandC.required')}
 			<div class="text-error text-sm">Must agree to the terms and conditions</div>
 		{/if}

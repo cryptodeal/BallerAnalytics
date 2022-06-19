@@ -1,9 +1,10 @@
 <script lang="ts">
 	import MultiSelect, { type ObjectOption } from 'svelte-multiselect';
-	import { getNotificationsContext } from 'svelte-notifications';
+	import { getNotificationsStore } from '$lib/data/stores/notifications';
 	import { teams } from '$lib/data/teams';
 	import TeamSlot from './TeamSlot.svelte';
 	import { writable, type Writable } from 'svelte/store';
+	const notifications = getNotificationsStore();
 	const teamOptions = teams.map((t) => {
 		return {
 			label: t.name,
@@ -12,7 +13,6 @@
 	});
 	export let teamSubs: Writable<ObjectOption[]> = writable([]),
 		saveBtn = false;
-	const { addNotification } = getNotificationsContext();
 
 	const saveTeamSubs = () => {
 		const postData = {
@@ -27,19 +27,9 @@
 			body: JSON.stringify(postData)
 		}).then((res) => {
 			if (res.status === 200) {
-				addNotification({
-					text: `Successfully updated your data! :)`,
-					position: 'top-right',
-					type: 'success',
-					removeAfter: 4000
-				});
+				notifications.success('Successfully updated your Team Subscriptions! :)');
 			} else {
-				addNotification({
-					text: `Error updating your data! :(`,
-					position: 'top-right',
-					type: 'danger',
-					removeAfter: 4000
-				});
+				notifications.error('Error; failed to update your Team Subscriptions! :(');
 			}
 		});
 	};

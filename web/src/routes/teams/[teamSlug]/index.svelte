@@ -163,7 +163,7 @@
 		<label class="text-lg mr-4" for="season-select">Season:</label>
 
 		<select
-			class="select select-bordered"
+			class="select select-bordered select-primary"
 			type="select"
 			id="season-select"
 			bind:value={seasonYear}

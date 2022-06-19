@@ -32,10 +32,18 @@
 	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
 	import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
 	import type { ObjectOption } from 'svelte-multiselect';
+	import { DateInput } from 'date-picker-svelte';
 
 	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
 	$: console.log(user);
-	const teamSubs = getTeamSubs();
+	const teamSubs = getTeamSubs(),
+		min = dayjs().subtract(150, 'years').toISOString(),
+		max = dayjs().toISOString(),
+		closeOnSelection = true,
+		format = 'MM-dd-yyyy';
+
+	$: minDate = new Date(min);
+	$: maxDate = new Date(max);
 	if (user.subscriptions.teams.length) {
 		const teamSubSelect: ObjectOption[] = [];
 		user.subscriptions.teams.map((t) => {
@@ -45,7 +53,7 @@
 		teamSubs.set(teamSubSelect);
 	}
 	let edit = false;
-	let dateString = dayjs(user.birthdate).format('YYYY-MM-DD');
+	let dateString = new Date(user.birthdate);
 	$: user.birthdate = new Date(dateString);
 	$: sortedTeamSubs = $teamSubs.slice().sort((a, b) => (a.label > b.label ? 1 : -1));
 </script>
@@ -118,7 +126,7 @@
 			<div class="w-full md:w-9/12 md:px-2 h-64 mb-4">
 				<!-- Profile tab -->
 				<!-- About Section -->
-				<div class="glassmorphicBg z-20 p-3 shadow-sm rounded-sm my-4">
+				<div class="glassmorphicBg p-3 shadow-sm rounded-sm my-4">
 					<div class="flex items-center space-x-2 font-semibold leading-8">
 						<div class="flex-1 inline-flex items-center">
 							<IconPerson class="mr-2 fill-current" />
@@ -133,9 +141,11 @@
 						</button>
 					</div>
 					<div class="grid text-sm md:grid-cols-2 md:gap-4 md:gap-y-4">
-						<div class="grid gap-2 sm:grid-cols-2">
-							{#if edit}
-								<label class="px-2 font-semibold md:px-4" for="firstName">First Name</label>
+						{#if edit}
+							<div class="form-control w-full max-w-xs">
+								<label for="firstName" class="label">
+									<span class="label-text">First Name</span>
+								</label>
 								<input
 									type="text"
 									placeholder="First name..."
@@ -144,8 +154,11 @@
 									class="input input-bordered input-primary w-full max-w-xs"
 									bind:value={user.name.first}
 								/>
-
-								<label class="px-2 font-semibold md:px-4" for="lastName">Last Name</label>
+							</div>
+							<div class="form-control w-full max-w-xs">
+								<label for="lastName" class="label">
+									<span class="label-text">Last Name</span>
+								</label>
 								<input
 									type="text"
 									placeholder="Last name..."
@@ -154,8 +167,12 @@
 									class="input input-bordered input-primary w-full max-w-xs"
 									bind:value={user.name.last}
 								/>
+							</div>
 
-								<label class="px-2 font-semibold md:px-4" for="email">Email</label>
+							<div class="form-control w-full max-w-xs">
+								<label for="email" class="label">
+									<span class="label-text">Email</span>
+								</label>
 								<input
 									type="text"
 									class="input input-bordered input-primary w-full max-w-xs"
@@ -164,36 +181,50 @@
 									name="email"
 									bind:value={user.email}
 								/>
-
-								<label class="px-2 font-semibold md:px-4" for="birthday">Birthday</label>
-								<input
-									type="date"
-									class="input input-bordered input-primary w-full max-w-xs"
-									id="birthday"
-									name="birthday"
-									bind:value={dateString}
-								/>
-							{:else}
-								<div class="px-2 font-semibold md:px-4">First Name</div>
-								<div class="pr-2 pl-4 leading-[3rem] md:px-4">
+							</div>
+						{:else}
+							<div class="form-control w-full max-w-xs">
+								<div class="label">
+									<span class="label-text">First Name</span>
+								</div>
+								<div
+									class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 text-sm w-full max-w-xs"
+								>
 									{user.name.first}
 								</div>
+							</div>
 
-								<div class="px-2 font-semibold md:px-4">Last Name</div>
-								<div class="pr-2 pl-4  leading-[3rem] md:px-4">
+							<div class="form-control w-full max-w-xs">
+								<div class="label">
+									<span class="label-text">Last Name</span>
+								</div>
+								<div
+									class="inline-flex flex-shrink justify-start items-center h-12 px-8 pl-4 text-sm w-full max-w-xs"
+								>
 									{user.name.last}
 								</div>
+							</div>
 
-								<div class="px-2 font-semibold md:px-4 ">Email</div>
-								<div class="pr-2 pl-4 leading-[3rem] md:px-4">
+							<div class="form-control w-full max-w-xs">
+								<div class="label">
+									<span class="label-text">Email</span>
+								</div>
+								<div
+									class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 text-sm w-full max-w-xs"
+								>
 									{user.email}
 								</div>
-
-								<div class="px-2 font-semibold md:px-4">Birthday</div>
-								<div class="pr-2 pl-4 leading-[3rem] md:px-4">
-									{dayjs(dateString).format('MMM DD, YYYY')}
-								</div>
-							{/if}
+							</div>
+						{/if}
+						<div class="form-control w-full max-w-xs">
+							<div class="label">
+								<span class="label-text">Date of Birth</span>
+							</div>
+							<div
+								class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 text-sm w-full max-w-xs"
+							>
+								{dayjs(dateString).format('MMM DD, YYYY')}
+							</div>
 						</div>
 					</div>
 					<!--

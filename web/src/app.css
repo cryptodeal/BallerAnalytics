@@ -9,6 +9,47 @@
 	--date-input-width: 100%;
 	--date-picker-highlight-border: hsl(var(--p) / var(--tw-border-opacity));
 }
+/* 
+  Using my toast implementation submitted for
+  addition to the DaisyUI library while Pull Request
+  remains pending
+*/
+.toast {
+	@apply relative flex w-auto bg-base-200 p-4 rounded-box items-center mb-2 duration-300 md:mb-4 justify-between gap-4 space-y-2 md:flex-row md:space-y-0;
+	font-size: 0.875rem;
+}
+
+.toast-info {
+	@apply bg-info text-info-content;
+}
+
+.toast-success {
+	@apply bg-success text-success-content;
+}
+
+.toast-warning {
+	@apply bg-warning text-warning-content;
+}
+
+.toast-error {
+	@apply bg-error text-error-content;
+}
+
+.toast-sm {
+	@apply p-2 mb-2;
+}
+
+.toast-control-top-right {
+	@apply top-1 right-1;
+}
+
+.toast-control-top-left {
+	@apply top-1 left-1;
+}
+
+.toast-control {
+	@apply fixed max-w-[400px];
+}
 
 .date-time-field > input {
 	@apply px-1 h-[3rem] input-bordered input-primary;
@@ -22,13 +63,13 @@
 }
 
 .glassmorphicCard {
-	@apply rounded-lg bg-white/70  dark:bg-dark-900/70;
+	@apply rounded-lg bg-light-200/70  dark:bg-dark-900/70;
 }
 
 /* if backdrop support: very transparent and blurred */
 @supports ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
 	.glassmorphicCard {
-		@apply rounded-lg bg-white/40 backdrop-filter backdrop-blur-xl dark:bg-dark-700/40 dark:backdrop-blur-2xl;
+		@apply rounded-lg bg-gray-500/40 backdrop-filter backdrop-blur-xl dark:bg-dark-700/40 dark:backdrop-blur-2xl;
 	}
 }
 

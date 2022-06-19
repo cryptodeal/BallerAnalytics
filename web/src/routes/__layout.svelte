@@ -4,7 +4,7 @@
 	import { themeChange } from 'theme-change';
 	import '../app.css';
 	import { page } from '$app/stores';
-	import Notifications from 'svelte-notifications';
+	import { getNotificationsStore } from '$lib/data/stores/notifications';
 	import { Form, Field, ErrorMessage } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import Nav from '$lib/ux/nav/Navbar.svelte';
@@ -15,10 +15,12 @@
 	import TickerGame from '$lib/ux/Ticker/Game.svelte';
 	import Modal from '$lib/ux/Modal.svelte';
 	import { createTeamSubs, getTeamSubs } from '$lib/data/stores/teamSubs';
+	import Toast from '$lib/ux/Toast.svelte';
 	const modalId = 'auth-modal',
 		triggerTxt = 'login / register';
 	$: segment = $page.url.pathname.split('/')[1];
 	createTeamSubs();
+	const notifications = getNotificationsStore();
 	let success = false,
 		failed = false,
 		drawercontent,
@@ -65,9 +67,9 @@
 				body: JSON.stringify(values)
 			}).then((res) => {
 				if (res.status === 200) {
-					success = true;
+					notifications.success('Success; check your email!');
 				} else {
-					failed = true;
+					notifications.error('Error... Please try again!');
 				}
 			});
 		}
@@ -94,77 +96,77 @@
 	</script>
 </svelte:head>
 
-<Notifications>
-	<div class="drawer">
-		<input id="navDrawer" type="checkbox" class="drawer-toggle" bind:checked />
-		<div
-			bind:this={drawercontent}
-			on:scroll={parseContentScroll}
-			class="drawer-content flex flex-col"
-			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
-		>
-			<Nav {segment} {modalId} {triggerTxt} {closeDrawer} />
-			<div class="pt-6 px-2 pb-10 md:px-6">
-				<slot />
+<div class="drawer">
+	<input id="navDrawer" type="checkbox" class="drawer-toggle" bind:checked />
+	<div
+		bind:this={drawercontent}
+		on:scroll={parseContentScroll}
+		class="drawer-content flex flex-col"
+		style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
+	>
+		<Nav {segment} {modalId} {triggerTxt} {closeDrawer} />
+		<div class="pt-6 px-2 pb-10 md:px-6">
+			<slot />
+		</div>
+		{#if Object.values($dailyGames).length}
+			<div class="ticker bg-gray-300/20 backdrop-filter backdrop-blur-sm dark:bg-gray-900/20">
+				<Ticker>
+					{#each Object.values($dailyGames).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) as game}
+						<TickerGame {game} />
+					{/each}
+				</Ticker>
 			</div>
-			{#if Object.values($dailyGames).length}
-				<div class="ticker bg-gray-300/20 backdrop-filter backdrop-blur-sm dark:bg-gray-900/20">
-					<Ticker>
-						{#each Object.values($dailyGames).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) as game}
-							<TickerGame {game} />
-						{/each}
-					</Ticker>
-				</div>
-			{/if}
-		</div>
-		<div
-			class="drawer-side"
-			style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
-			bind:this={drawersidebar}
-			on:scroll={parseSidebarScroll}
-		>
-			<label for="navDrawer" class="drawer-overlay" />
-			<aside class="bg-base-200 w-80">
-				<SideNav {closeDrawer} {segment} />
-				<div
-					class="from-base-200 pointer-events-none sticky bottom-0 flex h-20 bg-gradient-to-t to-transparent"
-				/>
-			</aside>
-		</div>
+		{/if}
 	</div>
-	<Modal modalId={'teamSubs'} onClick={() => null}>
-		<svelte:fragment slot="content">
-			<div class="w-full flex gap-2 flex-col items-center pb-12">
-				<TeamSelect {teamSubs} saveBtn={true} />
-			</div>
-		</svelte:fragment>
-	</Modal>
-	<input type="checkbox" id={modalId} class="modal-toggle" />
-	<label for={modalId} class="modal modal-bottom sm:modal-middle cursor-pointer">
-		<label class="modal-box relative" for="">
-			<h3 class="text-lg font-bold text-center py-4">Login / Register</h3>
-			<div class="flex flex-col gap-4 items-center p-1">
-				<Form class="content" {...formProps}>
-					<div class="flex flex-col gap-4 items-center">
-						<div class="form-control w-full max-w-xs">
-							<label for="email" class="label cursor-pointer gap-4">
-								<span class="label-text">Email:</span>
-							</label>
-							<Field class="form-field" id="email" name="email" type="email" />
-						</div>
-						<ErrorMessage class="form-error" name="email" />
-						{#if failed}
-							<span class="text-error text-center text-sm"> Error... Please try again. </span>
-						{:else if success}
-							<span class="text-success text-center text-sm"> Success; check your email! </span>
-						{/if}
-						<button class="btn" type="submit">submit</button>
+	<div
+		class="drawer-side"
+		style="scroll-behavior: smooth; scroll-padding-top: 5rem;"
+		bind:this={drawersidebar}
+		on:scroll={parseSidebarScroll}
+	>
+		<label for="navDrawer" class="drawer-overlay" />
+		<aside class="bg-base-200 w-80">
+			<SideNav {closeDrawer} {segment} />
+			<div
+				class="from-base-200 pointer-events-none sticky bottom-0 flex h-20 bg-gradient-to-t to-transparent"
+			/>
+		</aside>
+	</div>
+</div>
+<Toast />
+
+<Modal modalId={'teamSubs'} onClick={() => null}>
+	<svelte:fragment slot="content">
+		<div class="w-full flex gap-2 flex-col items-center pb-12">
+			<TeamSelect {teamSubs} saveBtn={true} />
+		</div>
+	</svelte:fragment>
+</Modal>
+<input type="checkbox" id={modalId} class="modal-toggle" />
+<label for={modalId} class="modal modal-bottom sm:modal-middle cursor-pointer">
+	<label class="modal-box relative" for="">
+		<h3 class="text-lg font-bold text-center py-4">Login / Register</h3>
+		<div class="flex flex-col gap-4 items-center p-1">
+			<Form class="content" {...formProps}>
+				<div class="flex flex-col gap-4 items-center">
+					<div class="form-control w-full max-w-xs">
+						<label for="email" class="label cursor-pointer gap-4">
+							<span class="label-text">Email:</span>
+						</label>
+						<Field class="form-field" id="email" name="email" type="email" />
 					</div>
-				</Form>
-			</div>
-		</label>
+					<ErrorMessage class="form-error" name="email" />
+					{#if failed}
+						<span class="text-error text-center text-sm"> Error... Please try again. </span>
+					{:else if success}
+						<span class="text-success text-center text-sm"> Success; check your email! </span>
+					{/if}
+					<button class="btn" type="submit">submit</button>
+				</div>
+			</Form>
+		</div>
 	</label>
-</Notifications>
+</label>
 
 <style lang="postcss">
 	.ticker {
