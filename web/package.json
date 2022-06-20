@@ -14,7 +14,7 @@
 	"devDependencies": {
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@balleranalytics/tf-neat": "workspace:*",
-		"@iconify/json": "^2.1.63",
+		"@iconify/json": "^2.1.64",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@sveltejs/pancake": "^0.0.18",
