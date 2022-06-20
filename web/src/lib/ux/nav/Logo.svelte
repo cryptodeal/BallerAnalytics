@@ -25,6 +25,7 @@
 
 <a
 	class="mx-1 w-full min-h-4 sm:min-h-6 md:max-w-[25rem]"
+	aria-label="Home"
 	href="/"
 	sveltekit:prefetch
 	aria-current={segment === '' ? 'page' : undefined}
