@@ -176,7 +176,7 @@
 									placeholder="First name..."
 									id="firstName"
 									name="firstName"
-									class="input input-bordered input-primary w-full max-w-xs"
+									class="form-field"
 									bind:value={user.name.first}
 								/>
 							</div>
@@ -189,7 +189,7 @@
 									placeholder="Last name..."
 									id="lastName"
 									name="lastName"
-									class="input input-bordered input-primary w-full max-w-xs"
+									class="form-field"
 									bind:value={user.name.last}
 								/>
 							</div>
@@ -200,7 +200,7 @@
 								</label>
 								<input
 									type="text"
-									class="input input-bordered input-primary w-full max-w-xs"
+									class="form-field"
 									placeholder="Email..."
 									id="email"
 									name="email"

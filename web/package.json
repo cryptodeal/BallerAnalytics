@@ -15,15 +15,6 @@
 		"@balleranalytics/nba-api-ts": "workspace:*",
 		"@balleranalytics/tf-neat": "workspace:*",
 		"@iconify/json": "^2.1.63",
-		"@lexical/clipboard": "^0.2.9",
-		"@lexical/dragon": "^0.2.9",
-		"@lexical/link": "^0.2.9",
-		"@lexical/overflow": "^0.2.9",
-		"@lexical/plain-text": "^0.2.9",
-		"@lexical/rich-text": "^0.2.9",
-		"@lexical/selection": "^0.2.9",
-		"@lexical/text": "^0.2.9",
-		"@lexical/utils": "^0.2.9",
 		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@sveltejs/pancake": "^0.0.18",
@@ -66,7 +57,6 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"html-minifier": "^4.0.0",
 		"jsonwebtoken": "^8.5.1",
-		"lexical": "^0.2.9",
 		"mdsvex": "^0.10.6",
 		"nba-color": "^1.4.1",
 		"nodemailer": "^6.7.5",
@@ -103,5 +93,8 @@
 		"yootils": "^0.3.1",
 		"yup": "^0.32.11"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"svelte-lexical": "0.1.2-beta.3"
+	}
 }

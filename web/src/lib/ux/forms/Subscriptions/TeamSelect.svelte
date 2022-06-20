@@ -36,9 +36,9 @@
 	};
 </script>
 
-<label for="teamSubs" class="text-lg font-bold text-center">Manage Team Subscriptions</label>
+<label for="teamSubsList" class="text-lg font-bold text-center">Manage Team Subscriptions</label>
 <MultiSelect
-	id="teamSubs"
+	id="teamSubsList"
 	options={teamOptions}
 	placeholder="Select teams..."
 	bind:selected={$teamSubs}
