@@ -97,6 +97,7 @@
 </svelte:head>
 
 <div class="drawer">
+	<label for="navDrawer" />
 	<input id="navDrawer" type="checkbox" class="drawer-toggle" bind:checked />
 	<div
 		bind:this={drawercontent}
