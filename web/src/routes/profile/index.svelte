@@ -213,7 +213,7 @@
 									<span class="label-text">First Name</span>
 								</div>
 								<div
-									class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 text-sm w-full max-w-xs"
+									class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 w-full max-w-xs"
 								>
 									{user.name.first}
 								</div>
@@ -224,7 +224,7 @@
 									<span class="label-text">Last Name</span>
 								</div>
 								<div
-									class="inline-flex flex-shrink justify-start items-center h-12 px-8 pl-4 text-sm w-full max-w-xs"
+									class="inline-flex flex-shrink justify-start items-center h-12 px-8 pl-4 w-full max-w-xs"
 								>
 									{user.name.last}
 								</div>
@@ -235,7 +235,7 @@
 									<span class="label-text">Email</span>
 								</div>
 								<div
-									class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 text-sm w-full max-w-xs"
+									class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 w-full max-w-xs"
 								>
 									{user.email}
 								</div>
@@ -246,7 +246,7 @@
 								<span class="label-text">Date of Birth</span>
 							</div>
 							<div
-								class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 text-sm w-full max-w-xs"
+								class="inline-flex flex-shrink items-center justify-start h-12 px-8 pl-4 w-full max-w-xs"
 							>
 								{dayjs(dateString).format('MMM DD, YYYY')}
 							</div>
