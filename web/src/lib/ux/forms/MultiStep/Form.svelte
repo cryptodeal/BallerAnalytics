@@ -17,6 +17,7 @@
 
 	const handleSubmit = (): Promise<void> => {
 		const postData = {
+			type: 'Add',
 			consentTandC: $consentTandC.value,
 			userId,
 			name: {

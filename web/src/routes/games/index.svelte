@@ -99,7 +99,7 @@
 	</div>
 	<div class="w-full gap-5 flex-grow mb-10">
 		{#each games as game}
-			<GameEvent {game} {logoModules} />
+			<GameEvent {game} />
 		{:else}
 			<div class="flex justify-center">
 				<h1 class="text-center">No games found</h1>

@@ -6,8 +6,10 @@ import type {
 	Player2Document,
 	PopulatedDocument
 } from '@balleranalytics/nba-api-ts';
+import type { ProfilePostType } from 'src/routes/profile/index.json';
 
 export interface ValidatedFormData {
+	type: ProfilePostType;
 	valid: boolean;
 	errors: string[];
 }
@@ -83,6 +85,7 @@ export interface SeasonList {
 }
 
 export interface NewUserFormData {
+	type: ProfilePostType;
 	consentTandC?: boolean;
 	userId: Types.ObjectId;
 	name: {

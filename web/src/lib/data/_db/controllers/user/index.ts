@@ -37,10 +37,19 @@ export const updateUserData = (
 		.exec()
 		.then((user) => {
 			if (!user) throw Error('no user found with matching userId');
-			const { teamSubs } = formData;
+			const { teamSubs, name } = formData;
 			user.subscriptions.teams.splice(0);
 			for (let i = 0; i < teamSubs.length; i++) {
 				user.subscriptions.teams.addToSet(castToObjectId(teamSubs[i]));
+			}
+			if (name) {
+				const { first, last } = name;
+				if (first && user.name.first !== first) {
+					user.name.first = first;
+				}
+				if (last && user.name.last !== last) {
+					user.name.last = last;
+				}
 			}
 			return user.save();
 		});

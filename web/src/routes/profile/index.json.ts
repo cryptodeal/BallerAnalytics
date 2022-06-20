@@ -1,6 +1,6 @@
 import { findUserById, addNewUserFormData, updateUserData } from '$lib/data/_db/controllers/user';
 import protect from '$lib/functions/_api/auth/protect';
-import { validateNewUserForm } from '$lib/functions/helpers';
+import { validateUserForm } from '$lib/functions/helpers';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { NewUserFormData, JWTPayload } from '$lib/types';
 
@@ -23,10 +23,12 @@ export const get: RequestHandler = async ({ url }) => {
 	};
 };
 
+export type ProfilePostType = 'Add' | 'Update';
+
 export const post: RequestHandler = async (event) => {
 	const data = (await event.request.json()) as NewUserFormData;
 	if (data.consentTandC) {
-		const { valid, errors } = validateNewUserForm(data);
+		const { valid, errors } = validateUserForm(data);
 		if (!valid) {
 			console.log(errors);
 			return {

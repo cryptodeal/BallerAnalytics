@@ -5,14 +5,11 @@
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor } from 'nba-color';
-	import TeamLogo from '../teams/assets/AnyTeamLogo.svelte';
-	const logoModules = import.meta.globEager('../teams/assets/logo-*.svelte');
-
-	import type { DailyGame } from '$lib/data/stores/types';
 	import { browser } from '$app/env';
 
+	import type { DailyGame } from '$lib/data/stores/types';
+
 	export let game: DailyGame;
-	const isTicker = true;
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
@@ -44,7 +41,11 @@
 		style:--teamColor={invertColor(getMainColor(game.visitor.infoCommon.nbaAbbreviation).hex, true)}
 	>
 		<div class="glassmorphicBg inline-block h-10 w-10 px-1">
-			<TeamLogo {isTicker} {logoModules} slug={game.visitor.infoCommon.slug} />
+			<img
+				class="h-10 w-10 inline-block"
+				src="/teams/assets/logo-{game.visitor.infoCommon.slug}.svg"
+				alt="{game.visitor.infoCommon.name}'s' logo"
+			/>
 		</div>
 
 		{game.visitor.infoCommon.nbaAbbreviation}
@@ -70,7 +71,11 @@
 		style:--teamColor={invertColor(getMainColor(game.home.infoCommon.nbaAbbreviation).hex, true)}
 	>
 		<div class="glassmorphicBg inline-block h-10 w-10 px-1">
-			<TeamLogo {isTicker} {logoModules} slug={game.home.infoCommon.slug} />
+			<img
+				class="h-10 w-10 inline-block"
+				src="/teams/assets/logo-{game.home.infoCommon.slug}.svg"
+				alt="{game.home.infoCommon.name}'s' logo"
+			/>
 		</div>
 		{game.home.infoCommon.nbaAbbreviation}
 	</div>

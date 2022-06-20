@@ -44,8 +44,7 @@ const config = {
 				alias: {
 					$models: path.resolve('src/models'),
 					$ml: path.resolve('src/ml')
-				},
-				dedupe: ['mongoose', 'dayjs']
+				}
 			}
 		}
 	}

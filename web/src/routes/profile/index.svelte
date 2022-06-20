@@ -24,6 +24,7 @@
 	import dayjs from 'dayjs';
 	import { teams } from '$lib/data/teams';
 	import { getTeamSubs } from '$lib/data/stores/teamSubs';
+	import { getNotificationsStore } from '$lib/data/stores/notifications';
 	import IconCirclePlus from '~icons/fluent/add-circle-24-regular';
 	import IconEdit from '~icons/fluent/document-edit-24-regular';
 	import IconPerson from '~icons/fluent/person-24-regular';
@@ -32,18 +33,36 @@
 	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
 	import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
 	import type { ObjectOption } from 'svelte-multiselect';
-	import { DateInput } from 'date-picker-svelte';
 
 	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
 	$: console.log(user);
 	const teamSubs = getTeamSubs(),
-		min = dayjs().subtract(150, 'years').toISOString(),
-		max = dayjs().toISOString(),
-		closeOnSelection = true,
-		format = 'MM-dd-yyyy';
-
-	$: minDate = new Date(min);
-	$: maxDate = new Date(max);
+		notifications = getNotificationsStore(),
+		saveUserData = () => {
+			edit = !edit;
+			const postData = {
+				type: 'Update',
+				name: {
+					first: user.name.first,
+					last: user.name.last
+				},
+				teamSubs: $teamSubs.map((t) => t.value)
+			};
+			return fetch('/profile.json', {
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(postData)
+			}).then((res) => {
+				if (res.status === 200) {
+					notifications.success('Successfully updated your user data!');
+				} else {
+					notifications.error('Error; failed to update your user data!');
+				}
+			});
+		};
 	if (user.subscriptions.teams.length) {
 		const teamSubSelect: ObjectOption[] = [];
 		user.subscriptions.teams.map((t) => {
@@ -102,7 +121,7 @@
 						<div class="flex-1 items-center inline-flex space-x-3 font-semibold text-xl leading-8">
 							<span>My Teams</span>
 						</div>
-						<label for="teamSubs" class="btn gap-2 modal-button">
+						<label for="teamSubs" class="btn btn-sm gap-2 modal-button">
 							<IconCirclePlus />
 							Add Teams
 						</label>
@@ -112,8 +131,12 @@
 							{@const { name, abbrev, slug } = teams[teams.findIndex((t) => t.id === value)]}
 							{@const src = `/teams/assets/logo-${slug}.svg`}
 							<div class="flex flex-col gap-1 items-center text-sm">
-								<img class="h-8 w-8" {src} alt="{name}'s' logo" />
-								{abbrev}
+								<img
+									class="h-10 w-10 md:h-12 md:w-12 2xl:w-16 2xl:h-16"
+									{src}
+									alt="{name}'s' logo"
+								/>
+								<span class="font-bold">{abbrev}</span>
 							</div>
 						{:else}
 							<div class="text-center">No team subs...</div>
@@ -127,18 +150,20 @@
 				<!-- Profile tab -->
 				<!-- About Section -->
 				<div class="glassmorphicBg p-3 shadow-sm rounded-sm my-4">
-					<div class="flex items-center space-x-2 font-semibold leading-8">
+					<div class="flex my-2 gap-4 items-center font-semibold leading-8">
 						<div class="flex-1 inline-flex items-center">
 							<IconPerson class="mr-2 fill-current" />
 							<span class="tracking-wide">About</span>
 						</div>
-						<button
-							class="inline-flex items-center font-bold py-1 px-2 rounded"
-							on:click={() => (edit = !edit)}
-						>
-							<IconEdit />
-							<div class="ml-2">Edit</div>
-						</button>
+						<div class="btn-group">
+							{#if edit}
+								<button class="btn btn-sm btn-primary" on:click={saveUserData}>Save</button>
+							{/if}
+							<button class="btn btn-sm gap-2" on:click={() => (edit = !edit)}>
+								<IconEdit />
+								<span>Edit</span>
+							</button>
+						</div>
 					</div>
 					<div class="grid text-sm md:grid-cols-2 md:gap-4 md:gap-y-4">
 						{#if edit}

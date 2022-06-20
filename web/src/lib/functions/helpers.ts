@@ -90,12 +90,21 @@ export const checkAge = (minAge: number) => {
 	};
 };
 
-export const validateNewUserForm = (formData: NewUserFormData): ValidatedFormData => {
-	console.log(formData);
+export const validateUserForm = (formData: NewUserFormData): ValidatedFormData => {
+	const { type } = formData;
 	const result: ValidatedFormData = {
+		type,
 		valid: true,
 		errors: []
 	};
+
+	if (type === 'Add') {
+		const { consentTandC } = formData;
+		if (!consentTandC) {
+			result.valid = false;
+			result.errors.push(`You must agree to the terms and conditions`);
+		}
+	}
 
 	//validate first name
 	if (!requiredString(formData.name.first)) {

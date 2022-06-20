@@ -15,8 +15,7 @@
   remains pending
 */
 .toast {
-	@apply relative flex w-auto bg-base-200 p-4 rounded-box items-center mb-2 duration-300 md:mb-4 justify-between gap-4 space-y-2 md:flex-row md:space-y-0;
-	font-size: 0.875rem;
+	@apply relative flex max-w-[250px] break-words flex-row w-auto bg-base-200 text-sm py-3 pl-3 pr-2 rounded-box items-center justify-between gap-4;
 }
 
 .toast-info {
@@ -48,7 +47,7 @@
 }
 
 .toast-control {
-	@apply fixed max-w-[400px];
+	@apply fixed flex flex-col space-y-2 md:space-y-4 max-w-[400px];
 }
 
 .date-time-field > input {

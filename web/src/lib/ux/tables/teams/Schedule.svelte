@@ -2,17 +2,17 @@
 	import dayjs from 'dayjs';
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import { dailyGames } from '$lib/data/stores/games';
-	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import Table from '../core/Table.svelte';
 	import THead from '../core/THead.svelte';
-	import type { Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
+	import type {
+		Game2Document,
+		PopulatedDocument,
+		Team2Document
+	} from '@balleranalytics/nba-api-ts';
 	import type { TeamRecord } from '$lib/types';
-	import type { MetaGlobImport } from '$lib/types';
 	import type { IColHeader } from '../types';
-	import type { Types } from 'mongoose';
 	import TFoot from '../core/TFoot.svelte';
-	export let logoModules: MetaGlobImport;
-	export let teamId: Types.ObjectId;
+	export let teamId: Team2Document['_id'];
 	export let schedule: PopulatedDocument<
 		PopulatedDocument<
 			PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>,
@@ -71,7 +71,11 @@
 							<div class="text-sm leading-5 mr-2">vs</div>
 							<div class="flex flex-col w-auto justify-center">
 								<div class="h-14 w-14">
-									<TeamLogo {logoModules} slug={visitor.team.infoCommon.slug} />
+									<img
+										class="h-14 w-14"
+										src="/teams/assets/logo-{visitor.team.infoCommon.slug}.svg"
+										alt="{visitor.team.infoCommon.name}'s' logo"
+									/>
 								</div>
 								<div class="text-sm text-center leading-5">
 									{capitalizeFirstLetter(visitor.team.infoCommon.slug)}
@@ -81,7 +85,11 @@
 							<div class="text-sm leading-5 mr-2">@</div>
 							<div class="flex flex-col w-auto justify-center">
 								<div class="h-14 w-14">
-									<TeamLogo {logoModules} slug={home.team.infoCommon.slug} />
+									<img
+										class="h-14 w-14"
+										src="/teams/assets/logo-{home.team.infoCommon.slug}.svg"
+										alt="{home.team.infoCommon.name}'s' logo"
+									/>
 								</div>
 								<div class="text-sm text-center leading-5">
 									{capitalizeFirstLetter(home.team.infoCommon.slug)}

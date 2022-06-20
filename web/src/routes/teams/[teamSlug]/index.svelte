@@ -5,8 +5,6 @@
 	import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
 	import type { get } from './index.json';
 
-	export const logoModules = import.meta.globEager('../../../lib/ux/teams/assets/logo-*.svelte');
-
 	type TeamPageLoadProps = TeamPageInitData & {
 		seasonIdx: number;
 		seasons: SeasonList[];
@@ -86,7 +84,6 @@
 	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
 	import PlayerStats from '$lib/ux/tables/teams/Stats.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import type {
 		Team2Document,
 		PopulatedDocument,
@@ -152,7 +149,11 @@
 	class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:container md:mx-auto"
 >
 	<div class="h-44 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm">
-		<TeamLogo size={176} {logoModules} slug={team.infoCommon.slug} />
+		<img
+			class="h-44 w-44"
+			src="/teams/assets/logo-{team.infoCommon.slug}.svg"
+			alt="{team.infoCommon.name}'s' logo"
+		/>
 	</div>
 	<h1>
 		{team.infoCommon.name}
@@ -191,7 +192,7 @@
 						{team.seasons[seasonIdx].season} Regular Season:
 					</h2>
 				</div>
-				<ScheduleTable {logoModules} schedule={games.regularSeason} teamId={team._id} />
+				<ScheduleTable schedule={games.regularSeason} teamId={team._id} />
 			{:else}
 				<h2 class="tabPanelTitle ">
 					No games played in {team.seasons[seasonIdx].season}
@@ -203,7 +204,7 @@
 						{team.seasons[seasonIdx].season} Postseason:
 					</h2>
 				</div>
-				<ScheduleTable {logoModules} schedule={games.postseason} teamId={team._id} />
+				<ScheduleTable schedule={games.postseason} teamId={team._id} />
 			{/if}
 		</TabPanel>
 

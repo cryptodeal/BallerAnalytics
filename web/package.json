@@ -68,7 +68,6 @@
 		"jsonwebtoken": "^8.5.1",
 		"lexical": "^0.2.9",
 		"mdsvex": "^0.10.6",
-		"mongoose": "6.2.7",
 		"nba-color": "^1.4.1",
 		"nodemailer": "^6.7.5",
 		"postcss": "^8.4.14",

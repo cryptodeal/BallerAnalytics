@@ -1,6 +1,4 @@
 <script lang="ts">
-	const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
-	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import tinycolor from 'tinycolor2';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { invertColor } from '$lib/functions/helpers';
@@ -47,7 +45,11 @@
 				class="teamItem rounded-lg shadow-lg border-2 w-full flex flex-col md:flex md:flex-row gap-y-4 p-3"
 			>
 				<div style:--logoBg={backdropBg} class="logoBackdrop rounded-lg mx-auto w-48 h-48">
-					<TeamLogo {logoModules} slug={infoCommon.slug} />
+					<img
+						class="h-48 w-48"
+						src="teams/assets/logo-{infoCommon.slug}.svg"
+						alt="{infoCommon.name}'s' logo"
+					/>
 				</div>
 				<div class="md:w-7/8 md:justify-end w-full mx-auto px-3 inline-flex h-auto justify-center">
 					<div

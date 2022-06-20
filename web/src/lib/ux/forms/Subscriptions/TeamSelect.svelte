@@ -16,6 +16,7 @@
 
 	const saveTeamSubs = () => {
 		const postData = {
+			type: 'Update',
 			teamSubs: $teamSubs.map((t) => t.value)
 		};
 		return fetch('/profile.json', {
@@ -27,9 +28,9 @@
 			body: JSON.stringify(postData)
 		}).then((res) => {
 			if (res.status === 200) {
-				notifications.success('Successfully updated your Team Subscriptions! :)');
+				notifications.success('Successfully saved your Team Subscriptions!');
 			} else {
-				notifications.error('Error; failed to update your Team Subscriptions! :(');
+				notifications.error('Error; failed to update your Team Subscriptions!');
 			}
 		});
 	};

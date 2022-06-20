@@ -1,5 +1,4 @@
 <script lang="ts">
-	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc.js';
@@ -7,7 +6,6 @@
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 	import { dailyGames } from '$lib/data/stores/games';
 	import type { PopulatedDocument, Game2Document } from '@balleranalytics/nba-api-ts';
-	import type { MetaGlobImport } from '$lib/types';
 	import { browser } from '$app/env';
 
 	dayjs.extend(utc);
@@ -15,7 +13,6 @@
 	dayjs.extend(advancedFormat);
 
 	export let game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>;
-	export let logoModules: MetaGlobImport;
 	let localTz, estDate;
 	$: if (browser) localTz = dayjs.tz.guess();
 	$: if (game) estDate = dayjs(game.date).utc().tz();
@@ -27,7 +24,11 @@
 			<div
 				class="h-3/5 w-full rounded-lg p-1 dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 			>
-				<TeamLogo slug={game.visitor.team.infoCommon.slug} {logoModules} />
+				<img
+					class="h-3/5 w-full"
+					src="/teams/assets/logo-{game.visitor.team.infoCommon.slug}.svg"
+					alt="{game.visitor.team.infoCommon.name}'s' logo"
+				/>
 			</div>
 			<div class="h-2/5 inline-flex align-middle items-center justify-center">
 				<h6 class="inline-flex align-middle items-center justify-center ">
@@ -95,7 +96,11 @@
 			<div
 				class="h-3/5 p-1 w-full rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 			>
-				<TeamLogo slug={game.home.team.infoCommon.slug} {logoModules} />
+				<img
+					class="h-3/5 w-full"
+					src="/teams/assets/logo-{game.home.team.infoCommon.slug}.svg"
+					alt="{game.home.team.infoCommon.name}'s' logo"
+				/>
 			</div>
 			<div class="h-2/5 inline-flex items-center justify-center">
 				<h6 class="inline-flex align-middle items-center justify-center ">

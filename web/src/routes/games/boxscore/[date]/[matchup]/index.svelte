@@ -1,9 +1,6 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { BoxScoreLoadParams, BoxScoreBody } from '$lib/types';
-	export const logoModules = import.meta.globEager(
-		'../../../../../lib/ux/teams/assets/logo-*.svelte'
-	);
 
 	export const load: Load<BoxScoreLoadParams, BoxScoreBody> = async ({ fetch, params }) => {
 		const { date, matchup } = params;
@@ -27,7 +24,6 @@
 </script>
 
 <script lang="ts">
-	import TeamLogo from '$lib/ux/teams/assets/AnyTeamLogo.svelte';
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import { browser } from '$app/env';
 	import { dailyGames } from '$lib/data/stores/games';
@@ -59,7 +55,11 @@
 			<div
 				class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 			>
-				<TeamLogo slug={boxscore.visitor.team.infoCommon.slug} {logoModules} />
+				<img
+					class="h-3/5 w-full"
+					src="/teams/assets/logo-{boxscore.visitor.team.infoCommon.slug}.svg"
+					alt="{boxscore.visitor.team.infoCommon.name}'s' logo"
+				/>
 			</div>
 			<h4 class="h-2/5 ">
 				{capitalizeFirstLetter(boxscore.visitor.team.infoCommon.slug)}
@@ -125,7 +125,11 @@
 			<div
 				class="h-3/5 w-full mb-1 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm"
 			>
-				<TeamLogo slug={boxscore.home.team.infoCommon.slug} {logoModules} />
+				<img
+					class="h-3/5 w-full"
+					src="/teams/assets/logo-{boxscore.home.team.infoCommon.slug}.svg"
+					alt="{boxscore.home.team.infoCommon.name}'s' logo"
+				/>
 			</div>
 			<h4 class="h-2/5 ">
 				{capitalizeFirstLetter(boxscore.home.team.infoCommon.slug)}
