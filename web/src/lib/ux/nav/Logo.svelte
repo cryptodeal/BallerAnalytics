@@ -56,13 +56,15 @@
 <style lang="postcss">
 	svg path {
 		fill: transparent;
-		stroke-width: 1px;
-		transition: fill 2s;
+		stroke-width: 0.065rem;
+		transition: fill 2s, stroke 0.7s 2s;
 		will-change: opacity;
 		@apply stroke-current;
 	}
 
 	path.done {
+		stroke: transparent;
+		will-change: opacity;
 		@apply fill-current;
 	}
 

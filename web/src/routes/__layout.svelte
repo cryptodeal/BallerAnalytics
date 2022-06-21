@@ -118,6 +118,11 @@
 				</Ticker>
 			</div>
 		{/if}
+		<footer class="fixed bottom-0 footer footer-center p-2 lg:p-4 bg-base-300 text-base-content">
+			<div>
+				<p>Copyright © 2022 - All right reserved by BallerAnalytics</p>
+			</div>
+		</footer>
 	</div>
 	<div
 		class="drawer-side"
