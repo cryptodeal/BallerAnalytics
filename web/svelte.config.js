@@ -17,7 +17,11 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [
 		preprocess({
-			postcss: true
+			postcss: true,
+			replace: [
+				/* allows use of cli env var as import.meta.env.VERCEL_ANALYTICS_ID */
+				['import.meta.env.VERCEL_ANALYTICS_ID', JSON.stringify(process.env.VERCEL_ANALYTICS_ID)]
+			]
 		}),
 		mdsvex(mdsvexConfig)
 	],

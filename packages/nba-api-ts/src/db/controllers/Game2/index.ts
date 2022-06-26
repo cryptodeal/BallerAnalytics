@@ -443,7 +443,7 @@ export const addOrFindGame = async (
 	if (!leagueDoc?._id) throw new Error('League not found');
 	if (!homeTeam._id) throw new Error('Home team not found');
 	if (!visitorTeam._id) throw new Error('Visitor team not found');
-	const gameDoc = new Game2({
+	const gameDoc: Game2Document = new Game2({
 		meta: {
 			helpers: {
 				isOver: false,

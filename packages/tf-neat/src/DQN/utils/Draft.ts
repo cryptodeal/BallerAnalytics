@@ -65,7 +65,7 @@ export class DraftAPI {
 	public reset() {
 		this.players.map((p) => p.resetDrafted());
 		this.draftOrder = this.genDraftOrder();
-		util.shuffle(this.players);
+		// util.shuffle(this.players);
 		this.rewards = this.resetRewards();
 	}
 

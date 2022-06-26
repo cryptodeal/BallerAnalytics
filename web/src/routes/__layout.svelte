@@ -1,5 +1,15 @@
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
+	export const load: Load = async ({ url }) => ({
+		props: {
+			path: url.pathname
+		}
+	});
+</script>
+
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { webVitals } from '$lib/webvitals';
 	import { afterNavigate } from '$app/navigation';
 	import { themeChange } from 'theme-change';
 	import '../app.css';
@@ -16,9 +26,10 @@
 	import Modal from '$lib/ux/Modal.svelte';
 	import { createTeamSubs, getTeamSubs } from '$lib/data/stores/teamSubs';
 	import Toast from '$lib/ux/Toast.svelte';
+	export let path: string;
 	const modalId = 'auth-modal',
 		triggerTxt = 'login / register';
-	$: segment = $page.url.pathname.split('/')[1];
+
 	createTeamSubs();
 	const notifications = getNotificationsStore();
 	let success = false,
@@ -28,7 +39,15 @@
 		drawersidebar,
 		drawerSidebarScrollY = 0,
 		checked: boolean = '' as unknown as boolean,
+		analyticsId = import.meta.env.VERCEL_ANALYTICS_ID as string,
+		segment: string,
 		teamSubs = getTeamSubs();
+
+	page.subscribe((page) => {
+		const tempPage = page.url.pathname;
+		path = tempPage;
+		segment = tempPage.split('/')[1];
+	});
 
 	function parseContentScroll() {
 		drawerContentScrollY = drawercontent.scrollTop;
@@ -46,6 +65,7 @@
 		themeChange(false);
 		parseContentScroll();
 		parseSidebarScroll();
+		if (analyticsId) webVitals({ path, analyticsId });
 	});
 
 	afterNavigate(() => {

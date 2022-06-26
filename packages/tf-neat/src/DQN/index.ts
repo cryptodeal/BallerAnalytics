@@ -1,5 +1,5 @@
 import { train as trainer, sequential, layers, node } from '@tensorflow/tfjs-node';
-import * as hpjs from 'hyperparameters';
+import hpjs from 'hyperparameters';
 import { MovingAverager } from '../utils';
 import type {
 	Sequential,
@@ -8,7 +8,7 @@ import type {
 	SGDOptimizer,
 	AdamOptimizer
 } from '@tensorflow/tfjs-node';
-import { Agent } from './Agent';
+import type { Agent } from './Agent';
 import type { SummaryFileWriter } from '@tensorflow/tfjs-node/dist/tensorboard';
 
 export enum DQNOptimizers {
@@ -91,6 +91,37 @@ export const createDeepQNetwork = (
 	return model;
 };
 
+const tuneHyperparams = async ({ optimizer, learningRate }) => {
+	const optimizers: Record<DQNOptimizers, RMSPropFn | SGDFn | AdamFn> = {
+		rmsprop: trainer.rmsprop,
+		sgd: trainer.sgd,
+		adam: trainer.adam
+	};
+
+	/* create a simple model *
+	const model = tf.sequential();
+	model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+	// Prepare the model for training: Specify the loss and the optimizer.
+	model.compile({
+		loss: 'meanSquaredError',
+		optimizer: optimizers[optimizer](learningRate)
+	});
+	// train the model using the data.
+	const h = await model.fit(xs, ys, { epochs: 250 });
+	// print out each optimizer and its loss
+	console.log(
+		'opt: ',
+		optimizer,
+		', LR: ',
+		learningRate,
+		', loss: ',
+		h.history.loss[h.history.loss.length - 1]
+	);
+	// return the model, loss, and status
+	return { model, loss: h.history.loss[h.history.loss.length - 1], status: hpjs.STATUS_OK };
+*/
+};
+
 export async function train(
 	agent: Agent,
 	batchSize: number,
@@ -107,19 +138,6 @@ export async function train(
 		sgd: trainer.sgd,
 		adam: trainer.adam
 	};
-	const space = {
-		optimizer: hpjs.choice(['sgd', 'adam', 'rmsprop']),
-		learningRate: hpjs.loguniform(-7 * Math.log(10), -2 * Math.log(10))
-	};
-	async function optHyperparams({ optimizer, learningRate }) {
-		/* train agent on replay buffer w specified optimizer */
-		const loss = agent.trainOnReplayBatch(batchSize, gamma, optimizers[optimizer](learningRate));
-		// print out each optimizer and its loss
-		console.log('opt: ', optimizer, ', LR: ', learningRate, ', loss: ', loss);
-		// return the model, loss, and status
-		return { loss, status: hpjs.STATUS_OK };
-	}
-
 	let summaryWriter: SummaryFileWriter | null = null;
 	if (logDir != null) {
 		summaryWriter = node.summaryFileWriter(logDir);
@@ -129,21 +147,15 @@ export async function train(
 		agent.playStep();
 	}
 
-	const trials = await hpjs.fmin(optHyperparams, space, hpjs.search.randomSearch, 100, {
-		rng: new hpjs.RandomState(654321)
-	});
-	const opts = trials.argmin;
-	console.log('Best optimizer:', opts.optimizer, ', best learning rate:', opts.learningRate);
-
 	/* Moving Avagerager: cumulative reward across 100 most recent episodes */
 	const rewardAverager100 = new MovingAverager(100);
 
 	const optimizer = trainer.adam(learningRate);
-	//let tPrev = new Date().getTime();
-	//let frameCountPrev = agent.frameCount;
-	//let averageReward100Best = -Infinity;
+	let tPrev = new Date().getTime();
+	let frameCountPrev = agent.frameCount;
+	let averageReward100Best = -Infinity;
 
-	/*while (true) {
+	while (true) {
 		agent.trainOnReplayBatch(batchSize, gamma, optimizer);
 		const { cumulativeReward, done, milestone } = agent.playStep();
 		if (done || milestone === 13) {
@@ -168,7 +180,7 @@ export async function train(
 				summaryWriter.scalar('framesPerMin', framesPerMin, agent.frameCount);
 			}
 			if (averageReward100 >= cumulativeRewardThreshold || agent.frameCount >= maxNumFrames) {
-				// TODO: Save online network
+				/* TODO: Save online network */
 				break;
 			}
 
@@ -184,7 +196,7 @@ export async function train(
 			copyWeights(agent.targetNetwork, agent.onlineNetwork);
 			console.log("Sync'ed weights from online network to target network");
 		}
-	}*/
+	}
 }
 
 /**

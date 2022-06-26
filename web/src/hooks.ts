@@ -34,7 +34,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 	let refreshedAccessToken: string;
 
-	if (!cookies.accessToken && cookies.refreshToken) {
+	if (!cookies['accessToken'] && cookies['refreshToken']) {
 		refreshedAccessToken = await refreshAuth(cookies);
 	}
 
@@ -53,7 +53,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	const response = await resolve(event);
-	if (refreshedAccessToken) response.headers.set('set-cookie', refreshedAccessToken);
+
+	if (!cookies['accessToken'] && refreshedAccessToken) {
+		// if this is the first time the user has visited this app,
+		// set a cookie so that we recognise them when they return
+		response.headers.set('set-cookie', refreshedAccessToken);
+	}
 
 	/* TODO: pending see: https://github.com/sveltejs/kit/issues/4247
     if (prerendering && response.headers.get('content-type') === 'text/html') {
