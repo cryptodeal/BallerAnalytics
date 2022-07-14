@@ -25,14 +25,14 @@ const trainDQN = async () => {
 	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
 	const agent = new Agent(draft, {
 		replayBufferSize: 1e4,
-		epsilonInit: 0.5,
-		learningRate: 1e-5,
+		epsilonInit: 0.75,
+		learningRate: 1e-7,
 		epsilonFinal: 0.01,
 		epsilonDecayFrames: 1e5,
 		cachedOnlineNet
 	});
 
-	await train(agent, 32, 0.99, 1e3, 150, 1e6, 2.5e3, `${process.cwd()}/data/models/DQN`, null);
+	await train(agent, 64, 0.99, 1e3, 150, 1e6, 5e3, `${process.cwd()}/data/models/DQN`, null);
 };
 
 trainDQN();

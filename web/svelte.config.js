@@ -2,11 +2,7 @@ import adapter from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
-import Icons from 'unplugin-icons/vite';
-import ObjFileImport from 'unplugin-obj/vite';
-import MtlFileImport from 'unplugin-mtl/vite';
 import dotenv from 'dotenv';
-import path from 'path';
 
 dotenv.config();
 
@@ -27,29 +23,9 @@ const config = {
 	],
 	kit: {
 		adapter: adapter({ external: ['@napi-rs/*'] }),
-		vite: {
-			plugins: [
-				Icons({
-					compiler: 'svelte'
-				}),
-				ObjFileImport(),
-				MtlFileImport()
-			],
-			build: {
-				rollupOptions: {
-					inlineDynamicImports: false,
-					manualChunks: {
-						GLTFLoader: ['three/examples/jsm/loaders/GLTFLoader.js'],
-						KTX2Loader: ['three/examples/jsm/loaders/KTX2Loader.js']
-					}
-				}
-			},
-			resolve: {
-				alias: {
-					$models: path.resolve('src/models'),
-					$ml: path.resolve('src/ml')
-				}
-			}
+		alias: {
+			$models: 'src/models',
+			$ml: 'src/ml'
 		}
 	}
 };

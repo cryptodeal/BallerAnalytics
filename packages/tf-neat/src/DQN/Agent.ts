@@ -218,8 +218,5 @@ export class Agent {
 		optimizer.applyGradients(grads.grads);
 		dispose(grads);
 		/* TODO: Return the loss value here? */
-		const lossVal = lossFunction();
-		lossVal.print();
-		return lossVal.dataSync()[0];
 	}
 }
