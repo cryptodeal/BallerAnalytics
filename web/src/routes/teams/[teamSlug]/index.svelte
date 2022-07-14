@@ -25,7 +25,7 @@
 			const res = await fetch(apiUrl);
 			if (res.ok) {
 				const { team, players, games } = (await res.json()) as TeamPageInitData;
-				const seasonIdx = parseInt(url.searchParams.get('i'));
+				const seasonIdx = parseInt(url.searchParams.get('i') as string);
 				const seasons: SeasonList[] = [];
 				team.seasons.map((s) => {
 					const { season } = s;
@@ -113,10 +113,10 @@
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
 	const { hex: primaryColor, rgb: color1 } = getMainColor(
-		team.infoCommon.nbaAbbreviation
+		team.infoCommon.nbaAbbreviation as string
 	) as unknown as TeamColor;
 	const { hex: secondaryColor, rgb: color2 } = getSecondaryColor(
-		team.infoCommon.nbaAbbreviation
+		team.infoCommon.nbaAbbreviation as string
 	) as unknown as TeamColor;
 	const colorPalette = genPalette(Color(primaryColor), Color(secondaryColor), 5);
 	if (browser) {

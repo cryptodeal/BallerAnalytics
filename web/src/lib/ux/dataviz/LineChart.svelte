@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Chart, Grid, Svg, Quadtree, SvgLine, Point } from '@sveltejs/pancake/index.mjs';
+	import { Chart, Grid, Svg, Quadtree, SvgLine, Point } from '@sveltejs/pancake';
+
 	// import Circle from '$lib/ux/loading/Circle.svelte';
 	export let data: { x: number; y: number }[] = [],
 		yLabel = '',

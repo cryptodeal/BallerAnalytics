@@ -5,6 +5,12 @@ import MtlFileImport from 'unplugin-mtl/vite';
 
 /** @type {import('vite').UserConfig} */
 const config = {
+	ssr: {
+		noExternal: [
+			'three/examples/jsm/loaders/GLTFLoader.js',
+			'three/examples/jsm/loaders/KTX2Loader.js'
+		]
+	},
 	plugins: [
 		sveltekit(),
 		Icons({

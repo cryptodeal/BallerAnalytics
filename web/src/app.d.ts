@@ -1,5 +1,7 @@
 /// <reference types="@sveltejs/kit/types" />
 
+declare module '@sveltejs/pancake';
+
 declare namespace App {
 	interface Locals {
 		user?: {
