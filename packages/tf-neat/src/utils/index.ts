@@ -155,3 +155,57 @@ export class MovingAverager {
 		return (this.buffer as number[]).reduce((x, prev) => x + prev) / this.buffer.length;
 	}
 }
+
+export const weightedRandomItem = (
+	data: number[],
+	prob: Uint8Array | Float32Array | Int32Array | Array<number>
+) => {
+	/*
+    if(data.length !== prob.length) {
+      throw new Error('Data and probability arrays are not of same length');
+    }
+  */
+	const rand = seededRandom();
+	let threshold = 0;
+	const length = prob.length;
+	for (let i = 0; i < length; i++) {
+		threshold += prob[i];
+		if (threshold > rand) {
+			return data[i];
+		}
+	}
+};
+
+export const randomItem = (data: number[]) => {
+	const probs: number[] = [];
+	const length = data.length;
+	for (let i = 0; i < length; i++) {
+		probs.push(1 / length);
+	}
+	return weightedRandomItem(data, probs);
+};
+
+export const combinations = (
+	array: any[],
+	size: number,
+	output: any[][],
+	start = 0,
+	initialStuff: any[] = []
+) => {
+	if (initialStuff.length >= size) {
+		output.push(initialStuff);
+	} else {
+		let i;
+		for (i = start; i < array.length; ++i) {
+			combinations(array, size, output, i + 1, initialStuff.concat(array[i]));
+		}
+	}
+};
+
+export const ones = (taille: number) => {
+	return [...Array(taille)].map(Number.prototype.valueOf, 1);
+};
+
+export const argMax = (array: number[]) => {
+	return array.map((x, i) => [x, i]).reduce((r, a) => (a[0] > r[0] ? a : r))[1];
+};

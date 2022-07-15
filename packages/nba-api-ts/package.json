@@ -47,7 +47,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.130.0",
 		"cheerio": "^1.0.0-rc.12",
-		"cron": "^2.0.0",
+		"cron": "^2.1.0",
 		"cross-fetch": "^3.1.5",
 		"dayjs": "^1.11.3",
 		"dotenv": "^16.0.1",
@@ -60,7 +60,7 @@
 		"sportsdataverse": "^1.2.3"
 	},
 	"devDependencies": {
-		"@tsconfig/node14": "^1.0.3",
+		"@tsconfig/node16": "^1.0.3",
 		"@types/cheerio": "^0.22.31",
 		"@types/cron": "^2.0.0",
 		"@types/sharp": "^0.30.4",

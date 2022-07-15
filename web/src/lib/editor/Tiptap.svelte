@@ -3,7 +3,6 @@
 	import StarterKit from '@tiptap/starter-kit';
 	import cx from 'classnames';
 	import { createEditor, EditorContent, type Editor } from 'svelte-tiptap';
-	import H1 from '~icons/fluent/text-header-1-20-filled';
 	import type { Editor as CoreEditor } from '@tiptap/core';
 	import type { Readable } from 'svelte/store';
 

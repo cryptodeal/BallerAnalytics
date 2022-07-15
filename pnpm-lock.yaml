@@ -33,7 +33,7 @@ importers:
   packages/nba-api-ts:
     specifiers:
       '@aws-sdk/client-s3': ^3.130.0
-      '@tsconfig/node14': ^1.0.3
+      '@tsconfig/node16': ^1.0.3
       '@types/cheerio': ^0.22.31
       '@types/cron': ^2.0.0
       '@types/sharp': ^0.30.4
@@ -42,7 +42,7 @@ importers:
       c8: ^7.11.3
       chalk: ^5.0.1
       cheerio: ^1.0.0-rc.12
-      cron: ^2.0.0
+      cron: ^2.1.0
       cross-fetch: ^3.1.5
       dayjs: ^1.11.3
       dotenv: ^16.0.1
@@ -69,7 +69,7 @@ importers:
     dependencies:
       '@aws-sdk/client-s3': 3.130.0
       cheerio: 1.0.0-rc.12
-      cron: 2.0.0
+      cron: 2.1.0
       cross-fetch: 3.1.5
       dayjs: 1.11.3
       dotenv: 16.0.1
@@ -81,7 +81,7 @@ importers:
       sharp: 0.30.7
       sportsdataverse: 1.2.3
     devDependencies:
-      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
       '@types/cheerio': 0.22.31
       '@types/cron': 2.0.0
       '@types/sharp': 0.30.4
@@ -113,7 +113,7 @@ importers:
       '@tensorflow/tfjs-core': ^3.18.0
       '@tensorflow/tfjs-layers': ^3.18.0
       '@tensorflow/tfjs-node': ^3.18.0
-      '@tsconfig/node14': ^1.0.3
+      '@tsconfig/node16': ^1.0.3
       '@types/cytoscape': ^3.19.6
       '@types/deep-equal': ^1.0.1
       '@typescript-eslint/eslint-plugin': ^5.30.6
@@ -167,7 +167,7 @@ importers:
       vectorious: 6.1.4
     devDependencies:
       '@stdlib/types': 0.0.14
-      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
       '@types/cytoscape': 3.19.6
       '@types/deep-equal': 1.0.1
       '@typescript-eslint/eslint-plugin': 5.30.6_2vt5mtrqleafs33qg2bhpmbaqm
@@ -282,7 +282,7 @@ importers:
       '@balleranalytics/tf-neat': link:../packages/tf-neat
       '@iconify/json': 2.1.77
       '@sveltejs/adapter-vercel': 1.0.0-next.62
-      '@sveltejs/kit': 1.0.0-next.373_svelte@3.49.0+vite@3.0.0
+      '@sveltejs/kit': 1.0.0-next.375_svelte@3.49.0+vite@3.0.0
       '@sveltejs/pancake': 0.0.18
       '@tailwindcss/typography': 0.5.4_tailwindcss@3.1.6
       '@tensorflow/tfjs-backend-wasm': 3.18.0_br26fteayl44zj43fz4bazb7oq
@@ -1282,7 +1282,7 @@ packages:
     resolution: {integrity: sha512-ov6ALYD9xZSPoo5mmGOQtEC/b0xXeUlPy65p8aHMHLF4DfBEe8Y+iquH2lTDsy6Iskc1uMTadF+SVADTSTNJMA==}
     dependencies:
       '@esbuild-kit/core-utils': 2.1.0
-      get-tsconfig: 4.1.0
+      get-tsconfig: 4.2.0
     dev: true
 
   /@esbuild-kit/core-utils/2.1.0:
@@ -1296,7 +1296,7 @@ packages:
     resolution: {integrity: sha512-6x44rygVfNODm27v0RW3wX5y61mqSrXDvB39G0nomgWWqxG3mjiKtPSwrFppdkrA39QIqDgVlD4gJmPOxnleSw==}
     dependencies:
       '@esbuild-kit/core-utils': 2.1.0
-      get-tsconfig: 4.1.0
+      get-tsconfig: 4.2.0
     dev: true
 
   /@eslint/eslintrc/1.3.0:
@@ -1837,8 +1837,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.373_svelte@3.49.0+vite@3.0.0:
-    resolution: {integrity: sha512-xkxZyPYFzKQ3HZCt/HIVLbLVpR2TeTvhri+BuWLAUZVazaUHwhKQhkzAcljWX+8m7Ca4WdHpD4t3VeaIhXFMPA==}
+  /@sveltejs/kit/1.0.0-next.375_svelte@3.49.0+vite@3.0.0:
+    resolution: {integrity: sha512-9+gKm97TW/xIz6DfWOqdsIwGY4yckUkmMFlsJmEGkjcTy60Q6ZCfrQhMULzL/fILLydF0wZcD/fWE/urAbp2nw==}
     engines: {node: '>=16.9'}
     hasBin: true
     peerDependencies:
@@ -2238,8 +2238,8 @@ packages:
       typescript: 4.1.6
     dev: true
 
-  /@tsconfig/node14/1.0.3:
-    resolution: {integrity: sha512-ysT8mhdixWK6Hw3i1V2AeRqZ5WfXg1G43mqoYlM2nc6388Fq5jcXyr5mRsqViLx/GJYdoL0bfXD8nmF+Zn/Iow==}
+  /@tsconfig/node16/1.0.3:
+    resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
     dev: true
 
   /@types/cacheable-request/6.0.2:
@@ -2947,7 +2947,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001366
-      electron-to-chromium: 1.4.189
+      electron-to-chromium: 1.4.190
       node-releases: 2.0.6
       update-browserslist-db: 1.0.4_browserslist@4.21.2
     dev: true
@@ -3389,8 +3389,8 @@ packages:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
 
-  /cron/2.0.0:
-    resolution: {integrity: sha512-RPeRunBCFr/WEo7WLp8Jnm45F/ziGJiHVvVQEBSDTSGu6uHW49b2FOP2O14DcXlGJRLhwE7TIoDzHHK4KmlL6g==}
+  /cron/2.1.0:
+    resolution: {integrity: sha512-Hq7u3P8y7UWYvsZbSKHHJDVG0VO9O7tp2qljxzTScelcTODBfCme8AIhnZsFwmQ9NchZ3hr2uNr+s3DSms7q6w==}
     dependencies:
       luxon: 1.28.0
     dev: false
@@ -4009,8 +4009,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /electron-to-chromium/1.4.189:
-    resolution: {integrity: sha512-dQ6Zn4ll2NofGtxPXaDfY2laIa6NyCQdqXYHdwH90GJQW0LpJJib0ZU/ERtbb0XkBEmUD2eJtagbOie3pdMiPg==}
+  /electron-to-chromium/1.4.190:
+    resolution: {integrity: sha512-dDW9D5xT+ODGh9rlK2sQeJR0xgV1nrNn3/K4IV8k74QbmKN61dm5GKMSwerdpTpazrrkK6wwcgjGBoQ/Nx6L5A==}
     dev: true
 
   /emoji-regex/8.0.0:
@@ -4824,8 +4824,8 @@ packages:
       get-intrinsic: 1.1.2
     dev: false
 
-  /get-tsconfig/4.1.0:
-    resolution: {integrity: sha512-bhshxJhpfmeQ8x4fAvDqJV2VfGp5TfHdLpmBpNZZhMoVyfIrOippBW4mayC3DT9Sxuhcyl56Efw61qL28hG4EQ==}
+  /get-tsconfig/4.2.0:
+    resolution: {integrity: sha512-X8u8fREiYOE6S8hLbq99PeykTDoLVnxvF4DjWKJmz9xy2nNRdUcV8ZN9tniJFeKyTU3qnC9lL8n4Chd6LmVKHg==}
     dev: true
 
   /getpass/0.1.7:
@@ -7598,8 +7598,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /sucrase/3.23.0:
-    resolution: {integrity: sha512-xgC1xboStzGhCnRywlBf/DLmkC+SkdAKqrNCDsxGrzM0phR5oUxoFKiQNrsc2D8wDdAm03iLbSZqjHDddo3IzQ==}
+  /sucrase/3.24.0:
+    resolution: {integrity: sha512-SevqflhW356TKEyWjFHg2e5f3eH+5rzmsMJxrVMDvZIEHh/goYrpzDGA6APEj4ME9MdGm8oNgIzi1eF3c3dDQA==}
     engines: {node: '>=8'}
     hasBin: true
     dependencies:
@@ -8061,7 +8061,7 @@ packages:
       resolve-from: 5.0.0
       rollup: 2.76.0
       source-map: 0.8.0-beta.0
-      sucrase: 3.23.0
+      sucrase: 3.24.0
       tree-kill: 1.2.2
       typescript: 4.7.4
     transitivePeerDependencies:
