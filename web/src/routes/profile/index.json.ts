@@ -4,7 +4,7 @@ import { validateUserForm } from '$lib/functions/helpers';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { NewUserFormData, JWTPayload } from '$lib/types';
 
-export const get: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url }) => {
 	const userId = url.searchParams.get('userId');
 	if (!userId) throw Error('userId is required');
 
@@ -25,7 +25,7 @@ export const get: RequestHandler = async ({ url }) => {
 
 export type ProfilePostType = 'Add' | 'Update';
 
-export const post: RequestHandler = async (event) => {
+export const POST: RequestHandler = async (event) => {
 	const data = (await event.request.json()) as NewUserFormData;
 	if (data.consentTandC) {
 		const { valid, errors } = validateUserForm(data);

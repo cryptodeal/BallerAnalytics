@@ -1,7 +1,7 @@
 import { getPlayerBySlug } from '$lib/data/_db/controllers/player';
 import type { RequestHandler } from '@sveltejs/kit';
 
-export const get: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params }) => {
 	const { playerSlug } = params;
 
 	const playerData = await getPlayerBySlug(playerSlug);

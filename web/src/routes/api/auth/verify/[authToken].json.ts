@@ -9,7 +9,7 @@ type VerifyTokenParams = {
 	authToken: string;
 };
 
-export const get: RequestHandler<VerifyTokenParams> = async (event) => {
+export const GET: RequestHandler<VerifyTokenParams> = async (event) => {
 	const { authToken } = event.params;
 
 	const hashedToken = crypto.createHash('sha256').update(authToken).digest('hex');
@@ -49,4 +49,11 @@ export const get: RequestHandler<VerifyTokenParams> = async (event) => {
 			}
 		};
 	}
+
+	return {
+		status: 302,
+		headers: {
+			location: '/'
+		}
+	};
 };

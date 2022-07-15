@@ -10,7 +10,7 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('America/New_York');
 
-export const get: RequestHandler<BoxScoreLoadParams, BoxScoreBody> = async ({ params }) => {
+export const GET: RequestHandler<BoxScoreLoadParams, BoxScoreBody> = async ({ params }) => {
 	const { date, matchup } = params;
 	const boxscore = await loadBoxScore(date, matchup);
 

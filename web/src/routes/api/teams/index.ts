@@ -1,7 +1,7 @@
 import { loadHelperData } from '$lib/data/_db/controllers/team';
 import type { RequestHandler } from '@sveltejs/kit';
 
-export const get: RequestHandler = async () => {
+export const GET: RequestHandler = async () => {
 	const teams = await loadHelperData();
 
 	return {

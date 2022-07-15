@@ -12,7 +12,7 @@ export type ArticleIdxData = {
 	prefetch: boolean;
 };
 
-export const get: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url }) => {
 	const modules = import.meta.glob('./read/*.{md,svx,svelte.md}');
 
 	const postPromises: Promise<ArticleIdxData>[] = [];
@@ -27,7 +27,7 @@ export const get: RequestHandler = async ({ url }) => {
 	for (const [path, resolver] of Object.entries(modules)) {
 		const slug = slugFromPath(path);
 		const promise = resolver().then(
-			(post) =>
+			(post: any) =>
 				({
 					slug,
 					...post.metadata

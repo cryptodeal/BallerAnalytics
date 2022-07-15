@@ -9,7 +9,7 @@ dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.tz.setDefault('America/New_York');
 
-export const get: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url }) => {
 	const queryDate = url.searchParams.has('date')
 		? dayjs.tz(url.searchParams.get('date'), 'YYYY-MM-DD', 'America/New_York')
 		: dayjs().tz();

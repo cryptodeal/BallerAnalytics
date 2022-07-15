@@ -4,21 +4,25 @@ import dayjs from 'dayjs';
 import type { RequestHandler } from '@sveltejs/kit';
 import type { PostAuthBody } from '$lib/types';
 
-export const post: RequestHandler = async (event) => {
+export const POST: RequestHandler = async (event) => {
 	const { email } = (await event.request.json()) as PostAuthBody,
-		host = event.request.headers.get('host'),
-		ua = uaParser(event.request.headers.get('user-agent')),
+		host = event.request.headers.get('host') as string,
+		ua = uaParser(event.request.headers.get('user-agent') as string),
 		time = dayjs().format('DD MMMM, YYYY HH:mm:ss Z UTC');
 
-	const result = await sendAuthLink(email, ua, time, host);
+	if (
+		email.toLowerCase() === 'itshannahwilliams@gmail.com' ||
+		email.toLowerCase() === 'james.deal@balleranalytics.ai' ||
+		email.toLowerCase() === 'aslakrb@gmail.com'
+	) {
+		const result = await sendAuthLink(email, ua, time, host);
 
-	if (result == true) {
 		return {
-			status: 200
+			status: result == true ? 200 : 400
+		};
+	} else {
+		return {
+			status: 404
 		};
 	}
-
-	return {
-		status: 503
-	};
 };

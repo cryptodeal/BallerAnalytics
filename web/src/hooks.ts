@@ -7,6 +7,7 @@ import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 // import { prerendering } from '$app/env';
 
 import type { Handle, GetSession } from '@sveltejs/kit';
+import { expireTokens } from '$lib/functions/_api/auth/logout';
 
 /*
   const minification_options = {
@@ -32,7 +33,7 @@ import type { Handle, GetSession } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
 	await serverlessConnect(config.MONGO_URI);
 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
-	let refreshedAccessToken: string;
+	let refreshedAccessToken: undefined | string = undefined;
 
 	if (!cookies['accessToken'] && cookies['refreshToken']) {
 		refreshedAccessToken = await refreshAuth(cookies);
@@ -55,9 +56,19 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
 
 	if (!cookies['accessToken'] && refreshedAccessToken) {
-		// if this is the first time the user has visited this app,
-		// set a cookie so that we recognise them when they return
+		/**
+		 * if user has refreshToken, but accessToken is expired,
+		 * we can set a new accessToken using the existing refreshToken
+		 */
 		response.headers.set('set-cookie', refreshedAccessToken);
+	} else if (!cookies['accessToken'] && cookies['refreshToken']) {
+		/**
+		 * if !refreshedAccessToken, the user has a refreshToken set,
+		 * but it's not valid anymore (expired in backend); so we expire
+		 * the refreshToken entirely
+		 */
+		const { refreshToken } = expireTokens();
+		response.headers.set('set-cookie', refreshToken);
 	}
 
 	/* TODO: pending see: https://github.com/sveltejs/kit/issues/4247
