@@ -1,10 +1,12 @@
 import { ResizeObserver } from 'resize-observer';
 import darkMode from '$lib/data/stores/theme';
 
-let isDarkMode;
+let isDarkMode: boolean;
+
 darkMode.subscribe((value) => {
 	isDarkMode = value;
 });
+
 const mouseEventHandler = makeSendPropertiesHandler([
 	'ctrlKey',
 	'metaKey',
@@ -26,31 +28,31 @@ const keydownEventHandler = makeSendPropertiesHandler([
 	'keyCode'
 ]);
 
-function wheelEventHandler(event, sendFn) {
+function wheelEventHandler(event: WheelEvent, sendFn: any) {
 	event.preventDefault();
 	wheelEventHandlerImpl(event, sendFn);
 }
 
-function preventDefaultHandler(event) {
+function preventDefaultHandler(event: any) {
 	event.preventDefault();
 }
 
-function copyProperties(src, properties, dst) {
+function copyProperties(src: Record<string, any>, properties: any, dst: any) {
 	for (const name of properties) {
 		dst[name] = src[name];
 	}
 }
 
-function makeSendPropertiesHandler(properties) {
-	return function sendProperties(event, sendFn) {
+function makeSendPropertiesHandler(properties: any) {
+	return function sendProperties(event: any, sendFn: any) {
 		const data = { type: event.type };
 		copyProperties(event, properties, data);
 		sendFn(data);
 	};
 }
 
-function touchEventHandler(event: TouchEvent, sendFn) {
-	const touches = [];
+function touchEventHandler(event: TouchEvent, sendFn: any) {
+	const touches: any[] = [];
 	const data = { type: event.type, touches };
 	for (let i = 0; i < event.touches.length; i++) {
 		const touch = event.touches[i];
@@ -62,6 +64,8 @@ function touchEventHandler(event: TouchEvent, sendFn) {
 	sendFn(data);
 }
 
+type OrbitKeyVals = '37' | '38' | '39' | '40';
+
 // The four arrow keys
 const orbitKeys = {
 	'37': true, // left
@@ -69,9 +73,9 @@ const orbitKeys = {
 	'39': true, // right
 	'40': true // down
 };
-function filteredKeydownEventHandler(event, sendFn) {
+function filteredKeydownEventHandler(event: KeyboardEvent, sendFn: any) {
 	const { keyCode } = event;
-	if (orbitKeys[keyCode]) {
+	if (orbitKeys[keyCode.toString() as OrbitKeyVals]) {
 		event.preventDefault();
 		keydownEventHandler(event, sendFn);
 	}
@@ -85,11 +89,11 @@ class ElementProxy {
 		element: HTMLCanvasElement,
 		worker: Worker,
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		eventHandlers: Record<string, (event: Event, sendFn: (data: any) => void) => void>
+		eventHandlers: Record<string, (event: any, sendFn?: (data: any) => void) => void>
 	) {
 		this.id = nextProxyId++;
 		this.worker = worker;
-		const sendEvent = (data) => {
+		const sendEvent = (data: any) => {
 			this.worker.postMessage({
 				type: 'event',
 				id: this.id,

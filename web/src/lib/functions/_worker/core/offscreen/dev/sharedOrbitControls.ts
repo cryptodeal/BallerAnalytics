@@ -1,9 +1,10 @@
 import { Scene, WebGLRenderer, PerspectiveCamera, DirectionalLight, AmbientLight } from 'three';
+import type { Group } from 'three';
 import type { ElementProxyReceiver } from '../proxy/elementReceiver';
 import basketball from '$models/test.glb?url';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader';
 
 interface initData {
 	canvas: OffscreenCanvas;
@@ -13,7 +14,7 @@ interface initData {
 }
 
 export function init(data: initData) {
-	let group;
+	let group: Group;
 	const { canvas, inputElement, pixelRatio, darkMode } = data;
 
 	const renderer = new WebGLRenderer({
@@ -61,7 +62,7 @@ export function init(data: initData) {
 	const pickPosition = { x: -2, y: -2 };
 	clearPickPosition();
 
-	function resizeRendererToDisplaySize(renderer) {
+	function resizeRendererToDisplaySize(renderer: WebGLRenderer) {
 		const canvas = renderer.domElement;
 		const width = inputElement.clientWidth;
 		const height = inputElement.clientHeight;
@@ -94,7 +95,7 @@ export function init(data: initData) {
 
 	requestAnimationFrame(render);
 
-	function getCanvasRelativePosition(event) {
+	function getCanvasRelativePosition(event: any) {
 		const rect = inputElement.getBoundingClientRect();
 		return {
 			x: event.clientX - rect.left,
@@ -102,7 +103,7 @@ export function init(data: initData) {
 		};
 	}
 
-	function setPickPosition(event) {
+	function setPickPosition(event: TouchEvent | MouseEvent) {
 		const pos = getCanvasRelativePosition(event);
 		pickPosition.x = (pos.x / inputElement.clientWidth) * 2 - 1;
 		pickPosition.y = (pos.y / inputElement.clientHeight) * -2 + 1; // note we flip Y
@@ -123,7 +124,7 @@ export function init(data: initData) {
 
 	inputElement.addEventListener(
 		'touchstart',
-		(event) => {
+		(event: any) => {
 			// prevent the window from scrolling
 			event.preventDefault();
 			setPickPosition(event.touches[0]);
@@ -133,7 +134,7 @@ export function init(data: initData) {
 
 	inputElement.addEventListener(
 		'touchmove',
-		(event) => {
+		(event: any) => {
 			setPickPosition(event.touches[0]);
 		},
 		{ capture: true, passive: false }

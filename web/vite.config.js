@@ -1,10 +1,11 @@
 import Icons from 'unplugin-icons/vite';
+import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import ObjFileImport from 'unplugin-obj/vite';
 import MtlFileImport from 'unplugin-mtl/vite';
 
 /** @type {import('vite').UserConfig} */
-const config = {
+const config = defineConfig({
 	ssr: {
 		noExternal: [
 			'three/examples/jsm/loaders/GLTFLoader.js',
@@ -28,6 +29,6 @@ const config = {
 			}
 		}
 	}
-};
+});
 
 export default config;

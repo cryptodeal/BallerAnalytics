@@ -78,7 +78,8 @@ export class ControlsProxy {
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static copyProperties(src: any, properties: string[]): any {
-		const result = {};
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const result: Record<string, any> = {};
 		properties.forEach((key) => {
 			result[key] = src[key];
 		});
