@@ -22,7 +22,7 @@ const config = {
 		mdsvex(mdsvexConfig)
 	],
 	kit: {
-		adapter: adapter({ external: ['@napi-rs/*'] }),
+		adapter: adapter({ external: ['@napi-rs/*', 'mongoose-slugger-plugin'] }),
 		alias: {
 			$models: 'src/models',
 			$ml: 'src/ml'
