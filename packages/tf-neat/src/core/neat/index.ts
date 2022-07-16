@@ -100,8 +100,8 @@ export class Neat {
 			generation: this.generation,
 			highestFitness: this.highestFitness,
 			species: this.species.length,
-			connections: this.fittestGenome?.cxns.size,
-			nodes: this.fittestGenome?.nodes.size
+			connections: this.fittestGenome?.cxns.size || 0,
+			nodes: this.fittestGenome?.nodes.size || 0
 		};
 	}
 

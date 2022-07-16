@@ -9,9 +9,9 @@
 		duration = 30, // sec
 		loop = true, // false || float
 		delay = 0, // sec
-		parentSize,
+		parentSize: number,
 		size = 0,
-		self;
+		self: any;
 
 	$: reverse = direction === 'right' || direction === 'bottom';
 	$: horizontal = direction === 'left' || direction === 'right';

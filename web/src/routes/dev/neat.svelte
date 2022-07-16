@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FDG from '$lib/ux/dataviz/ForceDirectedGraph.svelte';
 	import { Genome, Neat, NodeType, TFGenome } from '@balleranalytics/tf-neat';
-	import { tensor } from '@tensorflow/tfjs';
+	import { tensor, type Tensor, type Rank } from '@tensorflow/tfjs';
 	import { onMount } from 'svelte';
 	import StatLabel from '$lib/ux/dataviz/StatLabel.svelte';
 	import { writable } from 'svelte/store';
@@ -27,10 +27,12 @@
 			currentSpecies = species;
 			currentCxns = connections;
 			currentNodes = nodes;
-			nodeData = neat.fittestGenome.getNodes().map(({ type, id, level, activation }) => {
-				return { type, id, label: level, activation };
-			});
-			cxnData = neat.fittestGenome
+			nodeData = (neat.fittestGenome as Genome)
+				.getNodes()
+				.map(({ type, id, level, activation }) => {
+					return { type, id, label: level, activation };
+				});
+			cxnData = (neat.fittestGenome as Genome)
 				.getConnections()
 				.map(({ enabled, innovation, inNodeId, outNodeId, weight }) => {
 					return {
@@ -61,7 +63,7 @@
 
 			const outputTensor = TFGenome.toTFGraph(gen, inputs)[0];
 
-			const mse = (preds, labels) => preds.sub(labels).square().mean();
+			const mse = (preds: Tensor<Rank>, labels: Tensor<Rank>) => preds.sub(labels).square().mean();
 			const fitness = -mse(outputTensor, tensor(labels)).dataSync()[0];
 
 			return fitness;

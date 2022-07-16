@@ -4,7 +4,12 @@
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
 	import type { Team2Object } from '@balleranalytics/nba-api-ts';
-	export let teams: Team2Object[];
+	type Team2ForceAbbrev = Team2Object & {
+		infoCommon: {
+			nbaAbbreviation: string;
+		};
+	};
+	export let teams: Team2ForceAbbrev[];
 </script>
 
 <MetaTags

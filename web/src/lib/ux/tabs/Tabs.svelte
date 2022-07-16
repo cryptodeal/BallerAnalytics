@@ -9,11 +9,11 @@
 	const tabs: HTMLElement[] = [];
 	const panels: HTMLElement[] = [];
 
-	const selectedTab = writable(null);
-	const selectedPanel = writable(null);
+	const selectedTab = writable<any>(null);
+	const selectedPanel = writable<any>(null);
 
 	setContext(TABS, {
-		registerTab: (tab) => {
+		registerTab: (tab: any) => {
 			tabs.push(tab);
 			selectedTab.update((current) => current || tab);
 
@@ -26,7 +26,7 @@
 			});
 		},
 
-		registerPanel: (panel) => {
+		registerPanel: (panel: any) => {
 			panels.push(panel);
 			selectedPanel.update((current) => current || panel);
 
@@ -39,7 +39,7 @@
 			});
 		},
 
-		selectTab: (tab) => {
+		selectTab: (tab: any) => {
 			const i = tabs.indexOf(tab);
 			selectedTab.set(tab);
 			selectedPanel.set(panels[i]);

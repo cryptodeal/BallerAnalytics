@@ -1,6 +1,5 @@
-import { getTeamBySlug } from '$lib/data/_db/controllers/team';
+import { getTeamBySlug, type TeamPageInitData } from '$lib/data/_db/controllers/team';
 import type { RequestHandler } from '@sveltejs/kit';
-import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
 import type { TeamSlugParams } from './types';
 
 export const GET: RequestHandler<TeamSlugParams, TeamPageInitData> = async ({ params, url }) => {

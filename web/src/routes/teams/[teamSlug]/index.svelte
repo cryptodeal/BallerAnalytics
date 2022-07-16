@@ -3,7 +3,7 @@
 	import type { SeasonList } from '$lib/types';
 	import type { TeamSlugParams } from './types';
 	import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
-	import type { get } from './index.json';
+	import type { GET } from './index.json';
 
 	type TeamPageLoadProps = TeamPageInitData & {
 		seasonIdx: number;
@@ -11,7 +11,7 @@
 		seasonYear: number;
 	};
 
-	type InputProps = NonNullable<Awaited<ReturnType<typeof get>>['body']>;
+	type InputProps = NonNullable<Awaited<ReturnType<typeof GET>>['body']>;
 
 	type OutputProps = TeamPageLoadProps & InputProps;
 

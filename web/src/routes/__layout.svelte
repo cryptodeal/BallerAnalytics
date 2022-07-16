@@ -34,9 +34,9 @@
 	const notifications = getNotificationsStore();
 	let success = false,
 		failed = false,
-		drawercontent,
+		drawercontent: any,
 		drawerContentScrollY = 0,
-		drawersidebar,
+		drawersidebar: any,
 		drawerSidebarScrollY = 0,
 		checked: boolean = '' as unknown as boolean,
 		analyticsId = import.meta.env.VERCEL_ANALYTICS_ID as string,
@@ -77,7 +77,7 @@
 		validationSchema: yup.object().shape({
 			email: yup.string().email().required()
 		}),
-		onSubmit: (values) => {
+		onSubmit: (values: any) => {
 			fetch('/api/auth.json', {
 				method: 'POST',
 				credentials: 'include',

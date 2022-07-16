@@ -17,7 +17,7 @@
 	dayjs.tz.setDefault('America/New_York');
 
 	const estDate = dayjs(game.date).tz();
-	let localTz;
+	let localTz: string;
 	$: if (browser) localTz = dayjs.tz.guess();
 </script>
 

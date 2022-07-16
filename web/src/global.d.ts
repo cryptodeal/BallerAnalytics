@@ -1,4 +1,4 @@
-/// <reference types="@sveltejs/kit" />
+/// <reference types="@sveltejs/kit/types" />
 /// <reference types="unplugin-icons/types/svelte" />
 
 declare module '*.svelte' {

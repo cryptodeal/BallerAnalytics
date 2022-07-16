@@ -1,6 +1,7 @@
 /// <reference types="@sveltejs/kit/types" />
 
 declare module '@sveltejs/pancake';
+declare module 'theme-change';
 
 declare namespace App {
 	interface Locals {
@@ -24,4 +25,8 @@ declare namespace App {
 	}
 
 	//interface Stuff {}
+}
+
+declare interface Navigator {
+	connection: NetworkInformation;
 }

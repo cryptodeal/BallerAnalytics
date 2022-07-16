@@ -1,7 +1,9 @@
 <script context="module" lang="ts">
 	import type { Load } from '@sveltejs/kit';
 	import type { Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
-	export const logoModules = import.meta.globEager('../../lib/ux/teams/assets/logo-*.svelte');
+	export const logoModules = import.meta.glob('../../lib/ux/teams/assets/logo-*.svelte', {
+		eager: true
+	});
 	export const load: Load = async ({ fetch, url }) => {
 		let apiUrl = `/games.json`;
 		if (url.searchParams.has('date')) {

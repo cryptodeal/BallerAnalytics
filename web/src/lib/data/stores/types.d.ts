@@ -68,7 +68,7 @@ export type DailyGame = {
 	};
 };
 
-export type DailyGames = { [key: string]: DailyGame };
+export type DailyGames = Record<string, DailyGame>;
 
 export type Typify<T> = { [K in keyof T]: Typify<T[K]> };
 

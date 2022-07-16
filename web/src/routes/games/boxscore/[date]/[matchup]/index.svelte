@@ -44,7 +44,7 @@
 	dayjs.extend(advancedFormat);
 	dayjs.tz.setDefault('America/New_York');
 	// $: console.log(boxscore);
-	let localTz;
+	let localTz: string;
 	$: if (browser) localTz = dayjs.tz.guess();
 	const estDate = dayjs(boxscore.date).tz();
 </script>

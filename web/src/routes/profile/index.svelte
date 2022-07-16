@@ -72,7 +72,7 @@
 		teamSubs.set(teamSubSelect);
 	}
 	let edit = false;
-	let dateString = new Date(user.birthdate);
+	let dateString = new Date(user.birthdate as Date);
 	$: user.birthdate = new Date(dateString);
 	$: sortedTeamSubs = $teamSubs.slice().sort((a, b) => (a.label > b.label ? 1 : -1));
 </script>
