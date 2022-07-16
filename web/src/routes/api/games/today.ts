@@ -6,9 +6,7 @@ export const GET: RequestHandler = async () => {
 	const todaysGames: DailyGames = await getTodaysGames();
 
 	return {
-		headers: {
-			'content-type': 'application/json'
-		},
+		status: 200,
 		body: {
 			todaysGames
 		}

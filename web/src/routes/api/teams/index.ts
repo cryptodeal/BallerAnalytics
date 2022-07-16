@@ -5,9 +5,7 @@ export const GET: RequestHandler = async () => {
 	const teams = await loadHelperData();
 
 	return {
-		headers: {
-			'content-type': 'application/json'
-		},
+		status: 200,
 		body: {
 			teams
 		}

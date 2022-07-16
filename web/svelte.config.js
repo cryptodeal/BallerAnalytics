@@ -22,7 +22,7 @@ const config = {
 		mdsvex(mdsvexConfig)
 	],
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({ external: ['@napi-rs/*'] }),
 		alias: {
 			$models: 'src/models',
 			$ml: 'src/ml'
