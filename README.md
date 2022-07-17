@@ -10,8 +10,11 @@ TODO
 
 | Package                                                                     | Changelog                                                     |
 | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [@balleranalytics/nba-api-ts](packages/nba-api-ts)                                               | |
-| [balleranalytics frontend](web)                                     | |
+| [@balleranalytics/nba-api-ts](packages/nba-api-ts)                          | |
+| [@balleranalytics/tf-neat](packages/tf-neat)                                | |
+| [balleranalytics frontend](web)                                             | |
+| [@balleranalytics/Bun_A3C (API Server)](Bun_A3C)                            | |
+
 
 
 ## Bug reporting
@@ -41,6 +44,20 @@ You should now be able to run [balleranalytics.ai locally](web) with:
 cd web
 pnpm dev
 ```
+
+## Developing Bun_A3C
+
+Bun is a new javascript/typescript runtime, with awesome performance optimizations built in; as such, it's fun to experiment with it in a project such as this.
+
+### Install Bun CLI v0.1.4 (beta)
+**(Required if not previously installed Bun)**
+
+macOS x64 & Silicon, Linux x64, Windows Subsystem for Linux
+```bash
+curl https://bun.sh/install | bash
+```
+
+**See [Bun_A3C](/Bun_A3C/README.md) for more information on developing**
 
 ### Coding style
 

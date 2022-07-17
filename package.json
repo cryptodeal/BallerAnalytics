@@ -8,7 +8,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "format": "turbo run format",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint && cd Bun_A3C && bun run lint && cd ..",
     "mtgen": "pnpm -r mtgen",
     "preview": "pnpm -r preview",
     "data:cleanup:sortSeasons": "pnpm -r data:cleanup:sortSeasons",
