@@ -1,14 +1,12 @@
 import { Database } from 'bun:sqlite';
-import { BEST_SCORE_TABLE, DB_NAME, GMA_TABLE, QUEUE_TABLE } from '../const';
+import { BEST_SCORE_TABLE, GMA_TABLE, QUEUE_TABLE, GLOBAL_EPISODE_TABLE } from '../const';
 
-export const db = new Database(DB_NAME + '.sqlite');
-
-/* drop tables if they exist */
-await db.exec(`DROP TABLE IF EXISTS ${GMA_TABLE}`);
-await db.exec(`DROP TABLE IF EXISTS ${BEST_SCORE_TABLE}`);
-await db.exec(`DROP TABLE IF EXISTS ${QUEUE_TABLE}`);
+export const db = new Database();
 
 /* create tables */
+await db.exec(
+	`CREATE TABLE ${GMA_TABLE} (id INTEGER PRIMARY KEY AUTOINCREMENT, GLOBAL_MOVING_AVERAGE INTEGER)`
+);
 await db.exec(
 	`CREATE TABLE ${GMA_TABLE} (id INTEGER PRIMARY KEY AUTOINCREMENT, GLOBAL_MOVING_AVERAGE INTEGER)`
 );
@@ -36,6 +34,9 @@ export const addToBestScoreDb = db.prepare(
 	`INSERT INTO ${BEST_SCORE_TABLE} (BEST_SCORE) VALUES (?)`
 );
 export const addToQueueDb = db.prepare(`INSERT INTO ${QUEUE_TABLE} (VALUE, ORDER) VALUES (?)`);
+export const addToGlobalEpisodeDb = db.prepare(
+	`INSERT INTO ${GLOBAL_EPISODE_TABLE} (GLOBAL_EPISODE) VALUES (?)`
+);
 export const getQueue = db.prepare(`SELECT * FROM ${QUEUE_TABLE}`);
 
 /* utility functions */

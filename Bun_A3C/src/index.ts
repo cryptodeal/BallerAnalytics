@@ -1,6 +1,14 @@
 import { Hono } from 'hono';
-import { db, addToGMADb, addToBestScoreDb, addToQueueDb, resetQueue, getQueue } from './db';
-import { APIResponseStatus, GMA_TABLE, BEST_SCORE_TABLE, QUEUE_TABLE } from './const';
+import { serveStatic } from 'hono/serve-static.bun';
+import { db, addToGMADb, addToBestScoreDb, addToGlobalEpisodeDb, resetQueue } from './db';
+import {
+	APIResponseStatus,
+	GMA_TABLE,
+	BEST_SCORE_TABLE,
+	QUEUE_TABLE,
+	GLOBAL_EPISODE_TABLE
+} from './const';
+import { write, file, FileBlob } from 'bun';
 
 const port = process.env.PORT || 3000;
 const app = new Hono();
@@ -29,10 +37,10 @@ app.post('/global_moving_average', async (c) => {
 app.get('/global_moving_average', async (c) => {
 	console.log('Get global moving average');
 	/* only select first row */
-	const data = await (<{ GLOBAL_MOVING_AVERAGE: number }>(
-		db.prepare(`SELECT * FROM ${GMA_TABLE}`).get()
-	));
-	return c.json({ status: APIResponseStatus.SUCCESS, data });
+	return c.json({
+		status: APIResponseStatus.SUCCESS,
+		data: <{ GLOBAL_MOVING_AVERAGE: number }>db.prepare(`SELECT * FROM ${GMA_TABLE}`).get()
+	});
 });
 
 app.post('/best_score', async (c) => {
@@ -41,13 +49,12 @@ app.post('/best_score', async (c) => {
 	/* only select first row */
 	const exists = await db.prepare(`SELECT * FROM ${BEST_SCORE_TABLE}`).get();
 	if (exists) {
-		await db.exec(
+		db.exec(
 			`UPDATE ${BEST_SCORE_TABLE} SET GLOBAL_MOVING_AVERAGE = ${data} WHERE id = ${exists.id}`
 		);
 	} else {
 		addToBestScoreDb.run(data);
 	}
-
 	// TODO: Verify whether this is best status code
 	c.status(202);
 	return c.json({ status: APIResponseStatus.SUCCESS });
@@ -111,16 +118,61 @@ app.get('/queue', async (c) => {
 
 app.post('/local_model_weights', async (c) => {
 	console.log('Saving local model into global model...');
-	const { data, temporary } = <{ data: number | string; temporary: any }>await c.req.parseBody();
-	/* TODO: FIX BELOW
-    if (temporary) {
-      fs.writeFileSync(__dirname + '/temporary-global-model/weights.bin', data, 'binary');
-    } else {
-      fs.writeFileSync(__dirname + '/global-model/weights.bin', data, 'binary');
-    }
-  */
+	const { data_actor, data_critic, temporary } = <
+		{ data_actor: BinaryData; data_critic: BinaryData; temporary: any }
+	>await c.req.parseBody();
+	if (temporary) {
+		write('/temporary-global-model-actor/weights.bin', new Blob([data_actor]));
+		write('/temporary-global-model-critic/weights.bin', new Blob([data_critic]));
+	} else {
+		write('/global-model-actor/weights.bin', new Blob([data_actor]));
+		write('/global-model-critic/weights.bin', new Blob([data_critic]));
+	}
+
+	c.status(200);
 	return c.json({ status: APIResponseStatus.SUCCESS });
 });
+
+app.get('/global_model_weights_actor', serveStatic({ root: './global-model-actor/weights.bin' }));
+
+app.get('/global_model_weights_actor', serveStatic({ root: './global-model-critic/weights.bin' }));
+
+app.post('/global_episode', async (c) => {
+	console.log('Updating global moving average');
+	/* get first and only row */
+	const exists = <{ GLOBAL_EPISODE: number; id: number }>(
+		await db.prepare(`SELECT * FROM ${GLOBAL_EPISODE_TABLE}`).get()
+	);
+	let data: number;
+	if (!exists) {
+		addToGlobalEpisodeDb.run(1);
+	} else {
+		db.exec(
+			`UPDATE ${GLOBAL_EPISODE_TABLE} SET GLOBAL_MOVING_AVERAGE = ${data} WHERE id = ${exists.id}`
+		);
+	}
+
+	c.status(200);
+	return c.json({ status: APIResponseStatus.SUCCESS });
+});
+
+app.get('/global_episode', async (c) => {
+	console.log('Get global moving average');
+	const { GLOBAL_EPISODE: data } = <{ GLOBAL_EPISODE: number; id: number }>(
+		await db.prepare(`SELECT * FROM ${GLOBAL_EPISODE_TABLE}`).get()
+	);
+
+	c.status(200);
+	return c.json({ status: APIResponseStatus.SUCCESS, data });
+});
+
+/* TODO: add workers tokens table to sqllite3 db */
+app.get('/worker_done', async (c) => {
+	console.log('Piping token from workers list');
+	const data: FileBlob = file('workers_tokens.txt');
+	return c.json({ status: APIResponseStatus.SUCCESS, data });
+});
+
 console.log(`Running at http://localhost:${port}`);
 
 export default {
