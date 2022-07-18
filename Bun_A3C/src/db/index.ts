@@ -1,5 +1,11 @@
 import { Database } from 'bun:sqlite';
-import { BEST_SCORE_TABLE, GMA_TABLE, QUEUE_TABLE, GLOBAL_EPISODE_TABLE } from '../const';
+import {
+	BEST_SCORE_TABLE,
+	GMA_TABLE,
+	QUEUE_TABLE,
+	GLOBAL_EPISODE_TABLE,
+	WORKER_TOKENS_TABLE
+} from '../const';
 
 export const db = new Database();
 
@@ -14,6 +20,9 @@ await db.exec(
 	`CREATE TABLE ${BEST_SCORE_TABLE} (id INTEGER PRIMARY KEY AUTOINCREMENT, BEST_SCORE INTEGER)`
 );
 await db.exec(`CREATE TABLE ${QUEUE_TABLE} (id INTEGER PRIMARY KEY AUTOINCREMENT, VALUE TEXT)`);
+await db.exec(
+	`CREATE TABLE ${WORKER_TOKENS_TABLE} (id INTEGER PRIMARY KEY AUTOINCREMENT, TOKEN TEXT)`
+);
 
 /* create initial record valus */
 await db.exec(`INSERT INTO ${GMA_TABLE} (GLOBAL_MOVING_AVERAGE) VALUES ($GLOBAL_MOVING_AVERAGE)`, {

@@ -6,7 +6,8 @@ import {
 	GMA_TABLE,
 	BEST_SCORE_TABLE,
 	QUEUE_TABLE,
-	GLOBAL_EPISODE_TABLE
+	GLOBAL_EPISODE_TABLE,
+	WORKER_TOKENS_TABLE
 } from './const';
 import { write, file, FileBlob } from 'bun';
 
@@ -104,7 +105,7 @@ app.get('/queue', async (c) => {
 	);
 	const { VALUE, id } = exists;
 	if (VALUE.length === 1 && VALUE[0] === '') {
-		return c.json({ status: APIResponseStatus.FAIL, data: NaN, err: 'No data in queue' });
+		return c.json({ status: APIResponseStatus.FAIL, err: 'No data in queue' });
 	}
 	const elem_pop = VALUE[0];
 	let str = '';
@@ -169,8 +170,38 @@ app.get('/global_episode', async (c) => {
 /* TODO: add workers tokens table to sqllite3 db */
 app.get('/worker_done', async (c) => {
 	console.log('Piping token from workers list');
-	const data: FileBlob = file('workers_tokens.txt');
-	return c.json({ status: APIResponseStatus.SUCCESS, data });
+	const { TOKEN } = <{ TOKEN: string }>(
+		await db.prepare(`SELECT * FROM ${WORKER_TOKENS_TABLE}`).get()
+	);
+	if (TOKEN.length === 1 && TOKEN[0] === '') {
+		return c.json({ status: APIResponseStatus.FAIL, err: 'No data in queue' });
+	}
+	const elem_pop = TOKEN[0];
+	let str = '';
+	const length = TOKEN.length;
+	for (let i = 1; i < length; i++) {
+		str += TOKEN[i] + '\n';
+	}
+	await db.exec(`UPDATE ${QUEUE_TABLE} SET VALUE = ${str} WHERE id = ${1}`);
+
+	return c.json({ status: APIResponseStatus.SUCCESS, data: elem_pop });
+});
+
+app.get('/workers_status', async (c) => {
+	console.log(`Checking workers status`);
+	const { TOKEN: workers } = <{ TOKEN: string }>(
+		(await db.prepare(`SELECT * FROM ${WORKER_TOKENS_TABLE}`).get()).split('\n')
+	);
+	if (workers.length === 1 && workers[0] === '') {
+		return c.json({ status: APIResponseStatus.SUCCESS, data: 'done' });
+	} else {
+		return c.json({ status: APIResponseStatus.SUCCESS, data: workers.length });
+	}
+});
+
+app.get('/worker_started', async (c) => {
+	db.exec(`UPDATE ${WORKER_TOKENS_TABLE} SET VALUE = 1\n WHERE id = ${1}`);
+	return c.json({ status: APIResponseStatus.SUCCESS });
 });
 
 console.log(`Running at http://localhost:${port}`);

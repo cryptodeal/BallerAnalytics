@@ -7,3 +7,4 @@ export const GMA_TABLE = `${DB_NAME}_GMA`;
 export const QUEUE_TABLE = `${DB_NAME}_QUEUE`;
 export const BEST_SCORE_TABLE = `${DB_NAME}_BEST_SCORE`;
 export const GLOBAL_EPISODE_TABLE = `${DB_NAME}_GLOBAL_EPISODE`;
+export const WORKER_TOKENS_TABLE = `${DB_NAME}_WORKER_TOKENS`;
