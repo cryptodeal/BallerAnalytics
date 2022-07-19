@@ -9,7 +9,7 @@ import {
 	GLOBAL_EPISODE_TABLE,
 	WORKER_TOKENS_TABLE
 } from './const';
-import { write, file, FileBlob } from 'bun';
+import { write } from 'bun';
 
 const port = process.env.PORT || 3000;
 const app = new Hono();
