@@ -104,7 +104,7 @@ export const createQueue = () => {
 		});
 };
 
-export const writeQueue = (data: number) => {
+export const writeQueue = (data: number | string) => {
 	return fetch(APIBaseURI + '/queue', {
 		method: 'POST',
 		headers: {
