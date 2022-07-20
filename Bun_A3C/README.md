@@ -30,6 +30,4 @@ bun run src/index.ts
 
 Open http://localhost:3000 with your browser to see the result.
 
-**N.B. The client side logic (API, Agent/Critic, etc.) will live in [@balleranalytics/tf-neat](../packages/tf-neat/src/A3C/)**
-*Refer to the above directory for further info/code*
-
+**N.B. The client side logic (API, Agent/Critic, etc.) has moved to [Client](/src/Client/)**
