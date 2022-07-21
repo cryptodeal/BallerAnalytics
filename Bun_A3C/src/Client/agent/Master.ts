@@ -43,8 +43,8 @@ export class MasterAgent {
 	}
 
 	public async train() {
-		createQueue();
-		const reward_plotting = {};
+		await createQueue();
+		const reward_plotting: Record<number, number> = {};
 		const workers = await getWorkersHostNames();
 		await (async () => {
 			const { isExecuted } = await exec([import.meta.dir + '/init_files.sh']);
@@ -56,14 +56,14 @@ export class MasterAgent {
 
 		for (let i = 0; i < workers.length; i++) {
 			console.log('Starting worker ' + i);
-			startWorker(workers[i]);
+			await startWorker(workers[i]);
 		}
 
-		const moving_avg_rewards = [];
+		const moving_avg_rewards: number[] = [];
 		let i = 0;
 		while (true) {
 			const reward = await getBlockingQueue();
-			if (reward !== 'done') {
+			if (typeof reward === 'number') {
 				console.log('Pulled new data from queue : ' + reward);
 				moving_avg_rewards.push(reward);
 				reward_plotting[i] = moving_avg_rewards[i];
