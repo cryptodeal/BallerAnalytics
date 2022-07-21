@@ -5,3 +5,8 @@ export { CxnGene } from './core/neat/gene/Connection';
 export { NodeType } from './core/neat/gene';
 export { NodeGene } from './core/neat/gene/Node';
 export { Neat } from './core/neat';
+export { Env } from './A2C_Experiment/Env';
+export { Entity } from './A2C_Experiment/Entity';
+export { Actor_Critic_Agent } from './A2C_Experiment/AC_Agent';
+export * from './A2C_Experiment/const';
+export { seededRandom } from './utils';

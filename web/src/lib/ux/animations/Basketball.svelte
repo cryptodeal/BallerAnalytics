@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Clock, WebGLRenderer } from 'three';
+	import transcodeWasmPath from '$lib/functions/basis_transcoder.wasm?url';
+	import trnscodeJsPath from '$lib/functions/basis_transcoder.js?url';
+	import { Clock, Group, WebGLRenderer } from 'three';
 	import {
 		AmbientLight,
 		Canvas,
@@ -12,12 +14,13 @@
 	import basketball from '$models/test.glb?url';
 	import darkMode from '$lib/data/stores/theme';
 	import { onMount } from 'svelte';
+	import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
 
-	let object,
+	let object: Group,
 		clock = new Clock(),
 		time = 0,
 		delta = 0,
-		ballYRotation,
+		ballYRotation: number,
 		width = 1,
 		height = 1;
 
@@ -27,13 +30,13 @@
 		loadGlb(GLTFLoader, KTX2Loader);
 	});
 
-	function loadGlb(GLTFLoader, KTX2Loader) {
+	function loadGlb(GLTFLoader: any, KTX2Loader: any) {
 		const ktx2Loader = new KTX2Loader()
-			.setTranscoderPath('/scripts/')
+			.setTranscoderPath(trnscodeJsPath.split('/').slice(0, -1).join('/') + '/')
 			.detectSupport(new WebGLRenderer());
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
-		loader.load(basketball, function (gltf) {
+		loader.load(basketball, function (gltf: GLTF) {
 			object = gltf.scene;
 		});
 	}
@@ -49,7 +52,7 @@
 	<Canvas
 		antialias={true}
 		alpha={true}
-		background={null}
+		background={undefined}
 		{height}
 		{width}
 		failIfMajorPerformanceCaveat={true}

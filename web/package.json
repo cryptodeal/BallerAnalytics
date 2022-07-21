@@ -17,7 +17,7 @@
 		"@balleranalytics/nba-api-ts": "workspace:0.1.0",
 		"@balleranalytics/tf-neat": "workspace:0.0.1",
 		"@iconify/json": "^2.1.80",
-		"@sveltejs/adapter-vercel": "1.0.0-next.62",
+		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@sveltejs/pancake": "^0.0.18",
 		"@tailwindcss/typography": "^0.5.4",

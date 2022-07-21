@@ -8,6 +8,7 @@ import MtlFileImport from 'unplugin-mtl/vite';
 const config = defineConfig({
 	ssr: {
 		noExternal: [
+			'three',
 			'three/examples/jsm/loaders/GLTFLoader.js',
 			'three/examples/jsm/loaders/KTX2Loader.js'
 		]

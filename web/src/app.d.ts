@@ -1,4 +1,6 @@
 /// <reference types="@sveltejs/kit/types" />
+/// <reference types="unplugin-mtl/mtl" />
+/// <reference types="unplugin-obj/obj" />
 
 declare module '@sveltejs/pancake';
 declare module 'theme-change';
