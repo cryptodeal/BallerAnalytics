@@ -12,6 +12,8 @@
     "eslint-plugin-prettier": "^4.2.1"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^3.18.0",
+    "@tensorflow/tfjs-node": "^3.18.0",
     "bun-utilities": "^0.1.5",
     "hono": "^2.0.1",
     "minimist": "^1.2.6"

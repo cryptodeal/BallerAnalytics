@@ -1,5 +1,4 @@
-import type { TeamOpts } from '../tasks/types';
-import { DQNPlayer } from '@balleranalytics/nba-api-ts';
+import type { TeamOpts } from '.';
 
 export type OppPositions = 'pg' | 'sg' | 'sf' | 'pf' | 'c' | 'g' | 'f';
 export type OppRosterSlots = OppPositions | ('util' | 'be');
@@ -14,9 +13,9 @@ export enum PositionsIdxs {
 }
 
 export class DraftOpp {
-	public roster: Record<OppRosterSlots, (DQNPlayer | null)[]>;
+	public roster: Record<OppRosterSlots, (any | null)[]>;
 	public pickSlot!: number;
-	public players: DQNPlayer[] = [];
+	public players: any[] = [];
 
 	constructor(opts: TeamOpts, pickSlot: number) {
 		const { pg, sg, sf, pf, c, g, f, util, be } = opts;
@@ -87,7 +86,7 @@ export class DraftOpp {
 		return this.roster[position].findIndex((p) => p === null);
 	};
 
-	public makeDraftPick = (player: DQNPlayer, position: PositionsIdxs) => {
+	public makeDraftPick = (player: any, position: PositionsIdxs) => {
 		switch (position) {
 			case PositionsIdxs.PG:
 				this.roster.pg[this.findNullIdx('pg')] = player;

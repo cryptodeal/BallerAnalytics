@@ -25,7 +25,7 @@ export class MasterAgent {
 	}
 
 	public async init() {
-		this.name = 'SmartbotJs-env'; //stylé
+		this.name = 'Bun_A3C-env';
 		this.env = environment.EnvironmentController(1500);
 		await this.env.init_env();
 
