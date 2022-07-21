@@ -13,7 +13,7 @@ importers:
       lint-staged: ^13.0.3
       prettier: ^2.7.1
       tsm: ^2.2.2
-      turbo: ^1.3.1
+      turbo: ^1.3.3
       typescript: ^4.7.4
       uvu: ^0.5.6
     devDependencies:
@@ -26,7 +26,7 @@ importers:
       lint-staged: 13.0.3
       prettier: 2.7.1
       tsm: 2.2.2
-      turbo: 1.3.1
+      turbo: 1.3.3
       typescript: 4.7.4
       uvu: 0.5.6
 
@@ -192,7 +192,7 @@ importers:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:0.1.0
       '@balleranalytics/tf-neat': workspace:0.0.1
-      '@iconify/json': ^2.1.79
+      '@iconify/json': ^2.1.80
       '@sveltejs/adapter-vercel': 1.0.0-next.62
       '@sveltejs/kit': next
       '@sveltejs/pancake': ^0.0.18
@@ -208,7 +208,7 @@ importers:
       '@types/d3-drag': ^3.0.1
       '@types/d3-force': ^3.0.3
       '@types/d3-scale': ^4.0.2
-      '@types/d3-selection': ^3.0.2
+      '@types/d3-selection': ^3.0.3
       '@types/d3-zoom': ^3.0.1
       '@types/jsonwebtoken': ^8.5.8
       '@types/node': ^16.11.45
@@ -231,7 +231,7 @@ importers:
       d3-scale: ^4.0.2
       d3-selection: ^3.0.0
       d3-zoom: ^3.0.0
-      daisyui: ^2.19.0
+      daisyui: ^2.19.1
       date-picker-svelte: ^2.0.0
       dayjs: ^1.11.4
       dotenv: ^16.0.1
@@ -280,9 +280,9 @@ importers:
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
-      '@iconify/json': 2.1.79
+      '@iconify/json': 2.1.80
       '@sveltejs/adapter-vercel': 1.0.0-next.62
-      '@sveltejs/kit': 1.0.0-next.384_svelte@3.49.0+vite@3.0.2
+      '@sveltejs/kit': 1.0.0-next.386_svelte@3.49.0+vite@3.0.2
       '@sveltejs/pancake': 0.0.18
       '@tailwindcss/typography': 0.5.4_tailwindcss@3.1.6
       '@tensorflow/tfjs-backend-wasm': 3.18.0_br26fteayl44zj43fz4bazb7oq
@@ -296,7 +296,7 @@ importers:
       '@types/d3-drag': 3.0.1
       '@types/d3-force': 3.0.3
       '@types/d3-scale': 4.0.2
-      '@types/d3-selection': 3.0.2
+      '@types/d3-selection': 3.0.3
       '@types/d3-zoom': 3.0.1
       '@types/jsonwebtoken': 8.5.8
       '@types/node': 16.11.45
@@ -319,7 +319,7 @@ importers:
       d3-scale: 4.0.2
       d3-selection: 3.0.0
       d3-zoom: 3.0.0
-      daisyui: 2.19.0_ugi4xkrfysqkt4c4y6hkyfj344
+      daisyui: 2.19.1_ugi4xkrfysqkt4c4y6hkyfj344
       date-picker-svelte: 2.0.0
       dayjs: 1.11.4
       dotenv: 16.0.1
@@ -1331,8 +1331,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.79:
-    resolution: {integrity: sha512-4jCX9hRhZmJqeUQ+gTVH867FYdUvBkIZ4UYwWstHXPMIuCVsfqXy5OZn8wDIkEYfvfNy+s1m28/g4PSrWzdUtg==}
+  /@iconify/json/2.1.80:
+    resolution: {integrity: sha512-uVZrqT4A4MbbSJRu6R4MCzw5eFR322Wf/HHL6wlWr6dqCtFhIJgdPc6ailCPJ/IJn3fF/ESgMHizjDTsBv4m1Q==}
     dependencies:
       '@iconify/types': 1.1.0
       pathe: 0.3.2
@@ -1779,7 +1779,7 @@ packages:
       '@stdlib/error': github.com/stdlib-js/error/5cddb57368b1b7cb276dcfdfae29fff9177dd11c
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
       '@stdlib/namespace': github.com/stdlib-js/namespace/d369f5969e87c8f36515a84489b0406d5d86bc9a_virtual-dom@2.1.1
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
@@ -1794,7 +1794,7 @@ packages:
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
       '@stdlib/repl': github.com/stdlib-js/repl/fed2484d10ad0c9f38abfc516410c7adbbf41d7c_virtual-dom@2.1.1
       '@stdlib/simulate': github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7
-      '@stdlib/stats': github.com/stdlib-js/stats/7d1a932759c1eaec37aa9d90d7c66182f9cfbb14
+      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -1837,8 +1837,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.384_svelte@3.49.0+vite@3.0.2:
-    resolution: {integrity: sha512-m1i9dhma1JAuDYp8nrPyqsN6VWv/ye90h6mWQvAC3lCNmKlb4F8cxhMYIhGYgzaZYSqToNiTaK2QRVPuB4i2/g==}
+  /@sveltejs/kit/1.0.0-next.386_svelte@3.49.0+vite@3.0.2:
+    resolution: {integrity: sha512-7Olw/QoZ0lvcjRqMNnR8vM7FCy8NN6NwNEhWTO8/J39yR6li1Q0aV0vW4Fh/7LetoVtyZqEyrqaUypgmbeH9rQ==}
     engines: {node: '>=16.9'}
     hasBin: true
     peerDependencies:
@@ -2295,7 +2295,7 @@ packages:
   /@types/d3-drag/3.0.1:
     resolution: {integrity: sha512-o1Va7bLwwk6h03+nSM8dpaGEYnoIG19P0lKqlic8Un36ymh9NSkNFX1yiXMKNMx8rJ0Kfnn2eovuFaL6Jvj0zA==}
     dependencies:
-      '@types/d3-selection': 3.0.2
+      '@types/d3-selection': 3.0.3
     dev: true
 
   /@types/d3-force/3.0.3:
@@ -2314,8 +2314,8 @@ packages:
       '@types/d3-time': 3.0.0
     dev: true
 
-  /@types/d3-selection/3.0.2:
-    resolution: {integrity: sha512-d29EDd0iUBrRoKhPndhDY6U/PYxOWqgIZwKTooy2UkBfU7TNZNpRho0yLWPxlatQrFWk2mnTu71IZQ4+LRgKlQ==}
+  /@types/d3-selection/3.0.3:
+    resolution: {integrity: sha512-Mw5cf6nlW1MlefpD9zrshZ+DAWL4IQ5LnWfRheW6xwsdaWOb6IRRu2H7XPAQcyXEx1D7XQWgdoKR83ui1/HlEA==}
     dev: true
 
   /@types/d3-time/3.0.0:
@@ -2326,7 +2326,7 @@ packages:
     resolution: {integrity: sha512-7s5L9TjfqIYQmQQEUcpMAcBOahem7TRoSO/+Gkz02GbMVuULiZzjF2BOdw291dbO2aNon4m2OdFsRGaCq2caLQ==}
     dependencies:
       '@types/d3-interpolate': 3.0.1
-      '@types/d3-selection': 3.0.2
+      '@types/d3-selection': 3.0.3
     dev: true
 
   /@types/deep-equal/1.0.1:
@@ -3668,8 +3668,8 @@ packages:
       d3-transition: 3.0.1_d3-selection@3.0.0
     dev: true
 
-  /daisyui/2.19.0_ugi4xkrfysqkt4c4y6hkyfj344:
-    resolution: {integrity: sha512-lLOz4cHm3xpm0AfdFojDFrhiDu4hZTdEbcVJri+KzQn1HvxmZS4STVujn8tV4RQXjchGdnIsXFqxd6F7rVZBiA==}
+  /daisyui/2.19.1_ugi4xkrfysqkt4c4y6hkyfj344:
+    resolution: {integrity: sha512-qExtDCp7N3F0Nlt7oVVehP1QMulbav8dXmEo66wavVxLVIf5tM4cV0F2Oi0OO0drzaez9v1LjBzk/vHMESs/lw==}
     peerDependencies:
       autoprefixer: ^10.0.2
       postcss: ^8.1.6
@@ -6918,7 +6918,7 @@ packages:
     dependencies:
       prosemirror-state: 1.4.1
       prosemirror-transform: 1.6.0
-      prosemirror-view: 1.26.5
+      prosemirror-view: 1.27.0
     dev: true
 
   /prosemirror-gapcursor/1.3.0:
@@ -6927,7 +6927,7 @@ packages:
       prosemirror-keymap: 1.2.0
       prosemirror-model: 1.18.1
       prosemirror-state: 1.4.1
-      prosemirror-view: 1.26.5
+      prosemirror-view: 1.27.0
     dev: true
 
   /prosemirror-history/1.3.0:
@@ -6980,8 +6980,8 @@ packages:
       prosemirror-transform: 1.6.0
     dev: true
 
-  /prosemirror-view/1.26.5:
-    resolution: {integrity: sha512-SO+AX6WwdbJZHVvuloXI0qfO+YJAnZAat8qrYwfiqTQwL/FewLUnr0m3EXZ6a60hQs8/Q/lzeJXiFR/dOPaaKQ==}
+  /prosemirror-view/1.27.0:
+    resolution: {integrity: sha512-yNCQW5eiPkrMgjOT5Xa/ItIvcM7JBG7ikZKaHo26hdBW5OLNnIWGZ0BV6/OiBk742teLybLVNPCpYUcW405Ckg==}
     dependencies:
       prosemirror-model: 1.18.1
       prosemirror-state: 1.4.1
@@ -8095,137 +8095,137 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
 
-  /turbo-android-arm64/1.3.1:
-    resolution: {integrity: sha512-JcnZh9tLbZDpKaXaao/s/k4qXt3TbNEc1xEYYXurVWnqiMueGeS7QAtThVB85ZSqzj7djk+ngSrZabPy5RG25Q==}
+  /turbo-android-arm64/1.3.3:
+    resolution: {integrity: sha512-zb295VvI3Ak4OdYDFG37IchNtM1kkpdXe8oHtScpJ7c9/OB4MPqCZ5FuZNX5Ebe88UOcV+NPWwfrvW1lEll4PA==}
     cpu: [arm64]
     os: [android]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-64/1.3.1:
-    resolution: {integrity: sha512-TIGDradVFoGck86VIuM38KaDeNxdKaP2ti93UpQeFw26ZhPIeTAa6wUgnz4DQP6bjIvQmXlYJ16ETZb4tFYygg==}
+  /turbo-darwin-64/1.3.3:
+    resolution: {integrity: sha512-NrpU6sZ09unOjQHenPCQ1rNvWiD2TSYCk/OCk8HLyIpb5iZifG2Kq8bRMt6PGx9B4Ks7TT6TMRW3gHyBEUpzLw==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.3.1:
-    resolution: {integrity: sha512-aLBq8KiMMmop7uKBkvDt/y+eER2UzxZyUzh1KWcZ7DZB5tFZnknEUyf2qggY2vd2WcDVfQ1EUjZ0MFxhhVaVzA==}
+  /turbo-darwin-arm64/1.3.3:
+    resolution: {integrity: sha512-YP+wZ9hsf2UQ5pErv/bBUnnGhxh+E25Mfp3CrCGGfcfOC/jqCPVvY/ldTrGd1rZXipP/RNSoCYcrQSfIodwqpw==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-freebsd-64/1.3.1:
-    resolution: {integrity: sha512-BOr/ifmxjlBeuDkDQLUJtzqzXQ2zPHHcI14U9Ys+z4Mza1uzQn/oSJqQvU5RuyRBVai7noMrpPS7QuKtDz0Cyg==}
+  /turbo-freebsd-64/1.3.3:
+    resolution: {integrity: sha512-sbmvB7pg70k0ashTh3W0RiMhnrsbZ81UxstOtVtENdSgM9Qay2OmvQll6dg2AZJRfL2pQZy9afkKqbCZCokh1Q==}
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-freebsd-arm64/1.3.1:
-    resolution: {integrity: sha512-bHPZjK4xnGLz6/oxl5XmWhdYOdtBMSadrGhptWSZ0wBGNn/gQzDTeZAkQeqhh25AD0eM1hzDe8QUz8GlS43lrA==}
+  /turbo-freebsd-arm64/1.3.3:
+    resolution: {integrity: sha512-n9Sk8XkYSx70sDQ8IIitn8h8HnHDg8MMSNwCEWear2Pf33eJqapOrNheXZEcB33QxdwTfeKgWLcg9Tmw9UsF2A==}
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-32/1.3.1:
-    resolution: {integrity: sha512-c5okimusfvivu9wS8MKSr+rXpQAV+M4TyR9JX+spIK8B1I7AjfECAqiK2D5WFWO1bQ33bUAuxXOEpUuLpgEm+g==}
+  /turbo-linux-32/1.3.3:
+    resolution: {integrity: sha512-TMRMwsIYevNVsQoj2651vgC9j5jsPAL9azEO+9rGHBVdFunIqksiSizfdoziR+RcvWV53KFhTUJngiK6/gcgkw==}
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.3.1:
-    resolution: {integrity: sha512-O0pNX+N5gbmRcyZT+jsCPUNCN3DpIZHqNN35j7MT5nr0IkZa83CGbZnrEc+7Qws//jFJ26EngqD/JyRB2E8nwQ==}
+  /turbo-linux-64/1.3.3:
+    resolution: {integrity: sha512-YIJiZ4lot9//awpUrXR652EaLeOEX186XiJ04W8Cm3LQ3dlyJ9lNuJwjiIz+cyuhvCKo9K9isQn1XAZIXXppZg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm/1.3.1:
-    resolution: {integrity: sha512-f+r6JIwv/7ylxxJtgVi8cVw+6oNoD/r1IMTU6ejH8bfyMZZko4kkNwH9VYribQ44KDkJEgzdltnzFG5f6Hz10g==}
+  /turbo-linux-arm/1.3.3:
+    resolution: {integrity: sha512-MYEH3octbJU/NBS/zHHWfcwJiJmDPfEhgUZ1z3KtsOBiaUkyqXp1rzueXPqEgzwQPfNMi64SEq2IUpcDGtAkNA==}
     cpu: [arm]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.3.1:
-    resolution: {integrity: sha512-D6+1MeS/x+/VCCooHPU4NIpB8qI/eW70eMRA79bqTPaxxluP0g2CaxXgucco05P51YtNsSxeVcH7X76iadON6Q==}
+  /turbo-linux-arm64/1.3.3:
+    resolution: {integrity: sha512-2r04C20qciTeWe+v4o0tBfQBKQW5MV/vSVEw9yrAANEECn7zfdwOtplRyY069/0yuNUOldt+k5upDDUuYX+bow==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-mips64le/1.3.1:
-    resolution: {integrity: sha512-yL64jgwVCziOpBcdpMxIsczkgwwOvmaqKObFKWyCNlk/LOl5NKODLwXEaryLaALtpwUAoS4ltMSI64gKqmLrOA==}
+  /turbo-linux-mips64le/1.3.3:
+    resolution: {integrity: sha512-fiKrM1zLs/33Mz4nhvkIIu5sNUvXi4aegA/D7PJ1KX8DeEUN8s27bFDn/U9CK9HH1ZXLQm1GvPPTIR8bD+NKGw==}
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-ppc64le/1.3.1:
-    resolution: {integrity: sha512-tjnM+8RosykS1lBpOPLDXGOz/Po2h796ty17uBd7IFslWPOI16a/akFOFoLH8PCiGGJMe3CYgRhEKn4sPWNxFA==}
+  /turbo-linux-ppc64le/1.3.3:
+    resolution: {integrity: sha512-fBxOIPQAzAqVXA8tSWvUoEQV1YJ3PNpPNvMiSlkdVaqA8prYVug/JNNqgm7SFHfnuSBj4Drg7RlvrMhI4I/QZA==}
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-32/1.3.1:
-    resolution: {integrity: sha512-Snnv+TVigulqwK6guHKndMlrLw88NXj8BtHRGrEksPR0QkyuHlwLf+tHYB4HmvpUl4W9lnXQf4hsljWP64BEdw==}
+  /turbo-windows-32/1.3.3:
+    resolution: {integrity: sha512-l06bS+1gco1zHwHSmdayu2TCCyXEf5Ge6mjRvhyMnQ9Tlw3W14Z2DSEy99F/Zex47OSXWyrKf2Ru/jBEnob/FQ==}
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.3.1:
-    resolution: {integrity: sha512-gLeohHG07yIhON1Pp0YNE00i/yzip2GFhkA6HdJaK95uE5bKULpqxuO414hOS/WzGwrGVXBKCImfe24XXh5T+Q==}
+  /turbo-windows-64/1.3.3:
+    resolution: {integrity: sha512-LSdKPC4Ztx5T/8sUq4n2XWMGTiK6rIhjyix1C0LwduRH/v+0QqPIW/moPW5WVXNzRJNKyTKWFvcpjURSTp6Otg==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.3.1:
-    resolution: {integrity: sha512-0MWcHLvYgs/qdcoTFZ55nu8HhrpeiwXEMw9cbNfgqTlzy3OsrAsovYEJFyQ8KSxeploiD+QJlCdvhxx+5C0tlA==}
+  /turbo-windows-arm64/1.3.3:
+    resolution: {integrity: sha512-Bw0/9iYUCvEFQnLZNnzCnyeOCUrYt4Yg0LkjXEcGKVUg22GxbT7AHxViLDxnmT3qDlPcKAXeWyDa4Glu1LThVg==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.3.1:
-    resolution: {integrity: sha512-DXckoGKlZgvTn/PrHpBI/57aeXR7tfyPf2dK+4LmBczt24ELA3o6eYHeA7KzfpSYhB2LE9qveYFQ6mJ1OzGjjg==}
+  /turbo/1.3.3:
+    resolution: {integrity: sha512-OwdmvUN6EBJUb67wRkm96jD6PMI3ecX8VoCRzWcIKsLO33ZQ4jcTmnK6RG//ChldBfAm9ZJdc1XDifxooGeFug==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-android-arm64: 1.3.1
-      turbo-darwin-64: 1.3.1
-      turbo-darwin-arm64: 1.3.1
-      turbo-freebsd-64: 1.3.1
-      turbo-freebsd-arm64: 1.3.1
-      turbo-linux-32: 1.3.1
-      turbo-linux-64: 1.3.1
-      turbo-linux-arm: 1.3.1
-      turbo-linux-arm64: 1.3.1
-      turbo-linux-mips64le: 1.3.1
-      turbo-linux-ppc64le: 1.3.1
-      turbo-windows-32: 1.3.1
-      turbo-windows-64: 1.3.1
-      turbo-windows-arm64: 1.3.1
+      turbo-android-arm64: 1.3.3
+      turbo-darwin-64: 1.3.3
+      turbo-darwin-arm64: 1.3.3
+      turbo-freebsd-64: 1.3.3
+      turbo-freebsd-arm64: 1.3.3
+      turbo-linux-32: 1.3.3
+      turbo-linux-64: 1.3.3
+      turbo-linux-arm: 1.3.3
+      turbo-linux-arm64: 1.3.3
+      turbo-linux-mips64le: 1.3.3
+      turbo-linux-ppc64le: 1.3.3
+      turbo-windows-32: 1.3.3
+      turbo-windows-64: 1.3.3
+      turbo-windows-arm64: 1.3.3
     dev: true
 
   /tweetnacl/0.14.5:
@@ -8794,7 +8794,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -8816,7 +8816,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
@@ -8875,7 +8875,7 @@ packages:
     dependencies:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -8990,7 +8990,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9009,7 +9009,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9018,8 +9018,8 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/3511f0fc46443ba13f56e74f975717d5ecdb780d}
+  github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf}
     name: '@stdlib/math'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9052,10 +9052,10 @@ packages:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
-      '@stdlib/stats': github.com/stdlib-js/stats/7d1a932759c1eaec37aa9d90d7c66182f9cfbb14
+      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9085,7 +9085,7 @@ packages:
       '@stdlib/error': github.com/stdlib-js/error/5cddb57368b1b7cb276dcfdfae29fff9177dd11c
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
@@ -9098,7 +9098,7 @@ packages:
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
       '@stdlib/simulate': github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7
-      '@stdlib/stats': github.com/stdlib-js/stats/7d1a932759c1eaec37aa9d90d7c66182f9cfbb14
+      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9123,7 +9123,7 @@ packages:
       '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9161,7 +9161,7 @@ packages:
     dependencies:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9179,7 +9179,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9276,9 +9276,9 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/stats': github.com/stdlib-js/stats/7d1a932759c1eaec37aa9d90d7c66182f9cfbb14
+      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -9317,7 +9317,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/datasets': github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/namespace': github.com/stdlib-js/namespace/d369f5969e87c8f36515a84489b0406d5d86bc9a_virtual-dom@2.1.1
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
@@ -9342,7 +9342,7 @@ packages:
     dependencies:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -9352,8 +9352,8 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/stats/7d1a932759c1eaec37aa9d90d7c66182f9cfbb14:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/7d1a932759c1eaec37aa9d90d7c66182f9cfbb14}
+  github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/0b5ed291291c5466b323dc54e5f4ed633a40ab49}
     name: '@stdlib/stats'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9363,7 +9363,7 @@ packages:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9404,7 +9404,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9424,7 +9424,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/nlp': github.com/stdlib-js/nlp/ec1f8635addad7fe87ed7a2ac5450df1f4373f7b
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
@@ -9459,7 +9459,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
     transitivePeerDependencies:
@@ -9488,7 +9488,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/3511f0fc46443ba13f56e74f975717d5ecdb780d
+      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795

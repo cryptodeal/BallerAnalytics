@@ -3,6 +3,7 @@
   "name": "bun_ac3",
   "main": "src/index.js",
   "devDependencies": {
+    "@types/minimist": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "bun-types": "^0.1.4",
@@ -11,7 +12,9 @@
     "eslint-plugin-prettier": "^4.2.1"
   },
   "dependencies": {
-    "hono": "^2.0.1"
+    "bun-utilities": "^0.1.5",
+    "hono": "^2.0.1",
+    "minimist": "^1.2.6"
   },
   "scripts": {
     "start": "bun run src/index.ts",

@@ -105,7 +105,7 @@ app.get('/queue', async (c) => {
 	);
 	const { VALUE, id } = exists;
 	if (VALUE.length === 1 && VALUE[0] === '') {
-		return c.json({ status: APIResponseStatus.FAIL, err: 'No data in queue' });
+		return c.json({ status: APIResponseStatus.FAIL, data: 'NaN', err: 'No data in queue' });
 	}
 	const elem_pop = VALUE[0];
 	let str = '';

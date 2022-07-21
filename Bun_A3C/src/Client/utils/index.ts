@@ -1,5 +1,7 @@
 import { readFileSync, writeFile } from 'fs';
-import { exec } from 'child_process';
+import { db } from '../../db';
+import { exec } from 'bun-utilities';
+import { QUEUE_TABLE } from '../../const';
 export const APIBaseURI = `http://localhost:${3000}`;
 
 export const setGlobalMovingAverage = (avg: number) => {
@@ -65,13 +67,16 @@ export const getBestScore = () => {
 			return Promise.reject(Error(error.message));
 		});
 };
-
 export const sendModel = (worker_id: number, temp: boolean) => {
 	const obj = {
 		idx: worker_id,
 		temporary: temp,
-		data_actor: readFileSync(__dirname + '/local-model-actor/weights.bin', { encoding: 'binary' }),
-		data_critic: readFileSync(__dirname + '/local-model-critic/weights.bin', { encoding: 'binary' })
+		data_actor: readFileSync(import.meta.dir + '/local-model-actor/weights.bin', {
+			encoding: 'binary'
+		}),
+		data_critic: readFileSync(import.meta.dir + '/local-model-critic/weights.bin', {
+			encoding: 'binary'
+		})
 	};
 	return fetch(APIBaseURI + '/local_model_weights', {
 		method: 'POST',
@@ -128,8 +133,8 @@ export const getQueue = () => {
 		.then((response) => {
 			if (response.ok) {
 				return response.json().then(({ data }) => {
-					if (!data) {
-						return 'NaN';
+					if (data === 'NaN' || data === 'done') {
+						return data;
 					} else {
 						return parseFloat(data);
 					}
@@ -145,7 +150,7 @@ export const getQueue = () => {
 export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const getBlockingQueue = async () => {
-	let data: number | 'NaN' = 'NaN';
+	let data: number | 'NaN' | 'done' = 'NaN';
 	while (data === 'NaN') {
 		data = await getQueue();
 		await sleep(750);
@@ -153,8 +158,8 @@ export const getBlockingQueue = async () => {
 	return Promise.resolve(data);
 };
 
-export const startWorker = () => {
-	return fetch(APIBaseURI + '/start_worker')
+export const startWorker = (hostURI: string) => {
+	return fetch(hostURI + '/start_worker')
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -202,13 +207,12 @@ export const getGlobalModelCritic = () => {
 		.then((response) => {
 			if (response.ok) {
 				return response.arrayBuffer().then((buf) => {
-					writeFile(__dirname + '/local-model-critic/weights.bin', new DataView(buf), (err) => {
-						if (!err) {
-							return;
-						} else {
-							return Promise.reject(err);
-						}
-					});
+					writeFile(import.meta.dir + '/local-model-critic/weights.bin', new DataView(buf), ((
+						err
+					) => {
+						if (err) throw Error(err);
+						console.log('saved');
+					}) as VoidFunction);
 				});
 			}
 			return Promise.reject(Error('error'));
@@ -219,19 +223,13 @@ export const getGlobalModelCritic = () => {
 };
 
 export const getGlobalModelActor = () => {
-	return new Promise((resolve, reject) => {
-		exec(
-			'curl ' +
-				APIBaseURI +
-				'/global_model_weights_actor > ' +
-				__dirname +
-				'/local-model-actor/weights.bin',
-			(err, stdout, stderr) => {
-				if (err) reject();
-				else resolve(null);
-			}
-		);
-	});
+	return exec([
+		'curl ' +
+			APIBaseURI +
+			'/global_model_weights_actor > ' +
+			import.meta.dir +
+			'/local-model-actor/weights.bin'
+	]);
 };
 
 export const getGlobalEpisode = () => {
@@ -290,7 +288,7 @@ export const waitForWorkers = async () => {
 	return Promise.resolve();
 };
 
-export const addWorkerToken = (tok: string) => {
+export const addWorkerToken = (tok: number) => {
 	return fetch(APIBaseURI + '/worker_started')
 		.then((response) => {
 			if (response.ok) {
@@ -301,4 +299,11 @@ export const addWorkerToken = (tok: string) => {
 		.catch((error) => {
 			return Promise.reject(Error(error.message));
 		});
+};
+
+export const getWorkersHostNames = async () => {
+	const { VALUE } = <{ VALUE: string; id: number }>(
+		await db.prepare(`SELECT * FROM ${QUEUE_TABLE}`).get()
+	);
+	return VALUE.toString().split('\n');
 };
