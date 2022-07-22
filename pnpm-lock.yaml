@@ -108,11 +108,11 @@ importers:
       '@balleranalytics/nba-api-ts': workspace:0.1.0
       '@stdlib/stdlib': ^0.0.96
       '@stdlib/types': ^0.0.14
-      '@tensorflow/tfjs': ^3.18.0
-      '@tensorflow/tfjs-backend-wasm': ^3.18.0
-      '@tensorflow/tfjs-core': ^3.18.0
-      '@tensorflow/tfjs-layers': ^3.18.0
-      '@tensorflow/tfjs-node': ^3.18.0
+      '@tensorflow/tfjs': ^3.19.0
+      '@tensorflow/tfjs-backend-wasm': ^3.19.0
+      '@tensorflow/tfjs-core': ^3.19.0
+      '@tensorflow/tfjs-layers': ^3.19.0
+      '@tensorflow/tfjs-node': ^3.19.0
       '@tsconfig/node16': ^1.0.3
       '@types/cytoscape': ^3.19.6
       '@types/deep-equal': ^1.0.1
@@ -148,11 +148,11 @@ importers:
     dependencies:
       '@balleranalytics/nba-api-ts': link:../nba-api-ts
       '@stdlib/stdlib': 0.0.96
-      '@tensorflow/tfjs': 3.18.0_seedrandom@3.0.5
-      '@tensorflow/tfjs-backend-wasm': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-core': 3.18.0
-      '@tensorflow/tfjs-layers': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-node': 3.18.0_seedrandom@3.0.5
+      '@tensorflow/tfjs': 3.19.0_seedrandom@3.0.5
+      '@tensorflow/tfjs-backend-wasm': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-core': 3.19.0
+      '@tensorflow/tfjs-layers': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-node': 3.19.0_seedrandom@3.0.5
       cytoscape: 3.22.1
       dayjs: 1.11.4
       deep-equal: 2.0.5
@@ -192,13 +192,14 @@ importers:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:0.1.0
       '@balleranalytics/tf-neat': workspace:0.0.1
-      '@iconify/json': ^2.1.80
-      '@sveltejs/adapter-vercel': next
-      '@sveltejs/kit': next
+      '@iconify/json': ^2.1.81
+      '@sveltejs/adapter-vercel': 1.0.0-next.62
+      '@sveltejs/kit': 1.0.0-next.377
       '@sveltejs/pancake': ^0.0.18
       '@tailwindcss/typography': ^0.5.4
-      '@tensorflow/tfjs-backend-wasm': ^3.18.0
-      '@tensorflow/tfjs-core': ^3.18.0
+      '@tensorflow/tfjs': ^3.19.0
+      '@tensorflow/tfjs-backend-wasm': ^3.19.0
+      '@tensorflow/tfjs-core': ^3.19.0
       '@tiptap/core': ^2.0.0-beta.182
       '@tiptap/extension-bubble-menu': ^2.0.0-beta.61
       '@tiptap/extension-floating-menu': ^2.0.0-beta.56
@@ -280,13 +281,14 @@ importers:
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
-      '@iconify/json': 2.1.80
-      '@sveltejs/adapter-vercel': 1.0.0-next.65
-      '@sveltejs/kit': 1.0.0-next.388_svelte@3.49.0+vite@3.0.2
+      '@iconify/json': 2.1.81
+      '@sveltejs/adapter-vercel': 1.0.0-next.62
+      '@sveltejs/kit': 1.0.0-next.377_svelte@3.49.0+vite@3.0.2
       '@sveltejs/pancake': 0.0.18
       '@tailwindcss/typography': 0.5.4_tailwindcss@3.1.6
-      '@tensorflow/tfjs-backend-wasm': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs': 3.19.0
+      '@tensorflow/tfjs-backend-wasm': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-core': 3.19.0
       '@tiptap/core': 2.0.0-beta.182
       '@tiptap/extension-bubble-menu': 2.0.0-beta.61_jdrcmhoxj44u3cq7gnenksjiqq
       '@tiptap/extension-floating-menu': 2.0.0-beta.56_jdrcmhoxj44u3cq7gnenksjiqq
@@ -1331,8 +1333,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.80:
-    resolution: {integrity: sha512-uVZrqT4A4MbbSJRu6R4MCzw5eFR322Wf/HHL6wlWr6dqCtFhIJgdPc6ailCPJ/IJn3fF/ESgMHizjDTsBv4m1Q==}
+  /@iconify/json/2.1.81:
+    resolution: {integrity: sha512-VF2iPSwKJ5WnQFQjzik9s0bJiAa/qhyQIJuvonG2+ZtUK8NVK7v0UmvSNvZQv8Nt//df6p3tZFZTTD2eRRVi5Q==}
     dependencies:
       '@iconify/types': 1.1.0
       pathe: 0.3.2
@@ -1376,24 +1378,6 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@mapbox/node-pre-gyp/1.0.4:
-    resolution: {integrity: sha512-M669Qo4nRT7iDmQEjQYC7RU8Z6dpz9UmSbkJ1OFEja3uevCdLKh7IZZki7L1TZj02kRyl82snXFY8QqkyfowrQ==}
-    hasBin: true
-    dependencies:
-      detect-libc: 1.0.3
-      https-proxy-agent: 5.0.1
-      make-dir: 3.1.0
-      node-fetch: 2.6.7
-      nopt: 5.0.0
-      npmlog: 4.1.2
-      rimraf: 3.0.2
-      semver: 7.3.7
-      tar: 6.1.11
-    transitivePeerDependencies:
-      - encoding
-      - supports-color
-    dev: false
-
   /@mapbox/node-pre-gyp/1.0.9:
     resolution: {integrity: sha512-aDF3S3rK9Q2gey/WAttUlISduDItz5BU3306M9Eyv6/oS40aMprnopshtlKTykxRNIBEZuRMaZAnbrQ4QtKGyw==}
     hasBin: true
@@ -1410,7 +1394,6 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
-    dev: true
 
   /@napi-rs/pinyin-android-arm-eabi/1.7.0:
     resolution: {integrity: sha512-gTrDc4GGoesaWdPpsLyEADki8cs3RX0oZ0ePeGvHibsWYHEa6jUVnSor64Kb651qpQas03DSksHpVcDjiykFTA==}
@@ -1779,9 +1762,9 @@ packages:
       '@stdlib/error': github.com/stdlib-js/error/5cddb57368b1b7cb276dcfdfae29fff9177dd11c
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
-      '@stdlib/namespace': github.com/stdlib-js/namespace/d369f5969e87c8f36515a84489b0406d5d86bc9a_virtual-dom@2.1.1
+      '@stdlib/namespace': github.com/stdlib-js/namespace/f8dcec5ea147e02094999f1e0338c5b876a6cdd3_virtual-dom@2.1.1
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
       '@stdlib/nlp': github.com/stdlib-js/nlp/ec1f8635addad7fe87ed7a2ac5450df1f4373f7b
@@ -1792,9 +1775,9 @@ packages:
       '@stdlib/proxy': github.com/stdlib-js/proxy/305e93c91707b37103c5c52126a71fcbd0e462e4
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/repl': github.com/stdlib-js/repl/fed2484d10ad0c9f38abfc516410c7adbbf41d7c_virtual-dom@2.1.1
+      '@stdlib/repl': github.com/stdlib-js/repl/d2128e78ba40ddd370692e6084a8addc0a23366a_virtual-dom@2.1.1
       '@stdlib/simulate': github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7
-      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
+      '@stdlib/stats': github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -1827,8 +1810,8 @@ packages:
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dev: true
 
-  /@sveltejs/adapter-vercel/1.0.0-next.65:
-    resolution: {integrity: sha512-RV3HL7Ic7pGgIoBSHPwN1pBX96Km1X683oHImPHAKX9h/WOvJZ3bY5+IWNRcR8tx9rPB5gfMRg+msvPSBr3RVw==}
+  /@sveltejs/adapter-vercel/1.0.0-next.62:
+    resolution: {integrity: sha512-4wzKUG5BJBg3llnxOEPBx9d4Alit4uHO+VDcePoFA/lWzF0OElPYuDKUGe1wZIfD+s2P+YcbWVqrjxEDdseMmA==}
     dependencies:
       '@vercel/nft': 0.20.1
       esbuild: 0.14.49
@@ -1837,8 +1820,8 @@ packages:
       - supports-color
     dev: true
 
-  /@sveltejs/kit/1.0.0-next.388_svelte@3.49.0+vite@3.0.2:
-    resolution: {integrity: sha512-RSAVN3PykiCHcXOioO1JlTk9WSRIk9oHv4b4qzh8h4q5UoFrYVHcbVK7laxSrrIfl58nvfbZBBm5RGzqTjJuzg==}
+  /@sveltejs/kit/1.0.0-next.377_svelte@3.49.0+vite@3.0.2:
+    resolution: {integrity: sha512-DH2v2yUBUuDZ7vzjPXUd/yt1AMR3BIkZN0ubLAvS2C+q5Wbvk7ZvAJhfPZ3OYc3ZpQXe4ZGEcptOjvEYvd1lLA==}
     engines: {node: '>=16.9'}
     hasBin: true
     peerDependencies:
@@ -1902,92 +1885,104 @@ packages:
       tailwindcss: 3.1.6
     dev: true
 
-  /@tensorflow/tfjs-backend-cpu/3.18.0_br26fteayl44zj43fz4bazb7oq:
-    resolution: {integrity: sha512-LcSqlylzGtpgngcMFIL3q9Q3eVaPRJ7ITZt7ivhzkCj4R5ZsnPa9qM3DCVihkQ77heAwSw4hPTo2jp5C4mJ4Cg==}
+  /@tensorflow/tfjs-backend-cpu/3.19.0_hek32lflchivueqv5i4vgonghu:
+    resolution: {integrity: sha512-02f+WkiL9gc9G7P8PwfsvuXREcAUdM/3uAL6fTle3xKEj7KOxX+E/mc3jxPY5UzjAsgHVBZrPJ2xi6AG16WPkQ==}
     engines: {yarn: '>= 1.3.2'}
     peerDependencies:
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-core': 3.19.0
     dependencies:
-      '@tensorflow/tfjs-core': 3.18.0
-      '@types/seedrandom': 2.4.27
-      seedrandom: 2.4.3
+      '@tensorflow/tfjs-core': 3.19.0
+      '@types/seedrandom': 2.4.30
+      seedrandom: 3.0.5
 
-  /@tensorflow/tfjs-backend-wasm/3.18.0_br26fteayl44zj43fz4bazb7oq:
-    resolution: {integrity: sha512-LbMCSXYv4CUKiplNiqGvW9XKLCXfYribpQwuV2QMmfrNaDSa7pR19Y29ajoDCN7Tij9FmqWh4suajAVK6rE+7w==}
+  /@tensorflow/tfjs-backend-wasm/3.19.0_hek32lflchivueqv5i4vgonghu:
+    resolution: {integrity: sha512-qNvFi77BSvQiFxHFgWl6B3GJ8IbGVUn6jLfiHibqKI9dEmbVIN1dBiOJdbJT+lJZPlJv+vKyW9jgpVUM7QtfnQ==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-core': 3.19.0
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-backend-cpu': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-core': 3.19.0
       '@types/emscripten': 0.0.34
 
-  /@tensorflow/tfjs-backend-webgl/3.18.0_br26fteayl44zj43fz4bazb7oq:
-    resolution: {integrity: sha512-3NknSzS1oX2BEBOrpjPMZl823S12RgshQthmIbG6QADHb4bCJA8aM4UjWpw+3bNQnRKbRDQdFbuvj10Un79s2A==}
+  /@tensorflow/tfjs-backend-webgl/3.19.0_hek32lflchivueqv5i4vgonghu:
+    resolution: {integrity: sha512-2HTkAE21t3WQTt8P6iK80ni03AzC8UNZmbIB7/pBDYBbhDwZwe/C5fXrJWnP9m6u4hvCdMAJ3o+OP3NeaEL1pw==}
     engines: {yarn: '>= 1.3.2'}
     peerDependencies:
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-core': 3.19.0
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-backend-cpu': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-core': 3.19.0
       '@types/offscreencanvas': 2019.3.0
-      '@types/seedrandom': 2.4.27
+      '@types/seedrandom': 2.4.30
       '@types/webgl-ext': 0.0.30
       '@types/webgl2': 0.0.6
-      seedrandom: 2.4.3
-    dev: false
+      seedrandom: 3.0.5
 
-  /@tensorflow/tfjs-converter/3.18.0_br26fteayl44zj43fz4bazb7oq:
-    resolution: {integrity: sha512-hpChA+zVNQOVwRnCfqDb1WI9jbEAKA6DuEm4m75Zb3dIlE6VVooDmAaHBhlc++z2q2G1sBzF9A4Bv48SUpN6vA==}
+  /@tensorflow/tfjs-converter/3.19.0_hek32lflchivueqv5i4vgonghu:
+    resolution: {integrity: sha512-B69HQq9/orsM8pGJPjNp1cV+hIcc90mxcRIsQSYGovTUNEcftmz2Sh+mqXDWysKUk0gRfx5CX6eJk6NaE55Xow==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-core': 3.19.0
     dependencies:
-      '@tensorflow/tfjs-core': 3.18.0
-    dev: false
+      '@tensorflow/tfjs-core': 3.19.0
 
-  /@tensorflow/tfjs-core/3.18.0:
-    resolution: {integrity: sha512-gMxisZozqsr5sCKlphF/eVBLg91MjlBiN60tjX8hJAu0WlSn6Gi5k65GNIL+Pq6hrxpvImcfdCmTH/2XJVZ0Mg==}
+  /@tensorflow/tfjs-core/3.19.0:
+    resolution: {integrity: sha512-znJ+TOJ3NdNL5yjw8M7dn2jO96sokiH1wfFuD7gglCkbZ4SXlFpFj2xelNdRHHmeYanMhJzqeyOW9whUnNcBqw==}
     engines: {yarn: '>= 1.3.2'}
     dependencies:
       '@types/long': 4.0.2
       '@types/offscreencanvas': 2019.3.0
-      '@types/seedrandom': 2.4.27
+      '@types/seedrandom': 2.4.30
       '@types/webgl-ext': 0.0.30
-      '@webgpu/types': 0.1.21
+      '@webgpu/types': 0.1.16
       long: 4.0.0
-      node-fetch: 2.6.7
-      seedrandom: 2.4.3
-    transitivePeerDependencies:
-      - encoding
-
-  /@tensorflow/tfjs-data/3.18.0_ct4ioau627xna4dkbmwj6slhxi:
-    resolution: {integrity: sha512-s43vISJh8K/UN2E2zGRhtj/Kyn8dr4ll8EQkapwzm7fGO9afXCnMsTp6rkZq3fFXouCYA2k1B/j7JssIDr50+w==}
-    peerDependencies:
-      '@tensorflow/tfjs-core': 3.18.0
-      seedrandom: ~2.4.3
-    dependencies:
-      '@tensorflow/tfjs-core': 3.18.0
-      '@types/node-fetch': 2.6.2
       node-fetch: 2.6.7
       seedrandom: 3.0.5
     transitivePeerDependencies:
       - encoding
-    dev: false
 
-  /@tensorflow/tfjs-layers/3.18.0_br26fteayl44zj43fz4bazb7oq:
-    resolution: {integrity: sha512-AV7yDnPlH+RCcq8VPqkX1iyEchObE+e66m0XmJvLj+ncfKHYLa+39ZNroUA+OgB2/cMG6jgq77R4EhZbT6hwJA==}
+  /@tensorflow/tfjs-data/3.19.0_hek32lflchivueqv5i4vgonghu:
+    resolution: {integrity: sha512-rkZv+YZowZwnm4RaedkV44WDrjokRHld9Py/0Fb7IvMyUh37lY0WsAsV94kJ+QuLc6iVNcDLaV29K+dUz57bRA==}
     peerDependencies:
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-core': 3.19.0
+      seedrandom: ^3.0.5
     dependencies:
-      '@tensorflow/tfjs-core': 3.18.0
+      '@tensorflow/tfjs-core': 3.19.0
+      '@types/node-fetch': 2.6.2
+      node-fetch: 2.6.7
+      string_decoder: 1.3.0
+    transitivePeerDependencies:
+      - encoding
+    dev: true
+
+  /@tensorflow/tfjs-data/3.19.0_umkohei6j4f2ojerldjngreig4:
+    resolution: {integrity: sha512-rkZv+YZowZwnm4RaedkV44WDrjokRHld9Py/0Fb7IvMyUh37lY0WsAsV94kJ+QuLc6iVNcDLaV29K+dUz57bRA==}
+    peerDependencies:
+      '@tensorflow/tfjs-core': 3.19.0
+      seedrandom: ^3.0.5
+    dependencies:
+      '@tensorflow/tfjs-core': 3.19.0
+      '@types/node-fetch': 2.6.2
+      node-fetch: 2.6.7
+      seedrandom: 3.0.5
+      string_decoder: 1.3.0
+    transitivePeerDependencies:
+      - encoding
     dev: false
 
-  /@tensorflow/tfjs-node/3.18.0_seedrandom@3.0.5:
-    resolution: {integrity: sha512-jW6bFKO6hH4tGvlijvpcIbCRRa6vDZ2xIIbEO7qZ17s0QOMPBGjDLyQGUaSQ00uog0Rid/sdZNpiueDqB0ZGbA==}
+  /@tensorflow/tfjs-layers/3.19.0_hek32lflchivueqv5i4vgonghu:
+    resolution: {integrity: sha512-+sVWjWWyTuT3sImrtNLtMv8/4FS30GAYpTgyJKhCQ3+GSvHUXulxJfncD0QqOg9fTbhtuF1TRAkzDU8v64791g==}
+    peerDependencies:
+      '@tensorflow/tfjs-core': 3.19.0
+    dependencies:
+      '@tensorflow/tfjs-core': 3.19.0
+
+  /@tensorflow/tfjs-node/3.19.0_seedrandom@3.0.5:
+    resolution: {integrity: sha512-6l8+56J66zf5k+WS8zTA1SbXno+iV7LgchwKPa62fsPRwjdzNIm1QondJbQYbFOILYx6bsgJs7nOoxStOlygAw==}
     engines: {node: '>=8.11.0'}
     requiresBuild: true
     dependencies:
-      '@mapbox/node-pre-gyp': 1.0.4
-      '@tensorflow/tfjs': 3.18.0_seedrandom@3.0.5
+      '@mapbox/node-pre-gyp': 1.0.9
+      '@tensorflow/tfjs': 3.19.0_seedrandom@3.0.5
       adm-zip: 0.5.9
       google-protobuf: 3.20.1
       https-proxy-agent: 2.2.4
@@ -2000,16 +1995,36 @@ packages:
       - supports-color
     dev: false
 
-  /@tensorflow/tfjs/3.18.0_seedrandom@3.0.5:
-    resolution: {integrity: sha512-mOzz4jJdgIpqFS7EHndVuxrQnLUDVIKGyTqOPTYps89fZwcOFfTVxi4BHemDNQpqlVE8IaGh9UUxVXpjgPY5+Q==}
+  /@tensorflow/tfjs/3.19.0:
+    resolution: {integrity: sha512-fZF3HOON8jgKhFk06WIScIXf7j/gkl6cLbU1brFWutBhHlPSzxSWvdJR/TivCK7p+yMBunoyK50TjiwOrcoclA==}
     hasBin: true
     dependencies:
-      '@tensorflow/tfjs-backend-cpu': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-backend-webgl': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-converter': 3.18.0_br26fteayl44zj43fz4bazb7oq
-      '@tensorflow/tfjs-core': 3.18.0
-      '@tensorflow/tfjs-data': 3.18.0_ct4ioau627xna4dkbmwj6slhxi
-      '@tensorflow/tfjs-layers': 3.18.0_br26fteayl44zj43fz4bazb7oq
+      '@tensorflow/tfjs-backend-cpu': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-backend-webgl': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-converter': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-core': 3.19.0
+      '@tensorflow/tfjs-data': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-layers': 3.19.0_hek32lflchivueqv5i4vgonghu
+      argparse: 1.0.10
+      chalk: 4.1.2
+      core-js: 3.23.5
+      regenerator-runtime: 0.13.9
+      yargs: 16.2.0
+    transitivePeerDependencies:
+      - encoding
+      - seedrandom
+    dev: true
+
+  /@tensorflow/tfjs/3.19.0_seedrandom@3.0.5:
+    resolution: {integrity: sha512-fZF3HOON8jgKhFk06WIScIXf7j/gkl6cLbU1brFWutBhHlPSzxSWvdJR/TivCK7p+yMBunoyK50TjiwOrcoclA==}
+    hasBin: true
+    dependencies:
+      '@tensorflow/tfjs-backend-cpu': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-backend-webgl': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-converter': 3.19.0_hek32lflchivueqv5i4vgonghu
+      '@tensorflow/tfjs-core': 3.19.0
+      '@tensorflow/tfjs-data': 3.19.0_umkohei6j4f2ojerldjngreig4
+      '@tensorflow/tfjs-layers': 3.19.0_hek32lflchivueqv5i4vgonghu
       argparse: 1.0.10
       chalk: 4.1.2
       core-js: 3.23.5
@@ -2392,13 +2407,11 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 18.0.6
+      '@types/node': 16.11.45
       form-data: 3.0.1
-    dev: false
 
   /@types/node/16.11.45:
     resolution: {integrity: sha512-3rKg/L5x0rofKuuUt5zlXzOnKyIHXmIu5R8A0TuNDMF2062/AOIDBciFIjToLEJ/9F9DzkHNot+BpNsMI1OLdQ==}
-    dev: true
 
   /@types/node/18.0.6:
     resolution: {integrity: sha512-/xUq6H2aQm261exT6iZTMifUySEt4GR5KX8eYyY+C4MSNPqSh9oNIP7tz2GLKTlFaiBbgZNxffoR3CVRG+cljw==}
@@ -2432,8 +2445,8 @@ packages:
       '@types/node': 16.11.45
     dev: true
 
-  /@types/seedrandom/2.4.27:
-    resolution: {integrity: sha1-nbVjk33YaRX2kJK8QyWdL0hXjkE=}
+  /@types/seedrandom/2.4.30:
+    resolution: {integrity: sha512-AnxLHewubLVzoF/A4qdxBGHCKifw8cY32iro3DQX9TPcetE95zBeVt3jnsvtvAUf1vwzMfwzp4t/L2yqPlnjkQ==}
 
   /@types/sharp/0.30.4:
     resolution: {integrity: sha512-6oJEzKt7wZeS7e+6x9QFEOWGs0T/6of00+0onZGN1zSmcSjcTDZKgIGZ6YWJnHowpaKUCFBPH52mYljWqU32Eg==}
@@ -2464,7 +2477,6 @@ packages:
 
   /@types/webgl2/0.0.6:
     resolution: {integrity: sha512-50GQhDVTq/herLMiqSQkdtRu+d5q/cWHn4VvKJtrj4DJAjo1MNkWYa2MA41BaBO1q1HgsUjuQvEOk0QHvlnAaQ==}
-    dev: false
 
   /@types/webidl-conversions/6.1.1:
     resolution: {integrity: sha512-XAahCdThVuCFDQLT7R7Pk/vqeObFNL3YqRyFZg+AqAP/W1/w3xHaIxuW7WszQqTbIBOPRcItYJIou3i/mppu3Q==}
@@ -2628,8 +2640,8 @@ packages:
       - supports-color
     dev: true
 
-  /@webgpu/types/0.1.21:
-    resolution: {integrity: sha512-pUrWq3V5PiSGFLeLxoGqReTZmiiXwY3jRkIG5sLLKjyqNxrwm/04b4nw7LSmGWJcKk59XOM/YRTUwOzo4MMlow==}
+  /@webgpu/types/0.1.16:
+    resolution: {integrity: sha512-9E61voMP4+Rze02jlTXud++Htpjyyk8vw5Hyw9FGRrmhHQg2GqbuOfwf5Klrb8vTxc2XWI3EfO7RUHMpxTj26A==}
 
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
@@ -2780,7 +2792,6 @@ packages:
 
   /aproba/2.0.0:
     resolution: {integrity: sha512-lYe4Gx7QT+MKGbDsA+Z+he/Wtef0BiwDOlK/XkBrdfsh9J/jPPXbX0tE9x9cl27Tmu5gg3QUbUrQYa/y+KOHPQ==}
-    dev: true
 
   /are-we-there-yet/1.1.7:
     resolution: {integrity: sha512-nxwy40TuMiUGqMyRHgCSWZ9FM4VAoRP4xUYSTv5ImRog+h9yISPbVH7H8fASCIzYn9wlEv4zvFL7uKDMCFQm3g==}
@@ -2795,7 +2806,6 @@ packages:
     dependencies:
       delegates: 1.0.0
       readable-stream: 3.6.0
-    dev: true
 
   /arg/4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
@@ -2948,7 +2958,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001368
-      electron-to-chromium: 1.4.196
+      electron-to-chromium: 1.4.199
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.2
     dev: true
@@ -3317,7 +3327,6 @@ packages:
   /color-support/1.1.3:
     resolution: {integrity: sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==}
     hasBin: true
-    dev: true
 
   /color/4.2.3:
     resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
@@ -3378,7 +3387,6 @@ packages:
   /core-js/3.23.5:
     resolution: {integrity: sha512-7Vh11tujtAZy82da4duVreQysIoO2EvVrur7y6IzZkH1IHPSekuDi8Vuw1+YKjkbfWLRD7Nc9ICQ/sIUDutcyg==}
     requiresBuild: true
-    dev: false
 
   /core-util-is/1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
@@ -3841,12 +3849,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /detect-libc/1.0.3:
-    resolution: {integrity: sha512-pGjwhsmsp4kL2RTz08wcOlGN83otlqHeD/Z5T8GXZB+/YcpQ/dgo+lbU8ZsGxV0HIvqqxo9l7mqYwyYMD9bKDg==}
-    engines: {node: '>=0.10'}
-    hasBin: true
-    dev: false
-
   /detect-libc/2.0.1:
     resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==}
     engines: {node: '>=8'}
@@ -4011,8 +4013,8 @@ packages:
       safe-buffer: 5.2.1
     dev: true
 
-  /electron-to-chromium/1.4.196:
-    resolution: {integrity: sha512-uxMa/Dt7PQsLBVXwH+t6JvpHJnrsYBaxWKi/J6HE+/nBtoHENhwBoNkgkm226/Kfxeg0z1eMQLBRPPKcDH8xWA==}
+  /electron-to-chromium/1.4.199:
+    resolution: {integrity: sha512-WIGME0Cs7oob3mxsJwHbeWkH0tYkIE/sjkJ8ML2BYmuRcjhRl/q5kVDXG7W9LOOKwzPU5M0LBlXRq9rlSgnNlg==}
     dev: true
 
   /emoji-regex/8.0.0:
@@ -4700,7 +4702,6 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    dev: false
 
   /fraction.js/4.2.0:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
@@ -4788,7 +4789,6 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
       wide-align: 1.1.5
-    dev: true
 
   /get-caller-file/2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -6163,8 +6163,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  /mongodb-connection-string-url/2.5.2:
-    resolution: {integrity: sha512-tWDyIG8cQlI5k3skB6ywaEA5F9f5OntrKKsT/Lteub2zgwSUlhqEN2inGgBTm8bpYJf8QYBdA/5naz65XDpczA==}
+  /mongodb-connection-string-url/2.5.3:
+    resolution: {integrity: sha512-f+/WsED+xF4B74l3k9V/XkTVj5/fxFH2o5ToKXd8Iyi5UhM+sO9u0Ape17Mvl/GkZaFtM0HQnzAG5OTmhKw+tQ==}
     dependencies:
       '@types/whatwg-url': 8.2.2
       whatwg-url: 11.0.0
@@ -6175,7 +6175,7 @@ packages:
     dependencies:
       bson: 4.6.5
       denque: 2.1.0
-      mongodb-connection-string-url: 2.5.2
+      mongodb-connection-string-url: 2.5.3
       socks: 2.7.0
     optionalDependencies:
       saslprep: 1.0.3
@@ -6473,7 +6473,6 @@ packages:
       console-control-strings: 1.1.0
       gauge: 3.0.2
       set-blocking: 2.0.0
-    dev: true
 
   /nth-check/1.0.2:
     resolution: {integrity: sha512-WeBOdju8SnzPN5vTUJYxYUxLeXpCaVP5i5e0LF8fg7WORF2Wd7wFX/pk0tYZk7s8T+J7VLy0Da6J1+wCT0AtHg==}
@@ -7268,9 +7267,6 @@ packages:
     dependencies:
       typescript: 4.7.4
     dev: true
-
-  /seedrandom/2.4.3:
-    resolution: {integrity: sha512-2CkZ9Wn2dS4mMUWQaXLsOAfGD+irMlLEeSP3cMxpGbgyOOzJGFa+MWCOMTOCMyZinHRPxyOj/S/C57li/1to6Q==}
 
   /seedrandom/3.0.5:
     resolution: {integrity: sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==}
@@ -8800,7 +8796,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -8822,7 +8818,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
@@ -8881,7 +8877,7 @@ packages:
     dependencies:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -8996,7 +8992,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9015,7 +9011,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9024,8 +9020,8 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf}
+  github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/fd7e3defc7be0d6bfe902e324ff236a724a7f864}
     name: '@stdlib/math'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9058,10 +9054,10 @@ packages:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
-      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
+      '@stdlib/stats': github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9069,9 +9065,9 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/namespace/d369f5969e87c8f36515a84489b0406d5d86bc9a_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/namespace/tar.gz/d369f5969e87c8f36515a84489b0406d5d86bc9a}
-    id: github.com/stdlib-js/namespace/d369f5969e87c8f36515a84489b0406d5d86bc9a
+  github.com/stdlib-js/namespace/f8dcec5ea147e02094999f1e0338c5b876a6cdd3_virtual-dom@2.1.1:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/namespace/tar.gz/f8dcec5ea147e02094999f1e0338c5b876a6cdd3}
+    id: github.com/stdlib-js/namespace/f8dcec5ea147e02094999f1e0338c5b876a6cdd3
     name: '@stdlib/namespace'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9091,7 +9087,7 @@ packages:
       '@stdlib/error': github.com/stdlib-js/error/5cddb57368b1b7cb276dcfdfae29fff9177dd11c
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
@@ -9104,7 +9100,7 @@ packages:
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
       '@stdlib/simulate': github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7
-      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
+      '@stdlib/stats': github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9129,7 +9125,7 @@ packages:
       '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9167,7 +9163,7 @@ packages:
     dependencies:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9185,7 +9181,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9282,9 +9278,9 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/stats': github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49
+      '@stdlib/stats': github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -9310,9 +9306,9 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/repl/fed2484d10ad0c9f38abfc516410c7adbbf41d7c_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/repl/tar.gz/fed2484d10ad0c9f38abfc516410c7adbbf41d7c}
-    id: github.com/stdlib-js/repl/fed2484d10ad0c9f38abfc516410c7adbbf41d7c
+  github.com/stdlib-js/repl/d2128e78ba40ddd370692e6084a8addc0a23366a_virtual-dom@2.1.1:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/repl/tar.gz/d2128e78ba40ddd370692e6084a8addc0a23366a}
+    id: github.com/stdlib-js/repl/d2128e78ba40ddd370692e6084a8addc0a23366a
     name: '@stdlib/repl'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9323,8 +9319,8 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/datasets': github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
-      '@stdlib/namespace': github.com/stdlib-js/namespace/d369f5969e87c8f36515a84489b0406d5d86bc9a_virtual-dom@2.1.1
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/namespace': github.com/stdlib-js/namespace/f8dcec5ea147e02094999f1e0338c5b876a6cdd3_virtual-dom@2.1.1
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
@@ -9348,7 +9344,7 @@ packages:
     dependencies:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -9358,8 +9354,8 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/stats/0b5ed291291c5466b323dc54e5f4ed633a40ab49:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/0b5ed291291c5466b323dc54e5f4ed633a40ab49}
+  github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/cd877548ea8d8501b527f1df3fbee18f4b63eef4}
     name: '@stdlib/stats'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9369,7 +9365,7 @@ packages:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9410,7 +9406,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9430,7 +9426,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/nlp': github.com/stdlib-js/nlp/ec1f8635addad7fe87ed7a2ac5450df1f4373f7b
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
@@ -9465,7 +9461,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
     transitivePeerDependencies:
@@ -9494,7 +9490,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/d9dd3a7d561b9dfcd550a1c22ba6198f87ed97bf
+      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795

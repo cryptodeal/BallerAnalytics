@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Actor_Critic_Agent, Env, seededRandom } from '@balleranalytics/tf-neat';
+	import { tidy, tensor4d, multinomial, type Tensor1D } from '@tensorflow/tfjs';
+	import { Actor_Critic_Agent, Env, seededRandom, object_to_idx } from '@balleranalytics/tf-neat';
+	import { onMount } from 'svelte';
 
 	let canvas: HTMLCanvasElement,
 		ctx: CanvasRenderingContext2D,
@@ -12,7 +14,9 @@
 		epsilon = 1.0,
 		epsilonMin = 0.01,
 		epsilonMultiply = 0.9999,
-		btn2Title = 'Run (A2C)';
+		btn2Title = 'Run (A2C)',
+		learnDisabled = false,
+		runDisabled = true;
 
 	function initDemo() {
 		ctx = <CanvasRenderingContext2D>canvas.getContext('2d');
@@ -40,7 +44,7 @@
 	function learnA2C() {
 		if (isRunning) return;
 		isRunning = true;
-		// iterate(true);
+		iterate();
 	}
 
 	function toggleRun() {
@@ -51,98 +55,204 @@
 			isRunning = true;
 			env.maxEpisodes += 1;
 
-			agent.x = Math.floor(Math.random() * env.grid_W);
-			agent.y = Math.floor(Math.random() * env.grid_W);
+			agent.x = Math.floor(seededRandom() * env.grid_W);
+			agent.y = Math.floor(seededRandom() * env.grid_W);
 			agent.reward = 0;
 			agent.dir = 3;
 			agent.key = false;
 
-			// env.episodes += 1;
+			env.episodes += 1;
 			env.steps = 0;
 			env.reset();
 
 			agent.ballCount = 1;
-			// eslint-disable-next-line no-constant-condition
-			while (true) {
-				if (env.setEntityWithWall(agent, { ball: 1 }) !== null) {
-					break;
-				}
-			}
-
-			// run();
+			env.setEntityWithWall(agent, { ball: 1 });
+			run();
 
 			btn2Title = 'Pause';
 		}
 	}
-	/*
-function getAction(agent, input) { // if (Math.random() < epsilon) { // return Math.floor(Math.random() * 4); // } return tf.tidy(() => { let inputTensor = tf.tensor4d(input, [1, 7, 7, 1]); const logits = agent.actor.predict(inputTensor); const actions = tf.multinomial(logits, 1, null, true); return actions.dataSync()[0]; }); }
 
+	function getAction(input: number[]) {
+		/*
+    if (seededRandom() < epsilon) {
+			return Math.floor(seededRandom() * 4);
+		}
+    */
+		return tidy(() => {
+			let inputTensor = tensor4d(input, [1, 7, 7, 1]);
+			const logits = agent.actor.predict(inputTensor);
+			const actions = multinomial(logits as Tensor1D, 1, undefined, true);
+			return actions.dataSync()[0];
+		});
+	}
 
+	function getVision() {
+		let top = agent.y - agent.visionForward,
+			left = agent.x - agent.visionForward;
+		const s: number[] = [];
 
-function getVision(agent) { let top, left; left = agent.x - agent.visionForward; top = agent.y - agent.visionForward; let s = [];
+		for (let y = top; y < top + agent.visionForward * 2 + 1; y += 1) {
+			for (let x = left; x < left + agent.visionForward * 2 + 1; x += 1) {
+				if (x >= 0 && x < env.width && y >= 0 && y < env.height) {
+					if (env.grid[y][x].length > 0) {
+						s.push(object_to_idx[env.grid[y][x][0].type]);
+					} else {
+						s.push(object_to_idx['empty']);
+					}
+				} else {
+					s.push(object_to_idx['unseen']);
+				}
+			}
+		}
+		return s;
+	}
 
-for (let y = top; y < top + agent.visionForward * 2 + 1; y += 1) {
-    for (let x = left; x < left + agent.visionForward * 2 + 1; x += 1) {
-        if (x >= 0 && x < env.width &&
-            y >= 0 && y < env.height) {
-            if (env.grid[y][x].length > 0) {
-                s.push(object_to_idx[env.grid[y][x][0].type]);
-            }
-            else {
-                s.push(object_to_idx['empty']);
-            }
-        }
-        else {
-            s.push(object_to_idx['unseen']);
-        }
-    }
-}
+	function run(isLoop = true) {
+		const state = getVision();
+		const action = getAction(state);
+		let [reward, done] = agent.step(action);
+		agent.reward += reward;
+		agent.reward = parseFloat(agent.reward.toFixed(2));
 
-return s;
-}
+		ctx.clearRect(0, 0, env.grid_W * env.grid_width + 10, canvas.height);
 
+		env.steps += 1;
+		env.draw();
+		agent.draw();
 
+		if (done || env.steps >= env.maxSteps) {
+			rewardsArr.push(Math.floor(agent.reward * 10) / 10);
+			if (rewardsArr.length > 1) {
+				ctx.clearRect(env.grid_W * env.grid_width + 10, 0, canvas.width, canvas.height);
+				env.drawRewardGraph(rewardsArr.slice(rewardsArr.length - 100), 255, 70);
 
-function run(is_loop = true) { const state = getVision(agent); const action = getAction(agent, state); let reward, done; [reward, done] = agent.step(action); agent.reward += reward; agent.reward = parseFloat((agent.reward).toFixed(2));
+				ctx.beginPath();
+				ctx.fillStyle = 'lightcyan';
+				ctx.font = '11px monospace';
+				ctx.fillText(title, env.grid_W * env.grid_width + 10, 10);
+				ctx.closePath();
 
-ctx.clearRect(0, 0, env.grid_W * env.grid_width + 10, canvas.height);
+				ctx.beginPath();
+				ctx.fillStyle = 'limegreen';
+				ctx.font = '14px monospace';
+				let avg = rewardsArr.reduce((acc, cur) => acc + cur, 0) / rewardsArr.length;
+				ctx.fillText(
+					`avg. reward: ${Math.floor(avg * 10) / 10}`,
+					env.grid_W * env.grid_width + 20,
+					env.grid_W * env.grid_width + 60
+				);
+				ctx.closePath();
+			}
+		}
+		if (isLoop && env.episodes < env.maxEpisodes) {
+			window.requestAnimationFrame(iterate as any);
+		}
+	}
 
-env.steps += 1;
-env.draw();
-agent.draw();
+	async function iterate(isLoop?: number) {
+		const state = getVision();
+		const action = getAction(state);
+		let [reward, done] = agent.step(action);
+		agent.reward += reward;
+		agent.reward = parseFloat(agent.reward.toFixed(2));
+		const next_state = getVision();
+		await agent.trainModel(state, action, reward, next_state, done);
 
-if (done || env.steps >= env.maxSteps) {
-    rewards_array.push(Math.floor(agent.reward * 10) / 10);
-    if (rewards_array.length > 1) {
-        ctx.clearRect(env.grid_W * env.grid_width + 10, 0, canvas.width, canvas.height);
-        env.drawRewardGraph(rewards_array.slice(rewards_array.length - 100), 255, 70);
+		// epsilon_decay
+		if (epsilon > epsilonMin) {
+			epsilon = epsilon * epsilonMultiply;
+			epsilon = Math.floor(epsilon * 10000) / 10000;
+		}
 
-        ctx.beginPath();
-        ctx.fillStyle = 'lightcyan';
-        ctx.font = '11px monospace';
-        ctx.fillText(title, env.grid_W * env.grid_width + 10, 10);
-        ctx.closePath();
+		ctx.clearRect(0, 0, env.grid_W * env.grid_width + 10, canvas.height);
 
-        ctx.beginPath();
-        ctx.fillStyle = 'limegreen';
-        ctx.font = '14px monospace';
-        let avg = rewards_array.reduce((acc, cur) => acc+cur, 0) / rewards_array.length;
-        ctx.fillText(`avg. reward: ${Math.floor(avg * 10) / 10}`, env.grid_W * env.grid_width + 20, env.grid_W * env.grid_width + 60);
-        ctx.closePath();
-    }
-}
-if (is_loop && env.episodes < env.maxEpisodes) {
-    window.requestAnimationFrame(iterate);
-}
-}
-*/
-	$: if (canvas) initDemo();
+		env.steps += 1;
+		env.draw();
+		agent.draw();
+
+		if (done || env.steps >= env.maxSteps) {
+			env.episodes += 1;
+			rewardsArr.push(Math.floor(agent.reward * 10) / 10);
+			if (rewardsArr.length > 1) {
+				ctx.clearRect(env.grid_W * env.grid_width + 10, 0, canvas.width, canvas.height);
+				env.drawRewardGraph(rewardsArr.slice(rewardsArr.length - 100), 255, 70);
+
+				ctx.beginPath();
+				ctx.fillStyle = 'lightcyan';
+				ctx.font = '11px monospace';
+				ctx.fillText(title, env.grid_W * env.grid_width + 10, 10);
+				ctx.closePath();
+
+				if (agent.ballCount === 0) {
+					ball_get_count += 1;
+				}
+
+				ctx.beginPath();
+				ctx.fillStyle = '#00ff00';
+				ctx.font = '14px monospace';
+				ctx.fillText(
+					`ball: ${ball_get_count}/${env.episodes} (${
+						Math.floor((ball_get_count / env.episodes) * 1000) / 10
+					}%)`,
+					env.grid_W * env.grid_width + 20,
+					env.grid_W * env.grid_width + 20
+				);
+				ctx.closePath();
+
+				ctx.beginPath();
+				ctx.fillStyle = 'white';
+				ctx.font = '14px monospace';
+				ctx.fillText(
+					`epsilon: ${epsilon}`,
+					env.grid_W * env.grid_width + 20,
+					env.grid_W * env.grid_width + 40
+				);
+				ctx.closePath();
+
+				ctx.beginPath();
+				ctx.fillStyle = 'limegreen';
+				ctx.font = '14px monospace';
+				let avg = rewardsArr.reduce((acc, cur) => acc + cur, 0) / rewardsArr.length;
+				ctx.fillText(
+					`avg. reward: ${Math.floor(avg * 10) / 10}`,
+					env.grid_W * env.grid_width + 20,
+					env.grid_W * env.grid_width + 60
+				);
+				ctx.closePath();
+			}
+
+			agent.x = Math.floor(seededRandom() * env.grid_W);
+			agent.y = Math.floor(seededRandom() * env.grid_W);
+			agent.reward = 0;
+			agent.dir = 3;
+			agent.key = false;
+
+			env.steps = 0;
+			env.reset();
+
+			agent.ballCount = 1;
+			let loop = null;
+			while (loop == null) {
+				loop = env.setEntityWithWall(agent, { ball: 1 });
+			}
+		}
+		if (isRunning && isLoop && env.episodes < env.maxEpisodes) {
+			window.requestAnimationFrame(iterate);
+		} else {
+			learnDisabled = true;
+			runDisabled = false;
+			isRunning = false;
+		}
+	}
+
+	onMount(initDemo);
 </script>
 
 <div class="flex flex-col flex-grow w-fit mx-auto">
 	<div class="inline-flex w-full justify-end items-center">
-		<button class="btn btn-primary" onclick={learnA2C}>Learn (A2C)</button>
-		<button class="btn btn-primary" onclick={toggleRun}>{btn2Title}</button>
+		<button class="btn btn-primary" disabled={learnDisabled} onclick={learnA2C}>Learn (A2C)</button>
+		<button class="btn btn-primary" disabled={runDisabled} onclick={toggleRun}>{btn2Title}</button>
 	</div>
 	<canvas bind:this={canvas} width={410} height={310} />
 </div>

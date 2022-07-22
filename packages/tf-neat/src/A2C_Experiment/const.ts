@@ -8,7 +8,7 @@ export const colors: Record<string, string> = {
 	GREY: '#646464'
 };
 
-export const object_to_idx = {
+export const object_to_idx: Record<string, number> = {
 	unseen: 0,
 	empty: 1,
 	wall: 2,
@@ -23,7 +23,7 @@ export const object_to_idx = {
 	mark: 11
 };
 
-export const action_to_idx = {
+export const action_to_idx: Record<string, number> = {
 	right: 0,
 	down: 1,
 	left: 2,

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import transcodeWasmPath from '$lib/functions/basis_transcoder.wasm?url';
-	import trnscodeJsPath from '$lib/functions/basis_transcoder.js?url';
 	import { Clock, Group, WebGLRenderer } from 'three';
 	import {
 		AmbientLight,
@@ -32,7 +30,7 @@
 
 	function loadGlb(GLTFLoader: any, KTX2Loader: any) {
 		const ktx2Loader = new KTX2Loader()
-			.setTranscoderPath(trnscodeJsPath.split('/').slice(0, -1).join('/') + '/')
+			.setTranscoderPath('/scripts/')
 			.detectSupport(new WebGLRenderer());
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);

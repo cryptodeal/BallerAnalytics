@@ -172,10 +172,10 @@ export class Actor_Critic_Agent {
 	}
 
 	public async trainModel(
-		state: number[][][][],
+		state: number[],
 		action: number,
 		reward: number,
-		nextState: number[][][][],
+		nextState: number[],
 		done: boolean
 	) {
 		let target: number[] | Tensor1D = new Array(1).fill(0);
@@ -214,7 +214,7 @@ export class Actor_Critic_Agent {
 		});
 	}
 
-	public step(action: number) {
+	public step(action: number): [number, boolean] {
 		let entity;
 
 		if (this.x + dirs[action][0] >= 0 && this.x + dirs[action][0] < this.env.width) {
@@ -361,16 +361,16 @@ export class Actor_Critic_Agent {
 			const pool = population.slice();
 			for (let i = 0; i < k; i++) {
 				// invariant:  non-selected at [0,n-i)
-				const j = (Math.random() * (n - i)) | 0;
+				const j = (seededRandom() * (n - i)) | 0;
 				result[i] = pool[j];
 				pool[j] = pool[n - i - 1]; // move non-selected item into vacancy
 			}
 		} else {
 			const selected = new Set();
 			for (let i = 0; i < k; i++) {
-				let j = (Math.random() * (n - i)) | 0;
+				let j = (seededRandom() * (n - i)) | 0;
 				while (selected.has(j)) {
-					j = (Math.random() * (n - i)) | 0;
+					j = (seededRandom() * (n - i)) | 0;
 				}
 				selected.add(j);
 				result[i] = population[j];

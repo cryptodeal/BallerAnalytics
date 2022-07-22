@@ -9,7 +9,6 @@ import {
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
-import transcodeWasmPath from '$lib/functions/basis_transcoder.wasm?url';
 
 export class InitScene {
 	public renderer: WebGLRenderer;
@@ -85,9 +84,7 @@ export class InitScene {
 		const renderer = new WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
 		renderer.setPixelRatio(pixelRatio);
 		renderer.setSize(width, height, false);
-		const ktx2Loader = new KTX2Loader()
-			.setTranscoderPath(transcodeWasmPath.split('/').slice(0, -1).join('/') + '/')
-			.detectSupport(renderer);
+		const ktx2Loader = new KTX2Loader().setTranscoderPath('/scripts/').detectSupport(renderer);
 		const loader = new GLTFLoader();
 		loader.setKTX2Loader(ktx2Loader);
 		return loader.loadAsync(path).then((gltf) => {
