@@ -262,21 +262,23 @@
 		<h3 class="text-center">Advantage Actor Critic (A2C)</h3>
 		<div class="flex w-full flex-col gap-4 mb-10 items-center">
 			<h4 class="text-center">Controls:</h4>
-			<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
+			<div class="flex justify-center mx-auto">
 				<div class="form-control">
-					<label for="enabled" class="label justify-center items-center gap-4">
+					<label for="enabled" class="label items-center gap-4">
 						<span class="label-text text-xl">Behavior Policy:</span>
 					</label>
-					<input
-						id="enabled"
-						name="enabled"
-						type="checkbox"
-						bind:checked={bhvPolicy}
-						class="checkbox checkbox-primary"
-					/>
+					<div class="flex justify-start items-center">
+						<input
+							id="enabled"
+							name="enabled"
+							type="checkbox"
+							bind:checked={bhvPolicy}
+							class="checkbox checkbox-primary"
+						/>
+					</div>
 					<label for="dropoff" class="label">
 						<span class="label-text-alt text-xs"
-							>Toggle use of behavior policy (random exploration)</span
+							>Enable/Disable use of Behavior Policy (Random Exploration)</span
 						>
 					</label>
 				</div>
