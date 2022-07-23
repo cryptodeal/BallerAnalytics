@@ -1,6 +1,7 @@
 import { colors } from './const';
 import type { Actor_Critic_Agent } from './AC_Agent';
 import { Entity } from './Entity';
+import { seededRandom } from '../utils';
 
 export class Env {
 	public canvas: HTMLCanvasElement;
@@ -178,22 +179,22 @@ export class Env {
 		}
 
 		// walls
-		const horizontal = Math.random() < 0.5 ? true : false;
+		const horizontal = seededRandom() < 0.5 ? true : false;
 		let wall_index;
 		let door_index;
 		const key_list: string[] = [];
 		const ball_list: string[] = [];
 		if (horizontal) {
 			do {
-				wall_index = Math.floor(Math.random() * (this.grid_W - 2)) + 1;
+				wall_index = Math.floor(seededRandom() * (this.grid_W - 2)) + 1;
 			} while (agent.y === wall_index);
-			door_index = Math.floor(Math.random() * this.grid_W);
+			door_index = Math.floor(seededRandom() * this.grid_W);
 
 			for (let i = 0; i < this.grid_W; i += 1) {
 				if (i !== door_index) {
 					this.grid[wall_index][i].push(new Entity(wall_index, i, 0, 'GREY', 'wall'));
 				} else {
-					if (info['door']) {
+					if (info.hasOwnProperty('door') === true) {
 						this.grid[wall_index][i].push(new Entity(wall_index, i, 0, 'PURPLE', 'door'));
 					}
 				}
@@ -218,15 +219,15 @@ export class Env {
 			}
 		} else {
 			do {
-				wall_index = Math.floor(Math.random() * (this.grid_W - 2)) + 1;
+				wall_index = Math.floor(seededRandom() * (this.grid_W - 2)) + 1;
 			} while (agent.x === wall_index);
-			door_index = Math.floor(Math.random() * this.grid_W);
+			door_index = Math.floor(seededRandom() * this.grid_W);
 
 			for (let i = 0; i < this.grid_W; i += 1) {
 				if (i !== door_index) {
 					this.grid[i][wall_index].push(new Entity(i, wall_index, 0, 'GREY', 'wall'));
 				} else {
-					if (info['door']) {
+					if (info.hasOwnProperty('door') === true) {
 						this.grid[i][wall_index].push(new Entity(i, wall_index, 1, 'PURPLE', 'door'));
 					}
 				}
@@ -254,7 +255,7 @@ export class Env {
 		const population = new Array(this.grid_W * this.grid_W).fill(0).map((c, i) => i);
 		const entity_pos_array = this.sample(population, population.length);
 
-		if (info['ball']) {
+		if (info.hasOwnProperty('ball') === true) {
 			for (let i = 0; i < this.balls_count; i++) {
 				const pos = entity_pos_array.pop();
 				const x = pos % this.grid_W;
@@ -265,7 +266,7 @@ export class Env {
 					(x === agent.x && y === agent.y) === false &&
 					ball_list.indexOf(y.toString() + '#' + x.toString()) !== -1
 				) {
-					if (info['key']) {
+					if (info.hasOwnProperty('key') === true) {
 						this.grid[y][x].push(new Entity(y, x, 1, 'GREEN', 'ball'));
 					} else {
 						this.grid[y][x].push(new Entity(y, x, 3, 'GREEN', 'ball'));
@@ -276,7 +277,7 @@ export class Env {
 			}
 		}
 
-		if (info['key']) {
+		if (info.hasOwnProperty('key') === true) {
 			for (let i = 0; i < this.keys_count; i++) {
 				const pos = entity_pos_array.pop();
 				const x = pos % this.grid_W;
@@ -340,7 +341,7 @@ export class Env {
 			}
 		}
 
-		while (total_count > 0) {
+		while (true) {
 			const pos = entity_pos_array.shift();
 			const x = pos % this.grid_W;
 			const y = Math.floor(pos / this.grid_W);
@@ -359,6 +360,10 @@ export class Env {
 					now_box_count += 1;
 					total_count -= 1;
 				}
+			}
+
+			if (total_count <= 0) {
+				break;
 			}
 		}
 	}
@@ -570,16 +575,16 @@ export class Env {
 			const pool = population.slice();
 			for (let i = 0; i < k; i++) {
 				// invariant:  non-selected at [0,n-i)
-				const j = (Math.random() * (n - i)) | 0;
+				const j = (seededRandom() * (n - i)) | 0;
 				result[i] = pool[j];
 				pool[j] = pool[n - i - 1]; // move non-selected item into vacancy
 			}
 		} else {
 			const selected = new Set();
 			for (let i = 0; i < k; i++) {
-				let j = (Math.random() * (n - i)) | 0;
+				let j = (seededRandom() * (n - i)) | 0;
 				while (selected.has(j)) {
-					j = (Math.random() * (n - i)) | 0;
+					j = (seededRandom() * (n - i)) | 0;
 				}
 				selected.add(j);
 				result[i] = population[j];

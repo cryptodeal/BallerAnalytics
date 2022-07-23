@@ -2,6 +2,7 @@
 	import { tidy, tensor4d, multinomial, type Tensor1D } from '@tensorflow/tfjs';
 	import { Actor_Critic_Agent, Env, seededRandom, object_to_idx } from '@balleranalytics/tf-neat';
 	import { onMount } from 'svelte';
+	import StatLabel from '$lib/ux/dataviz/StatLabel.svelte';
 
 	let canvas: HTMLCanvasElement,
 		ctx: CanvasRenderingContext2D,
@@ -44,7 +45,7 @@
 	function learnA2C() {
 		if (isRunning) return;
 		isRunning = true;
-		iterate();
+		iterate(1);
 	}
 
 	function toggleRun() {
@@ -66,19 +67,22 @@
 			env.reset();
 
 			agent.ballCount = 1;
-			env.setEntityWithWall(agent, { ball: 1 });
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				if (env.setEntityWithWall(agent, { ball: 1 }) !== null) {
+					break;
+				}
+			}
 			run();
-
 			btn2Title = 'Pause';
 		}
 	}
 
-	function getAction(input: number[]) {
-		/*
-    if (seededRandom() < epsilon) {
+	function getAction(agent: Actor_Critic_Agent, input: number[]) {
+		if (seededRandom() < epsilon) {
 			return Math.floor(seededRandom() * 4);
 		}
-    */
+
 		return tidy(() => {
 			let inputTensor = tensor4d(input, [1, 7, 7, 1]);
 			const logits = agent.actor.predict(inputTensor);
@@ -87,7 +91,7 @@
 		});
 	}
 
-	function getVision() {
+	function getVision(agent: Actor_Critic_Agent) {
 		let top = agent.y - agent.visionForward,
 			left = agent.x - agent.visionForward;
 		const s: number[] = [];
@@ -109,8 +113,8 @@
 	}
 
 	function run(isLoop = true) {
-		const state = getVision();
-		const action = getAction(state);
+		const state = getVision(agent);
+		const action = getAction(agent, state);
 		let [reward, done] = agent.step(action);
 		agent.reward += reward;
 		agent.reward = parseFloat(agent.reward.toFixed(2));
@@ -146,17 +150,17 @@
 			}
 		}
 		if (isLoop && env.episodes < env.maxEpisodes) {
-			window.requestAnimationFrame(iterate as any);
+			window.requestAnimationFrame(iterate);
 		}
 	}
 
 	async function iterate(isLoop?: number) {
-		const state = getVision();
-		const action = getAction(state);
-		let [reward, done] = agent.step(action);
+		const state = getVision(agent);
+		const action = getAction(agent, state);
+		const [reward, done] = agent.step(action);
 		agent.reward += reward;
 		agent.reward = parseFloat(agent.reward.toFixed(2));
-		const next_state = getVision();
+		const next_state = getVision(agent);
 		await agent.trainModel(state, action, reward, next_state, done);
 
 		// epsilon_decay
@@ -232,9 +236,11 @@
 			env.reset();
 
 			agent.ballCount = 1;
-			let loop = null;
-			while (loop == null) {
-				loop = env.setEntityWithWall(agent, { ball: 1 });
+			// eslint-disable-next-line no-constant-condition
+			while (true) {
+				if (env.setEntityWithWall(agent, { ball: 1 }) !== null) {
+					break;
+				}
 			}
 		}
 		if (isRunning && isLoop && env.episodes < env.maxEpisodes) {
@@ -249,10 +255,22 @@
 	onMount(initDemo);
 </script>
 
-<div class="flex flex-col flex-grow w-fit mx-auto">
-	<div class="inline-flex w-full justify-end items-center">
-		<button class="btn btn-primary" disabled={learnDisabled} onclick={learnA2C}>Learn (A2C)</button>
-		<button class="btn btn-primary" disabled={runDisabled} onclick={toggleRun}>{btn2Title}</button>
+<div
+	class="mt-10 w-full flex flex-wrap gap-10 items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:(w-3/4 p-4) 2xl:w-1/2"
+>
+	<div class="flex gap-4 w-full flex-col">
+		<h3 class="text-center">Advantage Actor Critic (A2C)</h3>
+
+		<div class="flex flex-col flex-grow gap-2 w-fit mx-auto">
+			<div class="inline-flex gap-4 w-full justify-center items-center">
+				<button class="btn btn-primary" disabled={learnDisabled} on:click={learnA2C}>
+					Learn (A2C)
+				</button>
+				<button class="btn btn-primary" disabled={runDisabled} on:click={toggleRun}>
+					{btn2Title}
+				</button>
+			</div>
+			<canvas bind:this={canvas} width={410} height={310} />
+		</div>
 	</div>
-	<canvas bind:this={canvas} width={410} height={310} />
 </div>
