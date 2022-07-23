@@ -2,6 +2,7 @@ import { colors } from './const';
 import type { Actor_Critic_Agent } from './AC_Agent';
 import { Entity } from './Entity';
 import { seededRandom } from '../utils';
+import { A3CAgent_Worker } from './A3CAgent_Worker';
 
 export class Env {
 	public canvas: HTMLCanvasElement;
@@ -23,7 +24,7 @@ export class Env {
 	public keys_count = 0;
 	public doors_count = 0;
 
-	public agent!: Actor_Critic_Agent;
+	public agent!: Actor_Critic_Agent | A3CAgent_Worker;
 
 	public ctx: CanvasRenderingContext2D;
 	constructor(w: number, canvas: HTMLCanvasElement) {
@@ -155,7 +156,10 @@ export class Env {
 		this.ctx.restore();
 	}
 
-	public setEntityWithWall(agent: Actor_Critic_Agent, info: Record<string, number>) {
+	public setEntityWithWall(
+		agent: Actor_Critic_Agent | A3CAgent_Worker,
+		info: Record<string, number>
+	) {
 		this.agent = agent;
 
 		if (!this.grid) {
@@ -297,7 +301,7 @@ export class Env {
 	}
 
 	public setEntity(
-		agent: Actor_Critic_Agent,
+		agent: Actor_Critic_Agent | A3CAgent_Worker,
 		info: Record<string, number>,
 		init_pos?: [number, number][]
 	) {
@@ -375,9 +379,9 @@ export class Env {
 
 		let entity;
 
-		for (let y = 0; y < this.height; y += 1) {
-			for (let x = 0; x < this.width; x += 1) {
-				for (let i = 0; i < this.grid[y][x].length; i += 1) {
+		for (let y = 0; y < this.height; y++) {
+			for (let x = 0; x < this.width; x++) {
+				for (let i = 0; i < this.grid[y][x].length; i++) {
 					entity = this.grid[y][x][i];
 					this.ctx.beginPath();
 					this.ctx.fillStyle = colors[entity.color];
