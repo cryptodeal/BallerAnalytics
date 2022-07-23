@@ -24,7 +24,7 @@ import { dirs, colors } from './const';
 import { seededRandom } from '../utils';
 
 export class Actor_Critic_Agent {
-	private env: Env;
+	public env: Env;
 	public canvas: HTMLCanvasElement;
 	public x: number;
 	public y: number;

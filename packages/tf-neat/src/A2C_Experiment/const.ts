@@ -54,3 +54,9 @@ export const dirs_tri = [
 		[1, 0]
 	]
 ]; // E-S-W-N
+
+export const grid_prob: Record<string, number[]> = {
+	early: [6, 6, 6, 6, 6, 6, 7, 7, 7, 8],
+	middle: [6, 6, 6, 7, 7, 7, 7, 7, 8, 8],
+	late: [6, 7, 7, 7, 8, 8, 8, 8, 8, 8]
+};
