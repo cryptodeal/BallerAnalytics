@@ -2,7 +2,6 @@
 	import { tidy, tensor4d, multinomial, type Tensor1D } from '@tensorflow/tfjs';
 	import { Actor_Critic_Agent, Env, seededRandom, object_to_idx } from '@balleranalytics/tf-neat';
 	import { onMount } from 'svelte';
-	import StatLabel from '$lib/ux/dataviz/StatLabel.svelte';
 
 	let canvas: HTMLCanvasElement,
 		ctx: CanvasRenderingContext2D,
@@ -17,7 +16,8 @@
 		epsilonMultiply = 0.9999,
 		btn2Title = 'Run (A2C)',
 		learnDisabled = false,
-		runDisabled = true;
+		runDisabled = true,
+		bhvPolicy = false;
 
 	function initDemo() {
 		ctx = <CanvasRenderingContext2D>canvas.getContext('2d');
@@ -78,8 +78,8 @@
 		}
 	}
 
-	function getAction(agent: Actor_Critic_Agent, input: number[]) {
-		if (seededRandom() < epsilon) {
+	function getAction(agent: Actor_Critic_Agent, input: number[], bhvPolicy = false) {
+		if (bhvPolicy && seededRandom() < epsilon) {
 			return Math.floor(seededRandom() * 4);
 		}
 
@@ -114,7 +114,7 @@
 
 	function run(isLoop = true) {
 		const state = getVision(agent);
-		const action = getAction(agent, state);
+		const action = getAction(agent, state, bhvPolicy);
 		let [reward, done] = agent.step(action);
 		agent.reward += reward;
 		agent.reward = parseFloat(agent.reward.toFixed(2));
@@ -156,7 +156,7 @@
 
 	async function iterate(isLoop?: number) {
 		const state = getVision(agent);
-		const action = getAction(agent, state);
+		const action = getAction(agent, state, bhvPolicy);
 		const [reward, done] = agent.step(action);
 		agent.reward += reward;
 		agent.reward = parseFloat(agent.reward.toFixed(2));
@@ -260,6 +260,28 @@
 >
 	<div class="flex gap-4 w-full flex-col">
 		<h3 class="text-center">Advantage Actor Critic (A2C)</h3>
+		<div class="flex w-full flex-col gap-4 mb-10 items-center">
+			<h4 class="text-center">Controls:</h4>
+			<div class="grid md:grid-cols-2 gap-10 w-full justify-center mx-auto">
+				<div class="form-control">
+					<label for="enabled" class="label justify-center items-center gap-4">
+						<span class="label-text text-xl">Behavior Policy:</span>
+					</label>
+					<input
+						id="enabled"
+						name="enabled"
+						type="checkbox"
+						bind:checked={bhvPolicy}
+						class="checkbox checkbox-primary"
+					/>
+					<label for="dropoff" class="label">
+						<span class="label-text-alt text-xs"
+							>Toggle use of behavior policy (random exploration)</span
+						>
+					</label>
+				</div>
+			</div>
+		</div>
 
 		<div class="flex flex-col flex-grow gap-2 w-fit mx-auto">
 			<div class="inline-flex gap-4 w-full justify-center items-center">
