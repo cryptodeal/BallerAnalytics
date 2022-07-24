@@ -36,7 +36,7 @@
 	function initDemo() {
 		ctx = <CanvasRenderingContext2D>canvas.getContext('2d');
 		env = new Env(8, canvas);
-		env.maxEpisodes = 2000;
+		env.maxEpisodes = 100000;
 		title = 'A2C';
 		ctx.beginPath();
 		ctx.fillStyle = 'lightcyan';
