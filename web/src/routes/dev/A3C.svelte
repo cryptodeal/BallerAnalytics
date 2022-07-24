@@ -213,8 +213,8 @@
 	<div class="flex gap-4 w-full flex-col">
 		<h3 class="text-center">Asynchronous Advantage Actor Critic (A3C)</h3>
 
-		<div class="flex flex-col flex-grow gap-2 w-fit mx-auto">
-			<div class="inline-flex gap-4 w-full justify-center items-center">
+		<div class="flex flex-col flex-grow gap-2 mx-auto">
+			<div class="inline-flex gap-4 justify-center items-center">
 				<button class="btn btn-primary" disabled={learnDisabled} on:click={learnA2C}>
 					Learn (A3C)
 				</button>

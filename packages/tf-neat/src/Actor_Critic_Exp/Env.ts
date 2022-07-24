@@ -5,7 +5,7 @@ import { seededRandom } from '../utils';
 import { A3CAgent_Worker } from './A3CAgent_Worker';
 
 export class Env {
-	public canvas: HTMLCanvasElement;
+	public canvas!: HTMLCanvasElement;
 	public grid!: Entity[][][];
 	public grid_W: number;
 	public grid_W_max = 8;
@@ -26,11 +26,14 @@ export class Env {
 
 	public agent!: Actor_Critic_Agent | A3CAgent_Worker;
 
-	public ctx: CanvasRenderingContext2D;
-	constructor(w: number, canvas: HTMLCanvasElement) {
+	public ctx!: CanvasRenderingContext2D;
+
+	constructor(w: number, canvas?: HTMLCanvasElement) {
 		this.grid_W = w;
-		this.canvas = canvas;
-		this.ctx = <CanvasRenderingContext2D>this.canvas.getContext('2d');
+		if (canvas) {
+			this.canvas = canvas;
+			this.ctx = <CanvasRenderingContext2D>this.canvas.getContext('2d');
+		}
 	}
 
 	public initGrid(w = 6, h = 6) {
