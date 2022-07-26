@@ -1,18 +1,23 @@
 import { seededRandom } from '../../utils';
-import { dirs, colors } from '../../Actor_Critic_Exp/const';
+import { dirs, colors, object_to_idx } from '../../Actor_Critic_Exp/const';
 import {
 	sequential,
 	dispose,
 	layers,
+	log,
 	input,
 	train,
+	multinomial,
 	tensor1d,
 	tensor2d,
 	tensor4d,
 	losses,
 	model,
-	tidy
-} from '@tensorflow/tfjs';
+	tidy,
+	mean,
+	tensor,
+	loadLayersModel
+} from '@tensorflow/tfjs-node';
 import type {
 	SymbolicTensor,
 	Tensor,
@@ -21,11 +26,12 @@ import type {
 	LayersModel,
 	Tensor1D,
 	Tensor2D
-} from '@tensorflow/tfjs';
-import { Env } from '../../Actor_Critic_Exp/Env';
+} from '@tensorflow/tfjs-node';
+import { Env } from '../Env';
+
 export class A3CAgent_Worker {
 	public env: Env;
-	public canvas: HTMLCanvasElement;
+	public canvas!: HTMLCanvasElement;
 	public x: number;
 	public y: number;
 	public dir = Math.floor(seededRandom() * dirs.length);
@@ -42,12 +48,11 @@ export class A3CAgent_Worker {
 	public critic: LayersModel;
 	public sharedAgent: any;
 
-	constructor(env, x, y, canvas, sharedAgent) {
+	constructor(env: Env, x: number, y: number, canvas?: HTMLCanvasElement) {
 		this.env = env;
 		this.x = x;
 		this.y = y;
-		this.canvas = canvas;
-		this.sharedAgent = sharedAgent;
+		if (canvas) this.canvas = canvas;
 		this.actor = this.createActorNetwork();
 		this.critic = this.createCriticNetwork();
 	}
@@ -60,6 +65,48 @@ export class A3CAgent_Worker {
 			this.critic.setWeights(this.sharedAgent.critic.getWeights());
 			// this.critic.weights[i].val.assign(this.sharedAgent.critic.weights[i].val);
 		});
+	}
+
+	public getAction(epsilon: number, input: number[]) {
+		if (seededRandom() < epsilon) {
+			return Math.floor(seededRandom() * 4);
+		}
+
+		return tidy(() => {
+			const inputTensor = tensor4d(input, [1, 7, 7, 1]);
+			const logits = <Tensor<Rank>>this.actor.predict(inputTensor);
+			/**
+			 * Source: the following @tensorflow/tfjs book,
+			 * Deep Learning with JavaScript - Neural Networks
+			 * in TensorFlow.js, we can use log fn to
+			 * unnormalize logits from actor pred.
+			 */
+			const unnormalizedLogits = <Tensor1D>log(logits);
+
+			const actions = multinomial(unnormalizedLogits, 1, undefined, false);
+			return actions.dataSync()[0];
+		});
+	}
+
+	public getVision() {
+		const top = this.y - this.visionForward,
+			left = this.x - this.visionForward;
+		const s: number[] = [];
+
+		for (let y = top; y < top + this.visionForward * 2 + 1; y += 1) {
+			for (let x = left; x < left + this.visionForward * 2 + 1; x += 1) {
+				if (x >= 0 && x < this.env.width && y >= 0 && y < this.env.height) {
+					if (this.env.grid[y][x].length > 0) {
+						s.push(object_to_idx[this.env.grid[y][x][0].type]);
+					} else {
+						s.push(object_to_idx['empty']);
+					}
+				} else {
+					s.push(object_to_idx['unseen']);
+				}
+			}
+		}
+		return s;
 	}
 
 	public createActorNetwork() {
@@ -178,6 +225,21 @@ export class A3CAgent_Worker {
 		return tempModel;
 	}
 
+	public async reloadWeights(path_actor: string, path_critic: string) {
+		this.actor = <Sequential>await loadLayersModel('file://' + path_actor);
+		this.critic = await loadLayersModel('file://' + path_critic);
+		await this.critic.compile({
+			optimizer: train.adam(1e-4),
+			loss: losses.meanSquaredError
+		});
+		await this.actor.compile({
+			optimizer: train.adam(1e-4),
+			loss: losses.softmaxCrossEntropy
+		});
+
+		return Promise.resolve();
+	}
+
 	public async trainModel(
 		state: number[],
 		action: number,
@@ -208,17 +270,31 @@ export class A3CAgent_Worker {
 		advantages = tensor2d(advantages, [1, this.actionSize], 'float32');
 		target = tensor1d(target, 'float32');
 
-		await this.sharedAgent.actor.fit(input, advantages, { batchSize: 1, epoch: 1 }).then(() => {
-			dispose(advantages);
-		});
+		const actor_train = await this.actor
+			.fit(input, advantages, { batchSize: 1, epochs: 1 })
+			.then((val) => {
+				dispose(advantages);
+				return val;
+			});
 
-		await this.sharedAgent.critic.fit(input, target, { batchSize: 1, epoch: 1 }).then(() => {
-			dispose(input);
-			dispose(next_input);
-			dispose(value);
-			dispose(next_value);
-			dispose(target);
-		});
+		const critic_train = await this.critic
+			.fit(input, target, { batchSize: 1, epochs: 1 })
+			.then((val) => {
+				dispose(input);
+				dispose(next_input);
+				dispose(value);
+				dispose(next_value);
+				dispose(target);
+				return val;
+			});
+		const rootDir = process.cwd();
+		await this.actor.save('file://' + rootDir + '/A3C_Data/local-model-actor');
+		await this.critic.save('file://' + rootDir + '/A3C_Data/local-model-critic');
+		return mean(
+			tensor([critic_train.history.loss[0] as number, actor_train.history.loss[0] as number])
+		)
+			.flatten()
+			.dataSync()[0];
 	}
 
 	public step(action: number): [number, boolean] {

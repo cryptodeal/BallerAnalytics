@@ -1,65 +1,58 @@
-import { seededRandom } from '../utils';
-import { dirs, colors } from './const';
 import {
-	sequential,
 	dispose,
+	sequential,
 	layers,
-	input,
 	train,
-	tensor1d,
-	tensor2d,
-	tensor4d,
 	losses,
+	input,
 	model,
-	tidy
-} from '@tensorflow/tfjs';
+	tensor4d,
+	tensor2d,
+	tensor1d
+} from '@tensorflow/tfjs-node';
 import type {
-	SymbolicTensor,
-	Tensor,
-	Rank,
-	Sequential,
 	LayersModel,
+	Rank,
+	SymbolicTensor,
+	Sequential,
+	Tensor,
 	Tensor1D,
 	Tensor2D
-} from '@tensorflow/tfjs';
-import { Env } from './Env';
-export class A3CAgent_Worker {
+} from '@tensorflow/tfjs-node';
+import type { Env } from '../Env';
+import { dirs, colors } from '../../Actor_Critic_Exp/const';
+import { seededRandom } from '../../utils';
+
+export class Actor_Critic_Agent {
 	public env: Env;
 	public canvas!: HTMLCanvasElement;
 	public x: number;
 	public y: number;
-	public dir = Math.floor(seededRandom() * dirs.length);
-	public vision = false;
-	public visionForward = 3;
 	public action: null | number = null;
 	public reward = 0;
 	public ballCount = 0;
+	public doorCount = 0;
+	public key = false;
+	public dir = Math.floor(seededRandom() * dirs.length);
+	public vision = false;
+	public visionForward = 3;
+
 	public learnStep = 10;
 	public batchSize = 64;
 	public gamma = 0.99;
+
 	public actionSize = 4;
 	public actor: Sequential;
 	public critic: LayersModel;
-	public sharedAgent!: any;
 
-	constructor(env: Env, x: number, y: number, canvas: HTMLCanvasElement, sharedAgent: any) {
+	constructor(env: Env, x: number, y: number, canvas?: HTMLCanvasElement) {
 		this.env = env;
+		if (canvas) this.canvas = canvas;
 		this.x = x;
 		this.y = y;
-		this.canvas = canvas;
-		this.sharedAgent = sharedAgent;
+
 		this.actor = this.createActorNetwork();
 		this.critic = this.createCriticNetwork();
-	}
-
-	public updateFromSharedAgent() {
-		tidy(() => {
-			this.actor.setWeights(this.sharedAgent.actor.getWeights());
-			// this.actor.weights[i].val.assign(this.sharedAgent.actor.weights[i].val);
-
-			this.critic.setWeights(this.sharedAgent.critic.getWeights());
-			// this.critic.weights[i].val.assign(this.sharedAgent.critic.weights[i].val);
-		});
 	}
 
 	public createActorNetwork() {
@@ -189,50 +182,69 @@ export class A3CAgent_Worker {
 		let advantages: number[] | Tensor2D = new Array(this.actionSize).fill(0);
 
 		const input = tensor4d(state, [1, 7, 7, 1]);
-		const next_input = tensor4d(nextState, [1, 7, 7, 1]);
+		const nextInput = tensor4d(nextState, [1, 7, 7, 1]);
 
 		const value = <Tensor<Rank>>this.critic.predict(input);
-		const next_value = <Tensor<Rank>>this.critic.predict(next_input);
+		const nextValue = <Tensor<Rank>>this.critic.predict(nextInput);
 
-		const value_v = value.dataSync()[0];
-		const next_value_v = next_value.dataSync()[0];
+		const valueV = value.dataSync()[0];
+		const nextValueV = nextValue.dataSync()[0];
 
 		if (done) {
-			advantages[action] = reward - value_v;
+			advantages[action] = reward - valueV;
 			target[0] = reward;
 		} else {
-			advantages[action] = reward + this.gamma * next_value_v - value_v;
-			target[0] = reward + this.gamma * next_value_v;
+			advantages[action] = reward + this.gamma * nextValueV - valueV;
+			target[0] = reward + this.gamma * nextValueV;
 		}
 
 		advantages = tensor2d(advantages, [1, this.actionSize], 'float32');
 		target = tensor1d(target, 'float32');
 
-		await this.sharedAgent.actor.fit(input, advantages, { batchSize: 1, epoch: 1 }).then(() => {
+		await this.actor.fit(input, advantages, { batchSize: 1, epochs: 1 }).then(() => {
 			dispose(advantages);
 		});
 
-		await this.sharedAgent.critic.fit(input, target, { batchSize: 1, epoch: 1 }).then(() => {
+		await this.critic.fit(input, target, { batchSize: 1, epochs: 1 }).then(() => {
 			dispose(input);
-			dispose(next_input);
+			dispose(nextInput);
 			dispose(value);
-			dispose(next_value);
+			dispose(nextValue);
 			dispose(target);
 		});
 	}
 
 	public step(action: number): [number, boolean] {
+		let entity;
+
 		if (this.x + dirs[action][0] >= 0 && this.x + dirs[action][0] < this.env.width) {
-			this.x += dirs[action][0];
+			entity = this.env.grid[this.y][this.x + dirs[action][0]][0];
+			if (
+				entity === undefined ||
+				entity.type === 'key' ||
+				(entity.type === 'door' && this.key === true) ||
+				entity.type === 'ball' ||
+				entity.type === 'goal'
+			) {
+				this.x += dirs[action][0];
+			}
 		}
 		if (this.y + dirs[action][1] >= 0 && this.y + dirs[action][1] < this.env.height) {
-			this.y += dirs[action][1];
+			entity = this.env.grid[this.y + dirs[action][1]][this.x][0];
+			if (
+				entity === undefined ||
+				entity.type === 'key' ||
+				(entity.type === 'door' && this.key === true) ||
+				entity.type === 'ball' ||
+				entity.type === 'goal'
+			) {
+				this.y += dirs[action][1];
+			}
 		}
 		this.dir = action;
 
 		let reward = 0;
 		let done = false;
-		let entity;
 
 		if (this.env.grid[this.y][this.x].length !== 0) {
 			for (let i = 0; i < this.env.grid[this.y][this.x].length; i += 1) {
@@ -250,6 +262,12 @@ export class A3CAgent_Worker {
 					}
 				} else if (entity.type === 'box') {
 					done = true;
+				} else if (entity.type === 'door') {
+					this.doorCount -= 1;
+					this.env.grid[this.y][this.x].pop();
+				} else if (entity.type === 'key') {
+					this.key = true;
+					this.env.grid[this.y][this.x].pop();
 				}
 			}
 		} else {
@@ -264,28 +282,19 @@ export class A3CAgent_Worker {
 		const grid_width = this.env.grid_width;
 
 		if (this.vision) {
-			let left, top, w, h;
-			left = this.x - this.visionForward;
-			top = this.y - this.visionForward;
+			let left = this.x - this.visionForward,
+				top = this.y - this.visionForward,
+				w = (this.visionForward * 2 + 1) * grid_width,
+				h = (this.visionForward * 2 + 1) * grid_width;
+
 			left *= grid_width;
 			top *= grid_width;
 
-			w = (this.visionForward * 2 + 1) * grid_width;
 			if (left + w > this.env.grid_W * grid_width) {
 				w = this.env.grid_W * grid_width - left;
 			}
-			h = (this.visionForward * 2 + 1) * grid_width;
 			if (top + h > this.env.grid_W * grid_width) {
 				h = this.env.grid_W * grid_width - top;
-			}
-
-			if (left < 0) {
-				w += left;
-				left = 0;
-			}
-			if (top < 0) {
-				h += top;
-				top = 0;
 			}
 
 			ctx.save();
@@ -311,7 +320,8 @@ export class A3CAgent_Worker {
 		ctx.restore();
 	}
 
-	public sample(population: any[], k: number) {
+	// from https://stackoverflow.com/questions/19269545/how-to-get-n-no-elements-randomly-from-an-array/45556840#45556840
+	public sample(population: Array<any>, k: number) {
 		/*
         Chooses k unique random elements from a population sequence or set.
         Returns a new list containing elements from the population while
