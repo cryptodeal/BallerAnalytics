@@ -289,9 +289,7 @@ export class A3CAgent_Worker {
 				dispose(target);
 				return val;
 			});
-		const rootDir = process.cwd();
-		await this.actor.save('file://' + rootDir + '/A3C_Data/local-model-actor');
-		await this.critic.save('file://' + rootDir + '/A3C_Data/local-model-critic');
+
 		return mean(
 			tensor([critic_train.history.loss[0] as number, actor_train.history.loss[0] as number])
 		)
@@ -299,6 +297,11 @@ export class A3CAgent_Worker {
 			.dataSync()[0];
 	}
 
+	public async saveLocally() {
+		const rootDir = process.cwd();
+		await this.actor.save('file://' + rootDir + '/A3C_Data/local-model-actor');
+		await this.critic.save('file://' + rootDir + '/A3C_Data/local-model-critic');
+	}
 	public step(action: number): [number, boolean] {
 		if (this.x + dirs[action][0] >= 0 && this.x + dirs[action][0] < this.env.width) {
 			this.x += dirs[action][0];

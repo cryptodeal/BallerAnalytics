@@ -116,6 +116,7 @@ export class Worker {
 
 				if (time_count === this.update_freq) {
 					if (ep_reward > global_best_score) {
+						await this.agent.saveLocally();
 						await sendModel(this.workerIdx, false);
 					}
 					this.ep_loss += ep_mean_loss;
@@ -143,6 +144,7 @@ export class Worker {
 					console.log('Global best score ' + global_best_score);
 					if (ep_reward > global_best_score) {
 						console.log('Updating global model');
+						await this.agent.saveLocally();
 						await sendModel(this.workerIdx, false);
 						await setBestScore(ep_reward);
 					}
