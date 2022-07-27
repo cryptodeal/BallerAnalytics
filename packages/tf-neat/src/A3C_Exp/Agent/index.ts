@@ -246,6 +246,8 @@ export class A3CAgent_Worker {
 		reward: number,
 		nextState: number[],
 		done: boolean
+		/* TODO: only save model if need be (optimize network) */
+		// sync = false
 	) {
 		let target: number[] | Tensor1D = new Array(1).fill(0);
 		let advantages: number[] | Tensor2D = new Array(this.actionSize).fill(0);

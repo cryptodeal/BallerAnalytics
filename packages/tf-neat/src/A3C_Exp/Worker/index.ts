@@ -8,8 +8,8 @@ import {
 	addWorkerToken,
 	getBestScore,
 	getGlobalEpisode,
-	getGlobalModelActor,
-	getGlobalModelCritic,
+	getGlobalModelActorWeights,
+	getGlobalModelCriticWeights,
 	getGlobalMovingAverage,
 	incrementGlobalEpisode,
 	notifyWorkerDone,
@@ -103,30 +103,24 @@ export class Worker {
 				const next_state = this.agent.getVision();
 
 				ep_reward += reward;
-				const ep_mean_loss = await this.agent.trainModel(state, action, reward, next_state, done);
+				const ep_mean_loss = await this.agent.trainModel(
+					state,
+					action,
+					reward,
+					next_state,
+					done
+					/* TODO: only sync if needed time_count === this.update_freq ? true : false */
+				);
 				this.agent.env.steps += 1;
 				const global_best_score = await getBestScore();
 
 				if (time_count === this.update_freq) {
-					const global_best_score = await getBestScore();
 					if (ep_reward > global_best_score) {
 						await sendModel(this.workerIdx, false);
-					} else if (ep_reward < global_best_score) {
-						await Promise.all([getGlobalModelActor(), getGlobalModelCritic()]);
-						await this.agent.reloadWeights(
-							process.cwd() + '/A3C_Data/local-model-actor/model.json',
-							process.cwd() + '/A3C_Data/local-model-critic/model.json'
-						);
 					}
-					//train local network
-
-					// Updating local model with new weights
-					//NESCESSARY ?
-					//await this.agent.reload_weights(__dirname+'/')
 					this.ep_loss += ep_mean_loss;
 					console.log(this.ep_loss);
 					time_count = 0;
-					//TODO : Maybe we shouldn't write the weights yet, and just store them ?
 				}
 
 				if (done || this.agent.env.steps >= this.agent.env.maxSteps) {
@@ -166,18 +160,18 @@ export class Worker {
 						this.epsilon = this.epsilon * this.epsilonMultiply;
 						this.epsilon = Math.floor(this.epsilon * 10000) / 10000;
 					}
+					if (ep_reward < global_best_score) {
+						await Promise.all([getGlobalModelActorWeights(), getGlobalModelCriticWeights()]);
+						await this.agent.reloadWeights(
+							process.cwd() + '/A3C_Data/local-model-actor/model.json',
+							process.cwd() + '/A3C_Data/local-model-critic/model.json'
+						);
+					}
 					agent.ballCount = 3;
 					while (true) {
 						if (agent.env.setEntity(agent, { ball: 3 }) !== null) {
 							break;
 						}
-					}
-					if (ep_reward < global_best_score) {
-						await Promise.all([getGlobalModelActor(), getGlobalModelCritic()]);
-						await this.agent.reloadWeights(
-							process.cwd() + '/A3C_Data/local-model-actor/model.json',
-							process.cwd() + '/A3C_Data/local-model-critic/model.json'
-						);
 					}
 					break;
 				}

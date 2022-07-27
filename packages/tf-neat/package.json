@@ -81,6 +81,7 @@
     "dotenv": "^16.0.1",
     "graphology": "^0.24.1",
     "hm-cytoscape-all-paths": "^0.1.2",
+    "hyper-express": "^6.4.2",
     "hyperparameters": "^0.25.6",
     "minimist": "^1.2.6",
     "nanoid": "3.3.4",
@@ -88,6 +89,7 @@
     "polka": "^0.5.2",
     "rfdc": "^1.3.0",
     "seedrandom": "^3.0.5",
-    "vectorious": "^6.1.4"
+    "vectorious": "^6.1.4",
+    "ws-sockette": "^0.1.1"
   }
 }

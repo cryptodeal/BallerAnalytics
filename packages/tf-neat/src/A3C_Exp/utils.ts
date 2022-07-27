@@ -2,7 +2,7 @@ import { readFile, writeFile, stat } from 'fs/promises';
 import { exec } from 'child_process';
 import { networkInterfaces } from 'os';
 
-export const APIBaseURI = `http://localhost:${3000}`;
+export const APIBaseURI = `http://0.0.0.0:${3000}`;
 
 export function logger(req, res, next) {
 	console.log(`~> Received ${req.method} on ${req.url}`);
@@ -66,12 +66,13 @@ export const getBestScore = () => {
 			if (response.ok) {
 				return response.json().then(({ data }) => parseFloat(data));
 			}
-			return Promise.reject(Error('error'));
+			throw new Error(`Error ${response.status}: ${response.statusText}`);
 		})
 		.catch((error) => {
 			return Promise.reject(Error(error.message));
 		});
 };
+
 export const sendModel = async (worker_id: number, temp: boolean) => {
 	const [data_actor, data_critic] = await Promise.all([
 		readFile(process.cwd() + '/A3C_Data/local-model-actor/weights.bin', {
@@ -109,7 +110,7 @@ export const createQueue = () => {
 	return fetch(APIBaseURI + '/create_queue')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then(({ data }) => parseFloat(data));
+				return response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -318,7 +319,10 @@ export const checkWorkers = () => {
 	return fetch(APIBaseURI + '/worker_status')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then(({ data }) => data);
+				return response.json().then((res: { data: 'done' | number }) => {
+					const { data } = res;
+					return data === 'done' ? data : Number(data);
+				});
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -328,7 +332,7 @@ export const checkWorkers = () => {
 };
 
 export const waitForWorkers = async () => {
-	let data = 10000;
+	let data: string | number = 10000;
 	while (data !== 0) {
 		/* TODO: update type returned by checkWorkers from any to better type */
 		data = await checkWorkers();
@@ -338,7 +342,13 @@ export const waitForWorkers = async () => {
 };
 
 export const addWorkerToken = (tok: number) => {
-	return fetch(APIBaseURI + '/worker_started')
+	return fetch(APIBaseURI + '/worker_started', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ data: tok })
+	})
 		.then((response) => {
 			if (response.ok) {
 				return response;

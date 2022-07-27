@@ -32,7 +32,7 @@ importers:
 
   packages/nba-api-ts:
     specifiers:
-      '@aws-sdk/client-s3': ^3.135.0
+      '@aws-sdk/client-s3': ^3.137.0
       '@tsconfig/node16': ^1.0.3
       '@types/cheerio': ^0.22.31
       '@types/cron': ^2.0.0
@@ -67,7 +67,7 @@ importers:
       typescript: ^4.7.4
       uvu: ^0.5.6
     dependencies:
-      '@aws-sdk/client-s3': 3.135.0
+      '@aws-sdk/client-s3': 3.137.0
       cheerio: 1.0.0-rc.12
       cron: 2.1.0
       cross-fetch: 3.1.5
@@ -135,6 +135,7 @@ importers:
       graphology-types: ^0.24.4
       hm-cytoscape-all-paths: ^0.1.2
       husky: ^8.0.1
+      hyper-express: ^6.4.2
       hyperparameters: ^0.25.6
       minimist: ^1.2.6
       nanoid: 3.3.4
@@ -149,6 +150,7 @@ importers:
       typescript: ^4.7.4
       uvu: ^0.5.6
       vectorious: ^6.1.4
+      ws-sockette: ^0.1.1
     dependencies:
       '@balleranalytics/nba-api-ts': link:../nba-api-ts
       '@polka/send-type': 0.5.2
@@ -165,6 +167,7 @@ importers:
       dotenv: 16.0.1
       graphology: 0.24.1_graphology-types@0.24.4
       hm-cytoscape-all-paths: 0.1.2_cytoscape@3.22.1
+      hyper-express: 6.4.2
       hyperparameters: 0.25.6
       minimist: 1.2.6
       nanoid: 3.3.4
@@ -173,6 +176,7 @@ importers:
       rfdc: 1.3.0
       seedrandom: 3.0.5
       vectorious: 6.1.4
+      ws-sockette: 0.1.1
     devDependencies:
       '@stdlib/types': 0.0.14
       '@tsconfig/node16': 1.0.3
@@ -200,7 +204,7 @@ importers:
     specifiers:
       '@balleranalytics/nba-api-ts': workspace:0.1.0
       '@balleranalytics/tf-neat': workspace:0.0.1
-      '@iconify/json': ^2.1.82
+      '@iconify/json': ^2.1.83
       '@sveltejs/adapter-vercel': 1.0.0-next.62
       '@sveltejs/kit': 1.0.0-next.377
       '@sveltejs/pancake': ^0.0.18
@@ -289,7 +293,7 @@ importers:
     devDependencies:
       '@balleranalytics/nba-api-ts': link:../packages/nba-api-ts
       '@balleranalytics/tf-neat': link:../packages/tf-neat
-      '@iconify/json': 2.1.82
+      '@iconify/json': 2.1.83
       '@sveltejs/adapter-vercel': 1.0.0-next.62
       '@sveltejs/kit': 1.0.0-next.377_svelte@3.49.0+vite@3.0.3
       '@sveltejs/pancake': 0.0.18
@@ -483,16 +487,16 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@aws-sdk/client-s3/3.135.0:
-    resolution: {integrity: sha512-bLcq00AFHAK2scTWGc+PmXciZwSgSZh0iJ4w+Jef8lqs5F8PbXDQcu4tgE3BCKZZo6RuFXKOrwJwktZQwLaOJA==}
+  /@aws-sdk/client-s3/3.137.0:
+    resolution: {integrity: sha512-WFOBywwV7ECAOkSOLecpPOGbgmYV5NxHzXHTJEio6xR6s2KzoLegJa0/mq5ljh0Zl5t2h5bsKT1CxYRC0sfwWw==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@aws-crypto/sha1-browser': 2.0.0
       '@aws-crypto/sha256-browser': 2.0.0
       '@aws-crypto/sha256-js': 2.0.0
-      '@aws-sdk/client-sts': 3.131.0
+      '@aws-sdk/client-sts': 3.137.0
       '@aws-sdk/config-resolver': 3.130.0
-      '@aws-sdk/credential-provider-node': 3.131.0
+      '@aws-sdk/credential-provider-node': 3.137.0
       '@aws-sdk/eventstream-serde-browser': 3.127.0
       '@aws-sdk/eventstream-serde-config-resolver': 3.127.0
       '@aws-sdk/eventstream-serde-node': 3.127.0
@@ -521,15 +525,15 @@ packages:
       '@aws-sdk/node-http-handler': 3.127.0
       '@aws-sdk/protocol-http': 3.127.0
       '@aws-sdk/signature-v4-multi-region': 3.130.0
-      '@aws-sdk/smithy-client': 3.127.0
+      '@aws-sdk/smithy-client': 3.137.0
       '@aws-sdk/types': 3.127.0
       '@aws-sdk/url-parser': 3.127.0
       '@aws-sdk/util-base64-browser': 3.109.0
       '@aws-sdk/util-base64-node': 3.55.0
       '@aws-sdk/util-body-length-browser': 3.55.0
       '@aws-sdk/util-body-length-node': 3.55.0
-      '@aws-sdk/util-defaults-mode-browser': 3.127.0
-      '@aws-sdk/util-defaults-mode-node': 3.130.0
+      '@aws-sdk/util-defaults-mode-browser': 3.137.0
+      '@aws-sdk/util-defaults-mode-node': 3.137.0
       '@aws-sdk/util-stream-browser': 3.131.0
       '@aws-sdk/util-stream-node': 3.129.0
       '@aws-sdk/util-user-agent-browser': 3.127.0
@@ -546,8 +550,8 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/client-sso/3.131.0:
-    resolution: {integrity: sha512-6fbjqLdVZF7mvGpHjWX5YsqBE/99MilNtGUFlwuf4/KnmYy49V16A6Dltnd43Hu6HVGxJ8caH9nCkIdNp3YZcQ==}
+  /@aws-sdk/client-sso/3.137.0:
+    resolution: {integrity: sha512-l9y9usMuXGI+o1c/VO2qMccN0Bm0T5bFmmbRljB6kIzbJYXD/wVqR8GMZwSnFnz52cnURQ4pgqM1ETg54FlBYQ==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
@@ -567,15 +571,15 @@ packages:
       '@aws-sdk/node-config-provider': 3.127.0
       '@aws-sdk/node-http-handler': 3.127.0
       '@aws-sdk/protocol-http': 3.127.0
-      '@aws-sdk/smithy-client': 3.127.0
+      '@aws-sdk/smithy-client': 3.137.0
       '@aws-sdk/types': 3.127.0
       '@aws-sdk/url-parser': 3.127.0
       '@aws-sdk/util-base64-browser': 3.109.0
       '@aws-sdk/util-base64-node': 3.55.0
       '@aws-sdk/util-body-length-browser': 3.55.0
       '@aws-sdk/util-body-length-node': 3.55.0
-      '@aws-sdk/util-defaults-mode-browser': 3.127.0
-      '@aws-sdk/util-defaults-mode-node': 3.130.0
+      '@aws-sdk/util-defaults-mode-browser': 3.137.0
+      '@aws-sdk/util-defaults-mode-node': 3.137.0
       '@aws-sdk/util-user-agent-browser': 3.127.0
       '@aws-sdk/util-user-agent-node': 3.127.0
       '@aws-sdk/util-utf8-browser': 3.109.0
@@ -585,14 +589,14 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/client-sts/3.131.0:
-    resolution: {integrity: sha512-D9GAnF8n3VwFhaE+jxXH035ZZ24WxpY36DUxszCRwXbA7qFazY1BTs1WoKFr8tDH4/iUUqCXd8NuA1l4RiwnqQ==}
+  /@aws-sdk/client-sts/3.137.0:
+    resolution: {integrity: sha512-yJqfkEq0DG9Ds+oif/sc02PX6vfSNcyRe3YcaW5P6ouMyhJRljSIVCnA6iPwJaTsmK9BE9PDgFD2v/GYM/XgOA==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@aws-crypto/sha256-browser': 2.0.0
       '@aws-crypto/sha256-js': 2.0.0
       '@aws-sdk/config-resolver': 3.130.0
-      '@aws-sdk/credential-provider-node': 3.131.0
+      '@aws-sdk/credential-provider-node': 3.137.0
       '@aws-sdk/fetch-http-handler': 3.131.0
       '@aws-sdk/hash-node': 3.127.0
       '@aws-sdk/invalid-dependency': 3.127.0
@@ -609,15 +613,15 @@ packages:
       '@aws-sdk/node-config-provider': 3.127.0
       '@aws-sdk/node-http-handler': 3.127.0
       '@aws-sdk/protocol-http': 3.127.0
-      '@aws-sdk/smithy-client': 3.127.0
+      '@aws-sdk/smithy-client': 3.137.0
       '@aws-sdk/types': 3.127.0
       '@aws-sdk/url-parser': 3.127.0
       '@aws-sdk/util-base64-browser': 3.109.0
       '@aws-sdk/util-base64-node': 3.55.0
       '@aws-sdk/util-body-length-browser': 3.55.0
       '@aws-sdk/util-body-length-node': 3.55.0
-      '@aws-sdk/util-defaults-mode-browser': 3.127.0
-      '@aws-sdk/util-defaults-mode-node': 3.130.0
+      '@aws-sdk/util-defaults-mode-browser': 3.137.0
+      '@aws-sdk/util-defaults-mode-node': 3.137.0
       '@aws-sdk/util-user-agent-browser': 3.127.0
       '@aws-sdk/util-user-agent-node': 3.127.0
       '@aws-sdk/util-utf8-browser': 3.109.0
@@ -660,13 +664,13 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@aws-sdk/credential-provider-ini/3.131.0:
-    resolution: {integrity: sha512-0hA2ZwRUDmG5Wp/1t5BLvju2kZft1T3b3KC068ZY3t1+t/O46R6R9vINKEodohKTbfmGddu+aGY58Ai+N7O5Xw==}
+  /@aws-sdk/credential-provider-ini/3.137.0:
+    resolution: {integrity: sha512-FNSYjHaW83b4sQac+EWh/C6p1taBdvPOXFAVml1mPH49Nlkv9/E4bbjaWwgxvlxjqjNCbkDMKzhb19DN3gVulA==}
     engines: {node: '>= 12.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.127.0
       '@aws-sdk/credential-provider-imds': 3.127.0
-      '@aws-sdk/credential-provider-sso': 3.131.0
+      '@aws-sdk/credential-provider-sso': 3.137.0
       '@aws-sdk/credential-provider-web-identity': 3.127.0
       '@aws-sdk/property-provider': 3.127.0
       '@aws-sdk/shared-ini-file-loader': 3.127.0
@@ -676,15 +680,15 @@ packages:
       - aws-crt
     dev: false
 
-  /@aws-sdk/credential-provider-node/3.131.0:
-    resolution: {integrity: sha512-nVQ6P91nd7i/G+iEnKWVwRRsQZIdY0qfza2+v70fOphjv0vzgDN7Xbn1GiYQVbxBiuxMSjQqg1r/p9PdRmt6QA==}
+  /@aws-sdk/credential-provider-node/3.137.0:
+    resolution: {integrity: sha512-if4CzNSyPS3ZERLtDocNNC+l5ejK93d2hoOzNHP2qCmTppThEPWF2TH506ez0v0lbUzeI7qWgpYe9m4+BFLEwQ==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@aws-sdk/credential-provider-env': 3.127.0
       '@aws-sdk/credential-provider-imds': 3.127.0
-      '@aws-sdk/credential-provider-ini': 3.131.0
+      '@aws-sdk/credential-provider-ini': 3.137.0
       '@aws-sdk/credential-provider-process': 3.127.0
-      '@aws-sdk/credential-provider-sso': 3.131.0
+      '@aws-sdk/credential-provider-sso': 3.137.0
       '@aws-sdk/credential-provider-web-identity': 3.127.0
       '@aws-sdk/property-provider': 3.127.0
       '@aws-sdk/shared-ini-file-loader': 3.127.0
@@ -704,11 +708,11 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@aws-sdk/credential-provider-sso/3.131.0:
-    resolution: {integrity: sha512-3LVan87e6NqnwUrpmjM5dbx8LbZyGG7Gdzf68YL0tZFptCFh1mR/kTJCToGX/hm7Jf3SRU3wtUWJ6G72yP72Sw==}
+  /@aws-sdk/credential-provider-sso/3.137.0:
+    resolution: {integrity: sha512-Up2Q3tWSo6Mv2icXMrHa8dGtnC9yQAeUnftrIlvLXi3P9RjxlOPZCSg1NF8FOS90RdEgORlj/7LPlIniHgGUmg==}
     engines: {node: '>= 12.0.0'}
     dependencies:
-      '@aws-sdk/client-sso': 3.131.0
+      '@aws-sdk/client-sso': 3.137.0
       '@aws-sdk/property-provider': 3.127.0
       '@aws-sdk/shared-ini-file-loader': 3.127.0
       '@aws-sdk/types': 3.127.0
@@ -1076,8 +1080,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@aws-sdk/smithy-client/3.127.0:
-    resolution: {integrity: sha512-sfcAJ+7a41CJMtsv6HRIjA91155Yk013RvMUdG2EMSo3cpLq/QmTJ1EGw4ByDZs5HLpXAaRoLI+bA2ovriGQnQ==}
+  /@aws-sdk/smithy-client/3.137.0:
+    resolution: {integrity: sha512-YAuWiSzHJGV9jQCjmcBWxbWRoq/3INEpdtfAdpR+X+sEZaRJESDGPt4or7WbQ9Tmbd/uZ0uQLYIed/NDSyJLLQ==}
     engines: {node: '>= 12.0.0'}
     dependencies:
       '@aws-sdk/middleware-stack': 3.127.0
@@ -1147,8 +1151,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@aws-sdk/util-defaults-mode-browser/3.127.0:
-    resolution: {integrity: sha512-e/vBm+EYSJ0R79591EPiCPE3aR5RKk5CjOkQjNxZIX8UPnIlo7xohTcebfR/iugSTxNrpfrFv+o4H5GjzAuhLA==}
+  /@aws-sdk/util-defaults-mode-browser/3.137.0:
+    resolution: {integrity: sha512-9f5045wqPAcGLKIAXzZKHE2n42ilGo/g4rLSS09OXx9CoFT4lVdqZPqBqh/prDUMrqXge9FK3EH2VId7L5GpEQ==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       '@aws-sdk/property-provider': 3.127.0
@@ -1157,8 +1161,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@aws-sdk/util-defaults-mode-node/3.130.0:
-    resolution: {integrity: sha512-0BWx7C6GhHBrjPUuSgMnRA4InxYisX6MIGs5yIHk2OArYkQLJMdeORYXXz1y40ahMihmtjD/Ap5xQGBm2vyffA==}
+  /@aws-sdk/util-defaults-mode-node/3.137.0:
+    resolution: {integrity: sha512-CvMpemcsOkoMEz0iALamyQBt1rHx98NvF/cay019F8m+umD03I8CclDugy/13DqESWfsVxn91lZY/DOnO+si7A==}
     engines: {node: '>= 10.0.0'}
     dependencies:
       '@aws-sdk/config-resolver': 3.130.0
@@ -1346,8 +1350,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify/json/2.1.82:
-    resolution: {integrity: sha512-0ruqhpYSqUwLbxVTGdfPw4QkAhl0i3aK3uuXbV++WS/QTCz7WndNnfXsyFJI07WqWyuH7NqPZMpK4R264/bqUQ==}
+  /@iconify/json/2.1.83:
+    resolution: {integrity: sha512-mapm/qoT4xbROvSI8Ol90P4lFb74vK4oSzWftg2GmiVYcdPO5TENwf9Odtx+xLhjiFHwfeZk+dn/NNqBbybr3w==}
     dependencies:
       '@iconify/types': 1.1.0
       pathe: 0.3.2
@@ -1783,7 +1787,7 @@ packages:
       '@stdlib/error': github.com/stdlib-js/error/5cddb57368b1b7cb276dcfdfae29fff9177dd11c
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
       '@stdlib/namespace': github.com/stdlib-js/namespace/f8dcec5ea147e02094999f1e0338c5b876a6cdd3_virtual-dom@2.1.1
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
@@ -2278,6 +2282,19 @@ packages:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
     dev: true
 
+  /@types/body-parser/1.19.2:
+    resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
+    dependencies:
+      '@types/connect': 3.4.35
+      '@types/node': 16.11.45
+    dev: false
+
+  /@types/busboy/0.3.2:
+    resolution: {integrity: sha512-iEvdm9Z9KdSs/ozuh1Z7ZsXrOl8F4M/CLMXPZHr3QuJ4d6Bjn+HBMC5EMKpwpAo8oi8iK9GZfFoHaIMrrZgwVw==}
+    dependencies:
+      '@types/node': 16.11.45
+    dev: false
+
   /@types/cacheable-request/6.0.2:
     resolution: {integrity: sha512-B3xVo+dlKM6nnKTcmm5ZtY/OL8bOAOd2Olee9M1zft65ox50OzjEHW91sDiU9j6cvW8Ejg1/Qkf4xd2kugApUA==}
     dependencies:
@@ -2308,6 +2325,12 @@ packages:
     dependencies:
       '@types/color-convert': 2.0.0
     dev: true
+
+  /@types/connect/3.4.35:
+    resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
+    dependencies:
+      '@types/node': 16.11.45
+    dev: false
 
   /@types/cookie/0.5.1:
     resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
@@ -2372,6 +2395,23 @@ packages:
   /@types/emscripten/0.0.34:
     resolution: {integrity: sha512-QSb9ojDincskc+uKMI0KXp8e1NALFINCrMlp8VGKGcTSxeEyRTTKyjWw75NYrCZHUsVEEEpr1tYHpbtaC++/sQ==}
 
+  /@types/express-serve-static-core/4.17.30:
+    resolution: {integrity: sha512-gstzbTWro2/nFed1WXtf+TtrpwxH7Ggs4RLYTLbeVgIkUQOI3WG/JKjgeOU1zXDvezllupjrf8OPIdvTbIaVOQ==}
+    dependencies:
+      '@types/node': 16.11.45
+      '@types/qs': 6.9.7
+      '@types/range-parser': 1.2.4
+    dev: false
+
+  /@types/express/4.17.13:
+    resolution: {integrity: sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==}
+    dependencies:
+      '@types/body-parser': 1.19.2
+      '@types/express-serve-static-core': 4.17.30
+      '@types/qs': 6.9.7
+      '@types/serve-static': 1.13.10
+    dev: false
+
   /@types/hast/2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
     dependencies:
@@ -2421,6 +2461,10 @@ packages:
     resolution: {integrity: sha512-Lx+EZoJxUKw4dp8uei9XiUVNlgkYmax5+ovqt6Xf3LzJOnWhlfJw/jLBmqfGVwOP/pDr4HT8bI1WtxK0IChMLw==}
     dev: true
 
+  /@types/mime/1.3.2:
+    resolution: {integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==}
+    dev: false
+
   /@types/minimatch/3.0.5:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
     dev: true
@@ -2428,12 +2472,11 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 18.6.1
+      '@types/node': 16.11.45
       form-data: 3.0.1
 
   /@types/node/16.11.45:
     resolution: {integrity: sha512-3rKg/L5x0rofKuuUt5zlXzOnKyIHXmIu5R8A0TuNDMF2062/AOIDBciFIjToLEJ/9F9DzkHNot+BpNsMI1OLdQ==}
-    dev: true
 
   /@types/node/18.6.1:
     resolution: {integrity: sha512-z+2vB6yDt1fNwKOeGbckpmirO+VBDuQqecXkgeIqDlaOtmKn6hPR/viQ8cxCfqLU4fTlvM3+YjM367TukWdxpg==}
@@ -2455,6 +2498,14 @@ packages:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
     dev: true
 
+  /@types/qs/6.9.7:
+    resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: false
+
+  /@types/range-parser/1.2.4:
+    resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+    dev: false
+
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
@@ -2469,6 +2520,13 @@ packages:
 
   /@types/seedrandom/2.4.30:
     resolution: {integrity: sha512-AnxLHewubLVzoF/A4qdxBGHCKifw8cY32iro3DQX9TPcetE95zBeVt3jnsvtvAUf1vwzMfwzp4t/L2yqPlnjkQ==}
+
+  /@types/serve-static/1.13.10:
+    resolution: {integrity: sha512-nCkHGI4w7ZgAdNkrEu0bv+4xNV/XDqW+DydknebMOQwkpDGx8G+HTlj7R7ABI8i8nKxVw0wtKPi1D+lPOkh4YQ==}
+    dependencies:
+      '@types/mime': 1.3.2
+      '@types/node': 16.11.45
+    dev: false
 
   /@types/sharp/0.30.4:
     resolution: {integrity: sha512-6oJEzKt7wZeS7e+6x9QFEOWGs0T/6of00+0onZGN1zSmcSjcTDZKgIGZ6YWJnHowpaKUCFBPH52mYljWqU32Eg==}
@@ -2667,6 +2725,14 @@ packages:
 
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
+
+  /accepts/1.3.8:
+    resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      mime-types: 2.1.35
+      negotiator: 0.6.3
+    dev: false
 
   /acorn-jsx/5.3.2_acorn@8.8.0:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -2999,7 +3065,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001370
-      electron-to-chromium: 1.4.200
+      electron-to-chromium: 1.4.202
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.2
     dev: true
@@ -3041,6 +3107,13 @@ packages:
       esbuild: 0.14.50
       load-tsconfig: 0.2.3
     dev: true
+
+  /busboy/1.6.0:
+    resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
+    engines: {node: '>=10.16.0'}
+    dependencies:
+      streamsearch: 1.1.0
+    dev: false
 
   /bytes/3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
@@ -3428,6 +3501,16 @@ packages:
     dependencies:
       safe-buffer: 5.1.2
     dev: true
+
+  /cookie-signature/1.2.0:
+    resolution: {integrity: sha512-R0BOPfLGTitaKhgKROKZQN6iyq2iDQcH1DOF8nJoaWapguX5bC2w+Q/I9NmmM5lfcvEarnLZr+cCvmEYYSXvYA==}
+    engines: {node: '>=6.6.0'}
+    dev: false
+
+  /cookie/0.4.2:
+    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
+    engines: {node: '>= 0.6'}
+    dev: false
 
   /cookie/0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
@@ -4077,8 +4160,8 @@ packages:
     resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=}
     dev: false
 
-  /electron-to-chromium/1.4.200:
-    resolution: {integrity: sha512-nPyI7oHc8T64oSqRXrAt99gNMpk0SAgPHw/o+hkNKyb5+bcdnFtZcSO9FUJES5cVkVZvo8u4qiZ1gQILl8UXsA==}
+  /electron-to-chromium/1.4.202:
+    resolution: {integrity: sha512-JYsK2ex9lmQD27kj19fhXYxzFJ/phLAkLKHv49A5UY6kMRV2xED3qMMLg/voW/+0AR6wMiI+VxlmK9NDtdxlPA==}
     dev: true
 
   /emoji-regex/8.0.0:
@@ -5205,6 +5288,23 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
     dev: true
+
+  /hyper-express/6.4.2:
+    resolution: {integrity: sha512-R4cvUrdDYpulzer6GShRVZQs6V69HRwkV28Y+e3YnSMh2nYf0ipvCmCbOOKbcecUs64cNbY49hujht/njYAgLw==}
+    dependencies:
+      '@types/busboy': 0.3.2
+      '@types/express': 4.17.13
+      '@types/node': 16.11.45
+      accepts: 1.3.8
+      busboy: 1.6.0
+      cookie: 0.4.2
+      cookie-signature: 1.2.0
+      mime-types: 2.1.35
+      qs: 6.11.0
+      range-parser: 1.2.1
+      type-is: 1.6.18
+      uWebSockets.js: github.com/uNetworking/uWebSockets.js/806df48c9da86af7b3341f3e443388c7cd15c3de
+    dev: false
 
   /hyperlinker/1.0.0:
     resolution: {integrity: sha512-Ty8UblRWFEcfSuIaajM34LdPXIhbs1ajEX/BBPv24J+enSVaEVY63xQ6lTO9VRYS5LAoghIG0IDJ+p+IPzKUQQ==}
@@ -6424,6 +6524,11 @@ packages:
     dev: false
     optional: true
 
+  /negotiator/0.6.3:
+    resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
+    engines: {node: '>= 0.6'}
+    dev: false
+
   /next-tick/0.2.2:
     resolution: {integrity: sha512-f7h4svPtl+QidoBv4taKXUjJ70G2asaZ8G28nS0OkqaalX8dwwrtWtyxEDPK62AC00ur/+/E0pUwBwY5EPn15Q==}
     dev: false
@@ -7121,6 +7226,13 @@ packages:
       side-channel: 1.0.4
     dev: false
 
+  /qs/6.11.0:
+    resolution: {integrity: sha512-MvjoMCJwEarSbUYk5O+nmoSzSutSsTwF85zcHPQ9OrlFoZOYIjaqBAJIqIXjptyD5vThxGq52Xu/MaJzRkIk4Q==}
+    engines: {node: '>=0.6'}
+    dependencies:
+      side-channel: 1.0.4
+    dev: false
+
   /qs/6.5.3:
     resolution: {integrity: sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==}
     engines: {node: '>=0.6'}
@@ -7149,6 +7261,11 @@ packages:
     dependencies:
       seedrandom: 3.0.5
     dev: true
+
+  /range-parser/1.2.1:
+    resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
+    engines: {node: '>= 0.6'}
+    dev: false
 
   /raw-body/2.5.1:
     resolution: {integrity: sha512-qqJBtEyVgS0ZmPGdCFPWJ3FreoqvG4MVQln/kCgF7Olq95IbOp0/BWyMwbdtn4VTvkM8Y7khCQ2Xgk/tcrCXig==}
@@ -7326,8 +7443,8 @@ packages:
       estree-walker: 0.6.1
     dev: true
 
-  /rollup/2.77.0:
-    resolution: {integrity: sha512-vL8xjY4yOQEw79DvyXLijhnhh+R/O9zpF/LEgkCebZFtb6ELeN9H3/2T0r8+mp+fFTBHZ5qGpOpW2ela2zRt3g==}
+  /rollup/2.77.1:
+    resolution: {integrity: sha512-GhutNJrvTYD6s1moo+kyq7lD9DeR5HDyXo4bDFlDSkepC9kVKY+KK/NSZFzCmeXeia3kEzVuToQmHRdugyZHxw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -7617,6 +7734,11 @@ packages:
   /statuses/2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /streamsearch/1.1.0:
+    resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
+    engines: {node: '>=10.0.0'}
     dev: false
 
   /string-argv/0.3.1:
@@ -8203,7 +8325,7 @@ packages:
       joycon: 3.1.1
       postcss-load-config: 3.1.4
       resolve-from: 5.0.0
-      rollup: 2.77.0
+      rollup: 2.77.1
       source-map: 0.8.0-beta.0
       sucrase: 3.24.0
       tree-kill: 1.2.2
@@ -8708,7 +8830,7 @@ packages:
       esbuild: 0.14.50
       postcss: 8.4.14
       resolve: 1.22.1
-      rollup: 2.77.0
+      rollup: 2.77.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -8859,6 +8981,31 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  /ws-sockette/0.1.1:
+    resolution: {integrity: sha512-4rW1dhRXCbokVtXBVsgPCX4mxBEIzIcteAIcvyr09CeB41gk9uEjZiGA5NoAWQVRi50aUvT0Lxldws4c1RBjQQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      debug: 4.3.4
+      ws: 8.8.1
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    dev: false
+
+  /ws/8.8.1:
+    resolution: {integrity: sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
+
   /x-is-array/0.1.0:
     resolution: {integrity: sha1-3lIBcdR7P0FvVYfWKbidJrEtwp0=}
     dev: false
@@ -8951,7 +9098,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -8973,7 +9120,7 @@ packages:
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
@@ -9032,7 +9179,7 @@ packages:
     dependencies:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9147,7 +9294,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9166,7 +9313,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9175,8 +9322,8 @@ packages:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/fd7e3defc7be0d6bfe902e324ff236a724a7f864}
+  github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0}
     name: '@stdlib/math'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9209,7 +9356,7 @@ packages:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/stats': github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4
@@ -9242,7 +9389,7 @@ packages:
       '@stdlib/error': github.com/stdlib-js/error/5cddb57368b1b7cb276dcfdfae29fff9177dd11c
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
       '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
@@ -9280,7 +9427,7 @@ packages:
       '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
       '@stdlib/strided': github.com/stdlib-js/strided/b6cc6e1999b9737a776e910e31949a84b0d2d397
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9318,7 +9465,7 @@ packages:
     dependencies:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
@@ -9336,7 +9483,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9433,7 +9580,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/stats': github.com/stdlib-js/stats/cd877548ea8d8501b527f1df3fbee18f4b63eef4
       '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
@@ -9474,7 +9621,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/datasets': github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/namespace': github.com/stdlib-js/namespace/f8dcec5ea147e02094999f1e0338c5b876a6cdd3_virtual-dom@2.1.1
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
@@ -9499,7 +9646,7 @@ packages:
     dependencies:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
@@ -9520,7 +9667,7 @@ packages:
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/random': github.com/stdlib-js/random/61d4d5ac8ba52a55ab594afa4a34a47dae7c6894
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
@@ -9561,7 +9708,7 @@ packages:
       '@stdlib/array': github.com/stdlib-js/array/56d7c82cf2231b844b7db897a1eb2769c865243c
       '@stdlib/assert': github.com/stdlib-js/assert/649840ba767bd673b17e7547aa7d9680f3db6130
       '@stdlib/complex': github.com/stdlib-js/complex/a5e7a1429269fce7178d17fa731553b7cea3624c
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
@@ -9581,7 +9728,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/nlp': github.com/stdlib-js/nlp/ec1f8635addad7fe87ed7a2ac5450df1f4373f7b
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
       '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
@@ -9616,7 +9763,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/string': github.com/stdlib-js/string/a082b0362ce00d20ffa29f7871f303a4becf2489
       '@stdlib/utils': github.com/stdlib-js/utils/44aaacbc2946af7f75e894262451c55eb39291f8
     transitivePeerDependencies:
@@ -9645,7 +9792,7 @@ packages:
       '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
       '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
       '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/fd7e3defc7be0d6bfe902e324ff236a724a7f864
+      '@stdlib/math': github.com/stdlib-js/math/a61685fc97c8b9b6352911ecb0d3f0b96d307bd0
       '@stdlib/ndarray': github.com/stdlib-js/ndarray/324553adc0885da173c66700024d6d16bf683195
       '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
       '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
@@ -9659,4 +9806,10 @@ packages:
       debug: 2.6.9
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  github.com/uNetworking/uWebSockets.js/806df48c9da86af7b3341f3e443388c7cd15c3de:
+    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/806df48c9da86af7b3341f3e443388c7cd15c3de}
+    name: uWebSockets.js
+    version: 20.10.0
     dev: false
