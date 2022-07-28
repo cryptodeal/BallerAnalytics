@@ -1,11 +1,11 @@
 import { Env } from '../Env';
-import minimist from 'minimist';
-import { json } from 'body-parser';
+// import minimist from 'minimist';
+// import { json } from 'body-parser';
 import { seededRandom } from '../../utils';
-import polka from 'polka';
+// import polka from 'polka';
 import { A3CAgent_Worker } from '../Agent';
 import {
-	addWorkerToken,
+	// addWorkerToken,
 	getBestScore,
 	getGlobalEpisode,
 	getGlobalModelActorWeights,
@@ -188,11 +188,11 @@ export class Worker {
 		return Promise.resolve();
 	}
 }
-
+/*
 const argv = <{ port?: number; p?: number }>minimist(process.argv.slice(2));
 
 let port = 8085;
-/* specify port using -p or --port arg */
+// specify port using -p or --port arg
 if (argv.port || argv.p) port = argv.port ? argv.port : argv.p ? argv.p : 8085;
 
 const app = polka();
@@ -211,3 +211,4 @@ app.get('/start_worker', (req, res) => {
 app.listen(port, () => {
 	console.log(`> Running on http://localhost:${port}`);
 });
+*/
