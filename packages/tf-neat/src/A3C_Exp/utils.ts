@@ -1,4 +1,5 @@
 import { readFile, writeFile, stat } from 'fs/promises';
+import { fetch } from 'cross-undici-fetch';
 import { exec } from 'child_process';
 import { networkInterfaces } from 'os';
 
