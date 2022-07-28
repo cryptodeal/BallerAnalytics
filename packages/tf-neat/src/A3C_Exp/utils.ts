@@ -4,7 +4,7 @@ import { exec } from 'child_process';
 import { networkInterfaces } from 'os';
 
 export const APIBaseURI = `http://0.0.0.0:${3000}`;
-export const WSURI = `ws://0.0.0.0:${3000}`;
+export const wsBaseURI = `ws://0.0.0.0:${3000}/ws/connect`;
 
 export function logger(req, res, next) {
 	console.log(`~> Received ${req.method} on ${req.url}`);

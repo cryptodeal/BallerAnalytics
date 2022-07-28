@@ -24,15 +24,6 @@ export class MasterAgent {
 	}
 
 	public async init() {
-		await this.sharedAgent.actor.save('file://' + process.cwd() + '/A3C_Data/global-model-actor');
-		await this.sharedAgent.critic.save('file://' + process.cwd() + '/A3C_Data/global-model-critic');
-	}
-
-	public async addWorker(hostURI: string) {
-		return startWorker(hostURI);
-	}
-
-	public async train() {
 		await (async () => {
 			return new Promise((resolve, reject) => {
 				exec(
@@ -55,6 +46,15 @@ export class MasterAgent {
 				);
 			});
 		})();
+		await this.sharedAgent.actor.save('file://' + process.cwd() + '/A3C_Data/global-model-actor');
+		await this.sharedAgent.critic.save('file://' + process.cwd() + '/A3C_Data/global-model-critic');
+	}
+
+	public async addWorker(hostURI: string) {
+		return startWorker(hostURI);
+	}
+
+	public async train() {
 		await createQueue();
 		const reward_plotting: Record<number, number> = {};
 		const workers = await getWorkersHostNames();
