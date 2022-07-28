@@ -117,7 +117,6 @@ export class Worker {
 				if (time_count === this.update_freq) {
 					if (ep_reward > global_best_score) {
 						await this.agent.saveLocally();
-						await sendModel(this.workerIdx, false);
 					}
 					this.ep_loss += ep_mean_loss;
 					console.log(this.ep_loss);
@@ -146,6 +145,11 @@ export class Worker {
 						console.log('Updating global model');
 						await this.agent.saveLocally();
 						await sendModel(this.workerIdx, false);
+						await Promise.all([getGlobalModelActorWeights(), getGlobalModelCriticWeights()]);
+						await this.agent.reloadWeights(
+							process.cwd() + '/A3C_Data/local-model-actor/model.json',
+							process.cwd() + '/A3C_Data/local-model-critic/model.json'
+						);
 						await setBestScore(ep_reward);
 					}
 					await incrementGlobalEpisode();
@@ -162,13 +166,7 @@ export class Worker {
 						this.epsilon = this.epsilon * this.epsilonMultiply;
 						this.epsilon = Math.floor(this.epsilon * 10000) / 10000;
 					}
-					if (ep_reward < global_best_score) {
-						await Promise.all([getGlobalModelActorWeights(), getGlobalModelCriticWeights()]);
-						await this.agent.reloadWeights(
-							process.cwd() + '/A3C_Data/local-model-actor/model.json',
-							process.cwd() + '/A3C_Data/local-model-critic/model.json'
-						);
-					}
+
 					agent.ballCount = 3;
 					while (true) {
 						if (agent.env.setEntity(agent, { ball: 3 }) !== null) {

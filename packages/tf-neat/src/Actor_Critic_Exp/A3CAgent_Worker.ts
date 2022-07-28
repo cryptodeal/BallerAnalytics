@@ -55,10 +55,7 @@ export class A3CAgent_Worker {
 	public updateFromSharedAgent() {
 		tidy(() => {
 			this.actor.setWeights(this.sharedAgent.actor.getWeights());
-			// this.actor.weights[i].val.assign(this.sharedAgent.actor.weights[i].val);
-
 			this.critic.setWeights(this.sharedAgent.critic.getWeights());
-			// this.critic.weights[i].val.assign(this.sharedAgent.critic.weights[i].val);
 		});
 	}
 
