@@ -2,18 +2,20 @@ import * as HyperExpress from 'hyper-express';
 import { appendFile, readFile, writeFile } from 'fs/promises';
 import { createReadStream, open, close } from 'fs';
 import { logger } from './utils';
+import { MasterAgent } from './Master';
+import type { Websocket } from 'hyper-express';
 
-const workerPool: Map<number, string> = new Map();
+const workerPool: Map<number, { ip: string; ws: Websocket; init?: boolean }> = new Map();
 
 const port = Number(process.env.PORT) || 3000;
-//const master = new MasterAgent(1);
+const master = new MasterAgent();
 const app = new HyperExpress.Server();
 app.use(logger);
 
 app.upgrade('/ws/connect', async (request, response) => {
 	const { ip } = request;
+
 	/* add to Ie */
-	workerPool.set(1, ip);
 
 	/* upgrade the incoming request with some context */
 	response.upgrade({
@@ -28,17 +30,35 @@ app.ws('/ws/connect', (ws) => {
 		ip,
 		context: { workerNum, workerAddy }
 	} = ws;
+	workerPool.set(Number(workerNum), { ip, ws });
+
+	ws.send(JSON.stringify({ type: 'INIT', workerNum }));
+
 	// Log when a connection has opened for debugging
 	console.log('worker ' + workerNum + ' has connected from ' + workerAddy);
 
 	// Handle incoming messages to perform changes in consumption
-	ws.on('message', (message) => {
+	ws.on('message', async (message) => {
+		const msg = JSON.parse(message);
+		if (msg.type === 'INIT_DONE') {
+			workerPool.set(Number(workerNum), { ip, ws, init: true });
+			if (workerPool.size > 1) {
+				let allInit = false;
+				for (const [, { init }] of workerPool) {
+					if (!init) break;
+					allInit = true;
+				}
+				master.workerPool = workerPool;
+				await master.init();
+				await master.train();
+			}
+		}
 		// Make some changes to which events user consumes based on incoming message
 	});
 
 	// Do some cleanup once websocket connection closes
 	ws.on('close', (code, message) => {
-		console.log('worker ' + workerNum + ' has connected from ' + workerAddy);
+		console.log('worker ' + workerNum + ' has disconnected from ' + workerAddy);
 		/* clean up workerMap */
 	});
 });

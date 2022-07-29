@@ -4,21 +4,23 @@ import { exec } from 'child_process';
 import {
 	createQueue,
 	getBlockingQueue,
-	getWorkersHostNames,
-	startWorker,
+	// getWorkersHostNames,
+	// startWorker,
 	waitForWorkers,
 	serialize
 } from './utils';
+import type { Websocket } from 'hyper-express';
 
 export class MasterAgent {
-	public workerCount: number;
+	// public workerCount: number;
 	public name = `A3C_GridWorld_LocalEnv`;
 	public env: Env;
 	public globalStep = 0;
 	public sharedAgent: Actor_Critic_Agent;
+	public workerPool!: Map<number, { ip: string; ws: Websocket }>;
 
-	constructor(workerCount: number) {
-		this.workerCount = workerCount;
+	constructor() {
+		//this.workerCount = workerCount;
 		this.env = new Env(8);
 		this.sharedAgent = new Actor_Critic_Agent(this.env, 0, 0);
 	}
@@ -50,18 +52,14 @@ export class MasterAgent {
 		await this.sharedAgent.critic.save('file://' + process.cwd() + '/A3C_Data/global-model-critic');
 	}
 
-	public async addWorker(hostURI: string) {
-		return startWorker(hostURI);
-	}
-
 	public async train() {
 		await createQueue();
 		const reward_plotting: Record<number, number> = {};
-		const workers = await getWorkersHostNames();
+		// const workers = await getWorkersHostNames();
 
-		for (let i = 0; i < workers.length; i++) {
-			console.log('Starting worker: ', i);
-			await startWorker(workers[i]);
+		for (const [key, { ip, ws }] of this.workerPool) {
+			console.log('Starting worker: ' + key + ' ' + ip);
+			ws.send(JSON.stringify({ type: 'RUN', workerNum: key }));
 		}
 		const moving_avg_rewards: number[] = [];
 		let i = 0;

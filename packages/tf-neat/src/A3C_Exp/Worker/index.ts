@@ -1,10 +1,9 @@
 import { Env } from '../Env';
-import minimist from 'minimist';
-import { json } from 'body-parser';
+import { exec } from 'child_process';
 import { seededRandom } from '../../utils';
-import polka from 'polka';
 import { A3CAgent_Worker } from '../Agent';
 import {
+	wsBaseURI,
 	addWorkerToken,
 	getBestScore,
 	getGlobalEpisode,
@@ -16,8 +15,40 @@ import {
 	sendModel,
 	setBestScore,
 	setGlobalMovingAverage,
-	writeQueue
+	writeQueue,
+	parseWsMsg
 } from '../utils';
+import { wsSockette } from 'ws-sockette';
+let worker: Worker;
+
+const bootWorker = () =>
+	(async () => {
+		await addWorkerToken(worker.workerIdx);
+		await worker.run();
+	})();
+
+const ws = wsSockette(wsBaseURI, {
+	timeout: 5e3,
+	maxAttempts: 10,
+	onopen: (e) => {
+		console.log('Connected to A3C WS API');
+	},
+	onmessage: async (e) => {
+		const { data } = e;
+		const payload = parseWsMsg(data as string);
+		if (payload.type === 'INIT' && !worker) {
+			worker = new Worker(payload.workerNum);
+			await worker.mkDirLocals();
+			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
+		} else if (payload.type === 'RUN') {
+			bootWorker();
+		}
+	},
+	onreconnect: (e) => console.log('Reconnecting...', e),
+	onmaximum: (e) => console.log('Stop Attempting!', e),
+	onclose: (e) => console.log('Closed!', e),
+	onerror: (e) => console.log('Error:', e)
+});
 
 async function record(
 	episode: number,
@@ -64,6 +95,41 @@ export class Worker {
 		// this.env = new Environment(1500);
 		this.update_freq = 10;
 	}
+
+	private bashRmDirs = () => {
+		let globQry = '';
+		for (let i = Number(this.workerIdx.toString()[0]); i < 10; i++) {
+			globQry += i;
+		}
+		return globQry;
+	};
+
+	public mkDirLocals = () => {
+		return new Promise((resolve, reject) => {
+			exec(
+				`mkdir -p A3C_Data
+        mkdir -p A3C_Data/local-model-actor/${this.workerIdx}
+        mkdir -p A3C_Data/local-model-critic/${this.workerIdx}`,
+				(err) => {
+					if (err) reject(err);
+					resolve(true);
+				}
+			);
+		});
+	};
+
+	public rmRfDirLocals = () => {
+		return new Promise((resolve, reject) => {
+			exec(
+				`rm -rf A3C_Data/local-model-actor/${this.workerIdx}
+        rm -rf A3C_Data/local-model-critic/${this.workerIdx}`,
+				(err) => {
+					if (err) reject(err);
+					resolve(true);
+				}
+			);
+		});
+	};
 
 	public async run() {
 		//Analogy to the run function of threads
@@ -116,7 +182,7 @@ export class Worker {
 
 				if (time_count === this.update_freq) {
 					if (ep_reward > global_best_score) {
-						await this.agent.saveLocally();
+						await this.agent.saveLocally(this.workerIdx);
 					}
 					this.ep_loss += ep_mean_loss;
 					console.log(this.ep_loss);
@@ -143,12 +209,15 @@ export class Worker {
 					console.log('Global best score ' + global_best_score);
 					if (ep_reward > global_best_score) {
 						console.log('Updating global model');
-						await this.agent.saveLocally();
+						await this.agent.saveLocally(this.workerIdx);
 						await sendModel(this.workerIdx, false);
-						await Promise.all([getGlobalModelActorWeights(), getGlobalModelCriticWeights()]);
+						await Promise.all([
+							getGlobalModelActorWeights(this.workerIdx),
+							getGlobalModelCriticWeights(this.workerIdx)
+						]);
 						await this.agent.reloadWeights(
-							process.cwd() + '/A3C_Data/local-model-actor/model.json',
-							process.cwd() + '/A3C_Data/local-model-critic/model.json'
+							process.cwd() + `/A3C_Data/local-model-actor/${this.workerIdx}/model.json`,
+							process.cwd() + `/A3C_Data/local-model-critic/${this.workerIdx}/model.json`
 						);
 						await setBestScore(ep_reward);
 					}
@@ -189,25 +258,9 @@ export class Worker {
 	}
 }
 
-const argv = <{ port?: number; p?: number }>minimist(process.argv.slice(2));
-
-let port = 8085;
-/* specify port using -p or --port arg */
-if (argv.port || argv.p) port = argv.port ? argv.port : argv.p ? argv.p : 8085;
-
-const app = polka();
-app.use(json({ limit: '10mb' }));
-app.get('/start_worker', (req, res) => {
-	const worker = new Worker(1);
-	(async () => {
-		await addWorkerToken(1);
-		await worker.run();
-	})();
-	res.writeHead(200, {
-		'Content-Type': 'application/json'
+process.on('SIGINT', () => {
+	console.log('Caught interrupt signal');
+	return worker.rmRfDirLocals().then(() => {
+		process.exit();
 	});
-	res.end(JSON.stringify({ status: 'SUCCESS' }));
-});
-app.listen(port, () => {
-	console.log(`> Running on http://localhost:${port}`);
 });

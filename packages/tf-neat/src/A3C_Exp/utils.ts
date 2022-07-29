@@ -2,9 +2,17 @@ import { readFile, writeFile, stat } from 'fs/promises';
 import { fetch } from 'cross-undici-fetch';
 import { exec } from 'child_process';
 import { networkInterfaces } from 'os';
+import minimist from 'minimist';
+import type { WsApiStartWorker } from './types';
 
-export const APIBaseURI = `http://0.0.0.0:${3000}`;
-export const wsBaseURI = `ws://0.0.0.0:${3000}/ws/connect`;
+const argv = <{ host?: string; h?: string }>minimist(process.argv.slice(2));
+
+let host = '0.0.0.0';
+// specify host using -h or --host arg
+if (argv.host || argv.h) host = argv.host ? argv.host : argv.h ? argv.h : '0.0.0.0';
+
+export const APIBaseURI = `http://${host}:${3000}`;
+export const wsBaseURI = `ws://${host}:${3000}/ws/connect`;
 
 export function logger(req, res, next) {
 	console.log(`~> Received ${req.method} on ${req.url}`);
@@ -77,10 +85,10 @@ export const getBestScore = () => {
 
 export const sendModel = async (worker_id: number, temp: boolean) => {
 	const [data_actor, data_critic] = await Promise.all([
-		readFile(process.cwd() + '/A3C_Data/local-model-actor/weights.bin', {
+		readFile(process.cwd() + `/A3C_Data/local-model-actor/${worker_id}/weights.bin`, {
 			encoding: 'binary'
 		}),
-		readFile(process.cwd() + '/A3C_Data/local-model-critic/weights.bin', {
+		readFile(process.cwd() + `/A3C_Data/local-model-critic/${worker_id}/weights.bin`, {
 			encoding: 'binary'
 		})
 	]);
@@ -215,14 +223,14 @@ export const notifyWorkerDone = () => {
 		});
 };
 
-export const getGlobalModelCriticWeights = () => {
+export const getGlobalModelCriticWeights = (workerId: number) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_weights_critic > ' +
 				process.cwd() +
-				'/A3C_Data/local-model-critic/weights.bin',
+				`/A3C_Data/local-model-critic/${workerId}/weights.bin`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -230,14 +238,14 @@ export const getGlobalModelCriticWeights = () => {
 		);
 	});
 };
-export const getGlobalModelCriticJSON = () => {
+export const getGlobalModelCriticJSON = (workerId: number) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_critic > ' +
 				process.cwd() +
-				'/A3C_Data/local-model-critic/model.json',
+				`/A3C_Data/local-model-critic/${workerId}/model.json`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -246,17 +254,17 @@ export const getGlobalModelCriticJSON = () => {
 	});
 };
 
-export const getGlobalModelCritic = () =>
-	Promise.all([getGlobalModelCriticWeights(), getGlobalModelCriticJSON()]);
+export const getGlobalModelCritic = (workerId: number) =>
+	Promise.all([getGlobalModelCriticWeights(workerId), getGlobalModelCriticJSON(workerId)]);
 
-export const getGlobalModelActorWeights = () => {
+export const getGlobalModelActorWeights = (workerId: number) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_weights_actor > ' +
 				process.cwd() +
-				'/A3C_Data/local-model-actor/weights.bin',
+				`/A3C_Data/local-model-actor/${workerId}/weights.bin`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -265,14 +273,14 @@ export const getGlobalModelActorWeights = () => {
 	});
 };
 
-export const getGlobalModelActorJSON = () => {
+export const getGlobalModelActorJSON = (workerId: number) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_actor > ' +
 				process.cwd() +
-				'/A3C_Data/local-model-actor/model.json',
+				`/A3C_Data/local-model-actor/${workerId}/model.json`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -281,8 +289,8 @@ export const getGlobalModelActorJSON = () => {
 	});
 };
 
-export const getGlobalModelActor = () =>
-	Promise.all([getGlobalModelActorWeights(), getGlobalModelActorJSON()]);
+export const getGlobalModelActor = (workerId: number) =>
+	Promise.all([getGlobalModelActorWeights(workerId), getGlobalModelActorJSON(workerId)]);
 
 export const getGlobalEpisode = () => {
 	return fetch(APIBaseURI + '/global_episode')
@@ -408,3 +416,8 @@ export const serialize = (to_serialise: object, filename = 'program_state.json')
 	writeFile(`${process.cwd()}/A3C_Data/logs/${filename}`, JSON.stringify(to_serialise));
 
 export const deserialize = async (path: string) => readFile(path, 'utf-8');
+
+export type ParsedWsData = WsApiStartWorker;
+export const parseWsMsg = (msg: string) => {
+	return <ParsedWsData>JSON.parse(msg);
+};

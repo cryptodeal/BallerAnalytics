@@ -294,10 +294,10 @@ export class A3CAgent_Worker {
 			.dataSync()[0];
 	}
 
-	public async saveLocally() {
+	public async saveLocally(workerId) {
 		const rootDir = process.cwd();
-		await this.actor.save('file://' + rootDir + '/A3C_Data/local-model-actor');
-		await this.critic.save('file://' + rootDir + '/A3C_Data/local-model-critic');
+		await this.actor.save('file://' + rootDir + `/A3C_Data/local-model-actor/${workerId}`);
+		await this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic/${workerId}`);
 	}
 	public step(action: number): [number, boolean] {
 		if (this.x + dirs[action][0] >= 0 && this.x + dirs[action][0] < this.env.width) {
