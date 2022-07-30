@@ -154,7 +154,9 @@ export class Worker {
 			while (true) {
 				// TODO: REWRITE BELOW
 				console.log(
-					`Episode ${this.agent.env.episodes}: ${this.agent.env.steps} / ${this.agent.env.maxSteps}`
+					`Episode ${this.agent.env.episodes}: ${this.agent.env.steps + 1} / ${
+						this.agent.env.maxSteps
+					}`
 				);
 
 				const action = this.agent.getAction(this.epsilon, state);
