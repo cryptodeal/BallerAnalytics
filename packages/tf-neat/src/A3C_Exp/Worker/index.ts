@@ -44,10 +44,10 @@ const ws = wsSockette(wsBaseURI, {
 			bootWorker();
 		}
 	},
-	onreconnect: (e) => console.log('Reconnecting...', e),
-	onmaximum: (e) => console.log('Stop Attempting!', e),
-	onclose: (e) => console.log('Closed!', e),
-	onerror: (e) => console.log('Error:', e)
+	onreconnect: (e) => console.log('Reconnecting...', e.type),
+	onmaximum: (e) => console.log('Stop Attempting:', e.type),
+	onclose: (e) => console.log('Closed!\n', 'Code: ' + e.code, 'Reason: ' + e.reason),
+	onerror: (e) => console.log('Error: ', e.message)
 });
 
 async function record(
@@ -133,7 +133,6 @@ export class Worker {
 
 	public async run() {
 		//Analogy to the run function of threads
-		let total_step = 1;
 
 		const env = new Env(8);
 		env.maxEpisodes = 50000;
@@ -147,10 +146,7 @@ export class Worker {
 		this.agent = agent;
 		this.agent.env.setEntity(this.agent, { ball: 3 });
 
-		for (let i = 0; i < this.agent.env.maxEpisodes; i++) {
-			let ep_reward = 0.0;
-			let ep_steps = 0;
-			const step_count = 0;
+		while (this.agent.env.episodes < this.agent.env.maxEpisodes) {
 			this.ep_loss = 0;
 
 			let time_count = 0;
@@ -158,17 +154,16 @@ export class Worker {
 			while (true) {
 				// TODO: REWRITE BELOW
 				console.log(
-					'Episode ' + i + ' : ' + (this.agent.env.steps + 1) + '/' + this.agent.env.maxSteps
+					`Episode ${this.agent.env.episodes}: ${this.agent.env.steps} / ${this.agent.env.maxSteps}`
 				);
+
 				const action = this.agent.getAction(this.epsilon, state);
 				const [reward, done] = this.agent.step(action);
 				this.agent.reward += reward;
-				this.agent.reward = parseFloat(agent.reward.toFixed(2));
 
 				console.log('--------------------');
 				const next_state = this.agent.getVision();
 
-				ep_reward += reward;
 				const ep_mean_loss = await this.agent.trainModel(
 					state,
 					action,
@@ -181,7 +176,7 @@ export class Worker {
 				const global_best_score = await getBestScore();
 
 				if (time_count === this.update_freq) {
-					if (ep_reward > global_best_score) {
+					if (this.agent.reward > global_best_score) {
 						await this.agent.saveLocally(this.workerIdx);
 					}
 					this.ep_loss += ep_mean_loss;
@@ -195,19 +190,19 @@ export class Worker {
 
 					const glob_moving_avg = await record(
 						global_epi,
-						ep_reward,
+						this.agent.reward,
 						this.workerIdx,
 						old_glob_moving_avg,
 						this.ep_loss,
-						ep_steps
+						this.agent.env.steps
 					);
 
 					await setGlobalMovingAverage(glob_moving_avg);
 
 					const global_best_score = await getBestScore();
-					console.log('Episode reward : ' + ep_reward);
+					console.log('Episode reward : ' + this.agent.reward);
 					console.log('Global best score ' + global_best_score);
-					if (ep_reward > global_best_score) {
+					if (this.agent.reward > global_best_score) {
 						console.log('Updating global model');
 						await this.agent.saveLocally(this.workerIdx);
 						await sendModel(this.workerIdx, false);
@@ -219,7 +214,7 @@ export class Worker {
 							process.cwd() + `/A3C_Data/local-model-actor/${this.workerIdx}/model.json`,
 							process.cwd() + `/A3C_Data/local-model-critic/${this.workerIdx}/model.json`
 						);
-						await setBestScore(ep_reward);
+						await setBestScore(this.agent.reward);
 					}
 					await incrementGlobalEpisode();
 					this.agent.x = Math.floor(seededRandom() * 8);
@@ -231,7 +226,7 @@ export class Worker {
 					this.agent.env.steps = 0;
 					this.agent.env.reset();
 					// epsilon_decay
-					if (i === 0 && this.epsilon > this.epsilonMin) {
+					if (this.epsilon > this.epsilonMin) {
 						this.epsilon = this.epsilon * this.epsilonMultiply;
 						this.epsilon = Math.floor(this.epsilon * 10000) / 10000;
 					}
@@ -244,10 +239,8 @@ export class Worker {
 					}
 					break;
 				}
-				ep_steps++;
 				time_count++;
 				state = next_state;
-				total_step++;
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
