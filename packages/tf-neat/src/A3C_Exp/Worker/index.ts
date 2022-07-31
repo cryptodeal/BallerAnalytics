@@ -44,6 +44,8 @@ const ws = wsSockette(wsBaseURI, {
 
 			if (workerNum === 1) worker.epsilon = 0.3;
 			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
+		} else if (payload.type === 'RUN') {
+			bootWorker();
 		}
 	},
 	onreconnect: (e) => console.log('Reconnecting...', e.type),
