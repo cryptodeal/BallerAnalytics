@@ -27,7 +27,7 @@
 				const { team, players, games } = (await res.json()) as TeamPageInitData;
 				const seasonIdx = parseInt(url.searchParams.get('i') as string);
 				const seasons: SeasonList[] = [];
-				team.seasons.map((s: any) => {
+				team.seasons.map((s) => {
 					const { season } = s;
 					seasons.push({ season });
 				});

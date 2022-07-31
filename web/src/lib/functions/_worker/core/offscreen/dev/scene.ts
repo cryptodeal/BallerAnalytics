@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ResizeObserver } from 'resize-observer';
 import darkMode from '$lib/data/stores/theme';
 

@@ -95,6 +95,7 @@ export function init(data: initData) {
 
 	requestAnimationFrame(render);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function getCanvasRelativePosition(event: any) {
 		const rect = inputElement.getBoundingClientRect();
 		return {
@@ -124,6 +125,7 @@ export function init(data: initData) {
 
 	inputElement.addEventListener(
 		'touchstart',
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(event: any) => {
 			// prevent the window from scrolling
 			event.preventDefault();
@@ -134,6 +136,7 @@ export function init(data: initData) {
 
 	inputElement.addEventListener(
 		'touchmove',
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(event: any) => {
 			setPickPosition(event.touches[0]);
 		},

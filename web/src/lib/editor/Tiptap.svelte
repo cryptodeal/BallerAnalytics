@@ -35,9 +35,11 @@
 	const setParagraph = () => {
 		($editor as unknown as CoreEditor).chain().focus().setParagraph().run();
 	};
-	const setBlockquote = () => {
-		($editor as unknown as CoreEditor).chain().focus().setBlockquote().run();
-	};
+	/*
+    const setBlockquote = () => {
+      ($editor as unknown as CoreEditor).chain().focus().setBlockquote().run();
+    };
+  */
 
 	$: isActive = (name: string, attrs = {}) =>
 		($editor as unknown as CoreEditor).isActive(name, attrs);

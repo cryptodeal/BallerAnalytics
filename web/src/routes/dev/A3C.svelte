@@ -19,7 +19,6 @@
 		sharedAgent: Actor_Critic_Agent,
 		title: string,
 		agents: A3CAgent_Worker[],
-		ball_get_count: number,
 		isRunning = false,
 		rewardsArr: number[] = [],
 		epsilon = 0.3,

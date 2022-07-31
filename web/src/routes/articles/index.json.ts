@@ -27,6 +27,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	for (const [path, resolver] of Object.entries(modules)) {
 		const slug = slugFromPath(path);
 		const promise = resolver().then(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			(post: any) =>
 				({
 					slug,

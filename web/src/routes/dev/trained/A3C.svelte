@@ -9,13 +9,7 @@
 		type Tensor,
 		type Rank
 	} from '@tensorflow/tfjs';
-	import {
-		Actor_Critic_Agent,
-		Env,
-		seededRandom,
-		object_to_idx,
-		A3CAgent_Worker
-	} from '@balleranalytics/tf-neat';
+	import { Actor_Critic_Agent, Env, object_to_idx } from '@balleranalytics/tf-neat';
 	import { onMount } from 'svelte';
 
 	const dirs = [
@@ -26,24 +20,13 @@
 		],
 		prob_arrow_string = ['→', '↓', '←', '↑'];
 
-	let global_step: number,
-		env: Env,
+	let env: Env,
 		canvas: HTMLCanvasElement,
 		ctx: CanvasRenderingContext2D,
-		total_episode_max: number,
-		total_episode: number,
-		tempEnv: Env,
-		agentCount: number,
-		sharedAgent: Actor_Critic_Agent,
 		title: string,
-		agent: A3CAgent_Worker,
-		ball_get_count: number,
+		agent: Actor_Critic_Agent,
 		isRunning = false,
 		rewardsArr: number[] = [],
-		epsilon = 0.3,
-		epsilonMin = 0.0,
-		epsilonMultiply = 0.99,
-		learnDisabled = false,
 		isRunnable = true,
 		btnTitle = 'Run(Actor-Critic)';
 
@@ -109,10 +92,12 @@
 		}
 	}
 
-	function getAction(agent: A3CAgent_Worker, input: number[]) {
-		if (seededRandom() < epsilon) {
+	function getAction(agent: Actor_Critic_Agent, input: number[]) {
+		/*
+    if (seededRandom() < epsilon) {
 			return Math.floor(seededRandom() * 4);
 		}
+    */
 
 		return tidy(() => {
 			let inputTensor = tensor4d(input, [1, 7, 7, 1]);
@@ -122,7 +107,7 @@
 		});
 	}
 
-	function getVision(agent: A3CAgent_Worker) {
+	function getVision(agent: Actor_Critic_Agent) {
 		let top = agent.y - agent.visionForward,
 			left = agent.x - agent.visionForward;
 		const s: number[] = [];
@@ -263,12 +248,6 @@
 			env.episodes += 1;
 			env.steps = 0;
 			env.reset();
-
-			// epsilon_decay
-			// if (epsilon > epsilon_min) {
-			//     epsilon = epsilon * epsilon_multiply;
-			//     epsilon = Math.floor(epsilon * 10000) / 10000;
-			// }
 
 			agent.ballCount = 3;
 			// eslint-disable-next-line no-constant-condition

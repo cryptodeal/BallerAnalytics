@@ -28,6 +28,7 @@
 		loadGlb(GLTFLoader, KTX2Loader);
 	});
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function loadGlb(GLTFLoader: any, KTX2Loader: any) {
 		const ktx2Loader = new KTX2Loader()
 			.setTranscoderPath('/scripts/')

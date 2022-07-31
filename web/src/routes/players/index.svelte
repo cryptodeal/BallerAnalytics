@@ -26,7 +26,7 @@
 <script lang="ts">
 	import VirtualList from 'svelte-tiny-virtual-list';
 	import { MetaTags } from 'svelte-meta-tags';
-	import InfiniteLoading from 'svelte-infinite-loading';
+	import InfiniteLoading, { type InfiniteEvent } from 'svelte-infinite-loading';
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
 	import type { Player2Document } from '@balleranalytics/nba-api-ts';
 	export let players: Player2Document[], seasons: number[];
@@ -36,11 +36,7 @@
 		seasonYear = Math.max(...seasons),
 		name: string;
 
-	function loadPlayers({
-		detail: { loaded, complete, error }
-	}: {
-		detail: { loaded: any; complete: any; error: any };
-	}) {
+	function loadPlayers({ detail: { loaded, complete, error } }: InfiniteEvent) {
 		if (!name || name.length < 2) {
 			fetch(`players.json?page=${page}&year=${seasonYear}`)
 				.then((response) => response.json())

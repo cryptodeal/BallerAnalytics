@@ -18,7 +18,7 @@ export type NotificationStore = {
 	error: (message: string, timeout?: number) => void;
 };
 
-export function createNotificationStore(timeout?: number) {
+export function createNotificationStore() {
 	const _notifications = writable<INotification[]>([]);
 
 	function send(message: string, type: NotificationType = 'default', timeout = 2500) {

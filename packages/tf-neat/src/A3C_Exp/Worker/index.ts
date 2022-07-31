@@ -30,6 +30,7 @@ const bootWorker = () =>
 const ws = wsSockette(wsBaseURI, {
 	timeout: 5e3,
 	maxAttempts: 10,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onopen: (e) => {
 		console.log('Connected to A3C WS API');
 	},

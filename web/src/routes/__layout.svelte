@@ -34,8 +34,10 @@
 	const notifications = getNotificationsStore();
 	let success = false,
 		failed = false,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		drawercontent: any,
 		drawerContentScrollY = 0,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		drawersidebar: any,
 		drawerSidebarScrollY = 0,
 		checked: boolean = '' as unknown as boolean,
@@ -77,7 +79,7 @@
 		validationSchema: yup.object().shape({
 			email: yup.string().email().required()
 		}),
-		onSubmit: (values: any) => {
+		onSubmit: (values: unknown) => {
 			fetch('/api/auth.json', {
 				method: 'POST',
 				credentials: 'include',

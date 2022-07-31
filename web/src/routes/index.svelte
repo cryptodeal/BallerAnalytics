@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, SvelteComponent } from 'svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import BallerAnalytics from '$lib/ux/animations/logo/BallerAnalytics.svelte';
 	import WordCloud from '$lib/ux/animations/logo/WordCloud.svelte';
-	let Basketball: any;
+	let Basketball: typeof SvelteComponent;
 	let isVisible = false;
 	onMount(async () => {
 		isVisible = true;

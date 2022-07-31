@@ -11,6 +11,7 @@
 		delay = 0, // sec
 		parentSize: number,
 		size = 0,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		self: any;
 
 	$: reverse = direction === 'right' || direction === 'bottom';
