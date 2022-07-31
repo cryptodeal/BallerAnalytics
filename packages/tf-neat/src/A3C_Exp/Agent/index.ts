@@ -65,8 +65,8 @@ export class A3CAgent_Worker {
 		});
 	}
 
-	public getAction(epsilon: number, input: number[]) {
-		if (seededRandom() < epsilon) {
+	public getAction(input: number[], epsilon?: number) {
+		if (epsilon && seededRandom() < epsilon) {
 			return Math.floor(seededRandom() * 4);
 		}
 

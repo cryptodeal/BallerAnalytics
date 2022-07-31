@@ -57,7 +57,7 @@
 		"d3-selection": "^3.0.0",
 		"d3-zoom": "^3.0.0",
 		"daisyui": "^2.20.0",
-		"date-picker-svelte": "^2.0.0",
+		"date-picker-svelte": "^2.1.0",
 		"dayjs": "^1.11.4",
 		"dotenv": "^16.0.1",
 		"eslint": "^8.20.0",

@@ -1,7 +1,7 @@
 import HyperExpress from 'hyper-express';
 import { appendFile, readFile, writeFile } from 'fs/promises';
 import { createReadStream, open, close } from 'fs';
-import { logger } from './utils';
+// import { logger } from './utils';
 import { MasterAgent } from './Master';
 import type { Websocket } from 'hyper-express';
 
@@ -11,7 +11,7 @@ export const createServer = () => {
 	const port = Number(process.env.PORT) || 3000;
 	const master = new MasterAgent();
 	const app = new HyperExpress.Server();
-	app.use(logger);
+	// app.use(logger);
 
 	app.upgrade('/ws/connect', async (request, response) => {
 		const { ip } = request;
@@ -44,11 +44,6 @@ export const createServer = () => {
 			if (msg.type === 'INIT_DONE') {
 				workerPool.set(Number(workerNum), { ip, ws, init: true });
 				if (workerPool.size > 1) {
-					let allInit = false;
-					for (const [, { init }] of workerPool) {
-						if (!init) break;
-						allInit = true;
-					}
 					master.workerPool = workerPool;
 					await master.init();
 					await master.train();

@@ -37,8 +37,11 @@ const ws = wsSockette(wsBaseURI, {
 		const { data } = e;
 		const payload = parseWsMsg(data as string);
 		if (payload.type === 'INIT' && !worker) {
-			worker = new Worker(payload.workerNum);
+			const { workerNum } = payload;
+			worker = new Worker(workerNum);
 			await worker.mkDirLocals();
+
+			if (workerNum === 1) worker.epsilon = 0.3;
 			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
 		} else if (payload.type === 'RUN') {
 			bootWorker();
@@ -85,7 +88,7 @@ export class Worker {
 	public action_size!: number;
 	public state_size!: number;
 	public agent!: A3CAgent_Worker;
-	public epsilon = 0.3;
+	public epsilon: undefined | number = undefined;
 	public epsilonMin = 0.0;
 	public epsilonMultiply = 0.99;
 
@@ -159,7 +162,7 @@ export class Worker {
 					}`
 				);
 
-				const action = this.agent.getAction(this.epsilon, state);
+				const action = this.agent.getAction(state, this.epsilon);
 				const [reward, done] = this.agent.step(action);
 				this.agent.reward += reward;
 
@@ -228,7 +231,7 @@ export class Worker {
 					this.agent.env.steps = 0;
 					this.agent.env.reset();
 					// epsilon_decay
-					if (this.epsilon > this.epsilonMin) {
+					if (this.epsilon && this.epsilon > this.epsilonMin) {
 						this.epsilon = this.epsilon * this.epsilonMultiply;
 						this.epsilon = Math.floor(this.epsilon * 10000) / 10000;
 					}
