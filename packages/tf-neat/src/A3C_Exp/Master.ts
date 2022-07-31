@@ -2,7 +2,6 @@ import { Actor_Critic_Agent } from './Agent/AC_Agent';
 import { Env } from './Env';
 import { exec } from 'child_process';
 import { createQueue, getBlockingQueue, waitForWorkers, serialize } from './utils';
-import type { Websocket } from 'hyper-express';
 
 export class MasterAgent {
 	// public workerCount: number;
@@ -12,7 +11,6 @@ export class MasterAgent {
 	public isInit = false;
 	public isTraining = false;
 	public sharedAgent: Actor_Critic_Agent;
-	public workerPool!: Map<number, { ip: string; ws: Websocket }>;
 
 	constructor() {
 		//this.workerCount = workerCount;
@@ -52,12 +50,6 @@ export class MasterAgent {
 		await createQueue();
 		const reward_plotting: Record<number, number> = {};
 
-		/*
-      for (const [key, { ip, ws }] of this.workerPool) {
-        console.log('Starting worker: ' + key + ' ' + ip);
-        ws.send(JSON.stringify({ type: 'RUN', workerNum: key }));
-      }
-    */
 		const moving_avg_rewards: number[] = [];
 		let i = 0;
 		while (true) {

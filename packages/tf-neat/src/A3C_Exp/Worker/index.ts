@@ -46,6 +46,7 @@ const ws = wsSockette(wsBaseURI, {
 			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
 		} else if (payload.type === 'RUN') {
 			bootWorker();
+			ws.send(JSON.stringify({ type: 'RUNNING' }));
 		}
 	},
 	onreconnect: (e) => console.log('Reconnecting...', e.type),
@@ -139,7 +140,7 @@ export class Worker {
 		//Analogy to the run function of threads
 
 		const env = new Env(8);
-		env.maxEpisodes = 50000;
+		env.maxEpisodes = 100;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
@@ -250,10 +251,8 @@ export class Worker {
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
-
 		await writeQueue('done');
-		await notifyWorkerDone();
-		return Promise.resolve();
+		return notifyWorkerDone();
 	}
 }
 

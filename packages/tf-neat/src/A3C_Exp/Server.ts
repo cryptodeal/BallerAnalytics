@@ -1,58 +1,101 @@
 import HyperExpress from 'hyper-express';
 import { appendFile, readFile, writeFile } from 'fs/promises';
 import { createReadStream, open, close } from 'fs';
-// import { logger } from './utils';
 import { MasterAgent } from './Master';
 import type { Websocket } from 'hyper-express';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
 	private socket!: HyperExpress.compressors.us_listen_socket;
+	private workerPool: Map<
+		number,
+		{ ip: string; init?: boolean; active?: boolean; training?: boolean; done?: boolean }
+	>;
+	private workerMap: Map<
+		string,
+		{ workerNum: number; init?: boolean; active?: boolean; training?: boolean; done?: boolean }
+	>;
 
 	constructor() {
-		const workerPool: Map<number, { ip: string; ws: Websocket; init?: boolean; active: boolean }> =
-			new Map();
-
+		this.workerPool = new Map();
+		this.workerMap = new Map();
 		const port = Number(process.env.PORT) || 3000;
 		const master = new MasterAgent();
 		this.app = new HyperExpress.Server();
-		// app.use(logger);
 
 		this.app.upgrade('/ws/connect', async (request, response) => {
 			const { ip } = request;
+			const exists = this.workerMap.get(ip);
+			const workerNum = exists ? exists.workerNum : this.workerPool.size + 1;
 			/* upgrade the incoming request with some context */
 			response.upgrade({
-				workerNum: workerPool.size + 1,
+				workerNum,
+				exists: exists ? true : false,
 				workerAddy: ip
 			});
 		});
 
-		// Create websocket route to handle opened websocket connections
+		/* handle opened websocket connections */
 		this.app.ws('/ws/connect', async (ws) => {
 			if (!master.isInit) await master.init();
-
 			const {
 				ip,
-				context: { workerNum, workerAddy }
+				context: { workerNum, workerAddy, exists }
 			} = ws;
-			workerPool.set(Number(workerNum), { ip, ws, active: false });
+			if (!exists) {
+				this.workerPool.set(Number(workerNum), { ip, active: true });
+				this.workerMap.set(workerAddy, { workerNum: Number(workerNum), active: true });
+			} else {
+				const worker = <
+					{
+						ip: string;
+						init?: boolean | undefined;
+						active?: boolean;
+						training?: boolean;
+						done?: boolean;
+					}
+				>this.workerPool.get(Number(workerNum));
+				worker.active = true;
+				this.workerPool.set(Number(workerNum), worker);
+				const { init, active, training, done } = worker;
+				this.workerMap.set(workerAddy, {
+					workerNum: Number(workerNum),
+					active,
+					init,
+					training,
+					done
+				});
+			}
 
 			ws.send(JSON.stringify({ type: 'INIT', workerNum }));
 
-			// Log when a connection has opened for debugging
+			/* log new cxns for debugging */
 			console.log('worker ' + workerNum + ' has connected from ' + workerAddy);
 
 			// Handle incoming messages to perform changes in consumption
 			ws.on('message', async (message) => {
 				const msg = JSON.parse(message);
+				const worker = <
+					{
+						ip: string;
+						init?: boolean | undefined;
+						active?: boolean;
+						training?: boolean;
+						done?: boolean;
+					}
+				>this.workerPool.get(Number(workerNum));
 				if (msg.type === 'INIT_DONE') {
-					workerPool.set(Number(workerNum), { ip, ws, init: true, active: false });
+					worker.init = true;
+					this.workerPool.set(Number(workerNum), worker);
+					const { active } = worker;
+					this.workerMap.set(workerAddy, {
+						workerNum: Number(workerNum),
+						init: true,
+						active
+					});
+
+					/* init workers as they are activated */
 					ws.send(JSON.stringify({ type: 'RUN', workerNum }));
-					/**
-					 * TODO: rewrite so that each worker is activated upon
-					 * init message.
-					 */
-					master.workerPool = workerPool;
 					if (!master.isTraining) {
 						(async () => {
 							master.isTraining = true;
@@ -70,13 +113,22 @@ export class A3CServer {
 				const worker = <
 					{
 						ip: string;
-						ws: Websocket;
 						init?: boolean | undefined;
-						active: boolean;
+						active?: boolean;
+						training?: boolean;
+						done?: boolean;
 					}
-				>workerPool.get(Number(workerNum));
+				>this.workerPool.get(Number(workerNum));
 				worker.active = false;
-				workerPool.set(Number(workerNum), worker);
+				this.workerPool.set(Number(workerNum), worker);
+				const { active, training, init, done } = worker;
+				this.workerMap.set(workerAddy, {
+					workerNum: Number(workerNum),
+					active,
+					init,
+					training,
+					done
+				});
 			});
 		});
 
@@ -259,13 +311,16 @@ export class A3CServer {
 			const worker = <
 				{
 					ip: string;
-					ws: Websocket;
 					init?: boolean | undefined;
-					active: boolean;
+					active?: boolean;
+					training?: boolean;
+					done?: boolean;
 				}
-			>workerPool.get(token);
-			worker.active = true;
-			workerPool.set(token, worker);
+			>this.workerPool.get(token);
+			worker.training = true;
+			this.workerPool.set(token, worker);
+			const { active, init, training } = worker;
+			this.workerMap.set(req.ip, { workerNum: token, active, init, training });
 			await appendFile(process.cwd() + '/A3C_Data/workers_tokens.txt', token + '\n');
 			res.status(200).json({ status: 'SUCCESS' });
 		});
