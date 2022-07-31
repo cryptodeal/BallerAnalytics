@@ -64,7 +64,7 @@ async function record(
 	} else {
 		global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
 	}
-	console.log('Episode :' + episode);
+	console.log('Episode:' + episode);
 	console.log('Moving average reward : ' + global_ep_reward);
 	console.log('Episode reward : ' + reward);
 	console.log(

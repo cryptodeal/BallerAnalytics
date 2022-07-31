@@ -1,7 +1,5 @@
-import { MasterAgent } from './Master';
+import { createServer } from './Server';
+import { execute } from './utils';
 
-const master = new MasterAgent();
-(async () => {
-	await master.init();
-	await master.train();
-})();
+createServer();
+execute(`newsh "npm run host:worker"`);

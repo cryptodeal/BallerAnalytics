@@ -1,6 +1,6 @@
 import { readFile, writeFile, stat } from 'fs/promises';
 import { fetch } from 'cross-undici-fetch';
-import { exec } from 'child_process';
+import { exec, spawn } from 'child_process';
 import { networkInterfaces } from 'os';
 import minimist from 'minimist';
 import type { WsApiStartWorker } from './types';
@@ -14,10 +14,25 @@ if (argv.host || argv.h) host = argv.host ? argv.host : argv.h ? argv.h : '0.0.0
 export const APIBaseURI = `http://${host}:${3000}`;
 export const wsBaseURI = `ws://${host}:${3000}/ws/connect`;
 
-export function logger(req, res, next) {
+export const logger = (req, res, next) => {
 	console.log(`~> Received ${req.method} on ${req.url}`);
 	next(); // move on
-}
+};
+
+export const execute = (command: string) => {
+	return new Promise((resolve, reject) => {
+		const onExit = (error) => {
+			if (error) {
+				return reject(error);
+			}
+			resolve(undefined);
+		};
+		spawn(command.split(' ')[0], command.split(' ').slice(1), {
+			stdio: 'inherit',
+			shell: true
+		}).on('exit', onExit);
+	});
+};
 
 export const setGlobalMovingAverage = (avg: number) => {
 	return fetch(APIBaseURI + '/global_moving_average', {

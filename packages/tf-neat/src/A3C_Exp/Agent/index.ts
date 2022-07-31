@@ -28,6 +28,7 @@ import type {
 	Tensor2D
 } from '@tensorflow/tfjs-node';
 import { Env } from '../Env';
+import { Entity } from '../../Actor_Critic_Exp/Entity';
 
 export class A3CAgent_Worker {
 	public env: Env;
@@ -310,7 +311,7 @@ export class A3CAgent_Worker {
 
 		let reward = 0;
 		let done = false;
-		let entity;
+		let entity: Entity;
 
 		if (this.env.grid[this.y][this.x].length !== 0) {
 			for (let i = 0; i < this.env.grid[this.y][this.x].length; i += 1) {

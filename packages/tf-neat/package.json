@@ -24,6 +24,8 @@
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
     "lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
     "test": "uvu -r tsm tests",
+    "host:all": "node --experimental-specifier-resolution=node dist/A3C_Exp",
+    "host:worker": "node --experimental-specifier-resolution=node dist/A3C_Exp/Worker",
     "train:DQN": "node --experimental-specifier-resolution=node dist/scripts/train/DQN",
     "train:NEAT": "node --experimental-specifier-resolution=node dist/scripts/train/NEAT",
     "test:coverage": "c8 pnpm test"
@@ -63,7 +65,7 @@
     "prettier": "^2.7.1",
     "tslib": "^2.4.0",
     "tsm": "^2.2.2",
-    "tsup": "^6.2.0",
+    "tsup": "^6.2.1",
     "typescript": "^4.7.4",
     "uvu": "^0.5.6"
   },
