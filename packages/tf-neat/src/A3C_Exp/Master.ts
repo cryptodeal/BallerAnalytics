@@ -9,6 +9,8 @@ export class MasterAgent {
 	public name = `A3C_GridWorld_LocalEnv`;
 	public env: Env;
 	public globalStep = 0;
+	public isInit = false;
+	public isTraining = false;
 	public sharedAgent: Actor_Critic_Agent;
 	public workerPool!: Map<number, { ip: string; ws: Websocket }>;
 
@@ -43,17 +45,19 @@ export class MasterAgent {
 		})();
 		await this.sharedAgent.actor.save('file://' + process.cwd() + '/A3C_Data/global-model-actor');
 		await this.sharedAgent.critic.save('file://' + process.cwd() + '/A3C_Data/global-model-critic');
+		this.isInit = true;
 	}
 
 	public async train() {
 		await createQueue();
 		const reward_plotting: Record<number, number> = {};
-		// const workers = await getWorkersHostNames();
 
-		for (const [key, { ip, ws }] of this.workerPool) {
-			console.log('Starting worker: ' + key + ' ' + ip);
-			ws.send(JSON.stringify({ type: 'RUN', workerNum: key }));
-		}
+		/*
+      for (const [key, { ip, ws }] of this.workerPool) {
+        console.log('Starting worker: ' + key + ' ' + ip);
+        ws.send(JSON.stringify({ type: 'RUN', workerNum: key }));
+      }
+    */
 		const moving_avg_rewards: number[] = [];
 		let i = 0;
 		while (true) {
@@ -73,6 +77,8 @@ export class MasterAgent {
 			}
 			i++;
 		}
-		return waitForWorkers();
+		this.isTraining = false;
+		await waitForWorkers();
+		return;
 	}
 }

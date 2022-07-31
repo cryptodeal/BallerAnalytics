@@ -7,6 +7,7 @@ import type { Websocket } from 'hyper-express';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
+	private socket!: HyperExpress.compressors.us_listen_socket;
 
 	constructor() {
 		const workerPool: Map<number, { ip: string; ws: Websocket; init?: boolean; active: boolean }> =
@@ -27,7 +28,9 @@ export class A3CServer {
 		});
 
 		// Create websocket route to handle opened websocket connections
-		this.app.ws('/ws/connect', (ws) => {
+		this.app.ws('/ws/connect', async (ws) => {
+			if (!master.isInit) await master.init();
+
 			const {
 				ip,
 				context: { workerNum, workerAddy }
@@ -44,10 +47,17 @@ export class A3CServer {
 				const msg = JSON.parse(message);
 				if (msg.type === 'INIT_DONE') {
 					workerPool.set(Number(workerNum), { ip, ws, init: true, active: false });
-					if (workerPool.size > 1) {
-						master.workerPool = workerPool;
-						await master.init();
-						await master.train();
+					ws.send(JSON.stringify({ type: 'RUN', workerNum }));
+					/**
+					 * TODO: rewrite so that each worker is activated upon
+					 * init message.
+					 */
+					master.workerPool = workerPool;
+					if (!master.isTraining) {
+						(async () => {
+							master.isTraining = true;
+							await master.train();
+						})();
 					}
 				}
 			});
@@ -262,13 +272,16 @@ export class A3CServer {
 
 		this.app
 			.listen(port)
-			.then(() => console.log(`> Running on http://localhost:${port}`))
+			.then((socket: HyperExpress.compressors.us_listen_socket) => {
+				this.socket = socket;
+				console.log(`> Running on http://localhost:${port}`);
+			})
 			.catch(console.error);
 	}
 
 	public close = () => {
 		return new Promise((resolve) => {
-			const isClosed = this.app.close();
+			const isClosed = this.app.close(this.socket);
 			resolve(isClosed);
 		});
 	};

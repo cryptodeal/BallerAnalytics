@@ -188,7 +188,7 @@ export const getBlockingQueue = async () => {
 	let data: number | 'NaN' | 'done' = 'NaN';
 	while (data === 'NaN') {
 		data = await getQueue();
-		await sleep(750);
+		await sleep(250);
 	}
 	return Promise.resolve(data);
 };
