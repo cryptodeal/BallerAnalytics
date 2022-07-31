@@ -18,7 +18,7 @@ import {
 	writeQueue,
 	parseWsMsg
 } from '../utils';
-import { wsSockette } from 'ws-sockette';
+import { WsSockette, wsSockette } from 'ws-sockette';
 let worker: Worker;
 
 const bootWorker = () =>
@@ -39,14 +39,11 @@ const ws = wsSockette(wsBaseURI, {
 		const payload = parseWsMsg(data as string);
 		if (payload.type === 'INIT' && !worker) {
 			const { workerNum } = payload;
-			worker = new Worker(workerNum);
+			worker = new Worker(workerNum, ws);
 			await worker.mkDirLocals();
 
 			if (workerNum === 1) worker.epsilon = 0.3;
 			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
-		} else if (payload.type === 'RUN') {
-			bootWorker();
-			ws.send(JSON.stringify({ type: 'RUNNING' }));
 		}
 	},
 	onreconnect: (e) => console.log('Reconnecting...', e.type),
@@ -93,9 +90,11 @@ export class Worker {
 	public epsilon: undefined | number = undefined;
 	public epsilonMin = 0.0;
 	public epsilonMultiply = 0.99;
+	private ws: WsSockette;
 
-	constructor(workerIdx: number) {
+	constructor(workerIdx: number, ws: WsSockette) {
 		this.workerIdx = workerIdx;
+		this.ws = ws;
 
 		// this.env = new Environment(1500);
 		this.update_freq = 10;
@@ -251,6 +250,7 @@ export class Worker {
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
+		ws.send(JSON.stringify({ type: 'DONE' }));
 		await writeQueue('done');
 		return notifyWorkerDone();
 	}
