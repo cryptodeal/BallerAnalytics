@@ -311,7 +311,7 @@ export class A3CServer {
 				for (let i = 1; i < data.length; i++) {
 					str += data[i] + '\n';
 				}
-				await writeFile(process.cwd() + '/A3C_Data/queue.txt', str);
+				await writeFile(process.cwd() + '/A3C_Data/workers_tokens.txt', str);
 				res.status(200).json({ status: 'SUCCESS', data: elem_pop });
 			}
 		});
