@@ -188,22 +188,10 @@ export class A3CServer {
 		this.app.post('/queue', async (req, res) => {
 			const { data: elem } = <{ data: string | number }>await req.json();
 			console.log('Queue: ' + elem);
-			let isAllDone = true;
-			if (elem === 'done') {
-				for (const [, { done }] of this.workerPool) {
-					if (!done) {
-						isAllDone = false;
-						break;
-					}
-				}
-				if (isAllDone)
-					await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
-				res.status(200).json({ status: 'SUCCESS' });
-			} else {
-				if (elem !== '')
-					await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
-				res.status(200).json({ status: 'SUCCESS' });
-			}
+
+			if (elem !== '')
+				await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
+			res.status(200).json({ status: 'SUCCESS' });
 		});
 
 		this.app.get('/queue', async (req, res) => {
