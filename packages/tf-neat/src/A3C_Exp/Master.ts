@@ -70,8 +70,7 @@ export class MasterAgent {
 			i++;
 		}
 		this.isTraining = false;
-		await waitForWorkers();
 		console.log('Master Worker is done!');
-		return;
+		return waitForWorkers();
 	}
 }

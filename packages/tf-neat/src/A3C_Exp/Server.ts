@@ -189,8 +189,41 @@ export class A3CServer {
 			const { data: elem } = <{ data: string | number }>await req.json();
 			console.log('Queue: ' + elem);
 
-			if (elem !== '')
-				await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
+			if (elem !== '') {
+				if (elem === 'done') {
+					const { ip } = req;
+					const worker = <
+						{
+							workerNum: number;
+							init?: boolean;
+							active?: boolean;
+							training?: boolean;
+							done?: boolean;
+						}
+					>this.workerMap.get(ip);
+					worker.done = true;
+					this.workerMap.set(ip, worker);
+					const { active, training, init, done, workerNum } = worker;
+					this.workerPool.set(Number(workerNum), {
+						ip,
+						init,
+						active,
+						done,
+						training
+					});
+					let allDone = true;
+					for (const [, { done }] of this.workerPool) {
+						if (!done) {
+							allDone = false;
+							break;
+						}
+					}
+					if (allDone)
+						await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
+				} else {
+					await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
+				}
+			}
 			res.status(200).json({ status: 'SUCCESS' });
 		});
 
@@ -198,6 +231,7 @@ export class A3CServer {
 			const data = (await readFile(process.cwd() + '/A3C_Data/queue.txt', 'utf8'))
 				.toString()
 				.split('\n');
+
 			if (data.length === 1 && data[0] === '') {
 				res.status(200).json({ status: 'FAIL', data: 'NaN', err: 'No data in queue' });
 			} else {
