@@ -2,7 +2,6 @@ import HyperExpress from 'hyper-express';
 import { appendFile, readFile, writeFile } from 'fs/promises';
 import { createReadStream, open, close } from 'fs';
 import { MasterAgent } from './Master';
-import type { Websocket } from 'hyper-express';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
@@ -108,7 +107,7 @@ export class A3CServer {
 					const { active, training, init, done } = worker;
 					this.workerMap.set(workerAddy, {
 						workerNum: Number(workerNum),
-						init: true,
+						init,
 						active,
 						done,
 						training
