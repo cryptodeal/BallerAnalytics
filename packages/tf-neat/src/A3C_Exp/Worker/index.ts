@@ -252,7 +252,7 @@ export class Worker {
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
-		ws.send(JSON.stringify({ type: 'DONE' }));
+		// ws.send(JSON.stringify({ type: 'DONE' }));
 		await writeQueue('done');
 		return notifyWorkerDone();
 	}
