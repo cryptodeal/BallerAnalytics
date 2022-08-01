@@ -1831,42 +1831,42 @@ packages:
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     hasBin: true
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/bench': github.com/stdlib-js/bench/80a63e8cabb787a74c026bd65e6f2d6d976f74a2
-      '@stdlib/bigint': github.com/stdlib-js/bigint/7cc94e2fe194c67f27b17a2437d0c2f18557a2dd
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/datasets': github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838
-      '@stdlib/error': github.com/stdlib-js/error/0590d477c99a234fe3aa5d6bc5319720d2a3a409
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
-      '@stdlib/namespace': github.com/stdlib-js/namespace/693120291d84163a12a833ac1f3103a25e4704c0_virtual-dom@2.1.1
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
-      '@stdlib/nlp': github.com/stdlib-js/nlp/d6f91d6b9ced54741f2334a786fea8f12b9ccafe
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
-      '@stdlib/plot': github.com/stdlib-js/plot/22200f3a36d0429ca261dfe703463c64a433f8b3_virtual-dom@2.1.1
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/proxy': github.com/stdlib-js/proxy/305e93c91707b37103c5c52126a71fcbd0e462e4
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/repl': github.com/stdlib-js/repl/9e38aa9b039fbb6721122f0f73a91169778abab8_virtual-dom@2.1.1
-      '@stdlib/simulate': github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7
-      '@stdlib/stats': github.com/stdlib-js/stats/cc1eb7425946fb361d36a5fd5618bb182cb0778f
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/strided': github.com/stdlib-js/strided/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/time': github.com/stdlib-js/time/04c5303b9378b0e0e587dca16c511cbabb8dab2b
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/bench': github.com/stdlib-js/bench/ae58d3cf676c9a713b51eb746a3dc2c0156a2bec
+      '@stdlib/bigint': github.com/stdlib-js/bigint/2f642da373ce1cde3d0bd325ec55e5b3090b0a39
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/datasets': github.com/stdlib-js/datasets/3730b64d9aa3e10711b1af1be398c77086518ffa
+      '@stdlib/error': github.com/stdlib-js/error/44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/iter': github.com/stdlib-js/iter/23dbdd410da8d638eb732b51e79b58adc183a543
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ml': github.com/stdlib-js/ml/95a34fab42433d548ffe1670672022c65e76f17f
+      '@stdlib/namespace': github.com/stdlib-js/namespace/802ade90bef2bc5e01e40d60e05f27328e817d3f_virtual-dom@2.1.1
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/net': github.com/stdlib-js/net/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0
+      '@stdlib/nlp': github.com/stdlib-js/nlp/c20bd5b96a0f4c349695bbd7038de7220dfba0cb
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/os': github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da
+      '@stdlib/plot': github.com/stdlib-js/plot/b473b551e938365eb3e5f2d4a770d50294623244_virtual-dom@2.1.1
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/proxy': github.com/stdlib-js/proxy/09429ba81c77bf2fda6b97d90954c680a3824b6b
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/repl': github.com/stdlib-js/repl/26ff70b23568da5d900356c45a273a25265d7821_virtual-dom@2.1.1
+      '@stdlib/simulate': github.com/stdlib-js/simulate/95b450873f8ac74b819cb1377c4c14e2b5c9e90e
+      '@stdlib/stats': github.com/stdlib-js/stats/b5c901c5f2a94d3af8c2944c17a8bc1432861034
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/strided': github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/time': github.com/stdlib-js/time/b8f5029c3af05e815c6f44c119acc388296c101c
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       acorn: 8.8.0
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
@@ -2899,6 +2899,7 @@ packages:
   /ansi-regex/2.1.1:
     resolution: {integrity: sha512-TIGnTpdo+E3+pCyAluZvtED5p5wCqLdezCyhPZzKPcxvFplEt4i+W7OONCKgeZFT3+y5NZZfOOS/Bdcanm1MYA==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -3499,6 +3500,7 @@ packages:
   /code-point-at/1.1.0:
     resolution: {integrity: sha512-RpAVKQA5T63xEj6/giIbUEtZwJ4UFIc3ZtvEkiaUERylqe8xb5IvqcgOurZLahv93CLKfxcw5YI+DZcUBRyLXA==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -5607,6 +5609,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       number-is-nan: 1.0.1
+    dev: false
 
   /is-fullwidth-code-point/3.0.0:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
@@ -6859,6 +6862,7 @@ packages:
   /number-is-nan/1.0.1:
     resolution: {integrity: sha512-4jbtZXNAsfZbAHiiqjLPBiCl16dES1zI4Hpzzxw61Tk+loF+sBDBKx1ICKKKwIqQ7M0mFn1TmkN7euSncWgHiQ==}
     engines: {node: '>=0.10.0'}
+    dev: false
 
   /oauth-sign/0.9.0:
     resolution: {integrity: sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==}
@@ -7931,6 +7935,7 @@ packages:
       code-point-at: 1.1.0
       is-fullwidth-code-point: 1.0.0
       strip-ansi: 3.0.1
+    dev: false
 
   /string-width/4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
@@ -7981,6 +7986,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       ansi-regex: 2.1.1
+    dev: false
 
   /strip-ansi/6.0.1:
     resolution: {integrity: sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==}
@@ -9162,7 +9168,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
 
   /widest-line/3.1.0:
     resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
@@ -9301,444 +9307,444 @@ packages:
       toposort: 2.0.2
     dev: true
 
-  github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/array/tar.gz/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca}
+  github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/array/tar.gz/87e6e028434b65a24ec52d6f4231c59f0e9afacb}
     name: '@stdlib/array'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/strided': github.com/stdlib-js/strided/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/iter': github.com/stdlib-js/iter/23dbdd410da8d638eb732b51e79b58adc183a543
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/strided': github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/assert/tar.gz/6c1e7dc43445e94e049ca136d3ea4cf04ef11241}
+  github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/assert/tar.gz/012f806f6e35534cdcef32261d0b2990ff3097c5}
     name: '@stdlib/assert'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/os': github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/bench/80a63e8cabb787a74c026bd65e6f2d6d976f74a2:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/bench/tar.gz/80a63e8cabb787a74c026bd65e6f2d6d976f74a2}
+  github.com/stdlib-js/bench/ae58d3cf676c9a713b51eb746a3dc2c0156a2bec:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/bench/tar.gz/ae58d3cf676c9a713b51eb746a3dc2c0156a2bec}
     name: '@stdlib/bench'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     hasBin: true
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/time': github.com/stdlib-js/time/04c5303b9378b0e0e587dca16c511cbabb8dab2b
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/time': github.com/stdlib-js/time/b8f5029c3af05e815c6f44c119acc388296c101c
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       glob: 7.2.3
       resolve: 1.22.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/bigint/7cc94e2fe194c67f27b17a2437d0c2f18557a2dd:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/bigint/tar.gz/7cc94e2fe194c67f27b17a2437d0c2f18557a2dd}
+  github.com/stdlib-js/bigint/2f642da373ce1cde3d0bd325ec55e5b3090b0a39:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/bigint/tar.gz/2f642da373ce1cde3d0bd325ec55e5b3090b0a39}
     name: '@stdlib/bigint'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/blas/tar.gz/d577b5c841e5222a3294be10b9744b14899166d4}
+  github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/blas/tar.gz/03b88441152b15732ac57112c26c2038d7f6e0d4}
     name: '@stdlib/blas'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/buffer/tar.gz/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f}
+  github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/buffer/tar.gz/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e}
     name: '@stdlib/buffer'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/cli/tar.gz/3974f82f44eb6cbde0ec58538df111bbd8a389bb}
+  github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/cli/tar.gz/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379}
     name: '@stdlib/cli'
     version: 0.0.10
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       minimist: 1.2.6
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/complex/tar.gz/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c}
+  github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/complex/tar.gz/ff9fd8008f64ab7787ad1197e121be747a9d5c78}
     name: '@stdlib/complex'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/constants/tar.gz/fc7cf0074071e4fd51a56d5d945534a94c675392}
+  github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/constants/tar.gz/0f68688a7f4281e891352ccb27a3e774d0a93fd8}
     name: '@stdlib/constants'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/datasets/tar.gz/60e0dbb36a6b93dfb7214de3c2d975cce13a2838}
+  github.com/stdlib-js/datasets/3730b64d9aa3e10711b1af1be398c77086518ffa:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/datasets/tar.gz/3730b64d9aa3e10711b1af1be398c77086518ffa}
     name: '@stdlib/datasets'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     hasBin: true
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/error/0590d477c99a234fe3aa5d6bc5319720d2a3a409:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/error/tar.gz/0590d477c99a234fe3aa5d6bc5319720d2a3a409}
+  github.com/stdlib-js/error/44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/error/tar.gz/44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4}
     name: '@stdlib/error'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/fs/tar.gz/8abe84619e36a3b37fd109ba8dba82d0e61c42a2}
+  github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/fs/tar.gz/a9103cd857d8bac7c94376815dcb4582dec1e927}
     name: '@stdlib/fs'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       debug: 2.6.9
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/iter/tar.gz/603698634dc51e46f01f5059ce55f33cb4a239cd}
+  github.com/stdlib-js/iter/23dbdd410da8d638eb732b51e79b58adc183a543:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/iter/tar.gz/23dbdd410da8d638eb732b51e79b58adc183a543}
     name: '@stdlib/iter'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/5860f137e12379eb352e5e6ccef824ee6f3bb31c}
+  github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/c3a4d0277842c4b90601d44918b0ff1d401a1be3}
     name: '@stdlib/math'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/strided': github.com/stdlib-js/strided/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/strided': github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       debug: 2.6.9
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/ml/tar.gz/2eebd6a55177ee376b2ea01eb809ff99c109d652}
+  github.com/stdlib-js/ml/95a34fab42433d548ffe1670672022c65e76f17f:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/ml/tar.gz/95a34fab42433d548ffe1670672022c65e76f17f}
     name: '@stdlib/ml'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/stats': github.com/stdlib-js/stats/cc1eb7425946fb361d36a5fd5618bb182cb0778f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/stats': github.com/stdlib-js/stats/b5c901c5f2a94d3af8c2944c17a8bc1432861034
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/namespace/693120291d84163a12a833ac1f3103a25e4704c0_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/namespace/tar.gz/693120291d84163a12a833ac1f3103a25e4704c0}
-    id: github.com/stdlib-js/namespace/693120291d84163a12a833ac1f3103a25e4704c0
+  github.com/stdlib-js/namespace/802ade90bef2bc5e01e40d60e05f27328e817d3f_virtual-dom@2.1.1:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/namespace/tar.gz/802ade90bef2bc5e01e40d60e05f27328e817d3f}
+    id: github.com/stdlib-js/namespace/802ade90bef2bc5e01e40d60e05f27328e817d3f
     name: '@stdlib/namespace'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     hasBin: true
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/bench': github.com/stdlib-js/bench/80a63e8cabb787a74c026bd65e6f2d6d976f74a2
-      '@stdlib/bigint': github.com/stdlib-js/bigint/7cc94e2fe194c67f27b17a2437d0c2f18557a2dd
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/datasets': github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838
-      '@stdlib/error': github.com/stdlib-js/error/0590d477c99a234fe3aa5d6bc5319720d2a3a409
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/iter': github.com/stdlib-js/iter/603698634dc51e46f01f5059ce55f33cb4a239cd
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ml': github.com/stdlib-js/ml/2eebd6a55177ee376b2ea01eb809ff99c109d652
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
-      '@stdlib/nlp': github.com/stdlib-js/nlp/d6f91d6b9ced54741f2334a786fea8f12b9ccafe
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
-      '@stdlib/plot': github.com/stdlib-js/plot/22200f3a36d0429ca261dfe703463c64a433f8b3_virtual-dom@2.1.1
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/proxy': github.com/stdlib-js/proxy/305e93c91707b37103c5c52126a71fcbd0e462e4
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/simulate': github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7
-      '@stdlib/stats': github.com/stdlib-js/stats/cc1eb7425946fb361d36a5fd5618bb182cb0778f
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/strided': github.com/stdlib-js/strided/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/time': github.com/stdlib-js/time/04c5303b9378b0e0e587dca16c511cbabb8dab2b
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/bench': github.com/stdlib-js/bench/ae58d3cf676c9a713b51eb746a3dc2c0156a2bec
+      '@stdlib/bigint': github.com/stdlib-js/bigint/2f642da373ce1cde3d0bd325ec55e5b3090b0a39
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/datasets': github.com/stdlib-js/datasets/3730b64d9aa3e10711b1af1be398c77086518ffa
+      '@stdlib/error': github.com/stdlib-js/error/44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/iter': github.com/stdlib-js/iter/23dbdd410da8d638eb732b51e79b58adc183a543
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ml': github.com/stdlib-js/ml/95a34fab42433d548ffe1670672022c65e76f17f
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/net': github.com/stdlib-js/net/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0
+      '@stdlib/nlp': github.com/stdlib-js/nlp/c20bd5b96a0f4c349695bbd7038de7220dfba0cb
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/os': github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da
+      '@stdlib/plot': github.com/stdlib-js/plot/b473b551e938365eb3e5f2d4a770d50294623244_virtual-dom@2.1.1
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/proxy': github.com/stdlib-js/proxy/09429ba81c77bf2fda6b97d90954c680a3824b6b
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/simulate': github.com/stdlib-js/simulate/95b450873f8ac74b819cb1377c4c14e2b5c9e90e
+      '@stdlib/stats': github.com/stdlib-js/stats/b5c901c5f2a94d3af8c2944c17a8bc1432861034
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/strided': github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/time': github.com/stdlib-js/time/b8f5029c3af05e815c6f44c119acc388296c101c
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
       - virtual-dom
     dev: false
 
-  github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/ndarray/tar.gz/b23958b17196da2020db85ed9b0867fd5a194945}
+  github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/ndarray/tar.gz/00b6b49e3c14d279d5a5719312d061d155b189b3}
     name: '@stdlib/ndarray'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/bigint': github.com/stdlib-js/bigint/7cc94e2fe194c67f27b17a2437d0c2f18557a2dd
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/number': github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc
-      '@stdlib/strided': github.com/stdlib-js/strided/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/bigint': github.com/stdlib-js/bigint/2f642da373ce1cde3d0bd325ec55e5b3090b0a39
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/number': github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8
+      '@stdlib/strided': github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/net/tar.gz/139348efcfd33cf97d23ce4e4e37d2777b8602bb}
+  github.com/stdlib-js/net/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/net/tar.gz/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0}
     name: '@stdlib/net'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       debug: 2.6.9
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/nlp/d6f91d6b9ced54741f2334a786fea8f12b9ccafe:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/nlp/tar.gz/d6f91d6b9ced54741f2334a786fea8f12b9ccafe}
+  github.com/stdlib-js/nlp/c20bd5b96a0f4c349695bbd7038de7220dfba0cb:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/nlp/tar.gz/c20bd5b96a0f4c349695bbd7038de7220dfba0cb}
     name: '@stdlib/nlp'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/number/34e58e11b1b69aa2a5838ca29603467021f261bc:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/number/tar.gz/34e58e11b1b69aa2a5838ca29603467021f261bc}
+  github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/number/tar.gz/8affadba02fd46f27421ae4551842db61a0eb4a8}
     name: '@stdlib/number'
     version: 0.0.10
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/os': github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/os/tar.gz/576036a521f50902197199f075f93c6089796bf7}
+  github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/os/tar.gz/c00c1bad28f55b3f06da37a073794c1c43d459da}
     name: '@stdlib/os'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/plot/22200f3a36d0429ca261dfe703463c64a433f8b3_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/plot/tar.gz/22200f3a36d0429ca261dfe703463c64a433f8b3}
-    id: github.com/stdlib-js/plot/22200f3a36d0429ca261dfe703463c64a433f8b3
+  github.com/stdlib-js/plot/b473b551e938365eb3e5f2d4a770d50294623244_virtual-dom@2.1.1:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/plot/tar.gz/b473b551e938365eb3e5f2d4a770d50294623244}
+    id: github.com/stdlib-js/plot/b473b551e938365eb3e5f2d4a770d50294623244
     name: '@stdlib/plot'
     version: 0.0.6
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/net': github.com/stdlib-js/net/139348efcfd33cf97d23ce4e4e37d2777b8602bb
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/net': github.com/stdlib-js/net/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       d3-format: 1.4.5
       d3-scale: 1.0.7
       d3-shape: 1.3.7
@@ -9750,99 +9756,99 @@ packages:
       - virtual-dom
     dev: false
 
-  github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/process/tar.gz/2c25cc3156239379ef98020df23d2c255e2eb795}
+  github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/process/tar.gz/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38}
     name: '@stdlib/process'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/proxy/305e93c91707b37103c5c52126a71fcbd0e462e4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/proxy/tar.gz/305e93c91707b37103c5c52126a71fcbd0e462e4}
+  github.com/stdlib-js/proxy/09429ba81c77bf2fda6b97d90954c680a3824b6b:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/proxy/tar.gz/09429ba81c77bf2fda6b97d90954c680a3824b6b}
     name: '@stdlib/proxy'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/random/tar.gz/3d8674dba6fd6fe06004dec420ac31214d024b5b}
+  github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/random/tar.gz/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a}
     name: '@stdlib/random'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/stats': github.com/stdlib-js/stats/cc1eb7425946fb361d36a5fd5618bb182cb0778f
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/stats': github.com/stdlib-js/stats/b5c901c5f2a94d3af8c2944c17a8bc1432861034
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       debug: 2.6.9
       readable-stream: 2.3.7
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/regexp/tar.gz/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2}
+  github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/regexp/tar.gz/af1abd35bead6467ac4853b3a721ac54da11489e}
     name: '@stdlib/regexp'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/repl/9e38aa9b039fbb6721122f0f73a91169778abab8_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/repl/tar.gz/9e38aa9b039fbb6721122f0f73a91169778abab8}
-    id: github.com/stdlib-js/repl/9e38aa9b039fbb6721122f0f73a91169778abab8
+  github.com/stdlib-js/repl/26ff70b23568da5d900356c45a273a25265d7821_virtual-dom@2.1.1:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/repl/tar.gz/26ff70b23568da5d900356c45a273a25265d7821}
+    id: github.com/stdlib-js/repl/26ff70b23568da5d900356c45a273a25265d7821
     name: '@stdlib/repl'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     hasBin: true
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/datasets': github.com/stdlib-js/datasets/60e0dbb36a6b93dfb7214de3c2d975cce13a2838
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/namespace': github.com/stdlib-js/namespace/693120291d84163a12a833ac1f3103a25e4704c0_virtual-dom@2.1.1
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/datasets': github.com/stdlib-js/datasets/3730b64d9aa3e10711b1af1be398c77086518ffa
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/namespace': github.com/stdlib-js/namespace/802ade90bef2bc5e01e40d60e05f27328e817d3f_virtual-dom@2.1.1
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       acorn: 8.8.0
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
@@ -9852,172 +9858,172 @@ packages:
       - virtual-dom
     dev: false
 
-  github.com/stdlib-js/simulate/7713c82ca8d6b50f268cfd4657047b55cb9727a7:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/simulate/tar.gz/7713c82ca8d6b50f268cfd4657047b55cb9727a7}
+  github.com/stdlib-js/simulate/95b450873f8ac74b819cb1377c4c14e2b5c9e90e:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/simulate/tar.gz/95b450873f8ac74b819cb1377c4c14e2b5c9e90e}
     name: '@stdlib/simulate'
     version: 0.0.10
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/stats/cc1eb7425946fb361d36a5fd5618bb182cb0778f:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/cc1eb7425946fb361d36a5fd5618bb182cb0778f}
+  github.com/stdlib-js/stats/b5c901c5f2a94d3af8c2944c17a8bc1432861034:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/b5c901c5f2a94d3af8c2944c17a8bc1432861034}
     name: '@stdlib/stats'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/streams/tar.gz/21e8c95771a8751934700f166dad3e4b3643848f}
+  github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/streams/tar.gz/9f45b20ca28509ba78a972262656508c45aceeaa}
     name: '@stdlib/streams'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
       debug: 2.6.9
       readable-stream: 2.3.7
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/strided/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/strided/tar.gz/eda22d0ac82c2ce5f0f50b4261e3656ecf29d909}
+  github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/strided/tar.gz/e2927a2b708e5ee4cf95a16786fac80b45fd50d8}
     name: '@stdlib/strided'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/complex': github.com/stdlib-js/complex/81a6887ed79b30820b1ee9cf0c3d2c4d7aac398c
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/complex': github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/string/tar.gz/d0193743cd653fe2493423a9b60e06b3872337e5}
+  github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/string/tar.gz/5ff02b38bcb81a534220bf479231f5dc15206ef6}
     name: '@stdlib/string'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/nlp': github.com/stdlib-js/nlp/d6f91d6b9ced54741f2334a786fea8f12b9ccafe
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/nlp': github.com/stdlib-js/nlp/c20bd5b96a0f4c349695bbd7038de7220dfba0cb
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/symbol/tar.gz/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418}
+  github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/symbol/tar.gz/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4}
     name: '@stdlib/symbol'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/time/04c5303b9378b0e0e587dca16c511cbabb8dab2b:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/time/tar.gz/04c5303b9378b0e0e587dca16c511cbabb8dab2b}
+  github.com/stdlib-js/time/b8f5029c3af05e815c6f44c119acc388296c101c:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/time/tar.gz/b8f5029c3af05e815c6f44c119acc388296c101c}
     name: '@stdlib/time'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/utils': github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/utils': github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/types/tar.gz/b643d24024d18acb8e69f2f0c74eebdb540c7da3}
+  github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/types/tar.gz/4f209609f0a0cd066be675665b67458c45d47479}
     name: '@stdlib/types'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dev: false
 
-  github.com/stdlib-js/utils/abdc5cabe9bb63e199928d60af5332d09b8927ff:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/utils/tar.gz/abdc5cabe9bb63e199928d60af5332d09b8927ff}
+  github.com/stdlib-js/utils/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c:
+    resolution: {tarball: https://codeload.github.com/stdlib-js/utils/tar.gz/e8ba17faf8c7c1782033ea4763093cdd82cbfd9c}
     name: '@stdlib/utils'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
     os: [aix, darwin, freebsd, linux, macos, openbsd, sunos, win32, windows]
     dependencies:
-      '@stdlib/array': github.com/stdlib-js/array/45f1ce53d4ce4f733e8c4538a8c54cc223d7dcca
-      '@stdlib/assert': github.com/stdlib-js/assert/6c1e7dc43445e94e049ca136d3ea4cf04ef11241
-      '@stdlib/blas': github.com/stdlib-js/blas/d577b5c841e5222a3294be10b9744b14899166d4
-      '@stdlib/buffer': github.com/stdlib-js/buffer/8712a38ff5a5256bb4008bf8c74e4fc492e5d81f
-      '@stdlib/cli': github.com/stdlib-js/cli/3974f82f44eb6cbde0ec58538df111bbd8a389bb
-      '@stdlib/constants': github.com/stdlib-js/constants/fc7cf0074071e4fd51a56d5d945534a94c675392
-      '@stdlib/fs': github.com/stdlib-js/fs/8abe84619e36a3b37fd109ba8dba82d0e61c42a2
-      '@stdlib/math': github.com/stdlib-js/math/5860f137e12379eb352e5e6ccef824ee6f3bb31c
-      '@stdlib/ndarray': github.com/stdlib-js/ndarray/b23958b17196da2020db85ed9b0867fd5a194945
-      '@stdlib/os': github.com/stdlib-js/os/576036a521f50902197199f075f93c6089796bf7
-      '@stdlib/process': github.com/stdlib-js/process/2c25cc3156239379ef98020df23d2c255e2eb795
-      '@stdlib/random': github.com/stdlib-js/random/3d8674dba6fd6fe06004dec420ac31214d024b5b
-      '@stdlib/regexp': github.com/stdlib-js/regexp/394c8fd4cb7bc862bb2f4d663b8b444a86c5e6a2
-      '@stdlib/streams': github.com/stdlib-js/streams/21e8c95771a8751934700f166dad3e4b3643848f
-      '@stdlib/string': github.com/stdlib-js/string/d0193743cd653fe2493423a9b60e06b3872337e5
-      '@stdlib/symbol': github.com/stdlib-js/symbol/a29415de5c86e7f9fb4fb7f0a38a1ad5f68e1418
-      '@stdlib/time': github.com/stdlib-js/time/04c5303b9378b0e0e587dca16c511cbabb8dab2b
-      '@stdlib/types': github.com/stdlib-js/types/b643d24024d18acb8e69f2f0c74eebdb540c7da3
+      '@stdlib/array': github.com/stdlib-js/array/87e6e028434b65a24ec52d6f4231c59f0e9afacb
+      '@stdlib/assert': github.com/stdlib-js/assert/012f806f6e35534cdcef32261d0b2990ff3097c5
+      '@stdlib/blas': github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4
+      '@stdlib/buffer': github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e
+      '@stdlib/cli': github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379
+      '@stdlib/constants': github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8
+      '@stdlib/fs': github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927
+      '@stdlib/math': github.com/stdlib-js/math/c3a4d0277842c4b90601d44918b0ff1d401a1be3
+      '@stdlib/ndarray': github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3
+      '@stdlib/os': github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da
+      '@stdlib/process': github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38
+      '@stdlib/random': github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a
+      '@stdlib/regexp': github.com/stdlib-js/regexp/af1abd35bead6467ac4853b3a721ac54da11489e
+      '@stdlib/streams': github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa
+      '@stdlib/string': github.com/stdlib-js/string/5ff02b38bcb81a534220bf479231f5dc15206ef6
+      '@stdlib/symbol': github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4
+      '@stdlib/time': github.com/stdlib-js/time/b8f5029c3af05e815c6f44c119acc388296c101c
+      '@stdlib/types': github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479
       debug: 2.6.9
     transitivePeerDependencies:
       - supports-color

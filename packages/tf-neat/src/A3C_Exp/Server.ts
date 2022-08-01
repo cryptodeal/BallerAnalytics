@@ -2,17 +2,25 @@ import HyperExpress from 'hyper-express';
 import { appendFile, readFile, writeFile } from 'fs/promises';
 import { createReadStream, open, close } from 'fs';
 import { MasterAgent } from './Master';
+import { nanoid } from 'nanoid';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
 	private socket!: HyperExpress.compressors.us_listen_socket;
 	private workerPool: Map<
 		number,
-		{ ip: string; init?: boolean; active?: boolean; training?: boolean; done?: boolean }
+		{ ip: string; init?: boolean; active?: boolean; training?: boolean; done?: boolean; id: string }
 	>;
 	private workerMap: Map<
 		string,
-		{ workerNum: number; init?: boolean; active?: boolean; training?: boolean; done?: boolean }
+		{
+			workerNum: number;
+			ip: string;
+			init?: boolean;
+			active?: boolean;
+			training?: boolean;
+			done?: boolean;
+		}
 	>;
 
 	constructor() {
@@ -26,8 +34,11 @@ export class A3CServer {
 			const { ip } = request;
 			const exists = this.workerMap.get(ip);
 			const workerNum = exists ? exists.workerNum : this.workerPool.size + 1;
+			const id = nanoid();
+			response.cookie('WORKER_ID', id);
 			/* upgrade the incoming request with some context */
 			response.upgrade({
+				id,
 				workerNum,
 				exists: exists ? true : false,
 				workerAddy: ip
@@ -39,11 +50,11 @@ export class A3CServer {
 			if (!master.isInit) await master.init();
 			const {
 				ip,
-				context: { workerNum, workerAddy, exists }
+				context: { workerNum, workerAddy, exists, id }
 			} = ws;
 			if (!exists) {
-				this.workerPool.set(Number(workerNum), { ip, active: true });
-				this.workerMap.set(workerAddy, { workerNum: Number(workerNum), active: true });
+				this.workerPool.set(Number(workerNum), { ip, active: true, id });
+				this.workerMap.set(id, { ip, workerNum: Number(workerNum), active: true });
 			} else {
 				const worker = <
 					{
@@ -52,13 +63,15 @@ export class A3CServer {
 						active?: boolean;
 						training?: boolean;
 						done?: boolean;
+						id: string;
 					}
 				>this.workerPool.get(Number(workerNum));
 				worker.active = true;
 				this.workerPool.set(Number(workerNum), worker);
-				const { init, active, training, done } = worker;
-				this.workerMap.set(workerAddy, {
+				const { init, active, training, done, id } = worker;
+				this.workerMap.set(id, {
 					workerNum: Number(workerNum),
+					ip,
 					active,
 					init,
 					training,
@@ -81,14 +94,16 @@ export class A3CServer {
 						active?: boolean;
 						training?: boolean;
 						done?: boolean;
+						id: string;
 					}
 				>this.workerPool.get(Number(workerNum));
 				if (msg.type === 'INIT_DONE') {
 					worker.init = true;
 					this.workerPool.set(Number(workerNum), worker);
-					const { active } = worker;
-					this.workerMap.set(workerAddy, {
+					const { active, id } = worker;
+					this.workerMap.set(id, {
 						workerNum: Number(workerNum),
+						ip,
 						init: true,
 						active
 					});
@@ -101,18 +116,22 @@ export class A3CServer {
 							await master.train();
 						})();
 					}
-				} else if (msg.type === 'DONE') {
-					worker.done = true;
-					this.workerPool.set(Number(workerNum), worker);
-					const { active, training, init, done } = worker;
-					this.workerMap.set(workerAddy, {
-						workerNum: Number(workerNum),
-						init,
-						active,
-						done,
-						training
-					});
 				}
+				/*
+          else if (msg.type === 'DONE') {
+            worker.done = true;
+            this.workerPool.set(Number(workerNum), worker);
+            const { active, training, init, done } = worker;
+            this.workerMap.set(id, {
+              workerNum: Number(workerNum),
+              ip,
+              init,
+              active,
+              done,
+              training
+            });
+          }
+        */
 			});
 
 			// Do some cleanup once websocket connection closes
@@ -127,13 +146,15 @@ export class A3CServer {
 						active?: boolean;
 						training?: boolean;
 						done?: boolean;
+						id: string;
 					}
 				>this.workerPool.get(Number(workerNum));
 				worker.active = false;
 				this.workerPool.set(Number(workerNum), worker);
 				const { active, training, init, done } = worker;
-				this.workerMap.set(workerAddy, {
+				this.workerMap.set(id, {
 					workerNum: Number(workerNum),
+					ip,
 					active,
 					init,
 					training,
@@ -186,7 +207,9 @@ export class A3CServer {
 		});
 
 		this.app.post('/queue', async (req, res) => {
-			const { data: elem } = <{ data: string | number }>await req.json();
+			const { data: elem, workerNum } = <{ data: string | number; workerNum: number }>(
+				await req.json()
+			);
 			console.log('Queue: ' + elem);
 
 			if (elem !== '') {
@@ -194,17 +217,19 @@ export class A3CServer {
 					const { ip } = req;
 					const worker = <
 						{
-							workerNum: number;
+							id: string;
 							init?: boolean;
 							active?: boolean;
 							training?: boolean;
 							done?: boolean;
+							ip: string;
 						}
-					>this.workerMap.get(ip);
+					>this.workerPool.get(workerNum);
 					worker.done = true;
-					this.workerMap.set(ip, worker);
-					const { active, training, init, done, workerNum } = worker;
-					this.workerPool.set(Number(workerNum), {
+					this.workerPool.set(workerNum, worker);
+					const { active, training, init, done, id } = worker;
+					this.workerMap.set(id, {
+						workerNum,
 						ip,
 						init,
 						active,
@@ -360,12 +385,13 @@ export class A3CServer {
 					active?: boolean;
 					training?: boolean;
 					done?: boolean;
+					id: string;
 				}
 			>this.workerPool.get(token);
 			worker.training = true;
 			this.workerPool.set(token, worker);
-			const { active, init, training } = worker;
-			this.workerMap.set(req.ip, { workerNum: token, active, init, training });
+			const { active, init, training, id } = worker;
+			this.workerMap.set(id, { workerNum: token, active, init, training, ip: req.ip });
 			await appendFile(process.cwd() + '/A3C_Data/workers_tokens.txt', token + '\n');
 			res.status(200).json({ status: 'SUCCESS' });
 		});

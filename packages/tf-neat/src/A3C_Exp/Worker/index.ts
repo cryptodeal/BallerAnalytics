@@ -54,33 +54,6 @@ const ws = wsSockette(wsBaseURI, {
 	onerror: (e) => console.log('Error: ', e.message)
 });
 
-async function record(
-	episode: number,
-	reward: number,
-	idx: number,
-	glob_ep_rew: number,
-	total_loss: number,
-	num_steps: number
-) {
-	let global_ep_reward = glob_ep_rew;
-	if (global_ep_reward == 0) {
-		global_ep_reward = reward;
-	} else {
-		global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
-	}
-	console.log('Episode:' + episode);
-	console.log('Moving average reward : ' + global_ep_reward);
-	console.log('Episode reward : ' + reward);
-	console.log(
-		'Loss: ' + (num_steps == 0 ? total_loss : Math.ceil((total_loss / num_steps) * 1000) / 1000)
-	);
-	console.log('Steps : ' + num_steps);
-	console.log('Worker :' + idx);
-	console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
-	await writeQueue(global_ep_reward);
-	return Promise.resolve(global_ep_reward);
-}
-
 export class Worker {
 	public workerIdx: number;
 	public ep_loss = 0.0;
@@ -100,6 +73,33 @@ export class Worker {
 
 		// this.env = new Environment(1500);
 		this.update_freq = 10;
+	}
+
+	private async record(
+		episode: number,
+		reward: number,
+		idx: number,
+		glob_ep_rew: number,
+		total_loss: number,
+		num_steps: number
+	) {
+		let global_ep_reward = glob_ep_rew;
+		if (global_ep_reward == 0) {
+			global_ep_reward = reward;
+		} else {
+			global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
+		}
+		console.log('Episode:' + episode);
+		console.log('Moving average reward : ' + global_ep_reward);
+		console.log('Episode reward : ' + reward);
+		console.log(
+			'Loss: ' + (num_steps == 0 ? total_loss : Math.ceil((total_loss / num_steps) * 1000) / 1000)
+		);
+		console.log('Steps : ' + num_steps);
+		console.log('Worker :' + idx);
+		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
+		await writeQueue(global_ep_reward, this.workerIdx);
+		return Promise.resolve(global_ep_reward);
 	}
 
 	private bashRmDirs = () => {
@@ -141,7 +141,7 @@ export class Worker {
 		//Analogy to the run function of threads
 
 		const env = new Env(8);
-		env.maxEpisodes = 10;
+		env.maxEpisodes = 50000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
@@ -196,7 +196,7 @@ export class Worker {
 					const global_epi = await getGlobalEpisode();
 					const old_glob_moving_avg = await getGlobalMovingAverage();
 
-					const glob_moving_avg = await record(
+					const glob_moving_avg = await this.record(
 						global_epi,
 						this.agent.reward,
 						this.workerIdx,
@@ -208,7 +208,7 @@ export class Worker {
 					await setGlobalMovingAverage(glob_moving_avg);
 
 					const global_best_score = await getBestScore();
-					console.log('Episode reward : ' + this.agent.reward);
+					console.log('Episode reward : ' + this.agent.reward + 1);
 					console.log('Global best score ' + global_best_score);
 					if (this.agent.reward > global_best_score) {
 						console.log('Updating global model');
@@ -253,7 +253,7 @@ export class Worker {
 			}
 		}
 		// ws.send(JSON.stringify({ type: 'DONE' }));
-		await writeQueue('done');
+		await writeQueue('done', this.workerIdx);
 		return notifyWorkerDone();
 	}
 }

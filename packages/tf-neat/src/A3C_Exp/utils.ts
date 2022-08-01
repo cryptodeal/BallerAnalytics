@@ -144,13 +144,13 @@ export const createQueue = () => {
 		});
 };
 
-export const writeQueue = (data: number | string) => {
+export const writeQueue = (data: number | string, workerNum: number) => {
 	return fetch(APIBaseURI + '/queue', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ data })
+		body: JSON.stringify({ data, workerNum })
 	})
 		.then((response) => {
 			if (response.ok) {
@@ -341,7 +341,7 @@ export const setGlobalEpisode = (ep: number) => {
 
 /* determine return type */
 export const checkWorkers = () => {
-	return fetch(APIBaseURI + '/worker_status')
+	return fetch(APIBaseURI + '/workers_status')
 		.then((response) => {
 			if (response.ok) {
 				return response.json().then((res: { data: 'done' | number }) => {
