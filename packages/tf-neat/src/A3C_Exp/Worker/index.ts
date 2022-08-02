@@ -150,7 +150,7 @@ export class Worker {
 		//Analogy to the run function of threads
 
 		const env = new Env(8);
-		env.maxEpisodes = 100;
+		env.maxEpisodes = 50000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
