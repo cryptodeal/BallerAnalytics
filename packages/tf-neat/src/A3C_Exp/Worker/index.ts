@@ -19,7 +19,8 @@ import {
 	parseWsMsg
 } from '../utils';
 import { WsSockette, wsSockette } from 'ws-sockette';
-let worker: Worker;
+let worker: Worker,
+	id = '';
 
 const bootWorker = () =>
 	(async () => {
@@ -28,6 +29,11 @@ const bootWorker = () =>
 	})();
 
 const ws = wsSockette(wsBaseURI, {
+	clientOptions: {
+		headers: {
+			ID: id
+		}
+	},
 	timeout: 5e3,
 	maxAttempts: 10,
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,8 +44,10 @@ const ws = wsSockette(wsBaseURI, {
 		const { data } = e;
 		const payload = parseWsMsg(data as string);
 		if (payload.type === 'INIT' && !worker) {
-			const { workerNum } = payload;
+			const { workerNum, id: tempId } = payload;
+			id = tempId;
 			worker = new Worker(workerNum, ws);
+			worker.id = id;
 			await worker.mkDirLocals();
 
 			if (workerNum === 1) worker.epsilon = 0.3;
@@ -56,6 +64,7 @@ const ws = wsSockette(wsBaseURI, {
 
 export class Worker {
 	public workerIdx: number;
+	public id!: string;
 	public ep_loss = 0.0;
 	/* TODO: write Environment class */
 	public update_freq: number;
@@ -141,7 +150,7 @@ export class Worker {
 		//Analogy to the run function of threads
 
 		const env = new Env(8);
-		env.maxEpisodes = 50000;
+		env.maxEpisodes = 1000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
