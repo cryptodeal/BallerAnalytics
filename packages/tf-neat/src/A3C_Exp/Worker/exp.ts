@@ -19,52 +19,23 @@ import {
 	parseWsMsg
 } from '../utils';
 import { WsSockette, wsSockette } from 'ws-sockette';
-let worker: Worker,
-	id = '';
 
-const bootWorker = () =>
-	(async () => {
-		await addWorkerToken(worker.workerIdx);
-		await worker.run();
-	})();
-
-const ws = wsSockette(wsBaseURI, {
-	clientOptions: {
-		headers: {
-			ID: id
-		}
-	},
-	timeout: 5e3,
-	maxAttempts: 10,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	onopen: (e) => {
-		console.log('Connected to A3C WS API');
-	},
-	onmessage: async (e) => {
-		const { data } = e;
-		const payload = parseWsMsg(data as string);
-		if (payload.type === 'INIT' && !worker) {
-			const { workerNum, id: tempId } = payload;
-			id = tempId;
-			worker = new Worker(workerNum, ws);
-			worker.id = id;
-			await worker.mkDirLocals();
-
-			if (workerNum === 1) worker.epsilon = 0.3;
-			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
-		} else if (payload.type === 'RUN') {
-			bootWorker();
-		}
-	},
-	onreconnect: (e) => console.log('Reconnecting...', e.type),
-	onmaximum: (e) => console.log('Stop Attempting:', e.type),
-	onclose: (e) => console.log('Closed!\n', 'Code: ' + e.code, 'Reason: ' + e.reason),
-	onerror: (e) => console.log('Error: ', e.message)
-});
-
+/**
+ * README:
+ * This is a WIP; experimental implementation of a worker that
+ * gets realtime data via socket vs async/await; it's not ready
+ * and needs to be tested against the fetch implementation,
+ * which blocks worker training while retreiving data.
+ *
+ * In theory, given that tfjs blocks the worker thread event loop,
+ * sockets could keep data synced in real time. However this is
+ * not a finished implementation; ACCORDINGLY, NO TESTING HAS BEEN
+ * DONE ON WHETHER PERFORMANCE IS AFFECTED BY THIS IMPLEMENTATION.
+ */
 export class Worker {
-	public workerIdx: number;
-	public id!: string;
+	public workerIdx!: number;
+	public id = '';
+
 	public ep_loss = 0.0;
 	/* TODO: write Environment class */
 	public update_freq: number;
@@ -75,49 +46,56 @@ export class Worker {
 	public epsilonMin = 0.0;
 	public epsilonMultiply = 0.99;
 	private ws: WsSockette;
+	private isInit = false;
 
-	constructor(workerIdx: number, ws: WsSockette) {
-		this.workerIdx = workerIdx;
-		this.ws = ws;
+	/* exp variables for socket only worker */
+	private global_best_score!: number;
+	private global_epi!: number;
+	private old_glob_moving_avg!: number;
+	private global_moving_avg!: number;
+
+	constructor() {
+		this.ws = wsSockette(wsBaseURI, {
+			clientOptions: {
+				headers: {
+					ID: this.id
+				}
+			},
+			timeout: 5e3,
+			maxAttempts: 10,
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			onopen: (e) => {
+				console.log('Connected to A3C WS API');
+			},
+			onmessage: async (e) => {
+				const { data } = e;
+				const payload = parseWsMsg(data as string);
+				if (payload.type === 'INIT' && !this.isInit) {
+					const { workerNum, id: tempId } = payload;
+					this.id = tempId;
+					await this.mkDirLocals();
+
+					if (workerNum === 1) this.epsilon = 0.3;
+					this.ws.send(JSON.stringify({ type: 'INIT_DONE' }));
+				} else if (payload.type === 'RUN') {
+					this.boot();
+				}
+			},
+			onreconnect: (e) => console.log('Reconnecting...', e.type),
+			onmaximum: (e) => console.log('Stop Attempting:', e.type),
+			onclose: (e) => console.log('Closed!\n', 'Code: ' + e.code, 'Reason: ' + e.reason),
+			onerror: (e) => console.log('Error: ', e.message)
+		});
 
 		// this.env = new Environment(1500);
 		this.update_freq = 10;
 	}
-
-	private async record(
-		episode: number,
-		reward: number,
-		idx: number,
-		glob_ep_rew: number,
-		total_loss: number,
-		num_steps: number
-	) {
-		let global_ep_reward = glob_ep_rew;
-		if (global_ep_reward == 0) {
-			global_ep_reward = reward;
-		} else {
-			global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
-		}
-		console.log('Episode:' + episode + 1);
-		console.log('Moving average reward : ' + global_ep_reward);
-		console.log('Episode reward : ' + reward);
-		console.log(
-			'Loss: ' + (num_steps == 0 ? total_loss : Math.ceil((total_loss / num_steps) * 1000) / 1000)
-		);
-		console.log('Steps : ' + num_steps);
-		console.log('Worker :' + idx);
-		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
-		await writeQueue(global_ep_reward, this.workerIdx);
-		return Promise.resolve(global_ep_reward);
+	private boot() {
+		(async () => {
+			await addWorkerToken(this.workerIdx);
+			await this.run();
+		})();
 	}
-
-	private bashRmDirs = () => {
-		let globQry = '';
-		for (let i = Number(this.workerIdx.toString()[0]); i < 10; i++) {
-			globQry += i;
-		}
-		return globQry;
-	};
 
 	public mkDirLocals = () => {
 		return new Promise((resolve, reject) => {
@@ -145,6 +123,33 @@ export class Worker {
 			);
 		});
 	};
+
+	private async record(
+		episode: number,
+		reward: number,
+		idx: number,
+		glob_ep_rew: number,
+		total_loss: number,
+		num_steps: number
+	) {
+		let global_ep_reward = glob_ep_rew;
+		if (global_ep_reward == 0) {
+			global_ep_reward = reward;
+		} else {
+			global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
+		}
+		console.log('Episode:' + episode + 1);
+		console.log('Moving average reward : ' + global_ep_reward);
+		console.log('Episode reward : ' + reward);
+		console.log(
+			'Loss: ' + (num_steps == 0 ? total_loss : Math.ceil((total_loss / num_steps) * 1000) / 1000)
+		);
+		console.log('Steps : ' + num_steps);
+		console.log('Worker :' + idx);
+		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
+		await writeQueue(global_ep_reward, this.workerIdx);
+		return Promise.resolve(global_ep_reward);
+	}
 
 	public async run() {
 		//Analogy to the run function of threads
@@ -202,11 +207,11 @@ export class Worker {
 				}
 
 				if (done || this.agent.env.steps >= this.agent.env.maxSteps) {
-					const global_epi = await getGlobalEpisode();
+					this.global_epi = await getGlobalEpisode();
 					const old_glob_moving_avg = await getGlobalMovingAverage();
 
 					const glob_moving_avg = await this.record(
-						global_epi,
+						this.global_epi,
 						this.agent.reward,
 						this.workerIdx,
 						old_glob_moving_avg,
@@ -267,10 +272,3 @@ export class Worker {
 		return notifyWorkerDone();
 	}
 }
-
-process.on('SIGINT', () => {
-	console.log('Caught interrupt signal');
-	return worker.rmRfDirLocals().then(() => {
-		process.exit();
-	});
-});
