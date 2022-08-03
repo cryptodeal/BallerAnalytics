@@ -35,7 +35,7 @@ export class A3CServer {
 				ip,
 				context: { workerAddy, id }
 			} = ws;
-			const exists = this.master.findWorkerPool(id);
+			const exists = this.master.hasWorkerPool(id);
 			if (!exists) {
 				const workerNum = this.master.workerCount() + 1;
 				this.master.setWorkerPool(id, { workerNum, ip, active: true });

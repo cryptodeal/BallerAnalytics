@@ -41,6 +41,10 @@ export class MasterAgent {
 		return worker;
 	}
 
+	public hasWorkerPool(id: string) {
+		return this.workerPool.has(id);
+	}
+
 	public setWorkerPool(
 		id: string,
 		worker: {
