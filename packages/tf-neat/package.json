@@ -86,7 +86,7 @@
     "dotenv": "^16.0.1",
     "graphology": "^0.24.1",
     "hm-cytoscape-all-paths": "^0.1.2",
-    "hyper-express": "^6.4.2",
+    "hyper-express": "^6.4.3",
     "hyperparameters": "^0.25.6",
     "minimist": "^1.2.6",
     "nanoid": "3.3.4",

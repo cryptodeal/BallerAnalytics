@@ -144,13 +144,13 @@ export const createQueue = () => {
 		});
 };
 
-export const writeQueue = (data: number | string, workerNum: number) => {
+export const writeQueue = (data: number | string, workerId: string) => {
 	return fetch(APIBaseURI + '/queue', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ data, workerNum })
+		body: JSON.stringify({ data, workerId })
 	})
 		.then((response) => {
 			if (response.ok) {
@@ -225,8 +225,14 @@ export const incrementGlobalEpisode = () => {
 		});
 };
 
-export const notifyWorkerDone = () => {
-	return fetch(APIBaseURI + '/worker_done')
+export const notifyWorkerDone = (id: string) => {
+	return fetch(APIBaseURI + '/worker_done', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ id })
+	})
 		.then((response) => {
 			if (response.ok) {
 				return response.json();
@@ -366,13 +372,13 @@ export const waitForWorkers = async () => {
 	return Promise.resolve();
 };
 
-export const addWorkerToken = (tok: number) => {
+export const addWorkerId = (workerNum: number, id: string) => {
 	return fetch(APIBaseURI + '/worker_started', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ data: tok })
+		body: JSON.stringify({ workerNum, id })
 	})
 		.then((response) => {
 			if (response.ok) {

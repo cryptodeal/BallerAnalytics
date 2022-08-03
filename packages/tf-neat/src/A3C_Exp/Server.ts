@@ -1,6 +1,6 @@
 import HyperExpress from 'hyper-express';
 import { appendFile, readFile, writeFile } from 'fs/promises';
-import { createReadStream, open, close } from 'fs';
+import { createReadStream } from 'fs';
 import { MasterAgent } from './Master';
 import { nanoid } from 'nanoid';
 
@@ -35,25 +35,16 @@ export class A3CServer {
 				ip,
 				context: { workerAddy, id }
 			} = ws;
-			const exists = this.master.workerPool.has(id);
+			const exists = this.master.findWorkerPool(id);
 			if (!exists) {
-				const workerNum = this.master.workerPool.size + 1;
-				this.master.workerPool.set(id, { workerNum, ip, active: true });
+				const workerNum = this.master.workerCount() + 1;
+				this.master.setWorkerPool(id, { workerNum, ip, active: true });
 			} else {
-				const worker = <
-					{
-						ip: string;
-						init?: boolean;
-						workerNum: number;
-						active?: boolean;
-						training?: boolean;
-						done?: boolean;
-					}
-				>this.master.workerPool.get(id);
+				const worker = this.master.findWorkerPool(id);
 				worker.active = true;
-				this.master.workerPool.set(id, worker);
+				this.master.setWorkerPool(id, worker);
 				const { init, active, training, done, workerNum } = worker;
-				this.master.workerMap.set(workerNum, {
+				this.master.setWorkerMap(workerNum, {
 					ip,
 					id,
 					active,
@@ -63,17 +54,7 @@ export class A3CServer {
 				});
 			}
 
-			const { workerNum } = <
-				{
-					ip: string;
-					init?: boolean;
-					workerNum: number;
-					active?: boolean;
-					training?: boolean;
-					done?: boolean;
-				}
-			>this.master.workerPool.get(id);
-
+			const { workerNum } = this.master.findWorkerPool(id);
 			ws.send(JSON.stringify({ type: 'INIT', workerNum, id }));
 
 			/* log new cxns for debugging */
@@ -82,41 +63,24 @@ export class A3CServer {
 			// Handle incoming messages to perform changes in consumption
 			ws.on('message', async (message) => {
 				const msg = JSON.parse(message);
-				const worker = <
-					{
-						ip: string;
-						init?: boolean;
-						workerNum: number;
-						active?: boolean;
-						training?: boolean;
-						done?: boolean;
-					}
-				>this.master.workerPool.get(id);
+				const worker = this.master.findWorkerPool(id);
 				if (msg.type === 'INIT_DONE') {
 					worker.init = true;
-					this.master.workerPool.set(id, worker);
+					this.master.setWorkerPool(id, worker);
 					const { active } = worker;
-					this.master.workerMap.set(workerNum, {
+					this.master.setWorkerMap(workerNum, {
 						ip,
 						id,
 						init: true,
 						active
 					});
-
 					/* init workers as they are activated */
 					ws.send(JSON.stringify({ type: 'RUN', workerNum }));
-
-					if (!this.master.isTraining) {
-						(async () => {
-							this.master.isTraining = true;
-							await this.master.train();
-						})();
-					}
 				} else if (msg.type === 'DONE') {
 					worker.done = true;
-					this.master.workerPool.set(id, worker);
+					this.master.setWorkerPool(id, worker);
 					const { active, training, init, done } = worker;
-					this.master.workerMap.set(workerNum, {
+					this.master.setWorkerMap(workerNum, {
 						ip,
 						id,
 						init,
@@ -125,11 +89,6 @@ export class A3CServer {
 						training
 					});
 				}
-				/*
-          else if (msg.type === 'QUEUE') {
-            await this.master.queue(msg.payload.data as number);
-          }
-        */
 			});
 
 			// Do some cleanup once websocket connection closes
@@ -137,20 +96,11 @@ export class A3CServer {
 			ws.on('close', (code, message) => {
 				console.log('worker ' + workerNum + ' has disconnected from ' + workerAddy);
 				/* clean up workerMap */
-				const worker = <
-					{
-						ip: string;
-						init?: boolean;
-						workerNum: number;
-						active?: boolean;
-						training?: boolean;
-						done?: boolean;
-					}
-				>this.master.workerPool.get(id);
+				const worker = this.master.findWorkerPool(id);
 				worker.active = false;
-				this.master.workerPool.set(id, worker);
+				this.master.setWorkerPool(id, worker);
 				const { active, training, init, done } = worker;
-				this.master.workerMap.set(workerNum, {
+				this.master.setWorkerMap(workerNum, {
 					ip,
 					id,
 					active,
@@ -186,80 +136,14 @@ export class A3CServer {
 			res.status(200).json({ status: 'SUCCESS', data: this.bestScore });
 		});
 
-		/* TODO: Determine whether needed as queue is cleared/reset at start */
-
-		this.app.get('/create_queue', async (req, res) => {
-			open(process.cwd() + '/A3C_Data/queue.txt', 'w', function (err, fd) {
-				if (err) throw new Error(err.message);
-				close(fd, function (err) {
-					if (err) throw new Error(err.message);
-					res.status(200).json({ status: 'SUCCESS' });
-				});
-			});
-		});
-
 		this.app.post('/queue', async (req, res) => {
-			const { data: elem, workerNum } = <{ data: string | number; workerNum: number }>(
-				await req.json()
-			);
-			console.log('Queue: ' + elem);
+			const { data: elem } = <{ data: number | string; workerId: string }>await req.json();
+			console.log('Queued Ep Reward: ' + elem);
 
-			if (elem !== '') {
-				if (elem === 'done') {
-					const { ip } = req;
-					const worker = <
-						{
-							ip: string;
-							id: string;
-							init?: boolean;
-							active?: boolean;
-							training?: boolean;
-							done?: boolean;
-						}
-					>this.master.workerMap.get(workerNum);
-					worker.done = true;
-					this.master.workerMap.set(workerNum, worker);
-					const { active, training, init, done, id } = worker;
-					this.master.workerPool.set(id, {
-						ip,
-						workerNum,
-						init,
-						active,
-						done,
-						training
-					});
-					let allDone = true;
-					for (const [, { done }] of this.master.workerPool) {
-						if (!done) {
-							allDone = false;
-							break;
-						}
-					}
-					if (allDone)
-						await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
-				} else {
-					await appendFile(process.cwd() + '/A3C_Data/queue.txt', elem.toString() + '\n');
-				}
+			if (elem !== '' && typeof elem === 'number') {
+				await this.master.queue(elem);
 			}
 			res.status(200).json({ status: 'SUCCESS' });
-		});
-
-		this.app.get('/queue', async (req, res) => {
-			const data = (await readFile(process.cwd() + '/A3C_Data/queue.txt', 'utf8'))
-				.toString()
-				.split('\n');
-
-			if (data.length === 1 && data[0] === '') {
-				res.status(200).json({ status: 'FAIL', data: 'NaN', err: 'No data in queue' });
-			} else {
-				const elem_pop = data[0];
-				let str = '';
-				for (let i = 1; i < data.length; i++) {
-					if (data[i] != '') str += data[i] + '\n';
-				}
-				await writeFile(process.cwd() + '/A3C_Data/queue.txt', str);
-				res.status(200).json({ status: 'SUCCESS', data: elem_pop });
-			}
 		});
 
 		this.app.post('/local_model_weights', async (req, res) => {
@@ -324,7 +208,7 @@ export class A3CServer {
 
 		this.app.post('/global_episode', (req, res) => {
 			this.globalEpisode += 1;
-			console.log('Global Episode: ' + this.globalEpisode);
+			console.log('Episode: ' + this.globalEpisode);
 			res.status(200).json({ status: 'SUCCESS' });
 		});
 
@@ -333,20 +217,35 @@ export class A3CServer {
 		});
 
 		/* TODO: add workers tokens table to sqllite3 db */
-		this.app.get('/worker_done', async (req, res) => {
+		this.app.post('/worker_done', async (req, res) => {
+			const { ip } = req;
+			const { id } = <{ id: string }>await req.json();
+
 			const data = (await readFile(process.cwd() + '/A3C_Data/workers_tokens.txt', 'utf8'))
 				.toString()
 				.split('\n');
+
+			const worker = this.master.findWorkerPool(id);
+			worker.done = true;
+			this.master.setWorkerPool(id, worker);
+			const { active, training, init, done, workerNum } = worker;
+			this.master.setWorkerMap(workerNum, {
+				ip,
+				id,
+				init,
+				active,
+				done,
+				training
+			});
 			if (data.length === 1 && data[0] === '') {
 				res.status(200).json({ status: 'FAIL', data: 'NaN', err: 'No data in queue' });
 			} else {
-				const elem_pop = data[0];
 				let str = '';
-				for (let i = 1; i < data.length; i++) {
-					str += data[i] + '\n';
+				for (let i = 0; i < data.length; i++) {
+					if (data[i] !== id) str += data[i] + '\n';
 				}
 				await writeFile(process.cwd() + '/A3C_Data/workers_tokens.txt', str);
-				res.status(200).json({ status: 'SUCCESS', data: elem_pop });
+				res.status(200).json({ status: 'SUCCESS', data: id });
 			}
 		});
 
@@ -366,23 +265,14 @@ export class A3CServer {
 
 		this.app.post('/worker_started', async (req, res) => {
 			const { ip } = req;
-			const { data: token } = <{ data: number }>await req.json();
+			const { workerNum, id } = <{ workerNum: number; id: string }>await req.json();
 
-			const worker = <
-				{
-					ip: string;
-					id: string;
-					init?: boolean;
-					active?: boolean;
-					training?: boolean;
-					done?: boolean;
-				}
-			>this.master.workerMap.get(token);
+			const worker = this.master.findWorkerPool(id);
 			worker.training = true;
-			this.master.workerMap.set(token, worker);
-			const { active, init, training, id } = worker;
-			this.master.workerPool.set(id, { workerNum: token, ip, active, init, training });
-			await appendFile(process.cwd() + '/A3C_Data/workers_tokens.txt', token + '\n');
+			this.master.setWorkerPool(id, worker);
+			const { active, init, training } = worker;
+			this.master.setWorkerMap(workerNum, { id, ip, active, init, training });
+			await appendFile(process.cwd() + '/A3C_Data/workers_tokens.txt', id + '\n');
 			res.status(200).json({ status: 'SUCCESS' });
 		});
 

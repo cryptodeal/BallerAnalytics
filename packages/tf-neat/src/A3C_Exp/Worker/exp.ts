@@ -4,7 +4,7 @@ import { seededRandom } from '../../utils';
 import { A3CAgent_Worker } from '../Agent';
 import {
 	wsBaseURI,
-	addWorkerToken,
+	addWorkerId,
 	getBestScore,
 	getGlobalEpisode,
 	getGlobalModelActorWeights,
@@ -92,7 +92,7 @@ export class Worker {
 	}
 	private boot() {
 		(async () => {
-			await addWorkerToken(this.workerIdx);
+			await addWorkerId(this.workerIdx, this.id);
 			await this.run();
 		})();
 	}
@@ -147,7 +147,7 @@ export class Worker {
 		console.log('Steps : ' + num_steps);
 		console.log('Worker :' + idx);
 		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
-		await writeQueue(global_ep_reward, this.workerIdx);
+		await writeQueue(global_ep_reward, this.id);
 		return Promise.resolve(global_ep_reward);
 	}
 
@@ -268,7 +268,7 @@ export class Worker {
 		}
 		// ws.send(JSON.stringify({ type: 'DONE' }));
 
-		await writeQueue('done', this.workerIdx);
-		return notifyWorkerDone();
+		await writeQueue('done', this.id);
+		return notifyWorkerDone(this.id);
 	}
 }

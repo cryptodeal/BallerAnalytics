@@ -1,7 +1,7 @@
 import { Actor_Critic_Agent } from './Agent/AC_Agent';
 import { Env } from './Env';
 import { exec } from 'child_process';
-import { createQueue, getBlockingQueue, waitForWorkers, serialize } from './utils';
+import { serialize } from './utils';
 
 export class MasterAgent {
 	public name = `A3C_GridWorld_LocalEnv`;
@@ -9,7 +9,7 @@ export class MasterAgent {
 	public isInit = false;
 	public isTraining = false;
 	public sharedAgent: Actor_Critic_Agent;
-	public workerPool: Map<
+	private workerPool: Map<
 		string,
 		{
 			ip: string;
@@ -20,7 +20,7 @@ export class MasterAgent {
 			done?: boolean;
 		}
 	> = new Map();
-	public workerMap: Map<
+	private workerMap: Map<
 		number,
 		{ ip: string; id: string; init?: boolean; active?: boolean; training?: boolean; done?: boolean }
 	> = new Map();
@@ -35,6 +35,48 @@ export class MasterAgent {
 		this.sharedAgent = new Actor_Critic_Agent(this.env, 0, 0);
 	}
 
+	public findWorkerPool(id: string) {
+		const worker = this.workerPool.get(id);
+		if (!worker) throw new Error(`Worker with id '${id} not found in worker pool'`);
+		return worker;
+	}
+
+	public setWorkerPool(
+		id: string,
+		worker: {
+			ip: string;
+			init?: boolean;
+			workerNum: number;
+			active?: boolean;
+			training?: boolean;
+			done?: boolean;
+		}
+	) {
+		this.workerPool.set(id, worker);
+	}
+
+	public findWorkerMap(number: number) {
+		const worker = this.workerMap.get(number);
+		if (!worker) throw new Error(`Worker with workerNum '${number} not found in worker pool'`);
+		return worker;
+	}
+
+	public setWorkerMap(
+		ip: number,
+		worker: {
+			ip: string;
+			id: string;
+			init?: boolean;
+			active?: boolean;
+			training?: boolean;
+			done?: boolean;
+		}
+	) {
+		this.workerMap.set(ip, worker);
+	}
+
+	public workerCount = () => this.workerPool.size;
+
 	public async init() {
 		await (async () => {
 			return new Promise((resolve, reject) => {
@@ -47,7 +89,7 @@ export class MasterAgent {
           mkdir -p A3C_Data/global-model-critic
           mkdir -p A3C_Data/logs
           cd A3C_Data
-          touch queue.txt workers_tokens.txt`,
+          touch workers_tokens.txt`,
 					(err) => {
 						if (err) reject(err);
 						resolve(true);
@@ -61,7 +103,6 @@ export class MasterAgent {
 	}
 
 	public async queue(reward: number) {
-		console.log('Pulled new data from queue : ' + reward);
 		this.moving_avg_rewards.push(reward);
 		this.reward_plotting[this.i] = this.moving_avg_rewards[this.i];
 		await serialize(
@@ -71,34 +112,5 @@ export class MasterAgent {
 			'plot_moving_avg_reward_a3c.json'
 		);
 		this.i++;
-	}
-
-	public async train() {
-		await createQueue();
-		const reward_plotting: Record<number, number> = {};
-
-		const moving_avg_rewards: number[] = [];
-		let i = 0;
-		while (true) {
-			const reward = await getBlockingQueue();
-			if (typeof reward === 'number') {
-				console.log('Pulled new data from queue : ' + reward);
-				moving_avg_rewards.push(reward);
-				reward_plotting[i] = moving_avg_rewards[i];
-				await serialize(
-					{
-						reward_plotting: reward_plotting
-					},
-					'plot_moving_avg_reward_a3c.json'
-				);
-			} else {
-				break;
-			}
-			i++;
-		}
-		this.isTraining = false;
-		console.log('Master Worker is done!');
-		await waitForWorkers();
-		return;
 	}
 }
