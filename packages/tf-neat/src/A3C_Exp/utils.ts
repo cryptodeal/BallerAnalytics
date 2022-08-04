@@ -98,17 +98,17 @@ export const getBestScore = () => {
 		});
 };
 
-export const sendModel = async (worker_id: number, temp: boolean) => {
+export const sendModel = async (workerId: string, temp: boolean) => {
 	const [data_actor, data_critic] = await Promise.all([
-		readFile(process.cwd() + `/A3C_Data/local-model-actor/${worker_id}/weights.bin`, {
+		readFile(process.cwd() + `/A3C_Data/local-model-actor/${workerId}/weights.bin`, {
 			encoding: 'binary'
 		}),
-		readFile(process.cwd() + `/A3C_Data/local-model-critic/${worker_id}/weights.bin`, {
+		readFile(process.cwd() + `/A3C_Data/local-model-critic/${workerId}/weights.bin`, {
 			encoding: 'binary'
 		})
 	]);
 	const obj = {
-		idx: worker_id,
+		id: workerId,
 		temporary: temp,
 		data_actor,
 		data_critic
@@ -244,7 +244,7 @@ export const notifyWorkerDone = (id: string) => {
 		});
 };
 
-export const getGlobalModelCriticWeights = (workerId: number) => {
+export const getGlobalModelCriticWeights = (workerId: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
@@ -259,7 +259,7 @@ export const getGlobalModelCriticWeights = (workerId: number) => {
 		);
 	});
 };
-export const getGlobalModelCriticJSON = (workerId: number) => {
+export const getGlobalModelCriticJSON = (workerId: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
@@ -275,10 +275,10 @@ export const getGlobalModelCriticJSON = (workerId: number) => {
 	});
 };
 
-export const getGlobalModelCritic = (workerId: number) =>
+export const getGlobalModelCritic = (workerId: string) =>
 	Promise.all([getGlobalModelCriticWeights(workerId), getGlobalModelCriticJSON(workerId)]);
 
-export const getGlobalModelActorWeights = (workerId: number) => {
+export const getGlobalModelActorWeights = (workerId: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
@@ -294,7 +294,7 @@ export const getGlobalModelActorWeights = (workerId: number) => {
 	});
 };
 
-export const getGlobalModelActorJSON = (workerId: number) => {
+export const getGlobalModelActorJSON = (workerId: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
@@ -310,7 +310,7 @@ export const getGlobalModelActorJSON = (workerId: number) => {
 	});
 };
 
-export const getGlobalModelActor = (workerId: number) =>
+export const getGlobalModelActor = (workerId: string) =>
 	Promise.all([getGlobalModelActorWeights(workerId), getGlobalModelActorJSON(workerId)]);
 
 export const getGlobalEpisode = () => {
@@ -372,13 +372,13 @@ export const waitForWorkers = async () => {
 	return Promise.resolve();
 };
 
-export const addWorkerId = (workerNum: number, id: string) => {
+export const addWorkerId = (id: string) => {
 	return fetch(APIBaseURI + '/worker_started', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ workerNum, id })
+		body: JSON.stringify({ id })
 	})
 		.then((response) => {
 			if (response.ok) {

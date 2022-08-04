@@ -5,4 +5,5 @@ type WsApiData = {
 export type WsApiStartWorker = WsApiData & {
 	workerNum: number;
 	id: string;
+	first: boolean;
 };

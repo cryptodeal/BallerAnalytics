@@ -14,15 +14,11 @@ export class MasterAgent {
 		{
 			ip: string;
 			init?: boolean;
-			workerNum: number;
 			active?: boolean;
 			training?: boolean;
 			done?: boolean;
+			first?: boolean;
 		}
-	> = new Map();
-	private workerMap: Map<
-		number,
-		{ ip: string; id: string; init?: boolean; active?: boolean; training?: boolean; done?: boolean }
 	> = new Map();
 
 	private i = 0;
@@ -41,8 +37,31 @@ export class MasterAgent {
 		return worker;
 	}
 
+	public allWorkersDone() {
+		let isDone = true;
+		for (const [id, { done }] of this.workerPool) {
+			if (!done) {
+				isDone = false;
+				break;
+			}
+		}
+		return isDone;
+	}
+
+	public activeInPool() {
+		let count = 0;
+		for (const [id, { active }] of this.workerPool) {
+			if (active) count++;
+		}
+		return count;
+	}
+
 	public hasWorkerPool(id: string) {
 		return this.workerPool.has(id);
+	}
+
+	public removeWorker(id: string) {
+		return this.workerPool.delete(id);
 	}
 
 	public setWorkerPool(
@@ -50,33 +69,13 @@ export class MasterAgent {
 		worker: {
 			ip: string;
 			init?: boolean;
-			workerNum: number;
 			active?: boolean;
 			training?: boolean;
 			done?: boolean;
+			first?: boolean;
 		}
 	) {
 		this.workerPool.set(id, worker);
-	}
-
-	public findWorkerMap(number: number) {
-		const worker = this.workerMap.get(number);
-		if (!worker) throw new Error(`Worker with workerNum '${number} not found in worker pool'`);
-		return worker;
-	}
-
-	public setWorkerMap(
-		ip: number,
-		worker: {
-			ip: string;
-			id: string;
-			init?: boolean;
-			active?: boolean;
-			training?: boolean;
-			done?: boolean;
-		}
-	) {
-		this.workerMap.set(ip, worker);
 	}
 
 	public workerCount = () => this.workerPool.size;
@@ -85,15 +84,12 @@ export class MasterAgent {
 		await (async () => {
 			return new Promise((resolve, reject) => {
 				exec(
-					`rm -f A3C_Data/*.txt
-          mkdir -p A3C_Data
+					`mkdir -p A3C_Data
           mkdir -p A3C_Data/temporary-global-model-actor
           mkdir -p A3C_Data/temporary-global-model-critic
           mkdir -p A3C_Data/global-model-actor
           mkdir -p A3C_Data/global-model-critic
-          mkdir -p A3C_Data/logs
-          cd A3C_Data
-          touch workers_tokens.txt`,
+          mkdir -p A3C_Data/logs`,
 					(err) => {
 						if (err) reject(err);
 						resolve(true);

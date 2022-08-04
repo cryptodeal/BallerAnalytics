@@ -92,7 +92,7 @@ export class Worker {
 	}
 	private boot() {
 		(async () => {
-			await addWorkerId(this.workerIdx, this.id);
+			await addWorkerId(this.id);
 			await this.run();
 		})();
 	}
@@ -199,7 +199,7 @@ export class Worker {
 
 				if (time_count === this.update_freq) {
 					if (this.agent.reward > global_best_score) {
-						await this.agent.saveLocally(this.workerIdx);
+						await this.agent.saveLocally(this.id);
 					}
 					this.ep_loss += ep_mean_loss;
 					console.log(this.ep_loss);
@@ -226,11 +226,11 @@ export class Worker {
 					console.log('Global best score ' + global_best_score);
 					if (this.agent.reward > global_best_score) {
 						console.log('Updating global model');
-						await this.agent.saveLocally(this.workerIdx);
-						await sendModel(this.workerIdx, false);
+						await this.agent.saveLocally(this.id);
+						await sendModel(this.id, false);
 						await Promise.all([
-							getGlobalModelActorWeights(this.workerIdx),
-							getGlobalModelCriticWeights(this.workerIdx)
+							getGlobalModelActorWeights(this.id),
+							getGlobalModelCriticWeights(this.id)
 						]);
 						await this.agent.reloadWeights(
 							process.cwd() + `/A3C_Data/local-model-actor/${this.workerIdx}/model.json`,

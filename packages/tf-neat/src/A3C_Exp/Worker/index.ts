@@ -24,7 +24,7 @@ let worker: Worker,
 
 const bootWorker = () =>
 	(async () => {
-		await addWorkerId(worker.workerIdx, worker.id);
+		await addWorkerId(worker.id);
 		await worker.run();
 	})();
 
@@ -44,13 +44,18 @@ const ws = wsSockette(wsBaseURI, {
 		const { data } = e;
 		const payload = parseWsMsg(data as string);
 		if (payload.type === 'INIT' && !worker) {
-			const { workerNum, id: tempId } = payload;
+			const { id: tempId, first } = payload;
 			id = tempId;
-			worker = new Worker(workerNum, ws);
-			worker.id = id;
+			worker = new Worker(id, ws);
+			/**
+			 * flag enables behavior policy for 1st worker;
+			 * behavior policy uses epsilon decay to explore
+			 * random actions in env; as A2C and A3C are policy
+			 * based, only 1 worker explores.
+			 */
+			worker.bhvPolicy = true;
 			await worker.mkDirLocals();
-
-			if (workerNum === 1) worker.epsilon = 0.3;
+			if (worker.bhvPolicy) worker.epsilon = 0.3;
 			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
 		} else if (payload.type === 'RUN') {
 			bootWorker();
@@ -63,10 +68,8 @@ const ws = wsSockette(wsBaseURI, {
 });
 
 export class Worker {
-	public workerIdx: number;
 	public id!: string;
 	public ep_loss = 0.0;
-	/* TODO: write Environment class */
 	public update_freq: number;
 	public action_size!: number;
 	public state_size!: number;
@@ -75,19 +78,18 @@ export class Worker {
 	public epsilonMin = 0.0;
 	public epsilonMultiply = 0.99;
 	private ws: WsSockette;
+	public bhvPolicy = false;
 
-	constructor(workerIdx: number, ws: WsSockette) {
-		this.workerIdx = workerIdx;
+	constructor(id: string, ws: WsSockette) {
+		this.id = id;
 		this.ws = ws;
-
-		// this.env = new Environment(1500);
+		/* TODO: add update_freq to construction options */
 		this.update_freq = 10;
 	}
 
 	private async record(
 		episode: number,
 		reward: number,
-		idx: number,
 		glob_ep_rew: number,
 		total_loss: number,
 		num_steps: number
@@ -105,26 +107,18 @@ export class Worker {
 			'Loss: ' + (num_steps == 0 ? total_loss : Math.ceil((total_loss / num_steps) * 1000) / 1000)
 		);
 		console.log('Steps : ' + num_steps);
-		console.log('Worker :' + idx);
+		console.log('Worker :' + this.id);
 		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
 		await writeQueue(global_ep_reward, this.id);
 		return Promise.resolve(global_ep_reward);
 	}
 
-	private bashRmDirs = () => {
-		let globQry = '';
-		for (let i = Number(this.workerIdx.toString()[0]); i < 10; i++) {
-			globQry += i;
-		}
-		return globQry;
-	};
-
 	public mkDirLocals = () => {
 		return new Promise((resolve, reject) => {
 			exec(
 				`mkdir -p A3C_Data
-        mkdir -p A3C_Data/local-model-actor/${this.workerIdx}
-        mkdir -p A3C_Data/local-model-critic/${this.workerIdx}`,
+        mkdir -p A3C_Data/local-model-actor/${this.id}
+        mkdir -p A3C_Data/local-model-critic/${this.id}`,
 				(err) => {
 					if (err) reject(err);
 					resolve(true);
@@ -136,8 +130,8 @@ export class Worker {
 	public rmRfDirLocals = () => {
 		return new Promise((resolve, reject) => {
 			exec(
-				`rm -rf A3C_Data/local-model-actor/${this.workerIdx}
-        rm -rf A3C_Data/local-model-critic/${this.workerIdx}`,
+				`rm -rf A3C_Data/local-model-actor/${this.id}
+        rm -rf A3C_Data/local-model-critic/${this.id}`,
 				(err) => {
 					if (err) reject(err);
 					resolve(true);
@@ -148,9 +142,8 @@ export class Worker {
 
 	public async run() {
 		//Analogy to the run function of threads
-
 		const env = new Env(8);
-		env.maxEpisodes = 50000;
+		env.maxEpisodes = 10000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
@@ -194,7 +187,7 @@ export class Worker {
 
 				if (time_count === this.update_freq) {
 					if (this.agent.reward > global_best_score) {
-						await this.agent.saveLocally(this.workerIdx);
+						await this.agent.saveLocally(this.id);
 					}
 					this.ep_loss += ep_mean_loss;
 					console.log(this.ep_loss);
@@ -208,7 +201,6 @@ export class Worker {
 					const glob_moving_avg = await this.record(
 						global_epi,
 						this.agent.reward,
-						this.workerIdx,
 						old_glob_moving_avg,
 						this.ep_loss,
 						this.agent.env.steps
@@ -221,15 +213,15 @@ export class Worker {
 					console.log('Global best score ' + global_best_score);
 					if (this.agent.reward > global_best_score) {
 						console.log('Updating global model');
-						await this.agent.saveLocally(this.workerIdx);
-						await sendModel(this.workerIdx, false);
+						await this.agent.saveLocally(this.id);
+						await sendModel(this.id, false);
 						await Promise.all([
-							getGlobalModelActorWeights(this.workerIdx),
-							getGlobalModelCriticWeights(this.workerIdx)
+							getGlobalModelActorWeights(this.id),
+							getGlobalModelCriticWeights(this.id)
 						]);
 						await this.agent.reloadWeights(
-							process.cwd() + `/A3C_Data/local-model-actor/${this.workerIdx}/model.json`,
-							process.cwd() + `/A3C_Data/local-model-critic/${this.workerIdx}/model.json`
+							process.cwd() + `/A3C_Data/local-model-actor/${this.id}/model.json`,
+							process.cwd() + `/A3C_Data/local-model-critic/${this.id}/model.json`
 						);
 						await setBestScore(this.agent.reward);
 					}

@@ -295,7 +295,7 @@ export class A3CAgent_Worker {
 			.dataSync()[0];
 	}
 
-	public async saveLocally(workerId) {
+	public async saveLocally(workerId: string) {
 		const rootDir = process.cwd();
 		await this.actor.save('file://' + rootDir + `/A3C_Data/local-model-actor/${workerId}`);
 		await this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic/${workerId}`);

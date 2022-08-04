@@ -1,5 +1,5 @@
 import HyperExpress from 'hyper-express';
-import { appendFile, readFile, writeFile } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { createReadStream } from 'fs';
 import { MasterAgent } from './Master';
 import { nanoid } from 'nanoid';
@@ -37,28 +37,21 @@ export class A3CServer {
 			} = ws;
 			const exists = this.master.hasWorkerPool(id);
 			if (!exists) {
-				const workerNum = this.master.workerCount() + 1;
-				this.master.setWorkerPool(id, { workerNum, ip, active: true });
+				const first = !this.master.workerCount();
+				this.master.setWorkerPool(id, { ip, active: true, first });
+				/* log new cxns for debugging */
+				console.log('worker ' + id + ' has connected from ' + workerAddy);
+				console.log(`${this.master.activeInPool()} / ${this.master.workerCount()} workers online!`);
 			} else {
+				console.log('worker ' + id + ' has reconnected from ' + workerAddy);
+				console.log(`${this.master.activeInPool()} / ${this.master.workerCount()} workers online!`);
 				const worker = this.master.findWorkerPool(id);
 				worker.active = true;
 				this.master.setWorkerPool(id, worker);
-				const { init, active, training, done, workerNum } = worker;
-				this.master.setWorkerMap(workerNum, {
-					ip,
-					id,
-					active,
-					init,
-					training,
-					done
-				});
 			}
+			const { first } = this.master.findWorkerPool(id);
 
-			const { workerNum } = this.master.findWorkerPool(id);
-			ws.send(JSON.stringify({ type: 'INIT', workerNum, id }));
-
-			/* log new cxns for debugging */
-			console.log('worker ' + workerNum + ' has connected from ' + workerAddy);
+			ws.send(JSON.stringify({ type: 'INIT', id, first }));
 
 			// Handle incoming messages to perform changes in consumption
 			ws.on('message', async (message) => {
@@ -67,47 +60,26 @@ export class A3CServer {
 				if (msg.type === 'INIT_DONE') {
 					worker.init = true;
 					this.master.setWorkerPool(id, worker);
-					const { active } = worker;
-					this.master.setWorkerMap(workerNum, {
-						ip,
-						id,
-						init: true,
-						active
-					});
 					/* init workers as they are activated */
-					ws.send(JSON.stringify({ type: 'RUN', workerNum }));
+					ws.send(JSON.stringify({ type: 'RUN', id }));
 				} else if (msg.type === 'DONE') {
 					worker.done = true;
 					this.master.setWorkerPool(id, worker);
-					const { active, training, init, done } = worker;
-					this.master.setWorkerMap(workerNum, {
-						ip,
-						id,
-						init,
-						active,
-						done,
-						training
-					});
 				}
 			});
 
 			// Do some cleanup once websocket connection closes
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			ws.on('close', (code, message) => {
-				console.log('worker ' + workerNum + ' has disconnected from ' + workerAddy);
+				/* log new cxns for debugging */
+				console.log('worker ' + id + ' has disconnected from ' + workerAddy);
+				console.log(
+					`${this.master.activeInPool()} / ${this.master.workerCount()} workers connected!`
+				);
 				/* clean up workerMap */
 				const worker = this.master.findWorkerPool(id);
 				worker.active = false;
 				this.master.setWorkerPool(id, worker);
-				const { active, training, init, done } = worker;
-				this.master.setWorkerMap(workerNum, {
-					ip,
-					id,
-					active,
-					init,
-					training,
-					done
-				});
 			});
 		});
 
@@ -218,61 +190,36 @@ export class A3CServer {
 
 		/* TODO: add workers tokens table to sqllite3 db */
 		this.app.post('/worker_done', async (req, res) => {
-			const { ip } = req;
 			const { id } = <{ id: string }>await req.json();
 
-			const data = (await readFile(process.cwd() + '/A3C_Data/workers_tokens.txt', 'utf8'))
-				.toString()
-				.split('\n');
-
-			const worker = this.master.findWorkerPool(id);
-			worker.done = true;
-			this.master.setWorkerPool(id, worker);
-			const { active, training, init, done, workerNum } = worker;
-			this.master.setWorkerMap(workerNum, {
-				ip,
-				id,
-				init,
-				active,
-				done,
-				training
-			});
-			if (data.length === 1 && data[0] === '') {
-				res.status(200).json({ status: 'FAIL', data: 'NaN', err: 'No data in queue' });
+			if (!this.master.workerCount()) {
+				res.status(200).json({ status: 'FAIL', data: 'NaN', err: 'No workers in pool' });
 			} else {
-				let str = '';
-				for (let i = 0; i < data.length; i++) {
-					if (data[i] !== id) str += data[i] + '\n';
-				}
-				await writeFile(process.cwd() + '/A3C_Data/workers_tokens.txt', str);
+				const worker = this.master.findWorkerPool(id);
+				worker.done = true;
+				this.master.setWorkerPool(id, worker);
 				res.status(200).json({ status: 'SUCCESS', data: id });
 			}
 		});
 
 		this.app.get('/workers_status', async (req, res) => {
-			const workers = (await readFile(process.cwd() + '/A3C_Data/workers_tokens.txt', 'utf8'))
-				.toString()
-				.split('\n');
+			const workerCount = this.master.workerCount();
 
 			res.status(200);
 
-			if (workers.length === 1 && workers[0] === '') {
+			if (!this.master.workerCount() || this.master.allWorkersDone()) {
 				res.json({ status: 'SUCCESS', data: 'done' });
 			} else {
-				res.json({ status: 'SUCCESS', data: workers.length });
+				res.json({ status: 'SUCCESS', data: workerCount });
 			}
 		});
 
 		this.app.post('/worker_started', async (req, res) => {
-			const { ip } = req;
-			const { workerNum, id } = <{ workerNum: number; id: string }>await req.json();
+			const { id } = <{ workerNum: number; id: string }>await req.json();
 
 			const worker = this.master.findWorkerPool(id);
 			worker.training = true;
 			this.master.setWorkerPool(id, worker);
-			const { active, init, training } = worker;
-			this.master.setWorkerMap(workerNum, { id, ip, active, init, training });
-			await appendFile(process.cwd() + '/A3C_Data/workers_tokens.txt', id + '\n');
 			res.status(200).json({ status: 'SUCCESS' });
 		});
 
