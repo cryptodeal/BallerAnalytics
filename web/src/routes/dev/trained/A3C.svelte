@@ -37,7 +37,7 @@
 		ctx.beginPath();
 		ctx.fillStyle = 'lightcyan';
 		ctx.font = '11px monospace';
-		title = 'A3C (2 agents; 100k eps)';
+		title = 'A3C (5 agents; 250k eps)';
 		ctx.fillText(title, env.grid_W * env.grid_width + 10, 10);
 		ctx.closePath();
 		agent = new Actor_Critic_Agent(
@@ -46,12 +46,10 @@
 			Math.floor(Math.random() * 8),
 			canvas
 		);
-		const actor_model = <Sequential>await loadLayersModel('/global-model-actor/model.json');
-		agent.actor = actor_model;
+		agent.actor = <Sequential>await loadLayersModel('/global-model-actor/model.json');
 		console.log('actor model is loaded.');
 
-		const critic_model = await loadLayersModel('/global-model-critic/model.json');
-		agent.critic = critic_model;
+		agent.critic = await loadLayersModel('/global-model-critic/model.json');
 		console.log('critic model is loaded.');
 		isRunnable = false;
 		agent.ballCount = 3;

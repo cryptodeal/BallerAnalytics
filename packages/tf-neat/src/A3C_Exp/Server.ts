@@ -3,6 +3,8 @@ import { writeFile } from 'fs/promises';
 import { createReadStream } from 'fs';
 import { MasterAgent } from './Master';
 import { nanoid } from 'nanoid';
+import { WsInitWorker, WsRunWorker } from './types';
+import { isWsInitDone, parseWsMsg } from './utils';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
@@ -40,28 +42,34 @@ export class A3CServer {
 				const first = !this.master.workerCount();
 				this.master.setWorkerPool(id, { ip, active: true, first });
 				/* log new cxns for debugging */
-				console.log('worker ' + id + ' has connected from ' + workerAddy);
-				console.log(`${this.master.activeInPool()} / ${this.master.workerCount()} workers online!`);
+				this.wsCxnLogger(id, workerAddy, WsCxnType.OPEN);
 			} else {
-				console.log('worker ' + id + ' has reconnected from ' + workerAddy);
-				console.log(`${this.master.activeInPool()} / ${this.master.workerCount()} workers online!`);
 				const worker = this.master.findWorkerPool(id);
 				worker.active = true;
 				this.master.setWorkerPool(id, worker);
+				/* log re-cxns for debugging */
+				this.wsCxnLogger(id, workerAddy, WsCxnType.REOPEN);
 			}
 			const { first } = this.master.findWorkerPool(id);
-
-			ws.send(JSON.stringify({ type: 'INIT', id, first }));
+			const msg: WsInitWorker = {
+				type: 'INIT',
+				payload: {
+					id,
+					first
+				}
+			};
+			ws.send(JSON.stringify(msg));
 
 			// Handle incoming messages to perform changes in consumption
 			ws.on('message', async (message) => {
-				const msg = JSON.parse(message);
+				const msg = parseWsMsg(message);
 				const worker = this.master.findWorkerPool(id);
-				if (msg.type === 'INIT_DONE') {
+				if (isWsInitDone(msg)) {
 					worker.init = true;
 					this.master.setWorkerPool(id, worker);
 					/* init workers as they are activated */
-					ws.send(JSON.stringify({ type: 'RUN', id }));
+					const msg: WsRunWorker = { type: 'RUN' };
+					ws.send(JSON.stringify(msg));
 				} else if (msg.type === 'DONE') {
 					worker.done = true;
 					this.master.setWorkerPool(id, worker);
@@ -71,11 +79,8 @@ export class A3CServer {
 			// Do some cleanup once websocket connection closes
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			ws.on('close', (code, message) => {
-				/* log new cxns for debugging */
-				console.log('worker ' + id + ' has disconnected from ' + workerAddy);
-				console.log(
-					`${this.master.activeInPool()} / ${this.master.workerCount()} workers connected!`
-				);
+				/* log closed cxns for debugging */
+				this.wsCxnLogger(id, workerAddy, WsCxnType.CLOSE);
 				/* clean up workerMap */
 				const worker = this.master.findWorkerPool(id);
 				worker.active = false;
@@ -232,10 +237,27 @@ export class A3CServer {
 			.catch(console.error);
 	}
 
+	private wsCxnLogger(id: string, ip: string, type: WsCxnType) {
+		const eventMsg =
+			type === WsCxnType.OPEN
+				? 'connected'
+				: type === WsCxnType.CLOSE
+				? 'disconnected'
+				: 'reconnected';
+		console.log(`worker ${id} has ${eventMsg} from ${ip}`);
+		console.log(`${this.master.activeInPool()} / ${this.master.workerCount()} workers online!`);
+	}
+
 	public close = () => {
 		return new Promise((resolve) => {
 			const isClosed = this.app.close(this.socket);
 			resolve(isClosed);
 		});
 	};
+}
+
+export enum WsCxnType {
+	OPEN,
+	CLOSE,
+	REOPEN
 }

@@ -16,11 +16,13 @@ import {
 	setBestScore,
 	setGlobalMovingAverage,
 	writeQueue,
-	parseWsMsg
+	parseWsMsg,
+	isWsInitWorker,
+	isWsRunWorker
 } from '../utils';
 import { WsSockette, wsSockette } from 'ws-sockette';
 let worker: Worker,
-	id = '';
+	scopedId = '';
 
 const bootWorker = () =>
 	(async () => {
@@ -31,7 +33,7 @@ const bootWorker = () =>
 const ws = wsSockette(wsBaseURI, {
 	clientOptions: {
 		headers: {
-			ID: id
+			ID: scopedId
 		}
 	},
 	timeout: 5e3,
@@ -43,9 +45,11 @@ const ws = wsSockette(wsBaseURI, {
 	onmessage: async (e) => {
 		const { data } = e;
 		const payload = parseWsMsg(data as string);
-		if (payload.type === 'INIT' && !worker) {
-			const { id: tempId, first } = payload;
-			id = tempId;
+		if (isWsInitWorker(payload)) {
+			const {
+				payload: { id, first }
+			} = payload;
+			scopedId = id;
 			worker = new Worker(id, ws);
 			/**
 			 * flag enables behavior policy for 1st worker;
@@ -53,11 +57,11 @@ const ws = wsSockette(wsBaseURI, {
 			 * random actions in env; as A2C and A3C are policy
 			 * based, only 1 worker explores.
 			 */
-			worker.bhvPolicy = true;
+			if (first) worker.bhvPolicy = true;
 			await worker.mkDirLocals();
 			if (worker.bhvPolicy) worker.epsilon = 0.3;
 			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
-		} else if (payload.type === 'RUN') {
+		} else if (isWsRunWorker(payload)) {
 			bootWorker();
 		}
 	},
@@ -79,6 +83,7 @@ export class Worker {
 	public epsilonMultiply = 0.99;
 	private ws: WsSockette;
 	public bhvPolicy = false;
+	private best_glob_moving_avg = -Infinity;
 
 	constructor(id: string, ws: WsSockette) {
 		this.id = id;
@@ -94,13 +99,15 @@ export class Worker {
 		total_loss: number,
 		num_steps: number
 	) {
+		/* old global moving avg */
 		let global_ep_reward = glob_ep_rew;
 		if (global_ep_reward == 0) {
+			/* if no prev global moving avg */
 			global_ep_reward = reward;
 		} else {
 			global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
 		}
-		console.log('Episode:' + episode + 1);
+		console.log('Episode: ' + episode);
 		console.log('Moving average reward : ' + global_ep_reward);
 		console.log('Episode reward : ' + reward);
 		console.log(
@@ -110,7 +117,7 @@ export class Worker {
 		console.log('Worker :' + this.id);
 		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
 		await writeQueue(global_ep_reward, this.id);
-		return Promise.resolve(global_ep_reward);
+		return global_ep_reward;
 	}
 
 	public mkDirLocals = () => {
@@ -143,7 +150,7 @@ export class Worker {
 	public async run() {
 		//Analogy to the run function of threads
 		const env = new Env(8);
-		env.maxEpisodes = 10000;
+		env.maxEpisodes = 50000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
@@ -205,14 +212,22 @@ export class Worker {
 						this.ep_loss,
 						this.agent.env.steps
 					);
+					const [global_best_score] = await Promise.all([
+						getBestScore(),
+						setGlobalMovingAverage(glob_moving_avg)
+					]);
 
-					await setGlobalMovingAverage(glob_moving_avg);
-
-					const global_best_score = await getBestScore();
-					console.log('Episode reward : ' + this.agent.reward + 1);
-					console.log('Global best score ' + global_best_score);
-					if (this.agent.reward > global_best_score) {
-						console.log('Updating global model');
+					console.log('Episode reward: ' + this.agent.reward);
+					console.log('Global best score: ' + global_best_score);
+					if (
+						this.agent.reward > global_best_score ||
+						glob_moving_avg > this.best_glob_moving_avg
+					) {
+						if (glob_moving_avg > this.best_glob_moving_avg)
+							this.best_glob_moving_avg = glob_moving_avg;
+						console.log(
+							'\n************************ UPDATING THE GLOBAL MODEL ************************\n'
+						);
 						await this.agent.saveLocally(this.id);
 						await sendModel(this.id, false);
 						await Promise.all([
@@ -256,10 +271,3 @@ export class Worker {
 		return notifyWorkerDone(this.id);
 	}
 }
-
-process.on('SIGINT', () => {
-	console.log('Caught interrupt signal');
-	return worker.rmRfDirLocals().then(() => {
-		process.exit();
-	});
-});

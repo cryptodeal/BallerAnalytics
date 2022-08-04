@@ -3,7 +3,7 @@ import { fetch } from 'cross-undici-fetch';
 import { exec, spawn } from 'child_process';
 import { networkInterfaces } from 'os';
 import minimist from 'minimist';
-import type { WsApiStartWorker } from './types';
+import type { WsApiData, WsDone, WsInitDone, WsInitWorker, WsRunWorker } from './types';
 
 const argv = <{ host?: string; h?: string }>minimist(process.argv.slice(2));
 
@@ -16,7 +16,7 @@ export const wsBaseURI = `ws://${host}:${3000}/ws/connect`;
 
 export const logger = (req, res, next) => {
 	console.log(`~> Received ${req.method} on ${req.url}`);
-	next(); // move on
+	next();
 };
 
 export const execute = (command: string) => {
@@ -438,7 +438,34 @@ export const serialize = (to_serialise: object, filename = 'program_state.json')
 
 export const deserialize = async (path: string) => readFile(path, 'utf-8');
 
-export type ParsedWsData = WsApiStartWorker;
 export const parseWsMsg = (msg: string) => {
-	return <ParsedWsData>JSON.parse(msg);
+	const parsed: WsApiData = JSON.parse(msg);
+	switch (parsed.type) {
+		case 'INIT':
+			return <WsInitWorker>parsed;
+		case 'RUN':
+			return <WsRunWorker>parsed;
+		case 'INIT_DONE':
+			return <WsInitDone>parsed;
+		case 'DONE':
+			return <WsDone>parsed;
+		default:
+			return parsed;
+	}
+};
+
+export const isWsInitWorker = (obj: WsApiData): obj is WsInitWorker => {
+	return 'type' in obj && obj.type === 'INIT';
+};
+
+export const isWsRunWorker = (obj: WsApiData): obj is WsRunWorker => {
+	return 'type' in obj && obj.type === 'RUN';
+};
+
+export const isWsInitDone = (obj: WsApiData): obj is WsInitDone => {
+	return 'type' in obj && obj.type === 'INIT_DONE';
+};
+
+export const isWsDone = (obj: WsApiData): obj is WsDone => {
+	return 'type' in obj && obj.type === 'DONE';
 };
