@@ -107,14 +107,14 @@ export class Worker {
 		} else {
 			global_ep_reward = global_ep_reward * 0.99 + reward * 0.01;
 		}
-		console.log('Episode: ' + episode);
-		console.log('Moving average reward : ' + global_ep_reward);
-		console.log('Episode reward : ' + reward);
+		console.log(`Episode: ${episode}`);
+		console.log('Moving average reward: ' + global_ep_reward);
+		console.log('Episode reward: ' + reward);
 		console.log(
 			'Loss: ' + (num_steps == 0 ? total_loss : Math.ceil((total_loss / num_steps) * 1000) / 1000)
 		);
-		console.log('Steps : ' + num_steps);
-		console.log('Worker :' + this.id);
+		console.log('Steps: ' + num_steps);
+		console.log('Worker:' + this.id);
 		console.log('********************* GLOBAL EP REWARD ' + global_ep_reward);
 		await writeQueue(global_ep_reward, this.id);
 		return global_ep_reward;

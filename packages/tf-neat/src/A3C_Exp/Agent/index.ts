@@ -224,8 +224,10 @@ export class A3CAgent_Worker {
 	}
 
 	public async reloadWeights(path_actor: string, path_critic: string) {
-		this.actor = <Sequential>await loadLayersModel('file://' + path_actor);
-		this.critic = await loadLayersModel('file://' + path_critic);
+		const actor_model = <Sequential>await loadLayersModel('file://' + path_actor);
+		this.actor = actor_model;
+		const critic_model = await loadLayersModel('file://' + path_critic);
+		this.critic = critic_model;
 		await this.critic.compile({
 			optimizer: train.adam(1e-4),
 			loss: losses.meanSquaredError
