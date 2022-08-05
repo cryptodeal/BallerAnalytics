@@ -37,7 +37,7 @@
 		"@types/d3-zoom": "^3.0.1",
 		"@types/jsonwebtoken": "^8.5.8",
 		"@types/node": "^16.11.47",
-		"@types/nodemailer": "^6.4.4",
+		"@types/nodemailer": "^6.4.5",
 		"@types/offscreencanvas": "^2019.7.0",
 		"@types/three": "^0.141.0",
 		"@types/tinycolor2": "^1.4.3",

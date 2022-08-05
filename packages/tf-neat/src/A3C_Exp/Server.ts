@@ -3,8 +3,19 @@ import { writeFile } from 'fs/promises';
 import { createReadStream } from 'fs';
 import { MasterAgent } from './Master';
 import { nanoid } from 'nanoid';
-import { WsInitWorker, WsRunWorker } from './types';
-import { isWsInitDone, parseWsMsg } from './utils';
+import {
+	RestApiBase,
+	RestApiBaseData,
+	RestApiError,
+	RestApiStringData,
+	WorkerBaseData,
+	WorkerBaseDataId,
+	WorkerBaseId,
+	WorkerModelData,
+	WsInitWorker,
+	WsRunWorker
+} from './types';
+import { isWsDone, isWsInitDone, parseWsMsg } from './utils';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
@@ -70,7 +81,7 @@ export class A3CServer {
 					/* init workers as they are activated */
 					const msg: WsRunWorker = { type: 'RUN' };
 					ws.send(JSON.stringify(msg));
-				} else if (msg.type === 'DONE') {
+				} else if (isWsDone(msg)) {
 					worker.done = true;
 					this.master.setWorkerPool(id, worker);
 				}
@@ -89,44 +100,46 @@ export class A3CServer {
 		});
 
 		this.app.get('/', async (req, res) => {
-			res.status(200).json({ message: 'WELCOME TO THE BALLERANALYTICS A3C RL API! :)' });
+			res.status(200).json(<RestApiStringData>{
+				status: RestApiStatus.SUCCESS,
+				data: 'WELCOME TO THE BALLERANALYTICS A3C RL API! :)'
+			});
 		});
 
 		/* routes for A3C server */
 		this.app.post('/global_moving_average', async (req, res) => {
 			const { data } = <{ data: number }>await req.json();
 			this.globalMovingAvg = data;
-			res.status(200).json({ status: 'SUCCESS' });
+			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app.get('/global_moving_average', async (req, res) => {
-			res.status(200).json({ status: 'SUCCESS', data: this.globalMovingAvg });
+			res
+				.status(200)
+				.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: this.globalMovingAvg });
 		});
 
 		this.app.post('/best_score', async (req, res) => {
-			const { data } = <{ data: number }>await req.json();
+			const { data } = <WorkerBaseData>await req.json();
 			this.bestScore = data;
-			res.status(200).json({ status: 'SUCCESS' });
+			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app.get('/best_score', (req, res) => {
-			res.status(200).json({ status: 'SUCCESS', data: this.bestScore });
+			res
+				.status(200)
+				.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: this.bestScore });
 		});
 
 		this.app.post('/queue', async (req, res) => {
-			const { data: elem } = <{ data: number | string; workerId: string }>await req.json();
+			const { data: elem } = <WorkerBaseDataId>await req.json();
 			console.log('Queued Ep Reward: ' + elem);
-
-			if (elem !== '' && typeof elem === 'number') {
-				await this.master.queue(elem);
-			}
-			res.status(200).json({ status: 'SUCCESS' });
+			await this.master.queue(elem);
+			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app.post('/local_model_weights', async (req, res) => {
-			const { data_actor, data_critic, temporary } = <
-				{ data_actor: DataView; data_critic: DataView; temporary: boolean }
-			>await req.json();
+			const { data_actor, data_critic, temporary } = <WorkerModelData>await req.json();
 			if (temporary) {
 				await Promise.all([
 					writeFile(
@@ -154,7 +167,7 @@ export class A3CServer {
 					)
 				]);
 			}
-			res.status(200).json({ status: 'SUCCESS' });
+			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app.get('/global_model_weights_actor', (req, res) => {
@@ -186,24 +199,28 @@ export class A3CServer {
 		this.app.post('/global_episode', (req, res) => {
 			this.globalEpisode += 1;
 			console.log('Episode: ' + this.globalEpisode);
-			res.status(200).json({ status: 'SUCCESS' });
+			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app.get('/global_episode', (req, res) => {
-			res.status(200).json({ status: 'SUCCESS', data: this.globalEpisode });
+			res
+				.status(200)
+				.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: this.globalEpisode });
 		});
 
 		/* TODO: add workers tokens table to sqllite3 db */
 		this.app.post('/worker_done', async (req, res) => {
-			const { id } = <{ id: string }>await req.json();
+			const { id } = <WorkerBaseId>await req.json();
 
 			if (!this.master.workerCount()) {
-				res.status(200).json({ status: 'FAIL', data: 'NaN', err: 'No workers in pool' });
+				res
+					.status(200)
+					.json(<RestApiError>{ status: RestApiStatus.FAIL, err: 'No workers in pool' });
 			} else {
 				const worker = this.master.findWorkerPool(id);
 				worker.done = true;
 				this.master.setWorkerPool(id, worker);
-				res.status(200).json({ status: 'SUCCESS', data: id });
+				res.status(200).json(<RestApiStringData>{ status: RestApiStatus.SUCCESS, data: id });
 			}
 		});
 
@@ -213,19 +230,18 @@ export class A3CServer {
 			res.status(200);
 
 			if (!this.master.workerCount() || this.master.allWorkersDone()) {
-				res.json({ status: 'SUCCESS', data: 'done' });
+				res.json(<RestApiStringData>{ status: RestApiStatus.SUCCESS, data: 'done' });
 			} else {
-				res.json({ status: 'SUCCESS', data: workerCount });
+				res.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: workerCount });
 			}
 		});
 
 		this.app.post('/worker_started', async (req, res) => {
-			const { id } = <{ workerNum: number; id: string }>await req.json();
-
+			const { id } = <WorkerBaseId>await req.json();
 			const worker = this.master.findWorkerPool(id);
 			worker.training = true;
 			this.master.setWorkerPool(id, worker);
-			res.status(200).json({ status: 'SUCCESS' });
+			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app
@@ -260,4 +276,9 @@ export enum WsCxnType {
 	OPEN,
 	CLOSE,
 	REOPEN
+}
+
+export enum RestApiStatus {
+	SUCCESS = 'SUCCESS',
+	FAIL = 'FAIL'
 }

@@ -1,9 +1,21 @@
 import { readFile, writeFile, stat } from 'fs/promises';
 import { fetch } from 'cross-undici-fetch';
 import { exec, spawn } from 'child_process';
-import { networkInterfaces } from 'os';
 import minimist from 'minimist';
-import type { WsApiData, WsDone, WsInitDone, WsInitWorker, WsRunWorker } from './types';
+import type {
+	RestApiBase,
+	RestApiBaseData,
+	RestApiStringData,
+	WorkerBaseData,
+	WorkerBaseDataId,
+	WorkerBaseId,
+	WorkerModelData,
+	WsApiData,
+	WsDone,
+	WsInitDone,
+	WsInitWorker,
+	WsRunWorker
+} from './types';
 
 const argv = <{ host?: string; h?: string }>minimist(process.argv.slice(2));
 
@@ -40,11 +52,11 @@ export const setGlobalMovingAverage = (avg: number) => {
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ data: avg })
+		body: JSON.stringify(<WorkerBaseData>{ data: avg })
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiBase>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -57,7 +69,7 @@ export const getGlobalMovingAverage = () => {
 	return fetch(APIBaseURI + '/global_moving_average')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then(({ data }) => data);
+				return response.json().then((res: RestApiBaseData) => res.data);
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -72,11 +84,11 @@ export const setBestScore = (score: number) => {
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ data: score })
+		body: JSON.stringify(<WorkerBaseData>{ data: score })
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiBase>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -89,7 +101,7 @@ export const getBestScore = () => {
 	return fetch(APIBaseURI + '/best_score')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then(({ data }) => parseFloat(data));
+				return response.json().then((res: RestApiBaseData) => res.data);
 			}
 			throw new Error(`Error ${response.status}: ${response.statusText}`);
 		})
@@ -98,17 +110,13 @@ export const getBestScore = () => {
 		});
 };
 
-export const sendModel = async (workerId: string, temp: boolean) => {
+export const sendModel = async (id: string, temp: boolean) => {
 	const [data_actor, data_critic] = await Promise.all([
-		readFile(process.cwd() + `/A3C_Data/local-model-actor/${workerId}/weights.bin`, {
-			encoding: 'binary'
-		}),
-		readFile(process.cwd() + `/A3C_Data/local-model-critic/${workerId}/weights.bin`, {
-			encoding: 'binary'
-		})
+		readFile(process.cwd() + `/A3C_Data/local-model-actor/${id}/weights.bin`),
+		readFile(process.cwd() + `/A3C_Data/local-model-critic/${id}/weights.bin`)
 	]);
-	const obj = {
-		id: workerId,
+	const obj: WorkerModelData = {
+		id,
 		temporary: temp,
 		data_actor,
 		data_critic
@@ -122,7 +130,7 @@ export const sendModel = async (workerId: string, temp: boolean) => {
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiBase>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -131,74 +139,17 @@ export const sendModel = async (workerId: string, temp: boolean) => {
 		});
 };
 
-export const createQueue = () => {
-	return fetch(APIBaseURI + '/create_queue')
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			}
-			return Promise.reject(Error('error'));
-		})
-		.catch((error) => {
-			return Promise.reject(Error(error.message));
-		});
-};
-
-export const writeQueue = (data: number | string, workerId: string) => {
+export const writeQueue = (data: number, id: string) => {
 	return fetch(APIBaseURI + '/queue', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ data, workerId })
+		body: JSON.stringify(<WorkerBaseDataId>{ data, id })
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response.json();
-			}
-			return Promise.reject(Error('error'));
-		})
-		.catch((error) => {
-			return Promise.reject(Error(error.message));
-		});
-};
-
-export const getQueue = () => {
-	return fetch(APIBaseURI + '/queue')
-		.then((response) => {
-			if (response.ok) {
-				return response.json().then(({ data }) => {
-					if (data === 'NaN' || data === 'done') {
-						return data;
-					} else {
-						return parseFloat(data);
-					}
-				});
-			}
-			return Promise.reject(Error('error'));
-		})
-		.catch((error) => {
-			return Promise.reject(Error(error.message));
-		});
-};
-
-export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export const getBlockingQueue = async () => {
-	let data: number | 'NaN' | 'done' = 'NaN';
-	while (data === 'NaN') {
-		data = await getQueue();
-		await sleep(250);
-	}
-	return Promise.resolve(data);
-};
-
-export const startWorker = (hostURI: string) => {
-	console.log(hostURI);
-	return fetch('http://' + hostURI + '/start_worker')
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiBase>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -216,7 +167,7 @@ export const incrementGlobalEpisode = () => {
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiBase>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -231,11 +182,11 @@ export const notifyWorkerDone = (id: string) => {
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ id })
+		body: JSON.stringify(<WorkerBaseId>{ id })
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiStringData>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -244,14 +195,14 @@ export const notifyWorkerDone = (id: string) => {
 		});
 };
 
-export const getGlobalModelCriticWeights = (workerId: string) => {
+export const getGlobalModelCriticWeights = (id: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_weights_critic > ' +
 				process.cwd() +
-				`/A3C_Data/local-model-critic/${workerId}/weights.bin`,
+				`/A3C_Data/local-model-critic/${id}/weights.bin`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -259,14 +210,14 @@ export const getGlobalModelCriticWeights = (workerId: string) => {
 		);
 	});
 };
-export const getGlobalModelCriticJSON = (workerId: string) => {
+export const getGlobalModelCriticJSON = (id: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_critic > ' +
 				process.cwd() +
-				`/A3C_Data/local-model-critic/${workerId}/model.json`,
+				`/A3C_Data/local-model-critic/${id}/model.json`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -275,17 +226,17 @@ export const getGlobalModelCriticJSON = (workerId: string) => {
 	});
 };
 
-export const getGlobalModelCritic = (workerId: string) =>
-	Promise.all([getGlobalModelCriticWeights(workerId), getGlobalModelCriticJSON(workerId)]);
+export const getGlobalModelCritic = (id: string) =>
+	Promise.all([getGlobalModelCriticWeights(id), getGlobalModelCriticJSON(id)]);
 
-export const getGlobalModelActorWeights = (workerId: string) => {
+export const getGlobalModelActorWeights = (id: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_weights_actor > ' +
 				process.cwd() +
-				`/A3C_Data/local-model-actor/${workerId}/weights.bin`,
+				`/A3C_Data/local-model-actor/${id}/weights.bin`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -294,14 +245,14 @@ export const getGlobalModelActorWeights = (workerId: string) => {
 	});
 };
 
-export const getGlobalModelActorJSON = (workerId: string) => {
+export const getGlobalModelActorJSON = (id: string) => {
 	return new Promise((resolve, reject) => {
 		exec(
 			'curl ' +
 				APIBaseURI +
 				'/global_model_actor > ' +
 				process.cwd() +
-				`/A3C_Data/local-model-actor/${workerId}/model.json`,
+				`/A3C_Data/local-model-actor/${id}/model.json`,
 			(err, stdout) => {
 				if (err) reject(err);
 				return resolve(stdout);
@@ -310,33 +261,14 @@ export const getGlobalModelActorJSON = (workerId: string) => {
 	});
 };
 
-export const getGlobalModelActor = (workerId: string) =>
-	Promise.all([getGlobalModelActorWeights(workerId), getGlobalModelActorJSON(workerId)]);
+export const getGlobalModelActor = (id: string) =>
+	Promise.all([getGlobalModelActorWeights(id), getGlobalModelActorJSON(id)]);
 
 export const getGlobalEpisode = () => {
 	return fetch(APIBaseURI + '/global_episode')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then(({ data }) => parseFloat(data));
-			}
-			return Promise.reject(Error('error'));
-		})
-		.catch((error) => {
-			return Promise.reject(Error(error.message));
-		});
-};
-
-export const setGlobalEpisode = (ep: number) => {
-	return fetch(APIBaseURI + '/global_episode', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ data: ep })
-	})
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
+				return response.json().then((res: RestApiBaseData) => res.data);
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -350,7 +282,7 @@ export const checkWorkers = () => {
 	return fetch(APIBaseURI + '/workers_status')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then((res: { data: 'done' | number }) => {
+				return response.json().then((res: RestApiStringData | RestApiBaseData) => {
 					const { data } = res;
 					return data === 'done' ? data : Number(data);
 				});
@@ -365,11 +297,9 @@ export const checkWorkers = () => {
 export const waitForWorkers = async () => {
 	let data: string | number = 10000;
 	while (data !== 0) {
-		/* TODO: update type returned by checkWorkers from any to better type */
 		data = await checkWorkers();
 	}
-
-	return Promise.resolve();
+	return data;
 };
 
 export const addWorkerId = (id: string) => {
@@ -378,31 +308,11 @@ export const addWorkerId = (id: string) => {
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ id })
+		body: JSON.stringify(<WorkerBaseId>{ id })
 	})
 		.then((response) => {
 			if (response.ok) {
-				return response;
-			}
-			return Promise.reject(Error('error'));
-		})
-		.catch((error) => {
-			return Promise.reject(Error(error.message));
-		});
-};
-
-export const registerWorker = (port: number) => {
-	const localIp = networkInterfaces['Local Area Connection 3'][1].address;
-	return fetch(APIBaseURI + '/register_worker', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ data: localIp + port.toString() })
-	})
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
+				return <Promise<RestApiBase>>response.json();
 			}
 			return Promise.reject(Error('error'));
 		})
