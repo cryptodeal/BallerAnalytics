@@ -112,8 +112,8 @@ export const getBestScore = () => {
 
 export const sendModel = async (id: string, temp: boolean) => {
 	const [data_actor, data_critic] = await Promise.all([
-		readFile(process.cwd() + `/A3C_Data/local-model-actor/${id}/weights.bin`),
-		readFile(process.cwd() + `/A3C_Data/local-model-critic/${id}/weights.bin`)
+		readFile(process.cwd() + `/A3C_Data/local-model-actor/${id}/weights.bin`, 'binary'),
+		readFile(process.cwd() + `/A3C_Data/local-model-critic/${id}/weights.bin`, 'binary')
 	]);
 	const obj: WorkerModelData = {
 		id,
