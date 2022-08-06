@@ -216,9 +216,7 @@ export class A3CServer {
 					.status(200)
 					.json(<RestApiError>{ status: RestApiStatus.FAIL, err: 'No workers in pool' });
 			} else {
-				const worker = this.master.findWorkerPool(id);
-				worker.done = true;
-				this.master.setWorkerPool(id, worker);
+				this.master.removeWorker(id);
 				res.status(200).json(<RestApiStringData>{ status: RestApiStatus.SUCCESS, data: id });
 			}
 		});
