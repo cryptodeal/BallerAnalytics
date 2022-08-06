@@ -143,7 +143,7 @@ export class A3CServer {
 
 		this.app.post('/best_worker_moving_avg', async (req, res) => {
 			const { data } = <{ data: number }>await req.json();
-			if (data > this.globalMovingAvg) this.globalMovingAvg = data;
+			this.globalMovingAvg = data;
 
 			res.status(200).json(<RestApiBase>{
 				status: RestApiStatus.SUCCESS
