@@ -224,6 +224,7 @@ export class A3CAgent_Worker {
 	}
 
 	public async reloadWeights(path_actor: string, path_critic: string) {
+		console.log('Reloading weights...');
 		const actor_model = <Sequential>await loadLayersModel('file://' + path_actor);
 		this.actor = actor_model;
 		const critic_model = await loadLayersModel('file://' + path_critic);
@@ -297,10 +298,12 @@ export class A3CAgent_Worker {
 			.dataSync()[0];
 	}
 
-	public async saveLocally(workerId: string) {
+	public saveLocally(workerId: string) {
 		const rootDir = process.cwd();
-		await this.actor.save('file://' + rootDir + `/A3C_Data/local-model-actor/${workerId}`);
-		await this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic/${workerId}`);
+		return Promise.all([
+			this.actor.save('file://' + rootDir + `/A3C_Data/local-model-actor/${workerId}`),
+			this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic/${workerId}`)
+		]);
 	}
 	public step(action: number): [number, boolean] {
 		if (this.x + dirs[action][0] >= 0 && this.x + dirs[action][0] < this.env.width) {

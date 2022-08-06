@@ -1,5 +1,5 @@
 import HyperExpress from 'hyper-express';
-import { writeFile } from 'fs/promises';
+import { writeFileSync } from 'fs';
 import { createReadStream } from 'fs';
 import { MasterAgent } from './Master';
 import { nanoid } from 'nanoid';
@@ -140,32 +140,31 @@ export class A3CServer {
 
 		this.app.post('/local_model_weights', async (req, res) => {
 			const { data_actor, data_critic, temporary } = <WorkerModelData>await req.json();
+			/**
+			 * fs/promises introduces race condition where
+			 * any worker can request weights.bin while it's
+			 * being written; writeFileSync resolves by blocking
+			 * the main thread while the file is being written.
+			 */
 			if (temporary) {
-				await Promise.all([
-					writeFile(
-						process.cwd() + '/A3C_Data/temporary-global-model-actor/weights.bin',
-						data_actor,
-						'binary'
-					),
-					writeFile(
-						process.cwd() + '/A3C_Data/temporary-global-model-critic/weights.bin',
-						data_critic,
-						'binary'
-					)
-				]);
+				writeFileSync(
+					process.cwd() + '/A3C_Data/temporary-global-model-actor/weights.bin',
+					Buffer.from(data_actor)
+				);
+				writeFileSync(
+					process.cwd() + '/A3C_Data/temporary-global-model-critic/weights.bin',
+					Buffer.from(data_critic)
+				);
 			} else {
-				await Promise.all([
-					writeFile(
-						process.cwd() + '/A3C_Data/global-model-actor/weights.bin',
-						data_actor,
-						'binary'
-					),
-					writeFile(
-						process.cwd() + '/A3C_Data/global-model-critic/weights.bin',
-						data_critic,
-						'binary'
-					)
-				]);
+				writeFileSync(
+					process.cwd() + '/A3C_Data/global-model-actor/weights.bin',
+					Buffer.from(data_actor)
+				);
+
+				writeFileSync(
+					process.cwd() + '/A3C_Data/global-model-critic/weights.bin',
+					Buffer.from(data_critic)
+				);
 			}
 			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});

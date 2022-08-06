@@ -51,8 +51,8 @@ export type WorkerBaseDataId = WorkerBaseData & WorkerBaseId;
 
 export type WorkerModelData = {
 	id: string;
-	data_actor: string;
-	data_critic: string;
+	data_actor: Buffer;
+	data_critic: Buffer;
 	temporary: boolean;
 };
 

@@ -21,6 +21,7 @@ import {
 	isWsRunWorker
 } from '../utils';
 import { WsSockette, wsSockette } from 'ws-sockette';
+import { WsApiData } from '../types';
 let worker: Worker,
 	scopedId = '';
 
@@ -60,7 +61,7 @@ const ws = wsSockette(wsBaseURI, {
 			if (first) worker.bhvPolicy = true;
 			await worker.mkDirLocals();
 			if (worker.bhvPolicy) worker.epsilon = 0.3;
-			ws.send(JSON.stringify({ type: 'INIT_DONE' }));
+			ws.send(JSON.stringify(<WsApiData>{ type: 'INIT_DONE' }));
 		} else if (isWsRunWorker(payload)) {
 			bootWorker();
 		}
@@ -101,7 +102,7 @@ export class Worker {
 	) {
 		/* old global moving avg */
 		let global_ep_reward = glob_ep_rew;
-		if (global_ep_reward == 0) {
+		if (global_ep_reward == 0 && this.agent.env.episodes === 0) {
 			/* if no prev global moving avg */
 			global_ep_reward = reward;
 		} else {
@@ -166,6 +167,8 @@ export class Worker {
 
 			let time_count = 0;
 			let state = this.agent.getVision();
+			console.log(`new episode!! :) `);
+
 			while (true) {
 				// TODO: REWRITE BELOW
 				console.log(
@@ -181,22 +184,12 @@ export class Worker {
 				console.log('--------------------');
 				const next_state = this.agent.getVision();
 
-				const ep_mean_loss = await this.agent.trainModel(
-					state,
-					action,
-					reward,
-					next_state,
-					done
-					/* TODO: only sync if needed time_count === this.update_freq ? true : false */
-				);
+				const ep_mean_loss = await this.agent.trainModel(state, action, reward, next_state, done);
 				this.agent.env.steps += 1;
-				const global_best_score = await getBestScore();
+				this.ep_loss += ep_mean_loss;
 
+				/* TODO: try and log more output at intervals since it's sync?? */
 				if (time_count === this.update_freq) {
-					if (this.agent.reward > global_best_score) {
-						await this.agent.saveLocally(this.id);
-					}
-					this.ep_loss += ep_mean_loss;
 					console.log(this.ep_loss);
 					time_count = 0;
 				}
@@ -230,6 +223,7 @@ export class Worker {
 						);
 						await this.agent.saveLocally(this.id);
 						await sendModel(this.id, false);
+						/* TODO: VERIFY, BUT IMO, THE BELOW IS NOT NEEDED */
 						await Promise.all([
 							getGlobalModelActorWeights(this.id),
 							getGlobalModelCriticWeights(this.id)
@@ -238,8 +232,22 @@ export class Worker {
 							process.cwd() + `/A3C_Data/local-model-actor/${this.id}/model.json`,
 							process.cwd() + `/A3C_Data/local-model-critic/${this.id}/model.json`
 						);
+
 						await setBestScore(this.agent.reward);
 					}
+					/* TODO: POTENTIALLY SYNC ALL MODELS W GLOBAL?? */
+					/*
+            else if (this.agent.env.episodes  === 0) {
+              await Promise.all([
+                getGlobalModelActorWeights(this.id),
+                getGlobalModelCriticWeights(this.id)
+              ]);
+              await this.agent.reloadWeights(
+                process.cwd() + `/A3C_Data/local-model-actor/${this.id}/model.json`,
+                process.cwd() + `/A3C_Data/local-model-critic/${this.id}/model.json`
+              );
+            }
+          */
 					await incrementGlobalEpisode();
 					this.agent.x = Math.floor(seededRandom() * 8);
 					this.agent.y = Math.floor(seededRandom() * 8);
@@ -249,7 +257,13 @@ export class Worker {
 					this.agent.env.episodes += 1;
 					this.agent.env.steps = 0;
 					this.agent.env.reset();
-					// epsilon_decay
+					/**
+					 * epsilon decay, only applied/utilized by worker w `first`
+					 * property; aka the first worker to connect to central
+					 * server. this allows random exploration of action space
+					 * while keeping core global model policy driven as per
+					 * traditional actor advantage critic algorithm
+					 */
 					if (this.epsilon && this.epsilon > this.epsilonMin) {
 						this.epsilon = this.epsilon * this.epsilonMultiply;
 						this.epsilon = Math.floor(this.epsilon * 10000) / 10000;
@@ -263,8 +277,8 @@ export class Worker {
 					}
 					break;
 				}
-				time_count++;
 				state = next_state;
+				time_count++;
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
