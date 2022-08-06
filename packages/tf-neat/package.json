@@ -25,6 +25,7 @@
     "lintAction": "eslint '*/**/*.{js,ts,tsx}' --quiet",
     "test": "uvu -r tsm tests",
     "host:all": "node --experimental-specifier-resolution=node dist/A3C_Exp",
+    "host:server": "node --experimental-specifier-resolution=node dist/A3C_Exp/server",
     "host:worker": "node --experimental-specifier-resolution=node dist/A3C_Exp/Worker",
     "train:DQN": "node --experimental-specifier-resolution=node dist/scripts/train/DQN",
     "train:NEAT": "node --experimental-specifier-resolution=node dist/scripts/train/NEAT",

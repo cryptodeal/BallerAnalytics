@@ -37,7 +37,7 @@
 		ctx.beginPath();
 		ctx.fillStyle = 'lightcyan';
 		ctx.font = '11px monospace';
-		title = 'A3C (2 agents; 100k eps)';
+		title = 'A3C (6 agents; 300k eps)';
 		ctx.fillText(title, env.grid_W * env.grid_width + 10, 10);
 		ctx.closePath();
 		agent = new Actor_Critic_Agent(

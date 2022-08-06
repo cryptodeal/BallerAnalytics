@@ -223,12 +223,14 @@ export class A3CAgent_Worker {
 		return tempModel;
 	}
 
-	public async reloadWeights(path_actor: string, path_critic: string) {
-		console.log('Reloading weights...');
-		const actor_model = <Sequential>await loadLayersModel('file://' + path_actor);
-		this.actor = actor_model;
-		const critic_model = await loadLayersModel('file://' + path_critic);
-		this.critic = critic_model;
+	public async reloadWeights(id: string) {
+		const rootDir = process.cwd();
+		this.actor = <Sequential>(
+			await loadLayersModel('file://' + rootDir + `/A3C_Data/local-model-actor/${id}/model.json`)
+		);
+		this.critic = await loadLayersModel(
+			'file://' + rootDir + `/A3C_Data/local-model-critic/${id}/model.json`
+		);
 		await this.critic.compile({
 			optimizer: train.adam(1e-4),
 			loss: losses.meanSquaredError

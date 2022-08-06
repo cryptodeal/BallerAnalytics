@@ -48,10 +48,11 @@ const ws = wsSockette(wsBaseURI, {
 		const payload = parseWsMsg(data as string);
 		if (isWsInitWorker(payload)) {
 			const {
-				payload: { id, first }
+				payload: { id, first, loadGlobal }
 			} = payload;
 			scopedId = id;
 			worker = new Worker(id, ws);
+			if (loadGlobal) worker.loadGlobal = loadGlobal;
 			/**
 			 * flag enables behavior policy for 1st worker;
 			 * behavior policy uses epsilon decay to explore
@@ -79,11 +80,12 @@ export class Worker {
 	public action_size!: number;
 	public state_size!: number;
 	public agent!: A3CAgent_Worker;
-	public epsilon: undefined | number = undefined;
+	public epsilon = 0.3;
 	public epsilonMin = 0.0;
 	public epsilonMultiply = 0.99;
 	private ws: WsSockette;
 	public bhvPolicy = false;
+	public loadGlobal = false;
 	private best_glob_moving_avg = -Infinity;
 
 	constructor(id: string, ws: WsSockette) {
@@ -91,6 +93,11 @@ export class Worker {
 		this.ws = ws;
 		/* TODO: add update_freq to construction options */
 		this.update_freq = 10;
+	}
+
+	private async syncGlobalModel() {
+		await Promise.all([getGlobalModelActorWeights(this.id), getGlobalModelCriticWeights(this.id)]);
+		await this.agent.reloadWeights(this.id);
 	}
 
 	private async record(
@@ -149,9 +156,9 @@ export class Worker {
 	};
 
 	public async run() {
-		//Analogy to the run function of threads
+		/* analogous to the run function of threads */
 		const env = new Env(8);
-		env.maxEpisodes = 50000;
+		env.maxEpisodes = 25000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
@@ -161,13 +168,15 @@ export class Worker {
 		agent.vision = true;
 		this.agent = agent;
 		this.agent.env.setEntity(this.agent, { ball: 3 });
+		if (this.loadGlobal) {
+			await this.agent.saveLocally(this.id);
+			await this.syncGlobalModel();
+		}
 
 		while (this.agent.env.episodes < this.agent.env.maxEpisodes) {
 			this.ep_loss = 0;
-
 			let time_count = 0;
 			let state = this.agent.getVision();
-			console.log(`new episode!! :) `);
 
 			while (true) {
 				// TODO: REWRITE BELOW
@@ -177,7 +186,7 @@ export class Worker {
 					}`
 				);
 
-				const action = this.agent.getAction(state, this.epsilon);
+				const action = this.agent.getAction(state, this.bhvPolicy ? this.epsilon : undefined);
 				const [reward, done] = this.agent.step(action);
 				this.agent.reward += reward;
 
@@ -224,30 +233,10 @@ export class Worker {
 						await this.agent.saveLocally(this.id);
 						await sendModel(this.id, false);
 						/* TODO: VERIFY, BUT IMO, THE BELOW IS NOT NEEDED */
-						await Promise.all([
-							getGlobalModelActorWeights(this.id),
-							getGlobalModelCriticWeights(this.id)
-						]);
-						await this.agent.reloadWeights(
-							process.cwd() + `/A3C_Data/local-model-actor/${this.id}/model.json`,
-							process.cwd() + `/A3C_Data/local-model-critic/${this.id}/model.json`
-						);
+						await this.syncGlobalModel();
 
 						await setBestScore(this.agent.reward);
 					}
-					/* TODO: POTENTIALLY SYNC ALL MODELS W GLOBAL?? */
-					/*
-            else if (this.agent.env.episodes  === 0) {
-              await Promise.all([
-                getGlobalModelActorWeights(this.id),
-                getGlobalModelCriticWeights(this.id)
-              ]);
-              await this.agent.reloadWeights(
-                process.cwd() + `/A3C_Data/local-model-actor/${this.id}/model.json`,
-                process.cwd() + `/A3C_Data/local-model-critic/${this.id}/model.json`
-              );
-            }
-          */
 					await incrementGlobalEpisode();
 					this.agent.x = Math.floor(seededRandom() * 8);
 					this.agent.y = Math.floor(seededRandom() * 8);
@@ -264,7 +253,7 @@ export class Worker {
 					 * while keeping core global model policy driven as per
 					 * traditional actor advantage critic algorithm
 					 */
-					if (this.epsilon && this.epsilon > this.epsilonMin) {
+					if (this.bhvPolicy && this.epsilon > this.epsilonMin) {
 						this.epsilon = this.epsilon * this.epsilonMultiply;
 						this.epsilon = Math.floor(this.epsilon * 10000) / 10000;
 					}
@@ -282,6 +271,7 @@ export class Worker {
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
-		return notifyWorkerDone(this.id);
+		await Promise.all([this.rmRfDirLocals(), notifyWorkerDone(this.id)]);
+		return this.ws.close(1000);
 	}
 }

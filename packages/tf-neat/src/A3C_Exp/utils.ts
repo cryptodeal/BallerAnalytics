@@ -19,6 +19,13 @@ import type {
 
 const argv = <{ host?: string; h?: string }>minimist(process.argv.slice(2));
 
+const countFlags = <{ spawnCount?: number; c?: number }>minimist(process.argv.slice(2));
+let spawnCount = 1;
+if (countFlags.spawnCount || countFlags.c)
+	spawnCount = countFlags.spawnCount ? countFlags.spawnCount : countFlags.c ? countFlags.c : 1;
+
+export const spawn_worker_count = spawnCount;
+
 let host = '0.0.0.0';
 // specify host using -h or --host arg
 if (argv.host || argv.h) host = argv.host ? argv.host : argv.h ? argv.h : '0.0.0.0';

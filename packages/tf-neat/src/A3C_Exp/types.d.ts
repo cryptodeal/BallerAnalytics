@@ -1,4 +1,4 @@
-import { RestApiStatus } from './Server';
+import { RestApiStatus } from './A3CServer';
 
 /* WS API Types */
 export type WsApiData = {
@@ -10,6 +10,7 @@ export type WsInitWorker = WsApiData & {
 	payload: {
 		id: string;
 		first?: boolean;
+		loadGlobal?: boolean;
 	};
 };
 
