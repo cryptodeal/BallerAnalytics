@@ -1,6 +1,6 @@
 import { Env } from '../Env';
 import { exec } from 'child_process';
-import { seededRandom } from '../../utils';
+import { seededRandom, MovingAverager } from '../../utils';
 import { A3CAgent_Worker } from '../Agent';
 import {
 	wsBaseURI,
@@ -18,7 +18,9 @@ import {
 	writeQueue,
 	parseWsMsg,
 	isWsInitWorker,
-	isWsRunWorker
+	isWsRunWorker,
+	getBestWorkerMovingAvg,
+	setBestWorkerMovingAvg
 } from '../utils';
 import { WsSockette, wsSockette } from 'ws-sockette';
 import { WsApiData } from '../types';
@@ -86,13 +88,16 @@ export class Worker {
 	private ws: WsSockette;
 	public bhvPolicy = false;
 	public loadGlobal = false;
+	private moving_avg: MovingAverager;
+	private best_self_moving_avg = -Infinity;
 	private best_glob_moving_avg = -Infinity;
 
-	constructor(id: string, ws: WsSockette) {
+	constructor(id: string, ws: WsSockette, opts?: { moving_avg_size?: number }) {
 		this.id = id;
 		this.ws = ws;
 		/* TODO: add update_freq to construction options */
 		this.update_freq = 10;
+		this.moving_avg = new MovingAverager(opts?.moving_avg_size || 100);
 	}
 
 	private async syncGlobalModel() {
@@ -109,7 +114,7 @@ export class Worker {
 	) {
 		/* old global moving avg */
 		let global_ep_reward = glob_ep_rew;
-		if (global_ep_reward == 0 && this.agent.env.episodes === 0) {
+		if (global_ep_reward == -Infinity) {
 			/* if no prev global moving avg */
 			global_ep_reward = reward;
 		} else {
@@ -158,7 +163,7 @@ export class Worker {
 	public async run() {
 		/* analogous to the run function of threads */
 		const env = new Env(8);
-		env.maxEpisodes = 25000;
+		env.maxEpisodes = 50000;
 		const agent = new A3CAgent_Worker(
 			env,
 			Math.floor(seededRandom() * 8),
@@ -204,6 +209,13 @@ export class Worker {
 				}
 
 				if (done || this.agent.env.steps >= this.agent.env.maxSteps) {
+					this.moving_avg.append(this.agent.reward);
+
+					const current_moving_avg = this.moving_avg.average();
+					if (current_moving_avg > this.best_self_moving_avg) {
+						this.best_self_moving_avg = current_moving_avg;
+					}
+
 					const global_epi = await getGlobalEpisode();
 					const old_glob_moving_avg = await getGlobalMovingAverage();
 
@@ -214,28 +226,32 @@ export class Worker {
 						this.ep_loss,
 						this.agent.env.steps
 					);
-					const [global_best_score] = await Promise.all([
+					const [global_best_score, best_all_worker_moving_avg] = await Promise.all([
 						getBestScore(),
+						getBestWorkerMovingAvg(),
 						setGlobalMovingAverage(glob_moving_avg)
 					]);
 
 					console.log('Episode reward: ' + this.agent.reward);
 					console.log('Global best score: ' + global_best_score);
+					console.log('Best worker moving avg: ' + best_all_worker_moving_avg);
+
 					if (
 						this.agent.reward > global_best_score ||
-						glob_moving_avg > this.best_glob_moving_avg
+						current_moving_avg > best_all_worker_moving_avg
 					) {
-						if (glob_moving_avg > this.best_glob_moving_avg)
-							this.best_glob_moving_avg = glob_moving_avg;
 						console.log(
 							'\n************************ UPDATING THE GLOBAL MODEL ************************\n'
 						);
 						await this.agent.saveLocally(this.id);
-						await sendModel(this.id, false);
+						await Promise.all([
+							sendModel(this.id, false),
+							setBestScore(this.agent.reward),
+							setBestWorkerMovingAvg(current_moving_avg)
+						]);
+
 						/* TODO: VERIFY, BUT IMO, THE BELOW IS NOT NEEDED */
 						await this.syncGlobalModel();
-
-						await setBestScore(this.agent.reward);
 					}
 					await incrementGlobalEpisode();
 					this.agent.x = Math.floor(seededRandom() * 8);
@@ -271,6 +287,9 @@ export class Worker {
 				console.log('----------------- END OF STEP TRAINING DATA');
 			}
 		}
+		console.log(
+			`Best Moving Avg (${this.moving_avg.size()} Episodes): ${this.best_self_moving_avg}`
+		);
 		await Promise.all([this.rmRfDirLocals(), notifyWorkerDone(this.id)]);
 		return this.ws.close(1000);
 	}

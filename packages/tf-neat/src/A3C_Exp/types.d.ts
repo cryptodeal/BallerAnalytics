@@ -1,5 +1,7 @@
 import { RestApiStatus } from './A3CServer';
 
+/* generic utilites */
+
 /* WS API Types */
 export type WsApiData = {
 	type: string;

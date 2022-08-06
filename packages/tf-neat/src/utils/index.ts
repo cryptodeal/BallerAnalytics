@@ -139,11 +139,15 @@ export const getDateStr = () => {
 };
 
 export class MovingAverager {
-	public buffer: (number | null)[] = [];
+	private buffer: (number | null)[] = [];
 	constructor(bufferLength) {
 		for (let i = 0; i < bufferLength; i++) {
 			this.buffer.push(null);
 		}
+	}
+
+	size() {
+		return this.buffer.length;
 	}
 
 	append(x: number) {

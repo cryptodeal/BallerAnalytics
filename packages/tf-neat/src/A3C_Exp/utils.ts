@@ -17,6 +17,8 @@ import type {
 	WsRunWorker
 } from './types';
 
+/* TODO: SWITCH TO USE ID IN FETCH HEADER FOR AUTH/IDENTIFICATION OF WORKER */
+
 const argv = <{ host?: string; h?: string }>minimist(process.argv.slice(2));
 
 const countFlags = <{ spawnCount?: number; c?: number }>minimist(process.argv.slice(2));
@@ -76,7 +78,57 @@ export const getGlobalMovingAverage = () => {
 	return fetch(APIBaseURI + '/global_moving_average')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then((res: RestApiBaseData) => res.data);
+				return response
+					.json()
+					.then((res: RestApiBaseData) => {
+						/* TODO: optimize this LOL */
+						for (const [key, val] of Object.entries(res)) {
+							res[key] = parseInfinity(key, val);
+						}
+						return res;
+					})
+					.then((res: RestApiBaseData) => res.data);
+			}
+			return Promise.reject(Error('error'));
+		})
+		.catch((error) => {
+			return Promise.reject(Error(error.message));
+		});
+};
+
+export const setBestWorkerMovingAvg = (avg: number) => {
+	return fetch(APIBaseURI + '/best_worker_moving_avg', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(<WorkerBaseData>{ data: avg })
+	})
+		.then((response) => {
+			if (response.ok) {
+				return <Promise<RestApiBase>>response.json();
+			}
+			return Promise.reject(Error('error'));
+		})
+		.catch((error) => {
+			return Promise.reject(Error(error.message));
+		});
+};
+
+export const getBestWorkerMovingAvg = () => {
+	return fetch(APIBaseURI + '/best_worker_moving_avg')
+		.then((response) => {
+			if (response.ok) {
+				return response
+					.json()
+					.then((res: RestApiBaseData) => {
+						/* TODO: optimize this LOL */
+						for (const [key, val] of Object.entries(res)) {
+							res[key] = parseInfinity(key, val);
+						}
+						return res;
+					})
+					.then((res: RestApiBaseData) => res.data);
 			}
 			return Promise.reject(Error('error'));
 		})
@@ -108,7 +160,16 @@ export const getBestScore = () => {
 	return fetch(APIBaseURI + '/best_score')
 		.then((response) => {
 			if (response.ok) {
-				return response.json().then((res: RestApiBaseData) => res.data);
+				return response
+					.json()
+					.then((res: RestApiBaseData) => {
+						/* TODO: optimize this LOL */
+						for (const [key, val] of Object.entries(res)) {
+							res[key] = parseInfinity(key, val);
+						}
+						return res;
+					})
+					.then((res: RestApiBaseData) => res.data);
 			}
 			throw new Error(`Error ${response.status}: ${response.statusText}`);
 		})
@@ -356,6 +417,28 @@ export const serialize = (to_serialise: object, filename = 'program_state.json')
 	writeFile(`${process.cwd()}/A3C_Data/logs/${filename}`, JSON.stringify(to_serialise));
 
 export const deserialize = async (path: string) => readFile(path, 'utf-8');
+
+export const stringifyInfinity = (key: string, value: unknown) => {
+	switch (value) {
+		case Infinity:
+			return 'Infinity';
+		case -Infinity:
+			return '-Infinity';
+		default:
+			return value;
+	}
+};
+
+export const parseInfinity = (key: string, value: unknown) => {
+	switch (value) {
+		case 'Infinity':
+			return Infinity;
+		case '-Infinity':
+			return -Infinity;
+		default:
+			return value;
+	}
+};
 
 export const parseWsMsg = (msg: string) => {
 	const parsed: WsApiData = JSON.parse(msg);

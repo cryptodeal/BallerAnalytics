@@ -1,5 +1,4 @@
 import { train as trainer, sequential, layers, node } from '@tensorflow/tfjs-node';
-import hpjs from 'hyperparameters';
 import { MovingAverager } from '../utils';
 import type {
 	Sequential,

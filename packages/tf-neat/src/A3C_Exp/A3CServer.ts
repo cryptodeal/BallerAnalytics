@@ -15,16 +15,16 @@ import {
 	WsInitWorker,
 	WsRunWorker
 } from './types';
-import { isWsDone, isWsInitDone, parseWsMsg } from './utils';
+import { isWsDone, isWsInitDone, parseWsMsg, stringifyInfinity } from './utils';
 
 export class A3CServer {
 	private app!: HyperExpress.Server;
 	private socket!: HyperExpress.compressors.us_listen_socket;
 	private master = new MasterAgent();
-
 	private globalEpisode = 0;
-	private bestScore = 0;
-	private globalMovingAvg = 0;
+	private bestScore = -Infinity;
+	private globalMovingAvg = -Infinity;
+	private bestWorkerMovingAvg = -Infinity;
 	private globalModelReady = false;
 
 	constructor() {
@@ -35,6 +35,8 @@ export class A3CServer {
 			const { ip, headers } = request;
 			const { id } = headers;
 
+			/* TODO: REMOVE THIS; FOR DEBUGGING */
+			console.log(headers);
 			/* upgrade the incoming request with some context */
 			response.upgrade({
 				workerAddy: ip,
@@ -59,15 +61,17 @@ export class A3CServer {
 				});
 				/* log new cxns for debugging */
 				this.wsCxnLogger(id, workerAddy, WsCxnType.OPEN);
-				const msg: WsInitWorker = {
-					type: 'INIT',
-					payload: {
-						id,
-						first,
-						loadGlobal: this.globalModelReady ? true : false
-					}
-				};
-				ws.send(JSON.stringify(msg));
+
+				ws.send(
+					JSON.stringify(<WsInitWorker>{
+						type: 'INIT',
+						payload: {
+							id,
+							first,
+							loadGlobal: this.globalModelReady ? true : false
+						}
+					})
+				);
 			} else {
 				const worker = this.master.findWorkerPool(id);
 				worker.active = true;
@@ -84,8 +88,7 @@ export class A3CServer {
 					worker.init = true;
 					this.master.setWorkerPool(id, worker);
 					/* init workers as they are activated */
-					const msg: WsRunWorker = { type: 'RUN' };
-					ws.send(JSON.stringify(msg));
+					ws.send(JSON.stringify(<WsRunWorker>{ type: 'RUN' }));
 				} else if (isWsDone(msg)) {
 					worker.done = true;
 					this.master.setWorkerPool(id, worker);
@@ -107,7 +110,7 @@ export class A3CServer {
 		});
 
 		this.app.get('/', async (req, res) => {
-			res.status(200).json(<RestApiStringData>{
+			res.status(200).json({
 				status: RestApiStatus.SUCCESS,
 				data: 'WELCOME TO THE BALLERANALYTICS A3C RL API! :)'
 			});
@@ -116,32 +119,80 @@ export class A3CServer {
 		/* routes for A3C server */
 		this.app.post('/global_moving_average', async (req, res) => {
 			const { data } = <{ data: number }>await req.json();
-			this.globalMovingAvg = data;
-			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
+			if (data > this.bestWorkerMovingAvg) this.bestWorkerMovingAvg = data;
+
+			res.status(200).json(<RestApiBase>{
+				status: RestApiStatus.SUCCESS
+			});
 		});
 
 		this.app.get('/global_moving_average', async (req, res) => {
 			res
 				.status(200)
-				.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: this.globalMovingAvg });
+				.type('json')
+				.send(
+					JSON.stringify(
+						<RestApiBaseData>{
+							status: RestApiStatus.SUCCESS,
+							data: this.globalMovingAvg
+						},
+						stringifyInfinity
+					)
+				);
+		});
+
+		this.app.post('/best_worker_moving_avg', async (req, res) => {
+			const { data } = <{ data: number }>await req.json();
+			if (data > this.globalMovingAvg) this.globalMovingAvg = data;
+
+			res.status(200).json(<RestApiBase>{
+				status: RestApiStatus.SUCCESS
+			});
+		});
+
+		this.app.get('/best_worker_moving_avg', async (req, res) => {
+			res
+				.status(200)
+				.type('json')
+				.send(
+					JSON.stringify(
+						<RestApiBaseData>{
+							status: RestApiStatus.SUCCESS,
+							data: this.bestWorkerMovingAvg
+						},
+						stringifyInfinity
+					)
+				);
 		});
 
 		this.app.post('/best_score', async (req, res) => {
 			const { data } = <WorkerBaseData>await req.json();
-			this.bestScore = data;
+			if (data > this.bestScore) this.bestScore = data;
+
 			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
 		this.app.get('/best_score', (req, res) => {
 			res
 				.status(200)
-				.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: this.bestScore });
+				.type('json')
+				.send(
+					JSON.stringify(
+						<RestApiBaseData>{
+							status: RestApiStatus.SUCCESS,
+							data: this.bestScore
+						},
+						stringifyInfinity
+					)
+				);
 		});
 
 		this.app.post('/queue', async (req, res) => {
 			const { data: elem } = <WorkerBaseDataId>await req.json();
+
 			console.log('Queued Ep Reward: ' + elem);
 			await this.master.queue(elem);
+
 			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
@@ -204,8 +255,7 @@ export class A3CServer {
 		});
 
 		this.app.post('/global_episode', (req, res) => {
-			this.globalEpisode += 1;
-			console.log('Episode: ' + this.globalEpisode);
+			console.log(`Episode: ${++this.globalEpisode}`);
 			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
@@ -233,20 +283,23 @@ export class A3CServer {
 		this.app.get('/workers_status', async (req, res) => {
 			const workerCount = this.master.workerCount();
 
-			res.status(200);
-
+			let body: RestApiStringData | RestApiBaseData;
 			if (!this.master.workerCount() || this.master.allWorkersDone()) {
-				res.json(<RestApiStringData>{ status: RestApiStatus.SUCCESS, data: 'done' });
+				body = { status: RestApiStatus.SUCCESS, data: 'done' };
 			} else {
-				res.json(<RestApiBaseData>{ status: RestApiStatus.SUCCESS, data: workerCount });
+				body = { status: RestApiStatus.SUCCESS, data: workerCount };
 			}
+
+			res.status(200).json(body);
 		});
 
 		this.app.post('/worker_started', async (req, res) => {
 			const { id } = <WorkerBaseId>await req.json();
+
 			const worker = this.master.findWorkerPool(id);
 			worker.training = true;
 			this.master.setWorkerPool(id, worker);
+
 			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
