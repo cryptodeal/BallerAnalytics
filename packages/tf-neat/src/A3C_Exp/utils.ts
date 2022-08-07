@@ -16,6 +16,8 @@ import type {
 	WsInitWorker,
 	WsRunWorker
 } from './types';
+import { tensor } from '@tensorflow/tfjs-node';
+import type { Tensor, Rank } from '@tensorflow/tfjs-node';
 
 /* TODO: SWITCH TO USE ID IN FETCH HEADER FOR AUTH/IDENTIFICATION OF WORKER */
 
@@ -401,6 +403,42 @@ export const getWorkersHostNames = async () => {
 	return readFile(process.cwd() + '/A3C_Data/workers', 'utf8').then((data) => {
 		return data.toString().split('\n');
 	});
+};
+
+export const prepWeights = (weights: Tensor<Rank>[]) => {
+	const size = weights.length;
+	const parsedWeights: Array<
+		| number
+		| number[]
+		| number[][]
+		| number[][][]
+		| number[][][][]
+		| number[][][][][]
+		| number[][][][][][]
+	> = new Array(size);
+	for (let i = 0; i < size; i++) {
+		parsedWeights[i] = weights[i].arraySync();
+	}
+	return parsedWeights;
+};
+
+export const parseWeights = (
+	weights: Array<
+		| number
+		| number[]
+		| number[][]
+		| number[][][]
+		| number[][][][]
+		| number[][][][][]
+		| number[][][][][][]
+	>
+) => {
+	const size = weights.length;
+	const parsedWeights: Tensor<Rank>[] = new Array(weights.length);
+	for (let i = 0; i < size; i++) {
+		parsedWeights[i] = tensor(weights[i]);
+	}
+	return parsedWeights;
 };
 
 /**

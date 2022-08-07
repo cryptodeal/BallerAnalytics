@@ -29,6 +29,7 @@ export class MasterAgent {
 		//this.workerCount = workerCount;
 		this.env = new Env(8);
 		this.sharedAgent = new Actor_Critic_Agent(this.env, 0, 0);
+		/* TODO: SAVE shared agent to global actor/critic models */
 	}
 
 	public findWorkerPool(id: string) {
@@ -39,7 +40,7 @@ export class MasterAgent {
 
 	public allWorkersDone() {
 		let isDone = true;
-		for (const [id, { done }] of this.workerPool) {
+		for (const [, { done }] of this.workerPool) {
 			if (!done) {
 				isDone = false;
 				break;
@@ -50,7 +51,7 @@ export class MasterAgent {
 
 	public activeInPool() {
 		let count = 0;
-		for (const [id, { active }] of this.workerPool) {
+		for (const [, { active }] of this.workerPool) {
 			if (active) count++;
 		}
 		return count;
