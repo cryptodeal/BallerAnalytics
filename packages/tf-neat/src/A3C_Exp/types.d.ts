@@ -1,6 +1,17 @@
 import { RestApiStatus } from './A3CServer';
 
 /* generic utilites */
+export type ParsedWeights = Array<
+	| number
+	| number[]
+	| number[][]
+	| number[][][]
+	| number[][][][]
+	| number[][][][][]
+	| number[][][][][][]
+>;
+
+export type AgentWeights = { actor_weights: ParsedWeights; critic_weights: ParsedWeights };
 
 /* WS API Types */
 export type WsApiData = {
@@ -50,12 +61,20 @@ export type WorkerBaseData = {
 	data: number;
 };
 
+export type WorkerWeights = {
+	weights: ParsedWeights;
+};
+
+export type SharedAgentWeights = {
+	actor: ParsedWeights;
+	critic: ParsedWeights;
+};
+
 export type WorkerBaseDataId = WorkerBaseData & WorkerBaseId;
 
 export type WorkerModelData = {
-	id: string;
-	data_actor: Buffer;
-	data_critic: Buffer;
+	data_actor: ParsedWeights;
+	data_critic: ParsedWeights;
 	temporary: boolean;
 };
 

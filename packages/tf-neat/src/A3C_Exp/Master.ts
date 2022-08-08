@@ -1,14 +1,17 @@
 import { Actor_Critic_Agent } from './Agent/AC_Agent';
+import { tidy } from '@tensorflow/tfjs-node';
 import { Env } from './Env';
 import { exec } from 'child_process';
-import { serialize } from './utils';
+import { parseWeights, prepWeights, serialize } from './utils';
+import { SharedAgentWeights } from './types';
 
 export class MasterAgent {
 	public name = `A3C_GridWorld_LocalEnv`;
 	public env: Env;
 	public isInit = false;
 	public isTraining = false;
-	public sharedAgent: Actor_Critic_Agent;
+	private sharedAgent: Actor_Critic_Agent;
+	public sharedAgentWeights: SharedAgentWeights;
 	private workerPool: Map<
 		string,
 		{
@@ -29,6 +32,11 @@ export class MasterAgent {
 		//this.workerCount = workerCount;
 		this.env = new Env(8);
 		this.sharedAgent = new Actor_Critic_Agent(this.env, 0, 0);
+		/* read/write weights to file, parsing into memory */
+		this.sharedAgentWeights = {
+			actor: prepWeights(this.sharedAgent.actor.getWeights()),
+			critic: prepWeights(this.sharedAgent.critic.getWeights())
+		};
 		/* TODO: SAVE shared agent to global actor/critic models */
 	}
 
@@ -78,6 +86,17 @@ export class MasterAgent {
 	) {
 		this.workerPool.set(id, worker);
 	}
+	public saveSharedAgentModel = () => {
+		tidy(() => {
+			this.sharedAgent.actor.setWeights(parseWeights(this.sharedAgentWeights.actor));
+			this.sharedAgent.critic.setWeights(parseWeights(this.sharedAgentWeights.critic));
+		});
+		const rootDir = process.cwd();
+		return Promise.all([
+			this.sharedAgent.actor.save('file://' + rootDir + '/A3C_Data/global-model-actor'),
+			this.sharedAgent.critic.save('file://' + rootDir + '/A3C_Data/global-model-critic')
+		]);
+	};
 
 	public workerCount = () => this.workerPool.size;
 

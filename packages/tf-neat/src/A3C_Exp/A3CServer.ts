@@ -1,6 +1,4 @@
 import HyperExpress from 'hyper-express';
-import { writeFileSync } from 'fs';
-import { createReadStream } from 'fs';
 import { MasterAgent } from './Master';
 import { nanoid } from 'nanoid';
 import {
@@ -8,9 +6,9 @@ import {
 	RestApiBaseData,
 	RestApiError,
 	RestApiStringData,
+	SharedAgentWeights,
 	WorkerBaseData,
 	WorkerBaseDataId,
-	WorkerBaseId,
 	WorkerModelData,
 	WsInitWorker,
 	WsRunWorker
@@ -36,7 +34,6 @@ export class A3CServer {
 			const { id } = headers;
 
 			/* TODO: REMOVE THIS; FOR DEBUGGING */
-			console.log(headers);
 			/* upgrade the incoming request with some context */
 			response.upgrade({
 				workerAddy: ip,
@@ -141,7 +138,7 @@ export class A3CServer {
 				);
 		});
 
-		this.app.post('/best_worker_moving_avg', async (req, res) => {
+		this.app.post('/best_worker_moving_average', async (req, res) => {
 			const { data } = <{ data: number }>await req.json();
 			if (data > this.bestWorkerMovingAvg) this.bestWorkerMovingAvg = data;
 
@@ -150,7 +147,7 @@ export class A3CServer {
 			});
 		});
 
-		this.app.get('/best_worker_moving_avg', async (req, res) => {
+		this.app.get('/best_worker_moving_average', async (req, res) => {
 			res
 				.status(200)
 				.type('json')
@@ -197,61 +194,18 @@ export class A3CServer {
 		});
 
 		this.app.post('/local_model_weights', async (req, res) => {
-			const { data_actor, data_critic, temporary } = <WorkerModelData>await req.json();
-			/**
-			 * fs/promises introduces race condition where
-			 * any worker can request weights.bin while it's
-			 * being written; writeFileSync resolves by blocking
-			 * the main thread while the file is being written.
-			 */
-			if (temporary) {
-				writeFileSync(
-					process.cwd() + '/A3C_Data/temporary-global-model-actor/weights.bin',
-					Buffer.from(data_actor)
-				);
-				writeFileSync(
-					process.cwd() + '/A3C_Data/temporary-global-model-critic/weights.bin',
-					Buffer.from(data_critic)
-				);
-			} else {
-				writeFileSync(
-					process.cwd() + '/A3C_Data/global-model-actor/weights.bin',
-					Buffer.from(data_actor)
-				);
+			const { data_actor, data_critic } = <WorkerModelData>await req.json();
 
-				writeFileSync(
-					process.cwd() + '/A3C_Data/global-model-critic/weights.bin',
-					Buffer.from(data_critic)
-				);
-				this.globalModelReady = true;
-			}
+			this.master.sharedAgentWeights.actor = data_actor;
+			this.master.sharedAgentWeights.critic = data_critic;
+			this.master.saveSharedAgentModel();
+			this.globalModelReady = true;
+
 			res.status(200).json(<RestApiBase>{ status: RestApiStatus.SUCCESS });
 		});
 
-		this.app.get('/global_model_weights_actor', (req, res) => {
-			const readable = createReadStream(process.cwd() + '/A3C_Data/global-model-actor/weights.bin');
-			readable.on('error', (error) => console.log(error));
-			res.stream(readable);
-		});
-
-		this.app.get('/global_model_actor', (req, res) => {
-			const readable = createReadStream(process.cwd() + '/A3C_Data/global-model-actor/model.json');
-			readable.on('error', (error) => console.log(error));
-			res.stream(readable);
-		});
-
-		this.app.get('/global_model_weights_critic', (req, res) => {
-			const readable = createReadStream(
-				process.cwd() + '/A3C_Data/global-model-critic/weights.bin'
-			);
-			readable.on('error', (error) => console.log(error));
-			res.stream(readable);
-		});
-
-		this.app.get('/global_model_critic', (req, res) => {
-			const readable = createReadStream(process.cwd() + '/A3C_Data/global-model-critic/model.json');
-			readable.on('error', (error) => console.log(error));
-			res.stream(readable);
+		this.app.get('/shared_agent_weights', (req, res) => {
+			res.status(200).json(<SharedAgentWeights>this.master.sharedAgentWeights);
 		});
 
 		this.app.post('/global_episode', (req, res) => {
@@ -266,8 +220,8 @@ export class A3CServer {
 		});
 
 		/* TODO: add workers tokens table to sqllite3 db */
-		this.app.post('/worker_done', async (req, res) => {
-			const { id } = <WorkerBaseId>await req.json();
+		this.app.post('/worker_done', (req, res) => {
+			const { id } = req.headers;
 
 			if (!this.master.workerCount()) {
 				res
@@ -280,7 +234,7 @@ export class A3CServer {
 			}
 		});
 
-		this.app.get('/workers_status', async (req, res) => {
+		this.app.get('/workers_status', (req, res) => {
 			const workerCount = this.master.workerCount();
 
 			let body: RestApiStringData | RestApiBaseData;
@@ -293,8 +247,8 @@ export class A3CServer {
 			res.status(200).json(body);
 		});
 
-		this.app.post('/worker_started', async (req, res) => {
-			const { id } = <WorkerBaseId>await req.json();
+		this.app.post('/worker_started', (req, res) => {
+			const { id } = req.headers;
 
 			const worker = this.master.findWorkerPool(id);
 			worker.training = true;

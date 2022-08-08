@@ -29,6 +29,8 @@ import type {
 } from '@tensorflow/tfjs-node';
 import { Env } from '../Env';
 import { Entity } from '../../Actor_Critic_Exp/Entity';
+import { parseWeights, prepWeights } from '../utils';
+import { AgentWeights, ParsedWeights } from '../types';
 
 export class A3CAgent_Worker {
 	public env: Env;
@@ -62,6 +64,21 @@ export class A3CAgent_Worker {
 		tidy(() => {
 			this.actor.setWeights(this.sharedAgent.actor.getWeights());
 			this.critic.setWeights(this.sharedAgent.critic.getWeights());
+		});
+	}
+
+	public setAgentWeights(actor: ParsedWeights, critic: ParsedWeights) {
+		tidy(() => {
+			this.actor.setWeights(parseWeights(actor));
+			this.critic.setWeights(parseWeights(critic));
+		});
+	}
+
+	public getWeights(): AgentWeights {
+		return tidy(() => {
+			const actor_weights = prepWeights(this.actor.getWeights());
+			const critic_weights = prepWeights(this.critic.getWeights());
+			return { actor_weights, critic_weights };
 		});
 	}
 
