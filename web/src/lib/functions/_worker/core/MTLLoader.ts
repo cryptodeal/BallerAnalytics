@@ -19,7 +19,7 @@ import type { MaterialInfo, MaterialCreatorOptions, TexParams, LoadedResources }
 
 /* Loads a Wavefront .mtl file specifying materials */
 export class MTLLoader {
-	materialOptions: MaterialCreatorOptions;
+	materialOptions!: MaterialCreatorOptions;
 	loadedExtRef: LoadedResources = {};
 
 	constructor(loadedExtRef?: LoadedResources) {
@@ -34,7 +34,8 @@ export class MTLLoader {
 		const lines = text.split('\n');
 		let info: Record<string, string | [number, number, number]> = {};
 		const delimiter_pattern = /\s+/;
-		const materialsInfo = {};
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const materialsInfo: Record<string, any> = {};
 
 		for (let i = 0; i < lines.length; i++) {
 			let line: string = lines[i];
@@ -74,7 +75,7 @@ class MaterialCreator {
 	nameLookup: { [key: string]: number };
 	side: Side;
 	wrap: Wrapping;
-	crossOrigin: string;
+	crossOrigin!: string;
 	loadedExtRef: LoadedResources;
 
 	constructor(loadedExtRef: LoadedResources, options: MaterialCreatorOptions = {}) {
@@ -95,16 +96,19 @@ class MaterialCreator {
 		this.nameLookup = {};
 	}
 
-	convert(materialsInfo: { [key: string]: MaterialInfo }): { [key: string]: MaterialInfo } {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	convert(materialsInfo: Record<string, any>): { [key: string]: MaterialInfo } {
 		if (!this.options) return materialsInfo;
 
-		const converted = {};
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const converted: Record<string, any> = {};
 
 		for (const mn in materialsInfo) {
 			/* Convert materials info into normalized form based on options */
 			const mat = materialsInfo[mn];
 
-			const covmat = {};
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const covmat: Record<string, any> = {};
 
 			converted[mn] = covmat;
 
@@ -174,8 +178,9 @@ class MaterialCreator {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const scope = this;
 		/* Create material */
-		const mat = this.materialsInfo[materialName];
-		const params: MeshPhongMaterialParameters = {
+		const mat: Record<string, any> = this.materialsInfo[materialName];
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const params: Record<string, any> & MeshPhongMaterialParameters = {
 			name: materialName,
 			side: this.side
 		};
@@ -331,7 +336,7 @@ class MaterialCreator {
 
 		const texture = new DataTexture(new Uint8Array(imageData.data.buffer), width, height);
 		texture.needsUpdate = true;
-		if (mapping !== null) texture.mapping = mapping;
+		if (mapping !== undefined) texture.mapping = mapping;
 		return texture;
 	}
 }

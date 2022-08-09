@@ -19,7 +19,7 @@
 
 <div class="basicContainer" bind:offsetHeight={height} bind:offsetWidth={width}>
 	{#if canvasVisible}
-		<canvas bind:this={canvas} {width} {height} style="width:{width}px;height:{height}px;" />
+		<canvas bind:this={canvas} {width} {height} />
 	{:else}
 		{#await import('./Basketball.svelte') then Ball}
 			<svelte:component this={Ball.default} />

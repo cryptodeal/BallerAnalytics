@@ -97,7 +97,7 @@ export class Worker {
 		this.ws = ws;
 		/* TODO: add update_freq to construction options */
 		this.update_freq = opts?.update_freq || 2048;
-		this.moving_avg = new MovingAverager(256);
+		this.moving_avg = new MovingAverager(1024);
 	}
 
 	private async syncGlobalModel() {
@@ -217,13 +217,16 @@ Best worker moving avg: ${best_all_worker_moving_avg}`;
 							setBestScore(this.id, this.agent.reward),
 							setBestWorkerMovingAvg(this.id, current_moving_avg)
 						]);
-					} else if (
-						this.agent.env.episodes !== 0 &&
-						this.agent.env.episodes % this.update_freq === 0
-					) {
-						console.log('************************ UPDATING LOCAL MODEL ************************');
-						await this.syncGlobalModel();
 					}
+					/*
+            else if (
+              this.agent.env.episodes !== 0 &&
+              this.agent.env.episodes % this.update_freq === 0
+            ) {
+              console.log('************************ UPDATING LOCAL MODEL ************************');
+              await this.syncGlobalModel();
+            }
+          */
 
 					await incrementGlobalEpisode(this.id);
 					this.agent.x = Math.floor(seededRandom() * 8);

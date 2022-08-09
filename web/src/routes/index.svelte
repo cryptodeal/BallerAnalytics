@@ -17,16 +17,16 @@
 />
 
 <div
-	class="w-full flex flex-wrap items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:(w-3/4 p-4) 2xl:w-1/2"
+	class="w-full flex flex-wrap items-center mx-auto p-4 rounded-lg min-h-100 glassmorphicBg md:w-3/4 md:p-4 2xl:w-1/2"
 >
 	<div class="w-full p-2">
 		<BallerAnalytics {isVisible} />
 	</div>
 	<div class="w-full mt-2 flex flex-wrap justify-center items-center">
-		<div class="w-full flex justify-center md:(w-1/2 justify-end)">
+		<div class="w-full flex justify-center md:w-1/2 md:justify-end">
 			<WordCloud {isVisible} />
 		</div>
-		<div class="w-full flex justify-center h-40 md:(w-1/2 justify-start)">
+		<div class="w-full flex justify-center h-40 md:w-1/2 md:justify-start">
 			{#if Basketball}
 				<svelte:component this={Basketball} />
 			{/if}
