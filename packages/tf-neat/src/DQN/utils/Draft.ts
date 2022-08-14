@@ -31,7 +31,7 @@ export class DraftAPI {
 		return this.players[idx];
 	}
 
-	public getReward(idx: number, scale = 15) {
+	public getReward(idx: number, scale = 1) {
 		return this.rewards[idx] * scale;
 	}
 
@@ -40,6 +40,7 @@ export class DraftAPI {
 	}
 
 	public isPlayerAvail(idx: number) {
+		// console.log(this.players.length, idx, this.players[idx]?.inputs);
 		return this.players[idx].inputs[67] === 0;
 	}
 
@@ -53,8 +54,8 @@ export class DraftAPI {
 			? this.players.filter((p) => p.inputs[67] === 0 && p.inputs[needsPositions[0]] === 1)
 			: this.players.filter((p) => p.inputs[67] === 0);
 		const pick = avail[getRandomInt(0, avail.length)];
-		const pickIdx = this.players.findIndex((p) => p === pick);
-		this.flagDrafted(pickIdx, teamNo);
+		const pickIdx = this.players.findIndex((p) => p.getId() === pick.getId());
+		this.flagDrafted(pickIdx);
 		return pickIdx;
 	}
 
@@ -65,7 +66,7 @@ export class DraftAPI {
 	public reset() {
 		this.players.map((p) => p.resetDrafted());
 		this.draftOrder = this.genDraftOrder();
-		// util.shuffle(this.players);
+		util.shuffle(this.players);
 		this.rewards = this.resetRewards();
 	}
 
@@ -73,7 +74,7 @@ export class DraftAPI {
 		return this.minMaxScale(
 			this.players.map((p) => p.reward),
 			true
-		);
+		).map((x) => x + 1);
 	}
 
 	/**

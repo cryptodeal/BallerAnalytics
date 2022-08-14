@@ -1,4 +1,4 @@
-import { assertPositiveInt, getRandomInt } from '../utils';
+import { assertPositiveInt, getRandomInt } from '../DQN/utils';
 import { buffer } from '@tensorflow/tfjs-node';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
 import type {
@@ -8,17 +8,16 @@ import type {
 	TaskStepOutput,
 	DQNRoster,
 	DQNRosterLean
-} from './types';
+} from '../DQN/tasks/types';
 import { DQNPlayer, DQNPlayerLean } from '@balleranalytics/nba-api-ts';
-import { DraftAPI } from '../utils/Draft';
+import { DraftAPI } from '../DQN/utils/Draft';
 
 /* TODO: tune parameters */
-export const VALID_ROSTER_REWARD = 5;
-export const INVALID_ROSTER_REWARD = -15;
-export const AVAIL_PLAYER_REWARD = 5;
-export const UNAVAIL_PLAYER_REWARD = -15;
-export const FAILED_DRAFT_REWARD = -5;
-export const COMPLETED_DRAFT_REWARD = 10;
+
+/* TODO: Test variations of reward vals */
+export const INVALID_ROSTER_REWARD = -0.25;
+export const UNAVAIL_PLAYER_REWARD = -0.25;
+export const FAILED_DRAFT_REWARD = -1;
 
 export class Roster {
 	public done = false;
@@ -257,7 +256,7 @@ export class DraftTask {
 	/* const to track draft round and pick */
 	public round = 0;
 	public current_pick_number = 0;
-
+	public drafted_player_indices: Map<number, boolean> = new Map();
 	private draftApi: DraftAPI;
 	private dims: [number, number, number];
 	/* TODO: store all state in 1 array/buffer (i.e. manipulating state tensor) */
@@ -309,6 +308,7 @@ export class DraftTask {
 	reset() {
 		this.init();
 		this.draftApi.reset();
+		this.drafted_player_indices = new Map();
 		this.teamRoster = new Roster(this.teamOpts);
 		this.initEnv();
 		return this.getState();
@@ -319,7 +319,8 @@ export class DraftTask {
 		const priorTeams = this.draftApi.draftOrder.slice(0, endIdx);
 		const priorCount = priorTeams.length;
 		for (let i = 0; i < priorCount; i++) {
-			const pick = this.draftApi.simulatePick(teamNo);
+			const pick = this.draftApi.simulatePick(priorTeams[i]);
+			this.drafted_player_indices.set(pick, true);
 			this.envState[pick] = this.draftApi.getPlayerInputs(pick);
 		}
 	}
@@ -329,7 +330,8 @@ export class DraftTask {
 		const laterTeams = this.draftApi.draftOrder.slice(startIdx);
 		const laterCount = laterTeams.length;
 		for (let i = 0; i < laterCount; i++) {
-			const pick = this.draftApi.simulatePick(teamNo);
+			const pick = this.draftApi.simulatePick(laterTeams[i]);
+			this.drafted_player_indices.set(pick, true);
 			this.envState[pick] = this.draftApi.getPlayerInputs(pick);
 		}
 	}
@@ -342,7 +344,6 @@ export class DraftTask {
 	 *     number: 0, 1, 2, etc... === idx of draftPick
 	 */
 	step(action: number, forceNextState = false): TaskStepOutput {
-		/* TODO: simulate picks for all teams prior to DQN Agent in round */
 		let done = false,
 			reward = 0;
 		const validPick = this.draftPlayer(action);
@@ -356,8 +357,6 @@ export class DraftTask {
 			reward += UNAVAIL_PLAYER_REWARD;
 			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 			if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD / 3;
-		} else {
-			reward = AVAIL_PLAYER_REWARD;
 		}
 
 		if (this.teamRoster.done) {
@@ -365,8 +364,6 @@ export class DraftTask {
 			reward += INVALID_ROSTER_REWARD;
 			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 			if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD / 3;
-		} else {
-			reward += VALID_ROSTER_REWARD;
 		}
 
 		let milestone = false;
@@ -380,12 +377,12 @@ export class DraftTask {
 					done
 				};
 			}
+
 			return { reward, done, milestone };
 		}
 
 		milestone = true;
 		reward += this.draftApi.getReward(action);
-		if (this.selfState.length === 13) reward += COMPLETED_DRAFT_REWARD;
 		this.selfState.unshift(this.pick.inputs);
 
 		/**
@@ -421,6 +418,7 @@ export class DraftTask {
 		this.pick = this.draftApi.getPlayer(action);
 		const isAvail = this.draftApi.isPlayerAvail(action);
 		this.draftApi.flagDrafted(action);
+		this.drafted_player_indices.set(action, true);
 		this.envState[action] = this.draftApi.getPlayerInputs(action);
 		return isAvail;
 	}

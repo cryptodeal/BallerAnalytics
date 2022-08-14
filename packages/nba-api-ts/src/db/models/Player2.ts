@@ -8,8 +8,12 @@ import type {
 	Player2Object,
 	Player2SeasonPostseasonStatDocument,
 	Player2SeasonRegularSeasonStatsTeamSplitDocument,
+	PlayerStatTotalModel,
+	PlayerStatTotalDocument,
 	Game2Object,
-	Game2Document
+	Game2Document,
+	StatAdvDocument,
+	StatAdvModel
 } from '../interfaces/mongoose.gen';
 
 export type Player2Stats = {
@@ -38,7 +42,7 @@ export type MlFantasyPlayerLean = Player2Object & {
 	trainingGames: Game2Document['_id'][];
 };
 
-const statTotalsSchema = new mongoose.Schema(
+export const PlayerStatTotalsSchema = new mongoose.Schema(
 	{
 		games: { type: Number },
 		gamesStarted: { type: Number },
@@ -69,7 +73,14 @@ const statTotalsSchema = new mongoose.Schema(
 	{ _id: false }
 );
 
-const statAdvSchema = new mongoose.Schema(
+export const PlayerStatTotal: PlayerStatTotalModel =
+	(mongoose.models.StatTotals as PlayerStatTotalModel) ||
+	mongoose.model<PlayerStatTotalDocument, PlayerStatTotalModel>(
+		'PlayerStatTotal',
+		PlayerStatTotalsSchema
+	);
+
+const StatAdvSchema = new mongoose.Schema(
 	{
 		pEffRate: { type: Number },
 		tsPct: { type: Number },
@@ -94,6 +105,10 @@ const statAdvSchema = new mongoose.Schema(
 	},
 	{ _id: false }
 );
+
+export const StatAdv: StatAdvModel =
+	(mongoose.models.StatAdv as StatAdvModel) ||
+	mongoose.model<StatAdvDocument, StatAdvModel>('StatAdv', StatAdvSchema);
 
 const Player2Schema: Player2Schema = new mongoose.Schema({
 	meta: {
@@ -159,7 +174,8 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
 				stats: {
-					type: statTotalsSchema
+					type: PlayerStatTotalsSchema,
+					default: () => new PlayerStatTotal()
 				}
 			},
 			regularSeason: {
@@ -167,20 +183,22 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
 				stats: {
 					totals: {
-						type: statTotalsSchema
+						type: PlayerStatTotalsSchema,
+						default: () => new PlayerStatTotal()
 					},
 					adv: {
-						type: statAdvSchema
+						type: StatAdvSchema
 					},
 					teamSplits: [
 						{
 							team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team2', required: true },
 							totals: {
-								type: statTotalsSchema,
-								required: true
+								type: PlayerStatTotalsSchema,
+								default: () => new PlayerStatTotal()
 							},
 							adv: {
-								type: statAdvSchema
+								type: StatAdvSchema,
+								default: () => new StatAdv()
 							}
 						}
 					]
@@ -190,7 +208,8 @@ const Player2Schema: Player2Schema = new mongoose.Schema({
 				exists: { type: Boolean, required: true, default: false },
 				games: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game2', many: true }],
 				stats: {
-					type: statTotalsSchema
+					type: PlayerStatTotalsSchema,
+					default: () => new PlayerStatTotal()
 				}
 			}
 		}

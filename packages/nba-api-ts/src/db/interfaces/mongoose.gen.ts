@@ -1459,6 +1459,260 @@ export type Official2Document = mongoose.Document<mongoose.Types.ObjectId, Offic
 	};
 
 /**
+ * Lean version of PlayerStatTotalDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `PlayerStatTotalDocument.toObject()`. To avoid conflicts with model names, use the type alias `PlayerStatTotalObject`.
+ * ```
+ * const playerstattotalObject = playerstattotal.toObject();
+ * ```
+ */
+export type PlayerStatTotal = {
+	games?: number;
+	gamesStarted?: number;
+	minutes?: number;
+	fieldGoalsMade?: number;
+	fieldGoalsAttempted?: number;
+	fieldGoalsPct?: number;
+	threePointersMade?: number;
+	threePointersAttempted?: number;
+	threePointersPct?: number;
+	twoPointFGMade?: number;
+	twoPointFGAttempted?: number;
+	twoPointFGPct?: number;
+	effectiveFieldGoalPct?: number;
+	freeThrowsMade?: number;
+	freeThrowsAttempted?: number;
+	freeThrowsPct?: number;
+	offReb?: number;
+	defReb?: number;
+	totalReb?: number;
+	assists?: number;
+	steals?: number;
+	blocks?: number;
+	turnovers?: number;
+	personalFouls?: number;
+	points?: number;
+};
+
+/**
+ * Lean version of PlayerStatTotalDocument (type alias of `PlayerStatTotal`)
+ *
+ * Use this type alias to avoid conflicts with model names:
+ * ```
+ * import { PlayerStatTotal } from "../models"
+ * import { PlayerStatTotalObject } from "../interfaces/mongoose.gen.ts"
+ *
+ * const playerstattotalObject: PlayerStatTotalObject = playerstattotal.toObject();
+ * ```
+ */
+export type PlayerStatTotalObject = PlayerStatTotal;
+
+/**
+ * Mongoose Query type
+ *
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type PlayerStatTotalQuery = mongoose.Query<
+	any,
+	PlayerStatTotalDocument,
+	PlayerStatTotalQueries
+> &
+	PlayerStatTotalQueries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `PlayerStatTotalSchema.query`. For most use cases, you should not need to use this type explicitly.
+ */
+export type PlayerStatTotalQueries = {};
+
+export type PlayerStatTotalMethods = {};
+
+export type PlayerStatTotalStatics = {};
+
+/**
+ * Mongoose Model type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const PlayerStatTotal = mongoose.model<PlayerStatTotalDocument, PlayerStatTotalModel>("PlayerStatTotal", PlayerStatTotalSchema);
+ * ```
+ */
+export type PlayerStatTotalModel = mongoose.Model<PlayerStatTotalDocument, PlayerStatTotalQueries> &
+	PlayerStatTotalStatics;
+
+/**
+ * Mongoose Schema type
+ *
+ * Assign this type to new PlayerStatTotal schema instances:
+ * ```
+ * const PlayerStatTotalSchema: PlayerStatTotalSchema = new mongoose.Schema({ ... })
+ * ```
+ */
+export type PlayerStatTotalSchema = mongoose.Schema<
+	PlayerStatTotalDocument,
+	PlayerStatTotalModel,
+	PlayerStatTotalMethods,
+	PlayerStatTotalQueries
+>;
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const PlayerStatTotal = mongoose.model<PlayerStatTotalDocument, PlayerStatTotalModel>("PlayerStatTotal", PlayerStatTotalSchema);
+ * ```
+ */
+export type PlayerStatTotalDocument = mongoose.Document<never, PlayerStatTotalQueries> &
+	PlayerStatTotalMethods & {
+		games?: number;
+		gamesStarted?: number;
+		minutes?: number;
+		fieldGoalsMade?: number;
+		fieldGoalsAttempted?: number;
+		fieldGoalsPct?: number;
+		threePointersMade?: number;
+		threePointersAttempted?: number;
+		threePointersPct?: number;
+		twoPointFGMade?: number;
+		twoPointFGAttempted?: number;
+		twoPointFGPct?: number;
+		effectiveFieldGoalPct?: number;
+		freeThrowsMade?: number;
+		freeThrowsAttempted?: number;
+		freeThrowsPct?: number;
+		offReb?: number;
+		defReb?: number;
+		totalReb?: number;
+		assists?: number;
+		steals?: number;
+		blocks?: number;
+		turnovers?: number;
+		personalFouls?: number;
+		points?: number;
+	};
+
+/**
+ * Lean version of StatAdvDocument
+ *
+ * This has all Mongoose getters & functions removed. This type will be returned from `StatAdvDocument.toObject()`. To avoid conflicts with model names, use the type alias `StatAdvObject`.
+ * ```
+ * const statadvObject = statadv.toObject();
+ * ```
+ */
+export type StatAdv = {
+	pEffRate?: number;
+	tsPct?: number;
+	threePtAttRate?: number;
+	ftAttRate?: number;
+	offRebPct?: number;
+	defRebPct?: number;
+	totalRebPct?: number;
+	assistPct?: number;
+	stlPct?: number;
+	blkPct?: number;
+	tovPct?: number;
+	usgPct?: number;
+	offWinShares?: number;
+	defWinShares?: number;
+	winShares?: number;
+	winSharesPer48?: number;
+	offBoxPlusMinus?: number;
+	defBoxPlusMinus?: number;
+	boxPlusMinus?: number;
+	valOverBackup?: number;
+};
+
+/**
+ * Lean version of StatAdvDocument (type alias of `StatAdv`)
+ *
+ * Use this type alias to avoid conflicts with model names:
+ * ```
+ * import { StatAdv } from "../models"
+ * import { StatAdvObject } from "../interfaces/mongoose.gen.ts"
+ *
+ * const statadvObject: StatAdvObject = statadv.toObject();
+ * ```
+ */
+export type StatAdvObject = StatAdv;
+
+/**
+ * Mongoose Query type
+ *
+ * This type is returned from query functions. For most use cases, you should not need to use this type explicitly.
+ */
+export type StatAdvQuery = mongoose.Query<any, StatAdvDocument, StatAdvQueries> & StatAdvQueries;
+
+/**
+ * Mongoose Query helper types
+ *
+ * This type represents `StatAdvSchema.query`. For most use cases, you should not need to use this type explicitly.
+ */
+export type StatAdvQueries = {};
+
+export type StatAdvMethods = {};
+
+export type StatAdvStatics = {};
+
+/**
+ * Mongoose Model type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const StatAdv = mongoose.model<StatAdvDocument, StatAdvModel>("StatAdv", StatAdvSchema);
+ * ```
+ */
+export type StatAdvModel = mongoose.Model<StatAdvDocument, StatAdvQueries> & StatAdvStatics;
+
+/**
+ * Mongoose Schema type
+ *
+ * Assign this type to new StatAdv schema instances:
+ * ```
+ * const StatAdvSchema: StatAdvSchema = new mongoose.Schema({ ... })
+ * ```
+ */
+export type StatAdvSchema = mongoose.Schema<
+	StatAdvDocument,
+	StatAdvModel,
+	StatAdvMethods,
+	StatAdvQueries
+>;
+
+/**
+ * Mongoose Document type
+ *
+ * Pass this type to the Mongoose Model constructor:
+ * ```
+ * const StatAdv = mongoose.model<StatAdvDocument, StatAdvModel>("StatAdv", StatAdvSchema);
+ * ```
+ */
+export type StatAdvDocument = mongoose.Document<never, StatAdvQueries> &
+	StatAdvMethods & {
+		pEffRate?: number;
+		tsPct?: number;
+		threePtAttRate?: number;
+		ftAttRate?: number;
+		offRebPct?: number;
+		defRebPct?: number;
+		totalRebPct?: number;
+		assistPct?: number;
+		stlPct?: number;
+		blkPct?: number;
+		tovPct?: number;
+		usgPct?: number;
+		offWinShares?: number;
+		defWinShares?: number;
+		winShares?: number;
+		winSharesPer48?: number;
+		offBoxPlusMinus?: number;
+		defBoxPlusMinus?: number;
+		boxPlusMinus?: number;
+		valOverBackup?: number;
+	};
+
+/**
  * Lean version of Player2SeasonTeamDocument
  *
  * This has all Mongoose getters & functions removed. This type will be returned from `Player2SeasonDocument.toObject()`.
@@ -1654,7 +1908,7 @@ export type Player2SeasonRegularSeasonStatsTeamSplitAdv = {
 export type Player2SeasonRegularSeasonStatsTeamSplit = {
 	team: Team2['_id'] | Team2;
 	_id: mongoose.Types.ObjectId;
-	totals: Player2SeasonRegularSeasonStatsTeamSplitTotal;
+	totals?: Player2SeasonRegularSeasonStatsTeamSplitTotal;
 	adv?: Player2SeasonRegularSeasonStatsTeamSplitAdv;
 };
 
@@ -2070,7 +2324,7 @@ export type Player2SeasonRegularSeasonStatsTeamSplitAdvDocument =
 export type Player2SeasonRegularSeasonStatsTeamSplitDocument = mongoose.Types.Subdocument & {
 	team: Team2Document['_id'] | Team2Document;
 	_id: mongoose.Types.ObjectId;
-	totals: Player2SeasonRegularSeasonStatsTeamSplitTotalDocument;
+	totals?: Player2SeasonRegularSeasonStatsTeamSplitTotalDocument;
 	adv?: Player2SeasonRegularSeasonStatsTeamSplitAdvDocument;
 };
 

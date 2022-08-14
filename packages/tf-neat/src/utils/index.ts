@@ -2,8 +2,9 @@ import rfdc from 'rfdc';
 import seedrandom from 'seedrandom';
 import Random, { RNG } from 'random';
 import { EspnScoring } from '../core/genetics/models';
-import type { PlayerStatTotals } from '@balleranalytics/nba-api-ts';
 import { nanoid } from 'nanoid';
+import type { PlayerStatTotals } from '@balleranalytics/nba-api-ts';
+import { TensorLike } from '@tensorflow/tfjs-node';
 
 /** Credit p5.org:
  *  Random # generator
@@ -49,6 +50,30 @@ export const clone = (obj: unknown) => {
 export const sleep = (milliseconds?: number) => {
 	return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
+
+export class Memory {
+	public states: TensorLike[];
+	public actions: number[];
+	public rewards: number[];
+
+	constructor() {
+		this.states = [];
+		this.actions = [];
+		this.rewards = [];
+	}
+
+	store(state: TensorLike, action: number, reward: number) {
+		this.states.push(state);
+		this.actions.push(action);
+		this.rewards.push(reward);
+	}
+
+	clear() {
+		this.states = [];
+		this.actions = [];
+		this.rewards = [];
+	}
+}
 
 const constrain = (n: number, low: number, high: number) => Math.max(Math.min(n, high), low);
 

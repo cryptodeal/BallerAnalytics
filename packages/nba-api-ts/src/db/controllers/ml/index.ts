@@ -1,4 +1,4 @@
-import { Player2, Game2, serverlessConnect } from '../../..';
+import { Player2, Game2, serverlessConnect, initConnect, endConnect } from '../../..';
 import { DQNPlayer } from './DQN';
 import config from '../../../config';
 import dayjs from 'dayjs';
@@ -66,7 +66,7 @@ export const loadPlayerData = async (year: number, batch = 10) => {
 };
 
 export const loadMlData = async (year: number, limit?: number) => {
-	await serverlessConnect(config.MONGO_URI);
+	await initConnect(true);
 	const players = !limit
 		? await Player2.fantasyDataOpt(year)
 		: await Player2.fantasyDataOptTest(year, limit);
@@ -89,6 +89,7 @@ export const loadMlData = async (year: number, limit?: number) => {
 		} as MlFantasyPlayerData;
 		parsedPlayers.push(parsed);
 	}
+	await endConnect();
 	return parsedPlayers;
 };
 

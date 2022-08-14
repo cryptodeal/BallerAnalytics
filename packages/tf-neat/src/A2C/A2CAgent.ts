@@ -9,8 +9,8 @@ import {
 	tensor4d,
 	tensor2d,
 	tensor1d,
-	multinomial,
-	log,
+	mean,
+	tensor,
 	tidy
 } from '@tensorflow/tfjs-node';
 import type {
@@ -22,13 +22,14 @@ import type {
 	Tensor1D,
 	Tensor2D
 } from '@tensorflow/tfjs-node';
-import type { DraftTask } from '../DQN/tasks';
+import { DraftTask } from './Env';
 import { seededRandom } from '../utils';
 import { TaskState } from '../DQN/tasks/types';
+import { getRandomInt } from '../DQN/utils';
 
 export class Actor_Critic_Agent {
 	public env: DraftTask;
-	public epsiodes = 0;
+	public episodes = 0;
 	public action: null | number = null;
 	public reward = 0;
 	public milestone = 0;
@@ -36,8 +37,15 @@ export class Actor_Critic_Agent {
 	public learnStep = 10;
 	public batchSize = 64;
 	public gamma = 0.99;
+	public epsilon = 0.35;
+	private epsilonInit = 0.35;
+	public actor_learning_rate = 1e-5;
+	public critic_learning_rate = 1e-5 * 5;
+	private epsilonFinal = 0.00001;
+	private epsilonIncrement: number;
+	private epsilonDecayFrames = 1e6;
+	public frameCount = 0;
 
-	public actionSize = 4;
 	public actor: Sequential;
 	public critic: LayersModel;
 
@@ -46,6 +54,7 @@ export class Actor_Critic_Agent {
 	constructor(draft: DraftTask, dims: [number, number, number]) {
 		this.env = draft;
 		this.dims = dims;
+		this.epsilonIncrement = (this.epsilonFinal - this.epsilonInit) / this.epsilonDecayFrames;
 
 		this.actor = this.createActorNetwork(...dims);
 		this.critic = this.createCriticNetwork(...dims);
@@ -79,23 +88,33 @@ export class Actor_Critic_Agent {
 			})
 		);
 		model.add(layers.flatten({}));
+		/* 
+      TODO: REVIEW/OPTIMIZE MODEL??
+    */
 		model.add(
 			layers.dense({
-				units: 16,
+				units: this.env.num_actions,
 				activation: 'relu',
 				kernelInitializer: 'glorotUniform'
 			})
 		);
 		model.add(
 			layers.dense({
-				units: 4,
+				units: this.env.num_actions * 4,
+				activation: 'relu',
+				kernelInitializer: 'glorotUniform'
+			})
+		);
+		model.add(
+			layers.dense({
+				units: this.env.num_actions,
 				activation: 'softmax',
 				kernelInitializer: 'glorotUniform'
 			})
 		);
 		model.summary();
 
-		const optimizer = train.adam(1e-4);
+		const optimizer = train.adam(this.actor_learning_rate);
 		model.compile({
 			optimizer: optimizer,
 			loss: losses.softmaxCrossEntropy
@@ -104,26 +123,81 @@ export class Actor_Critic_Agent {
 		return model;
 	}
 
-	public getAction(input: number[], epsilon?: number) {
-		if (epsilon && seededRandom() < epsilon) {
-			return Math.floor(seededRandom() * 4);
+	private randAction(actions: number[]) {
+		return actions[getRandomInt(0, actions.length)];
+	}
+
+	private weightedRandomItem = (
+		data: number[],
+		prob: Uint8Array | Float32Array | Int32Array | Array<number>
+	) => {
+		if (data.length !== prob.length) {
+			throw new Error('Data and probability arrays are not of same length');
+		}
+		const length = prob.length;
+		const validActions: number[] = [];
+
+		for (let i = 0; i < length; i++) {
+			if (!this.env.drafted_player_indices.has(data[i])) {
+				validActions.push(data[i]);
+			} else {
+				prob[i] = 0;
+			}
 		}
 
+		const rand = seededRandom();
+		let threshold = 0;
+		for (let i = 0; i < length; i++) {
+			threshold += prob[i];
+			if (threshold > rand) {
+				console.log('rand weighted prediction');
+				return data[i];
+			}
+		}
+		console.log('rand valid action');
+		return this.randAction(validActions);
+	};
+
+	public getAction(input: number[]) {
+		/*
+    if (seededRandom() < this.epsilon) {
+			const action = Math.floor(seededRandom() * this.env.num_actions);
+			console.log('Action (rand):', action);
+			return action;
+		}
+    */
+		const [dim1, dim2, dim3] = this.dims;
+
 		return tidy(() => {
-			const inputTensor = tensor4d(input, [1, this.dims[0], this.dims[1], this.dims[2]]);
+			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
 			const logits = <Tensor<Rank>>this.actor.predict(inputTensor);
 			/**
 			 * Source: the following @tensorflow/tfjs book,
 			 * Deep Learning with JavaScript - Neural Networks
 			 * in TensorFlow.js, we can use log fn to
 			 * unnormalize logits from actor pred.
-			 */
+			
 			const unnormalizedLogits = <Tensor1D>log(logits);
 
 			const actions = multinomial(unnormalizedLogits, 1, undefined, false);
-			return actions.dataSync()[0];
+			const action = actions.dataSync()[0];
+       */
+			/* TODO: USE `booleanMaskAsync` method ?? */
+			/*
+			const masked = new Array(this.env.num_actions).fill(1);
+			for (const [key] of this.env.drafted_player_indices) {
+				masked[key] = 0;
+			}
+			const boolMasked = tensor1d(masked, 'bool');
+      const policy = booleanMaskAsync(logits, boolMasked);
+      */
+			const policy = logits.dataSync();
+			const action = this.weightedRandomItem(this.env.all_actions, policy);
+			console.log('Action (pred):', action);
+			return action;
 		});
 	}
+
 	public createCriticNetwork(dim1: number, dim2: number, dim3: number) {
 		const input_state = input({ shape: [dim1, dim2, dim3] });
 		const conv1 = layers
@@ -178,7 +252,7 @@ export class Actor_Critic_Agent {
 		});
 		tempModel.summary();
 
-		const optimizer = train.adam(1e-4);
+		const optimizer = train.adam(this.critic_learning_rate);
 		tempModel.compile({
 			optimizer: optimizer,
 			loss: losses.meanSquaredError
@@ -195,51 +269,72 @@ export class Actor_Critic_Agent {
 		done: boolean
 	) {
 		let target: number[] | Tensor1D = new Array(1).fill(0);
-		let advantages: number[] | Tensor2D = new Array(this.actionSize).fill(0);
+		let advantages: number[] | Tensor2D = new Array(this.env.num_actions).fill(0);
 		const [dim1, dim2, dim3] = this.dims;
+
 		const input = tensor4d(state, [1, dim1, dim2, dim3]);
-		const nextInput = tensor4d(nextState, [1, dim1, dim2, dim3]);
+		const next_input = tensor4d(nextState, [1, dim1, dim2, dim3]);
 
 		const value = <Tensor<Rank>>this.critic.predict(input);
-		const nextValue = <Tensor<Rank>>this.critic.predict(nextInput);
+		const next_value = <Tensor<Rank>>this.critic.predict(next_input);
 
-		const valueV = value.dataSync()[0];
-		const nextValueV = nextValue.dataSync()[0];
+		const value_v = value.dataSync()[0];
+		const next_value_v = next_value.dataSync()[0];
 
 		if (done) {
-			advantages[action] = reward - valueV;
+			advantages[action] = reward - value_v;
 			target[0] = reward;
 		} else {
-			advantages[action] = reward + this.gamma * nextValueV - valueV;
-			target[0] = reward + this.gamma * nextValueV;
+			advantages[action] = reward + this.gamma * next_value_v - value_v;
+			target[0] = reward + this.gamma * next_value_v;
 		}
 
-		advantages = tensor2d(advantages, [1, this.actionSize], 'float32');
+		advantages = tensor2d(advantages, [1, this.env.num_actions], 'float32');
 		target = tensor1d(target, 'float32');
 
-		await this.actor.fit(input, advantages, { batchSize: 1, epochs: 1 }).then(() => {
-			dispose(advantages);
-		});
+		const actor_train = await this.actor
+			.fit(input, advantages, { batchSize: 1, epochs: 1 })
+			.then((val) => {
+				dispose(advantages);
+				return val;
+			});
 
-		await this.critic.fit(input, target, { batchSize: 1, epochs: 1 }).then(() => {
-			dispose(input);
-			dispose(nextInput);
-			dispose(value);
-			dispose(nextValue);
-			dispose(target);
-		});
+		const critic_train = await this.critic
+			.fit(input, target, { batchSize: 1, epochs: 1 })
+			.then((val) => {
+				dispose(input);
+				dispose(next_input);
+				dispose(value);
+				dispose(next_value);
+				dispose(target);
+				return val;
+			});
+
+		return mean(
+			tensor([critic_train.history.loss[0] as number, actor_train.history.loss[0] as number])
+		)
+			.flatten()
+			.dataSync()[0];
 	}
 
 	public step(action: number): [number, boolean, TaskState | undefined] {
-		const { state: nextState, reward, done: failed, milestone } = this.env.step(action);
+		this.epsilon =
+			this.frameCount >= this.epsilonDecayFrames
+				? this.epsilonFinal
+				: this.epsilonInit + this.epsilonIncrement * this.frameCount;
+		this.frameCount++;
+		const { state: nextState, reward, done, milestone } = this.env.step(action, true);
 		if (milestone) this.milestone++;
-		const done = failed ? failed : this.milestone === 13;
-
-		if (done || this.milestone === 13) {
-			this.reset();
-		}
 
 		return [reward, done, nextState];
+	}
+
+	public saveLocally() {
+		const rootDir = process.cwd();
+		return Promise.all([
+			this.actor.save('file://' + rootDir + `/A3C_Data/local-model-actor}`),
+			this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic`)
+		]);
 	}
 
 	public sample(population: number[], k: number) {
@@ -309,6 +404,7 @@ export class Actor_Critic_Agent {
 
 	reset() {
 		this.milestone = 0;
+		this.reward = 0;
 		this.env.reset();
 	}
 }

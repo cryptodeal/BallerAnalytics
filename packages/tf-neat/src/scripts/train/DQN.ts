@@ -21,7 +21,7 @@ const trainDQN = async () => {
 	players.splice(249);
 	util.shuffle(players);
 	const actionCount = players.length;
-	const dimensions: [number, number, number] = [actionCount, players[0].inputs.length, 1];
+	const dimensions: [number, number, number] = [actionCount, 1, players[0].inputs.length];
 	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
 	const agent = new Agent(draft, {
 		replayBufferSize: 1e4,

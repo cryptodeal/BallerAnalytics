@@ -15,23 +15,28 @@ interface MONGO_OPTS {
 }
 const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
 const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
-const opts: MONGO_OPTS = {
-	dbName: config.MONGO_DB,
-	useNewUrlParser: true
+const opts: mongoose.ConnectOptions = {
+	dbName: config.MONGO_DB
 };
 
-export const initConnect = (prod?: boolean) => {
+mongoose.connection.on('error', (err) => {
+	console.log(err);
+});
+
+export const initConnect = (prod = false) => {
 	if (prod === true) {
 		writeFileSync(digitalOceanCert, Buffer.from(config.MONGO_CLUSTER_CERT, 'base64'));
 		opts.tlsCAFile = digitalOceanCert;
-		prod = true;
+		opts.bufferCommands = false;
 	}
 	const usedURI = prod ? config.MONGO_URI : mongooseURI;
-	const usedOptions = prod ? opts : {};
-	return mongoose.connect(usedURI, usedOptions).then((mongoose) => {
-		console.log(`🟢  Mongoose connected`, mongoose.connection.host);
-		return mongoose;
-	});
+	return mongoose
+		.connect(usedURI, opts)
+		.then((mongoose) => {
+			console.log(`🟢  Mongoose connected`, mongoose.connection.host);
+			return mongoose;
+		})
+		.catch((err) => console.log(err));
 };
 
 export const endConnect = () => {
