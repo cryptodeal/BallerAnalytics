@@ -15,9 +15,9 @@ import { DraftAPI } from '../DQN/utils/Draft';
 /* TODO: tune parameters */
 
 /* TODO: Test variations of reward vals */
-export const INVALID_ROSTER_REWARD = -0.25;
-export const UNAVAIL_PLAYER_REWARD = -0.25;
-export const FAILED_DRAFT_REWARD = -1;
+export const INVALID_ROSTER_REWARD = -0.75;
+export const UNAVAIL_PLAYER_REWARD = -0.75;
+export const FAILED_DRAFT_REWARD = -1.5;
 
 export class Roster {
 	public done = false;
@@ -44,12 +44,6 @@ export class Roster {
 		this.roster['f'] = new Array(f).fill(null);
 		this.roster['util'] = new Array(util).fill(null);
 		this.roster['be'] = new Array(be).fill(null);
-	}
-
-	private testOnCurrentRoster(player: DQNPlayerLean, roster: DQNRoster) {
-		if (player.be) {
-			const tempRoster: DQNRoster = { ...roster };
-		}
 	}
 
 	private cloneLeanRoster(roster: DQNRosterLean) {
@@ -268,7 +262,7 @@ export class DraftTask {
 
 	constructor(args: DraftTaskParams) {
 		const { all_actions, dimensions, teamOpts, oppCount } = args;
-		this.draftApi = new DraftAPI(all_actions, oppCount);
+		this.draftApi = new DraftAPI(all_actions, oppCount, teamOpts);
 		this.dims = dimensions;
 		/* ensure values are non neg int */
 		assertPositiveInt(all_actions.length, 'all_actions.length');
@@ -321,8 +315,8 @@ export class DraftTask {
 		if (endIdx === 0) return;
 
 		const priorTeams = this.draftApi.draftOrder.slice(0, endIdx);
-		console.log(this.draftApi.draftOrder);
-		console.log(priorTeams);
+		// console.log(this.draftApi.draftOrder);
+		// console.log(priorTeams);
 		const priorCount = priorTeams.length;
 		for (let i = 0; i < priorCount; i++) {
 			const pick = this.draftApi.simulatePick(priorTeams[i]);
@@ -340,9 +334,9 @@ export class DraftTask {
 			return;
 		}
 
-		console.log(this.draftApi.draftOrder);
 		const laterTeams = this.draftApi.draftOrder.slice(startIdx + 1);
-		console.log(laterTeams);
+		// console.log(this.draftApi.draftOrder);
+		// console.log(laterTeams);
 
 		const laterCount = laterTeams.length;
 		for (let i = 0; i < laterCount; i++) {
@@ -370,6 +364,7 @@ export class DraftTask {
 
 		/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 		if (!validPick) {
+			console.log(`invalid pick; failed`);
 			done = true;
 			reward += UNAVAIL_PLAYER_REWARD;
 			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
@@ -377,6 +372,8 @@ export class DraftTask {
 		}
 
 		if (this.teamRoster.done) {
+			console.log(`team roster failed`);
+
 			done = true;
 			reward += INVALID_ROSTER_REWARD;
 			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
@@ -399,7 +396,7 @@ export class DraftTask {
 		}
 
 		milestone = true;
-		reward += this.draftApi.getReward(action);
+		reward += this.draftApi.getReward(action, 2);
 		this.selfState.unshift(this.pick.inputs);
 
 		/**

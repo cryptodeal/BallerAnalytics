@@ -4,6 +4,37 @@ import { getRandomInt } from '.';
 import { TeamOpts } from '../tasks/types';
 import { DraftOpp } from './Opp';
 
+export class Scaler {
+	private inMin: number;
+	private inMax: number;
+	private outMin: number;
+	private outMax: number;
+	constructor(inMin: number, inMax: number, outMin: number, outMax: number) {
+		this.inMin = inMin;
+		this.inMax = inMax;
+		this.outMin = outMin;
+		this.outMax = outMax;
+	}
+
+	scale(value: number | number[]) {
+		if (typeof value === 'number') {
+			const result =
+				((value - this.inMin) * (this.outMax - this.outMin)) / (this.inMax - this.inMin) +
+				this.outMin;
+
+			if (result < this.outMin) {
+				return this.outMin;
+			} else if (result > this.outMax) {
+				return this.outMax;
+			}
+
+			return result;
+		} else {
+			return value.map((v) => this.scale(v));
+		}
+	}
+}
+
 export class DraftAPI {
 	public players: DQNPlayer[];
 	public rewards: number[];
@@ -11,7 +42,9 @@ export class DraftAPI {
 	public draftOrder: number[];
 	public opps: DraftOpp[];
 
-	constructor(players: DQNPlayer[], oppCount = 0, rosterOpts?: TeamOpts) {
+	private Scaler!: Scaler;
+
+	constructor(players: DQNPlayer[], oppCount = 0, rosterOpts: TeamOpts) {
 		this.players = players;
 		this.teamCount = oppCount + 1;
 		this.draftOrder = this.genDraftOrder();
@@ -19,7 +52,7 @@ export class DraftAPI {
 		this.rewards = this.resetRewards();
 		this.opps = new Array(oppCount);
 		for (let i = 0; i < oppCount; i++) {
-			this.opps[i] = new DraftOpp({}, i + 2);
+			this.opps[i] = new DraftOpp(rosterOpts, i + 2);
 		}
 	}
 
@@ -50,13 +83,28 @@ export class DraftAPI {
 		if (oppIdx === -1) throw new Error(`Error: cannot find DraftOpp w pickSlot ${teamNo}`);
 		const opp = this.opps[oppIdx];
 		const needsPositions = opp.needsPositions();
-		const avail = needsPositions.length
-			? this.players.filter((p) => p.inputs[67] === 0 && p.inputs[needsPositions[0]] === 1)
-			: this.players.filter((p) => p.inputs[67] === 0);
+		let avail: DQNPlayer[] = [];
+		if (!needsPositions.length) {
+			// console.log(`any player valid`);
+			avail = this.players.filter((p) => p.inputs[67] === 0);
+		} else {
+			// console.log(`needs position players`);
+			avail = this.players.filter((p) => p.inputs[67] === 0 && p.inputs[needsPositions[0]] === 1);
+			if (avail.length === 0) avail = this.players.filter((p) => p.inputs[67] === 0);
+		}
+
+		// console.log('avail:', avail + '\n', 'avail count:', avail.length);
 		const pick = avail[getRandomInt(0, avail.length)];
-		const pickIdx = this.players.findIndex((p) => p.getId() === pick.getId());
-		this.flagDrafted(pickIdx);
-		return pickIdx;
+
+		const pickIdx = this.players.findIndex((p) => p.getId() === pick?.getId());
+		if (pickIdx === -1) {
+			console.log(`failed to draft in final round`);
+			console.log(`TODO: optimize DraftOpp algo + Roster algo (cartesian prods??)`);
+			return -1;
+		} else {
+			this.flagDrafted(pickIdx);
+			return pickIdx;
+		}
 	}
 
 	public reverseDraftOrder() {
@@ -71,10 +119,16 @@ export class DraftAPI {
 	}
 
 	private resetRewards() {
-		return this.minMaxScale(
-			this.players.map((p) => p.reward),
-			true
-		).map((x) => x + 1);
+		const rewardsArr = this.players.map((p) => p.reward);
+
+		if (!this.Scaler) {
+			const inMin = Math.min(...rewardsArr);
+			const inMax = Math.max(...rewardsArr);
+			const outMin = 1;
+			const outMax = 3;
+			this.Scaler = new Scaler(inMin, inMax, outMin, outMax);
+		}
+		return this.Scaler.scale(rewardsArr);
 	}
 
 	/**
@@ -88,7 +142,7 @@ export class DraftAPI {
 		return order;
 	}
 
-	private minMaxScale = (inputs: number[], minZero = false) => {
+	private minMaxScale = (inputs: number[], minZero: boolean, base?: number) => {
 		let min = minZero ? 0 : Infinity;
 		let max = -Infinity;
 		const count = inputs.length;
@@ -100,7 +154,7 @@ export class DraftAPI {
 
 		const scaled: number[] = new Array(count);
 		for (let i = 0; i < count; i++) {
-			scaled[i] = (inputs[i] - min) / max;
+			scaled[i] = (inputs[i] - min) / max + (base ? base : 0);
 		}
 		return scaled;
 	};

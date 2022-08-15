@@ -10,6 +10,7 @@ export type SavedPlayerData = {
 		inputs: number[];
 		labels: number[];
 	};
+	positionEncd: PositionEncoded;
 };
 
 export type PlayerStatTotals = {

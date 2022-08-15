@@ -1,5 +1,4 @@
 import { DQNPlayer, loadDQNPlayers, type SavedPlayerData } from '@balleranalytics/nba-api-ts';
-import { access, constants } from 'fs';
 import { readFile } from 'fs/promises';
 import { util } from '@tensorflow/tfjs-node';
 import { DraftTask } from '../../A2C/Env';
@@ -43,10 +42,12 @@ const trainA2C = async () => {
 	const moving_avg = new MovingAverager(100);
 	let best_self_moving_avg = 0;
 	const players = await getData();
-	players.splice(256);
+	console.log(players.length);
+	players.splice(289);
 	console.log(players.length);
 	util.shuffle(players);
-	const dimensions: [number, number, number] = [16, 16, players[0].inputs.length];
+	const actionSqrt = Math.sqrt(players.length);
+	const dimensions: [number, number, number] = [actionSqrt, actionSqrt, players[0].inputs.length];
 	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 5 });
 	const agent = new Actor_Critic_Agent(draft, dimensions);
 	while (true) {
@@ -63,7 +64,7 @@ const trainA2C = async () => {
 			const state = agent.env.getState().e.flat();
 			let ep_loss = 0;
 
-			const action = agent.getAction(state);
+			const action = await agent.getAction(state);
 			const [reward, done, nextTaskState] = agent.step(action);
 
 			agent.reward += reward;

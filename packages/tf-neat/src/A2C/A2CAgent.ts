@@ -1,4 +1,5 @@
 import {
+	booleanMaskAsync,
 	dispose,
 	sequential,
 	layers,
@@ -10,6 +11,8 @@ import {
 	tensor2d,
 	tensor1d,
 	mean,
+	log,
+	multinomial,
 	tensor,
 	tidy
 } from '@tensorflow/tfjs-node';
@@ -140,8 +143,6 @@ export class Actor_Critic_Agent {
 		for (let i = 0; i < length; i++) {
 			if (!this.env.drafted_player_indices.has(data[i])) {
 				validActions.push(data[i]);
-			} else {
-				prob[i] = 0;
 			}
 		}
 
@@ -158,7 +159,7 @@ export class Actor_Critic_Agent {
 		return this.randAction(validActions);
 	};
 
-	public getAction(input: number[]) {
+	public async getAction(input: number[]) {
 		/*
     if (seededRandom() < this.epsilon) {
 			const action = Math.floor(seededRandom() * this.env.num_actions);
@@ -167,33 +168,34 @@ export class Actor_Critic_Agent {
 		}
     */
 		const [dim1, dim2, dim3] = this.dims;
+		const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
+		const logits = <Tensor<Rank>>this.actor.predict(inputTensor);
 
+		/**
+		 * Source: the following @tensorflow/tfjs book,
+		 * Deep Learning with JavaScript - Neural Networks
+		 * in TensorFlow.js, we can use log fn to
+		 * unnormalize logits from actor pred.
+		 */
+		/* TODO: USE `booleanMaskAsync` method ?? */
+
+		const masked = new Array(this.env.num_actions).fill(1);
+		for (const [key] of this.env.drafted_player_indices) {
+			masked[key] = 0;
+		}
+		// logits.print(true);
+		const boolMasked = tensor(masked, [1, 289], 'bool');
+		// boolMasked.print(true);
+
+		const policy = await booleanMaskAsync(logits, boolMasked);
+		// policy.print(true);
+		dispose(logits);
+		dispose(boolMasked);
 		return tidy(() => {
-			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
-			const logits = <Tensor<Rank>>this.actor.predict(inputTensor);
-			/**
-			 * Source: the following @tensorflow/tfjs book,
-			 * Deep Learning with JavaScript - Neural Networks
-			 * in TensorFlow.js, we can use log fn to
-			 * unnormalize logits from actor pred.
-			
-			const unnormalizedLogits = <Tensor1D>log(logits);
+			const unnormalized_policy = <Tensor1D>log(policy);
 
-			const actions = multinomial(unnormalizedLogits, 1, undefined, false);
+			const actions = multinomial(unnormalized_policy, 1, undefined, false);
 			const action = actions.dataSync()[0];
-       */
-			/* TODO: USE `booleanMaskAsync` method ?? */
-			/*
-			const masked = new Array(this.env.num_actions).fill(1);
-			for (const [key] of this.env.drafted_player_indices) {
-				masked[key] = 0;
-			}
-			const boolMasked = tensor1d(masked, 'bool');
-      const policy = booleanMaskAsync(logits, boolMasked);
-      */
-			const policy = logits.dataSync();
-			const action = this.weightedRandomItem(this.env.all_actions, policy);
-			console.log('Action (pred):', action);
 			return action;
 		});
 	}

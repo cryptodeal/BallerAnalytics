@@ -269,7 +269,7 @@ export class DraftTask {
 
 	constructor(args: DraftTaskParams) {
 		const { all_actions, dimensions, teamOpts, oppCount } = args;
-		this.draftApi = new DraftAPI(all_actions);
+		this.draftApi = new DraftAPI(all_actions, 0, teamOpts);
 		this.dims = dimensions;
 		/* ensure values are non neg int */
 		assertPositiveInt(all_actions.length, 'all_actions.length');

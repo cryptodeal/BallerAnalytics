@@ -5,6 +5,16 @@ import type { DQNParsedGame, PlayerStatTotals, PositionEncoded, SavedPlayerData 
 import type { Game2Object, Player2Document } from '../../..';
 import type { MlFantasyPlayerData } from '../../models/Player2';
 
+export enum PositionsIdxs {
+	PG = 68,
+	SG,
+	SF,
+	PF,
+	C,
+	G,
+	F
+}
+
 /* TODO: Write class of player for DQN Model API */
 export class DQNPlayer {
 	private _id: Player2Document['_id'];
@@ -43,13 +53,14 @@ export class DQNPlayer {
 			this.trainParsedGameStats = this.parseGames(trainingGameStats);
 			this.initRawData(this.trainParsedGameStats, this.latestGameStats);
 		} else {
-			const { _id, name, rawData } = <SavedPlayerData>playerData;
+			const { _id, name, rawData, positionEncd } = <SavedPlayerData>playerData;
 			this._id = castToObjectId(_id);
 			this.name = name;
 			const { inputs, labels } = rawData;
 			this.rawData = { inputs, labels };
 			this.inputs = inputs;
 			this.labels = labels;
+			this.positionEncd = positionEncd;
 		}
 	}
 
@@ -72,7 +83,8 @@ export class DQNPlayer {
 		return <SavedPlayerData>{
 			_id: this.getId(),
 			name: this.name,
-			rawData: this.rawData
+			rawData: this.rawData,
+			positionEncd: this.positionEncd
 		};
 	}
 
