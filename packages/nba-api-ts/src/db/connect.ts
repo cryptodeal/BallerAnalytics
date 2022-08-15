@@ -2,17 +2,7 @@ import mongoose from 'mongoose';
 import config from '../config';
 import { tmpdir } from 'os';
 import { writeFileSync } from 'fs';
-interface MONGO_OPTS {
-	useNewUrlParser?: boolean;
-	useUnifiedTopology?: boolean;
-	tlsCAFile?: string;
-	tlsCertificateKeyFile?: string;
-	sslValidate?: boolean;
-	ssl?: boolean;
-	tlsInsecure?: boolean;
-	sslCert?: string;
-	dbName: string;
-}
+
 const mongooseURI = `mongodb://${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`;
 const digitalOceanCert = `${tmpdir()}/ca-certificate.cer`;
 const opts: mongoose.ConnectOptions = {

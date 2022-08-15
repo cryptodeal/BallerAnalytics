@@ -263,12 +263,12 @@ export class DraftTask {
 	private selfState: number[][] = [];
 	private envState: number[][] = [];
 	private teamOpts: TeamOpts;
-	public pickSlot!: number;
+	public pickSlot = 1;
 	private pick!: DQNPlayer;
 
 	constructor(args: DraftTaskParams) {
 		const { all_actions, dimensions, teamOpts, oppCount } = args;
-		this.draftApi = new DraftAPI(all_actions);
+		this.draftApi = new DraftAPI(all_actions, oppCount);
 		this.dims = dimensions;
 		/* ensure values are non neg int */
 		assertPositiveInt(all_actions.length, 'all_actions.length');
@@ -315,8 +315,14 @@ export class DraftTask {
 	}
 
 	simulatePriorPicks(teamNo: number) {
+		console.log(`simulating prior picks in round`);
 		const endIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
+		/* if no picks prior, return */
+		if (endIdx === 0) return;
+
 		const priorTeams = this.draftApi.draftOrder.slice(0, endIdx);
+		console.log(this.draftApi.draftOrder);
+		console.log(priorTeams);
 		const priorCount = priorTeams.length;
 		for (let i = 0; i < priorCount; i++) {
 			const pick = this.draftApi.simulatePick(priorTeams[i]);
@@ -326,14 +332,25 @@ export class DraftTask {
 	}
 
 	simulateLaterPicks(teamNo: number) {
-		const startIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo) + 1;
-		const laterTeams = this.draftApi.draftOrder.slice(startIdx);
+		console.log(`simulating remaining picks in round`);
+		const startIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
+		/* if no picks after, reverse order & return */
+		if (startIdx === this.draftApi.draftOrder.length - 1) {
+			this.draftApi.reverseDraftOrder();
+			return;
+		}
+
+		console.log(this.draftApi.draftOrder);
+		const laterTeams = this.draftApi.draftOrder.slice(startIdx + 1);
+		console.log(laterTeams);
+
 		const laterCount = laterTeams.length;
 		for (let i = 0; i < laterCount; i++) {
 			const pick = this.draftApi.simulatePick(laterTeams[i]);
 			this.drafted_player_indices.set(pick, true);
 			this.envState[pick] = this.draftApi.getPlayerInputs(pick);
 		}
+		this.draftApi.reverseDraftOrder();
 	}
 
 	/**
@@ -404,7 +421,6 @@ export class DraftTask {
 	private init() {
 		/* reset state of task actor */
 		this.selfState = [];
-		this.pickSlot = getRandomInt(0, this.oppCount + 1);
 	}
 
 	private initEnv() {

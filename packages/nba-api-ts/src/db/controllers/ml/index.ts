@@ -2,7 +2,7 @@ import { Player2, Game2, serverlessConnect, initConnect, endConnect } from '../.
 import { DQNPlayer } from './DQN';
 import config from '../../../config';
 import dayjs from 'dayjs';
-import { writeFile } from 'fs';
+import { writeFile } from 'fs/promises';
 import type { Player2Object, Game2Object, Player2Document, Game2Document } from '../../..';
 import type {
 	SznGames,
@@ -39,6 +39,7 @@ export enum PositionIdx {
 	G = 5,
 	F = 6
 }
+const { cwd } = process;
 
 export const loadPlayerData = async (year: number, batch = 10) => {
 	await serverlessConnect(config.MONGO_URI);
@@ -74,8 +75,12 @@ export const loadMlData = async (year: number, limit?: number) => {
 	const parsedPlayers: MlFantasyPlayerData[] = new Array(playerCount);
 	for (let i = 0; i < playerCount; i++) {
 		const player = players[i];
+		const [latestGameStats, trainingGameStats] = await Promise.all([
+			Game2.getFantasyGames(player._id, player.latestGames),
+			Game2.getFantasyGames(player._id, player.trainingGames)
+		]);
 
-		const parsed: MlFantasyPlayerData = {
+		const parsed = {
 			name: {
 				full: player.name.full
 			},
@@ -84,19 +89,26 @@ export const loadMlData = async (year: number, limit?: number) => {
 			_id: player._id,
 			gpSum: player.gpSum,
 			gsSum: player.gsSum,
-			latestGameStats: await Game2.getFantasyGames(player._id, player.latestGames),
-			trainingGameStats: await Game2.getFantasyGames(player._id, player.trainingGames)
+			latestGameStats,
+			trainingGameStats
 		} as MlFantasyPlayerData;
+
 		parsedPlayers.push(parsed);
 	}
+
 	await endConnect();
 	return parsedPlayers;
 };
 
 export const loadDQNPlayers = (year = 2021, limit?: number) => {
-	return loadMlData(year, limit).then((players) => {
-		return players.map((p) => new DQNPlayer(p)).filter((p) => p !== undefined);
-	});
+	return loadMlData(year, limit)
+		.then((players) => {
+			return players.map((p) => new DQNPlayer(p)).filter((p) => p !== undefined);
+		})
+		.then(async (players) => {
+			await savePlayerData(players.map((p) => p.toJSON()));
+			return players;
+		});
 };
 
 export const loadNEATPlayers = (year = 2021, limit?: number) => {
@@ -105,17 +117,30 @@ export const loadNEATPlayers = (year = 2021, limit?: number) => {
 	});
 };
 
-export const savePlayerData = (data: MlFantasyPlayerData[]) => {
-	return writeFile(
-		`${process.cwd()}/data/DQNPlayers.json`,
-		'[' + data.map((el) => JSON.stringify(el)).join(',') + ']',
-		(err) => {
-			if (err) {
-				throw err;
-			}
-			console.log(`🟢  DQNPlayers.json saved!`);
+export const recursiveStringify = (data: unknown[]) => {
+	let savedData = '';
+	const length = data.length;
+	for (let i = 0; i < length; i++) {
+		switch (i) {
+			case 0:
+				savedData += '[' + JSON.stringify(data[i]) + ',';
+				break;
+			case length - 1:
+				savedData += JSON.stringify(data[i]) + ']';
+				break;
+			default:
+				savedData += JSON.stringify(data[i]) + ',';
+				break;
 		}
-	);
+	}
+	return savedData;
+};
+
+export const savePlayerData = (data: unknown[]) => {
+	const rootDir = cwd();
+	return writeFile(rootDir + '/data/rlDraftData.json', JSON.stringify({ data: data }, null, 2))
+		.then(() => console.log(`🟢  Saved Draft Data to ${rootDir}/data/rlDraftData.json!`))
+		.catch(console.log);
 };
 
 export const calcFantasyPoints = (

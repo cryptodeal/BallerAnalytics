@@ -1,17 +1,17 @@
-// import { Player2, Game2 } from '../../..';
 import dayjs from 'dayjs';
-import { PositionIdx, calcFantasyPoints /*,EspnScoring*/ } from '.';
-import type { DQNParsedGame, PlayerStatTotals, PositionEncoded } from './types';
-import type { /*Player2Object,*/ Game2Object, Player2Document /*, Game2Document*/ } from '../../..';
+import { PositionIdx, calcFantasyPoints } from '.';
+import { castToObjectId } from '../../..';
+import type { DQNParsedGame, PlayerStatTotals, PositionEncoded, SavedPlayerData } from './types';
+import type { Game2Object, Player2Document } from '../../..';
 import type { MlFantasyPlayerData } from '../../models/Player2';
 
 /* TODO: Write class of player for DQN Model API */
 export class DQNPlayer {
 	private _id: Player2Document['_id'];
-	private gpSum: number;
-	private gsSum: number;
+	private gpSum!: number;
+	private gsSum!: number;
 	private birthDate!: Date;
-	public name: {
+	public name!: {
 		full: string;
 		display?: string;
 	};
@@ -27,18 +27,30 @@ export class DQNPlayer {
 	public labels: number[] = [];
 	public isInvalid = false;
 	public rawData!: { inputs: number[]; labels: number[] };
-	constructor(playerData: MlFantasyPlayerData) {
-		const { _id, gpSum, gsSum, birthDate, position, name, latestGameStats, trainingGameStats } =
-			playerData;
-		this._id = _id;
-		this.gpSum = gpSum;
-		this.gsSum = gsSum;
-		if (birthDate) this.birthDate = birthDate;
-		if (position) this.encodePositions(position);
-		this.name = name;
-		this.latestGameStats = this.parseGames(latestGameStats);
-		this.trainParsedGameStats = this.parseGames(trainingGameStats);
-		this.initRawData(this.trainParsedGameStats, this.latestGameStats);
+
+	constructor(playerData: MlFantasyPlayerData | SavedPlayerData, fromSaved = false) {
+		if (!fromSaved) {
+			const { _id, gpSum, gsSum, birthDate, position, name, latestGameStats, trainingGameStats } = <
+				MlFantasyPlayerData
+			>playerData;
+			this._id = _id;
+			this.gpSum = gpSum;
+			this.gsSum = gsSum;
+			if (birthDate) this.birthDate = birthDate;
+			if (position) this.encodePositions(position);
+			this.name = name;
+			this.latestGameStats = this.parseGames(latestGameStats);
+			this.trainParsedGameStats = this.parseGames(trainingGameStats);
+			this.initRawData(this.trainParsedGameStats, this.latestGameStats);
+		} else {
+			const { _id, name, rawData } = <SavedPlayerData>playerData;
+			this._id = castToObjectId(_id);
+			this.name = name;
+			const { inputs, labels } = rawData;
+			this.rawData = { inputs, labels };
+			this.inputs = inputs;
+			this.labels = labels;
+		}
 	}
 
 	/* resets inputs, labels, and rawData */
@@ -54,6 +66,14 @@ export class DQNPlayer {
 
 	public getId() {
 		return this._id.toString();
+	}
+
+	public toJSON() {
+		return <SavedPlayerData>{
+			_id: this.getId(),
+			name: this.name,
+			rawData: this.rawData
+		};
 	}
 
 	private calcStatSums(games: DQNParsedGame[], count: number) {

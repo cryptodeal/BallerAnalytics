@@ -1,7 +1,6 @@
 node_modules
 coverage
 dist/
-data/
 tsconfig.tsbuildinfo
 .turbo
 A3C_Data

@@ -1,44 +1,67 @@
-import { loadDQNPlayers } from '@balleranalytics/nba-api-ts';
+import { DQNPlayer, loadDQNPlayers, type SavedPlayerData } from '@balleranalytics/nba-api-ts';
+import { access, constants } from 'fs';
+import { readFile } from 'fs/promises';
 import { util } from '@tensorflow/tfjs-node';
 import { DraftTask } from '../../A2C/Env';
 import { Actor_Critic_Agent } from '../../A2C/A2CAgent';
 import type { TeamOpts } from '../../DQN/tasks/types';
 import { MovingAverager } from '../../utils';
+import { fileExists } from '../../A3C_Exp/utils';
 
 const teamOpts: TeamOpts = { pg: 1, sg: 1, sf: 1, pf: 1, f: 1, c: 1, g: 1, util: 3, be: 3 };
+const { cwd } = process;
+
+const getData = async () => {
+	const rootDir = cwd();
+	const exists = await fileExists(rootDir + '/data/rlDraftData.json');
+	if (exists) {
+		const draftData = await readFile(rootDir + '/data/rlDraftData.json', 'utf8');
+		const { data } = JSON.parse(draftData) as { data: SavedPlayerData[] };
+		return data
+			.map((p) => new DQNPlayer(p, true))
+			.filter(
+				(p) =>
+					p.labels[0] > 500 &&
+					!p.inputs.filter((i) => Number.isNaN(i)).length &&
+					!p.labels.filter((i) => Number.isNaN(i)).length
+			)
+			.sort((a, b) => a.labels[0] - b.labels[0]);
+	} else {
+		const players = (await loadDQNPlayers(2021))
+			.filter(
+				(p) =>
+					p.labels[0] > 500 &&
+					!p.inputs.filter((i) => Number.isNaN(i)).length &&
+					!p.labels.filter((i) => Number.isNaN(i)).length
+			)
+			.sort((a, b) => a.labels[0] - b.labels[0]);
+		return players;
+	}
+};
 
 const trainA2C = async () => {
 	const moving_avg = new MovingAverager(100);
 	let best_self_moving_avg = 0;
-	const players = (await loadDQNPlayers(2021))
-		.filter(
-			(p) =>
-				p.labels[0] > 500 &&
-				!p.inputs.filter((i) => Number.isNaN(i)).length &&
-				!p.labels.filter((i) => Number.isNaN(i)).length
-		)
-		.sort((a, b) => a.labels[0] - b.labels[0]);
+	const players = await getData();
 	players.splice(256);
 	console.log(players.length);
 	util.shuffle(players);
 	const dimensions: [number, number, number] = [16, 16, players[0].inputs.length];
-	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 1 });
+	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 5 });
 	const agent = new Actor_Critic_Agent(draft, dimensions);
 	while (true) {
 		/* TODO: REMOVE?? --> const time_count = 0; */
 		while (true) {
-			/* 
-        TODO: SIMULATE PICKS
-       agent.env.simulatePriorPicks(agent.env.pickSlot);
-      */
-			let state = agent.env.getState().e.flat();
-
-			let ep_loss = 0;
-			// TODO: REWRITE BELOW
 			console.log(
 				`Episode ${agent.episodes}: ${agent.milestone + 1} / 13}
-        --------------------`
+          --------------------`
 			);
+
+			/* simulate picks from competitors prior in round */
+			agent.env.simulatePriorPicks(agent.env.pickSlot);
+
+			const state = agent.env.getState().e.flat();
+			let ep_loss = 0;
 
 			const action = agent.getAction(state);
 			const [reward, done, nextTaskState] = agent.step(action);
@@ -71,12 +94,11 @@ const trainA2C = async () => {
 				agent.reset();
 				break;
 			}
-			/* 
-        TODO: SIMULATE PICKS
-       agent.env.simulateLaterPicks(agent.env.pickSlot);
-      */
+
+			/* simulate picks from competitors later in round */
+			agent.env.simulateLaterPicks(agent.env.pickSlot);
+
 			agent.frameCount++;
-			state = next_state;
 		}
 		agent.episodes += 1;
 	}

@@ -1,5 +1,17 @@
 import type { Player2Object, Player2Season } from '../../../';
 
+export type SavedPlayerData = {
+	_id: string;
+	name: {
+		full: string;
+		display?: string;
+	};
+	rawData: {
+		inputs: number[];
+		labels: number[];
+	};
+};
+
 export type PlayerStatTotals = {
 	fantasyPts?: number;
 	minutes?: number;
