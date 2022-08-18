@@ -507,7 +507,7 @@ export class DraftTask {
 		this.init();
 		this.draftApi.reset();
 		this.drafted_player_indices = new Map();
-		this.teamRoster.reset();
+		this.teamRoster = new Roster(this.teamOpts);
 		this.initEnv();
 		return this.getState();
 	}
