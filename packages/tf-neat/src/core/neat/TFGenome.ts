@@ -24,7 +24,7 @@ export class TFGenome {
 			const inputNodes = nodes.filter((node) => node.type === NodeType.INPUT);
 			const outputsNodes = nodes.filter((node) => node.type === NodeType.OUTPUT);
 			nodes = nodes.filter((node) => node.type !== NodeType.INPUT);
-			const inputNodeCount = inputs.length;
+			const inputNodeCount = inputNodes.length;
 			if (inputs.length !== inputNodeCount) {
 				throw new Error('mismatch inputs length' + inputs.length + ' vs ' + inputNodeCount);
 			}

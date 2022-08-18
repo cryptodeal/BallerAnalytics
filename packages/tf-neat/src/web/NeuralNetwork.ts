@@ -10,7 +10,7 @@ export class NeuralNetwork extends BaseModel {
 	createModel() {
 		const model = sequential({
 			layers: [
-				/* relu activated input layer w 15 neurons */
+				/* relu activated input layer w 100 neurons */
 				layers.dense({ units: 100, inputShape: [15], activation: 'relu' }),
 				/* sigmoid activation effective w 100 neurons on input layer */
 				layers.dense({ units: 100, activation: 'relu' }),

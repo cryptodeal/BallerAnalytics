@@ -49,7 +49,7 @@ const trainA2C = async () => {
 	const actionSqrt = Math.sqrt(players.length);
 	const dimensions: [number, number, number] = [actionSqrt, actionSqrt, players[0].inputs.length];
 	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 5 });
-	const agent = new Actor_Critic_Agent(draft, dimensions);
+	const agent = await Actor_Critic_Agent.build(draft, dimensions);
 	while (true) {
 		/* TODO: REMOVE?? --> const time_count = 0; */
 		while (true) {
@@ -65,7 +65,7 @@ const trainA2C = async () => {
 			let ep_loss = 0;
 
 			const action = await agent.getAction(state);
-			const [reward, done, nextTaskState] = agent.step(action);
+			const [reward, done, nextTaskState] = await agent.step(action);
 
 			agent.reward += reward;
 
@@ -84,7 +84,7 @@ const trainA2C = async () => {
 						`Loss: ${ep_loss.toFixed(4)}, ` +
 						`Reward: ${agent.reward}, ` +
 						`Reward Moving Avg (100 Eps): ${current_moving_avg.toFixed(4)}`
-					// `(epsilon=${agent.epsilon.toFixed(3)})\n`
+					//`(epsilon=${agent.epsilon.toFixed(3)})\n`
 				);
 
 				if (current_moving_avg > best_self_moving_avg) {

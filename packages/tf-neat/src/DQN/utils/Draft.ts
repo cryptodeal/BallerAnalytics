@@ -125,7 +125,7 @@ export class DraftAPI {
 			const inMin = Math.min(...rewardsArr);
 			const inMax = Math.max(...rewardsArr);
 			const outMin = 1;
-			const outMax = 3;
+			const outMax = 2;
 			this.Scaler = new Scaler(inMin, inMax, outMin, outMax);
 		}
 		return this.Scaler.scale(rewardsArr);

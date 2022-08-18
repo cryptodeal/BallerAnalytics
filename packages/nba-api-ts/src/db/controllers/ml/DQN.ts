@@ -5,6 +5,8 @@ import type { DQNParsedGame, PlayerStatTotals, PositionEncoded, SavedPlayerData 
 import type { Game2Object, Player2Document } from '../../..';
 import type { MlFantasyPlayerData } from '../../models/Player2';
 
+export type RosterEncd = [number, number, number, number, number, number, number, number, number];
+
 export enum PositionsIdxs {
 	PG = 68,
 	SG,
@@ -149,6 +151,10 @@ export class DQNPlayer {
 			fp,
 			exp: seasons.size
 		};
+	}
+
+	public getRosterEncoding() {
+		return <RosterEncd>[...this.inputs.slice(68, 75), 1, 1];
 	}
 
 	public calcAverages(games: DQNParsedGame[]) {

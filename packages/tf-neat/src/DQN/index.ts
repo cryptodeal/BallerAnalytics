@@ -1,12 +1,6 @@
 import { train as trainer, sequential, layers, node } from '@tensorflow/tfjs-node';
 import { MovingAverager } from '../utils';
-import type {
-	Sequential,
-	LayersModel,
-	RMSPropOptimizer,
-	SGDOptimizer,
-	AdamOptimizer
-} from '@tensorflow/tfjs-node';
+import type { Sequential, LayersModel } from '@tensorflow/tfjs-node';
 import type { Agent } from './Agent';
 import type { SummaryFileWriter } from '@tensorflow/tfjs-node/dist/tensorboard';
 
@@ -15,23 +9,6 @@ export enum DQNOptimizers {
 	SGD = 'sgd',
 	Adam = 'adam'
 }
-
-type RMSPropFn = (
-	learningRate: number,
-	decay?: number | undefined,
-	momentum?: number | undefined,
-	epsilon?: number | undefined,
-	centered?: boolean | undefined
-) => RMSPropOptimizer;
-
-type SGDFn = (learningRate: number) => SGDOptimizer;
-
-type AdamFn = (
-	learningRate?: number | undefined,
-	beta1?: number | undefined,
-	beta2?: number | undefined,
-	epsilon?: number | undefined
-) => AdamOptimizer;
 
 export const createDeepQNetwork = (
 	dim1: number,
@@ -90,37 +67,6 @@ export const createDeepQNetwork = (
 	return model;
 };
 
-const tuneHyperparams = async ({ optimizer, learningRate }) => {
-	const optimizers: Record<DQNOptimizers, RMSPropFn | SGDFn | AdamFn> = {
-		rmsprop: trainer.rmsprop,
-		sgd: trainer.sgd,
-		adam: trainer.adam
-	};
-
-	/* create a simple model *
-	const model = tf.sequential();
-	model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
-	// Prepare the model for training: Specify the loss and the optimizer.
-	model.compile({
-		loss: 'meanSquaredError',
-		optimizer: optimizers[optimizer](learningRate)
-	});
-	// train the model using the data.
-	const h = await model.fit(xs, ys, { epochs: 250 });
-	// print out each optimizer and its loss
-	console.log(
-		'opt: ',
-		optimizer,
-		', LR: ',
-		learningRate,
-		', loss: ',
-		h.history.loss[h.history.loss.length - 1]
-	);
-	// return the model, loss, and status
-	return { model, loss: h.history.loss[h.history.loss.length - 1], status: hpjs.STATUS_OK };
-*/
-};
-
 export async function train(
 	agent: Agent,
 	batchSize: number,
@@ -132,11 +78,6 @@ export async function train(
 	savePath: string,
 	logDir: string | null
 ) {
-	const optimizers: Record<DQNOptimizers, RMSPropFn | SGDFn | AdamFn> = {
-		rmsprop: trainer.rmsprop,
-		sgd: trainer.sgd,
-		adam: trainer.adam
-	};
 	let summaryWriter: SummaryFileWriter | null = null;
 	if (logDir != null) {
 		summaryWriter = node.summaryFileWriter(logDir);

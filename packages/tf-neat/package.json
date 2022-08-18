@@ -30,6 +30,8 @@
     "train:A2C": "node --experimental-specifier-resolution=node dist/scripts/train/A2C",
     "train:DQN": "node --experimental-specifier-resolution=node dist/scripts/train/DQN",
     "train:NEAT": "node --experimental-specifier-resolution=node dist/scripts/train/NEAT",
+    "train:RosterNEAT": "node --experimental-specifier-resolution=node dist/scripts/train/RosterNEAT",
+    "train:RosterML": "node --experimental-specifier-resolution=node dist/scripts/train/RosterML",
     "test:coverage": "c8 pnpm test"
   },
   "repository": {
@@ -52,8 +54,8 @@
     "@types/cytoscape": "^3.19.7",
     "@types/deep-equal": "^1.0.1",
     "@types/ws": "^8.5.3",
-    "@typescript-eslint/eslint-plugin": "^5.33.0",
-    "@typescript-eslint/parser": "^5.33.0",
+    "@typescript-eslint/eslint-plugin": "^5.33.1",
+    "@typescript-eslint/parser": "^5.33.1",
     "c8": "^7.12.0",
     "chalk": "^5.0.1",
     "eslint": "^8.22.0",

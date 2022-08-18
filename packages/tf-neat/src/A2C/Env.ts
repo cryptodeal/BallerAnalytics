@@ -1,5 +1,6 @@
 import { assertPositiveInt, getRandomInt } from '../DQN/utils';
 import { buffer } from '@tensorflow/tfjs-node';
+import { readFile, writeFile } from 'fs/promises';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
 import type {
 	TeamOpts,
@@ -11,17 +12,171 @@ import type {
 } from '../DQN/tasks/types';
 import { DQNPlayer, DQNPlayerLean } from '@balleranalytics/nba-api-ts';
 import { DraftAPI } from '../DQN/utils/Draft';
+import { fileExists } from '../A3C_Exp/utils';
+import { seededRandom } from '../utils';
 
 /* TODO: tune parameters */
 
 /* TODO: Test variations of reward vals */
 export const INVALID_ROSTER_REWARD = -0.75;
 export const UNAVAIL_PLAYER_REWARD = -0.75;
-export const FAILED_DRAFT_REWARD = -1.5;
+export const FAILED_DRAFT_REWARD = -1;
+
+type RosterEncd = [number, number, number, number, number, number, number, number, number];
+
+enum RosterPos {
+	PG,
+	SG,
+	SF,
+	PF,
+	C,
+	G,
+	F,
+	UTIL,
+	BE
+}
+
+export class LeanRoster {
+	private playerPool: RosterEncd[] = [];
+	public done = false;
+	public rosterVariants: RosterEncd[] = [];
+	private pg: number;
+	private sg: number;
+	private sf: number;
+	private pf: number;
+	private c: number;
+	private f: number;
+	private util: number;
+	private be: number;
+
+	private genRoster = (): RosterEncd => <RosterEncd>new Array(9).fill(0);
+
+	private copyVariant = (variant: RosterEncd) => {
+		const newVariant = this.genRoster();
+		for (let i = 0; i < 9; i++) {
+			newVariant[i] = variant[i];
+		}
+		return newVariant;
+	};
+
+	constructor(opts: TeamOpts) {
+		const { pg, sg, sf, pf, c, f, util, be } = opts;
+		this.pg = pg;
+		this.sg = sg;
+		this.sf = sf;
+		this.pf = pf;
+		this.c = c;
+		this.f = f;
+		this.util = util;
+		this.be = be;
+	}
+
+	private testVariant(variant: RosterEncd, slot: number) {
+		switch (slot) {
+			case RosterPos.PG:
+				return variant[RosterPos.PG] <= this.pg;
+			case RosterPos.SG:
+				return variant[RosterPos.SG] <= this.sg;
+			case RosterPos.SF:
+				return variant[RosterPos.SF] <= this.sf;
+			case RosterPos.PF:
+				return variant[RosterPos.PF] <= this.pf;
+			case RosterPos.C:
+				return variant[RosterPos.C] <= this.c;
+			case RosterPos.G:
+				return variant[RosterPos.G] <= this.f;
+			case RosterPos.F:
+				return variant[RosterPos.F] <= this.f;
+			case RosterPos.UTIL:
+				return variant[RosterPos.UTIL] <= this.util;
+			default:
+				return variant[RosterPos.BE] <= this.be;
+		}
+	}
+
+	private totalCount = (arr: number[]): Map<number, number> =>
+		arr.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
+
+	public addPick(pstnEncd: RosterEncd) {
+		this.playerPool.push(pstnEncd);
+		let validFound = false;
+		this.playerPool.sort((a, b) => {
+			const tempA = this.totalCount(a);
+			const aVals = [...tempA.values()];
+
+			const tempB = this.totalCount(b);
+			const bVals = [...tempB.values()];
+			if (bVals[1] > aVals[1]) return 1;
+			if (bVals[1] < aVals[1]) return -1;
+			return 0;
+		});
+		const variants: RosterEncd[] = [];
+		const poolSize = this.playerPool.length;
+		for (let i = 0; i < poolSize; i++) {
+			for (let j = 0; j < 9; j++) {
+				if (i === 0) {
+					const tempRoster = this.genRoster();
+					if (this.playerPool[i][j] === 1) {
+						tempRoster[j] += 1;
+						if (this.testVariant(tempRoster, j)) {
+							variants.push(tempRoster);
+							if (i === poolSize - 1) {
+								validFound = true;
+								break;
+							}
+						}
+					}
+				} else {
+					const variantSize = variants.length;
+					for (let k = 0; k < variantSize; k++) {
+						if (this.playerPool[i][j] === 1) {
+							const variantCopy = this.copyVariant(variants[k]);
+							variantCopy[j] += 1;
+							if (this.testVariant(variantCopy, j)) {
+								variants.push(variantCopy);
+								if (i === poolSize - 1) {
+									validFound = true;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return validFound;
+	}
+}
+
+export type RosterDatumInputs = [
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd,
+	RosterEncd
+];
+
+export type RosterDatum = {
+	inputs: RosterDatumInputs;
+	labels: [0 | 1];
+};
+
+export type RosterDataSet = {
+	data: RosterDatum[];
+};
 
 export class Roster {
 	public done = false;
 	private opts: TeamOpts;
+	private data_size = 0;
 	public playerPool: DQNPlayer[] = [];
 	private roster: DQNRoster = {} as DQNRoster;
 	private leanRosters: DQNRosterLean[] = [];
@@ -29,6 +184,49 @@ export class Roster {
 		this.opts = opts;
 		this.resetRoster();
 	}
+
+	public saveDataSet = async (isValid: boolean) => {
+		const path = process.cwd() + '/data/rosterDataset.json';
+		const exists = await fileExists(path);
+		const inputs: RosterDatumInputs = <RosterDatumInputs>(
+			new Array(13).fill([1, 1, 1, 1, 1, 1, 1, 1, 1])
+		);
+		const playerCount = this.playerPool.length;
+		for (let i = 0; i < playerCount; i++) {
+			inputs[i] = this.playerPool[i].getRosterEncoding();
+		}
+		const labels: [0 | 1] = [isValid ? 1 : 0];
+		if (inputs.length === 13) {
+			if (
+				exists &&
+				this.data_size <= 100000 &&
+				((labels[0] === 1 && seededRandom() < 0.25) || labels[0] === 0)
+			) {
+				try {
+					const currentData = <RosterDataSet>JSON.parse(await readFile(path, 'utf8'));
+					if (this.data_size === 0) this.data_size = currentData.data.length;
+					if (currentData.data.length <= 100000 && inputs.length === 13) {
+						currentData.data.push({ inputs, labels });
+						this.data_size = currentData.data.length;
+						console.log('Dataset Size:', this.data_size);
+						this.data_size = currentData.data.length;
+						return writeFile(path, JSON.stringify(currentData, null, 2));
+					}
+					return;
+				} catch (e) {
+					console.log(e);
+					const data = [{ inputs, labels }];
+
+					return writeFile(path, JSON.stringify({ data }, null, 2));
+				}
+			} else if (!exists) {
+				const data = [{ inputs, labels }];
+				return writeFile(path, JSON.stringify({ data }, null, 2));
+			}
+		}
+
+		return;
+	};
 
 	public resetRoster(opts?: TeamOpts) {
 		if (opts) this.opts = opts;
@@ -46,6 +244,11 @@ export class Roster {
 		this.roster['be'] = new Array(be).fill(null);
 	}
 
+	public reset(opts?: TeamOpts) {
+		this.resetRoster(opts);
+		this.playerPool = [];
+		this.leanRosters = [];
+	}
 	private cloneLeanRoster(roster: DQNRosterLean) {
 		return JSON.parse(JSON.stringify(roster)) as DQNRosterLean;
 	}
@@ -221,6 +424,7 @@ export class Roster {
 		this.leanRosters.splice(0);
 		this.leanRosters = rosters;
 		if (!this.leanRosters.length) this.done = true;
+		return this.saveDataSet(this.done ? false : true);
 	}
 
 	public getRoster() {
@@ -303,13 +507,13 @@ export class DraftTask {
 		this.init();
 		this.draftApi.reset();
 		this.drafted_player_indices = new Map();
-		this.teamRoster = new Roster(this.teamOpts);
+		this.teamRoster.reset();
 		this.initEnv();
 		return this.getState();
 	}
 
 	simulatePriorPicks(teamNo: number) {
-		console.log(`simulating prior picks in round`);
+		// console.log(`simulating prior picks in round`);
 		const endIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
 		/* if no picks prior, return */
 		if (endIdx === 0) return;
@@ -326,7 +530,7 @@ export class DraftTask {
 	}
 
 	simulateLaterPicks(teamNo: number) {
-		console.log(`simulating remaining picks in round`);
+		// console.log(`simulating remaining picks in round`);
 		const startIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
 		/* if no picks after, reverse order & return */
 		if (startIdx === this.draftApi.draftOrder.length - 1) {
@@ -354,30 +558,28 @@ export class DraftTask {
 	 *   The meaning of the possible values:
 	 *     number: 0, 1, 2, etc... === idx of draftPick
 	 */
-	step(action: number, forceNextState = false): TaskStepOutput {
+	async step(action: number, forceNextState = false): Promise<TaskStepOutput> {
 		let done = false,
 			reward = 0;
 		const validPick = this.draftPlayer(action);
-		this.teamRoster.addPick(this.pick);
+		await this.teamRoster.addPick(this.pick);
 		/* TODO: capture state here, but only return if not done */
 		// const state = this.getState(),
 
-		/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
 		if (!validPick) {
 			console.log(`invalid pick; failed`);
 			done = true;
 			reward += UNAVAIL_PLAYER_REWARD;
 			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
-			if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD / 3;
+			// if (this.selfState.length > 7) reward += UNAVAIL_PLAYER_REWARD / 3;
 		}
 
 		if (this.teamRoster.done) {
 			console.log(`team roster failed`);
-
 			done = true;
 			reward += INVALID_ROSTER_REWARD;
 			/* Negative Saltation: https://www.hindawi.com/journals/mpe/2019/7619483/ */
-			if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD / 3;
+			// if (this.selfState.length > 7) reward += INVALID_ROSTER_REWARD / 3;
 		}
 
 		let milestone = false;
@@ -396,7 +598,7 @@ export class DraftTask {
 		}
 
 		milestone = true;
-		reward += this.draftApi.getReward(action, 2);
+		reward += this.draftApi.getReward(action);
 		this.selfState.unshift(this.pick.inputs);
 
 		/**

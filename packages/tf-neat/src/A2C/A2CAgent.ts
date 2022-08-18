@@ -14,8 +14,15 @@ import {
 	log,
 	multinomial,
 	tensor,
-	tidy
+	tidy,
+	RMSPropOptimizer,
+	SGDOptimizer,
+	AdamOptimizer,
+	AdamaxOptimizer,
+	AdagradOptimizer
 } from '@tensorflow/tfjs-node';
+import { writeFile } from 'fs/promises';
+import * as hpjs from 'hyperparameters';
 import type {
 	LayersModel,
 	Rank,
@@ -26,9 +33,43 @@ import type {
 	Tensor2D
 } from '@tensorflow/tfjs-node';
 import { DraftTask } from './Env';
-import { seededRandom } from '../utils';
+import { MovingAverager, seededRandom } from '../utils';
 import { TaskState } from '../DQN/tasks/types';
 import { getRandomInt } from '../DQN/utils';
+
+export type RLOptimizers = 'rmsprop' | 'sgd' | 'adam' | 'adagrad' | 'adamax';
+
+type RMSPropFn = (
+	learningRate: number,
+	decay?: number | undefined,
+	momentum?: number | undefined,
+	epsilon?: number | undefined,
+	centered?: boolean | undefined
+) => RMSPropOptimizer;
+
+type SGDFn = (learningRate: number) => SGDOptimizer;
+
+type AdamFn = (
+	learningRate?: number | undefined,
+	beta1?: number | undefined,
+	beta2?: number | undefined,
+	epsilon?: number | undefined
+) => AdamOptimizer;
+
+type AdamaxFn = (
+	learningRate?: number | undefined,
+	beta1?: number | undefined,
+	beta2?: number | undefined,
+	epsilon?: number | undefined,
+	decay?: number | undefined
+) => AdamaxOptimizer;
+
+type AdagradFn = (
+	learningRate: number,
+	initialAccumulatorValue?: number | undefined
+) => AdagradOptimizer;
+
+type RLOptimizerFn = RMSPropFn | SGDFn | AdamFn | AdamaxFn | AdagradFn;
 
 export class Actor_Critic_Agent {
 	public env: DraftTask;
@@ -36,6 +77,15 @@ export class Actor_Critic_Agent {
 	public action: null | number = null;
 	public reward = 0;
 	public milestone = 0;
+
+	/* hyperparameter auto tuning */
+	public optimizers: Record<RLOptimizers, RLOptimizerFn> = {
+		rmsprop: train.rmsprop,
+		adagrad: train.adagrad,
+		adamax: train.adamax,
+		sgd: train.sgd,
+		adam: train.adam
+	};
 
 	public learnStep = 10;
 	public batchSize = 64;
@@ -49,8 +99,10 @@ export class Actor_Critic_Agent {
 	private epsilonDecayFrames = 1e6;
 	public frameCount = 0;
 
-	public actor: Sequential;
-	public critic: LayersModel;
+	private hyperparams_loop_count = 0;
+
+	public actor!: Sequential;
+	public critic!: LayersModel;
 
 	public dims: [number, number, number];
 
@@ -58,12 +110,48 @@ export class Actor_Critic_Agent {
 		this.env = draft;
 		this.dims = dims;
 		this.epsilonIncrement = (this.epsilonFinal - this.epsilonInit) / this.epsilonDecayFrames;
-
-		this.actor = this.createActorNetwork(...dims);
-		this.critic = this.createCriticNetwork(...dims);
 	}
 
-	public createActorNetwork(dim1: number, dim2: number, dim3: number) {
+	static async build(draft: DraftTask, dims: [number, number, number]) {
+		const agent = new Actor_Critic_Agent(draft, dims);
+		const space = {
+			optimizer: hpjs.choice(['adam', 'sgd', 'rmsprop', 'adagrad', 'adamax']),
+			learningRate: hpjs.loguniform(-8 * Math.log(10), -2 * Math.log(10))
+		};
+		const trials = <{ argmin: { optimizer: RLOptimizers; learningRate: number } }>await hpjs.fmin(
+			agent.optimize_actor_hyperparams,
+			space,
+			hpjs.search.randomSearch,
+			2500,
+			{
+				rng: new hpjs.RandomState(654321)
+			}
+		);
+		const { optimizer, learningRate } = trials.argmin;
+		console.log(trials.argmin);
+		await writeFile(
+			process.cwd() + `/data/optimizer.json`,
+			JSON.stringify({ optimizer, learningRate })
+		);
+		console.log('Best optimizer:', optimizer, ', best learning rate:', learningRate);
+
+		agent.actor = agent.createActorNetwork(...agent.dims, { optimizer, learningRate });
+		agent.critic = agent.createCriticNetwork(...agent.dims, {
+			optimizer,
+			learningRate: learningRate * 5
+		});
+		return agent;
+	}
+
+	public createActorNetwork(
+		dim1: number,
+		dim2: number,
+		dim3: number,
+		opts: { optimizer: RLOptimizers; learningRate: number } = {
+			optimizer: 'adam',
+			learningRate: this.critic_learning_rate
+		}
+	) {
 		const model = sequential();
 		model.add(
 			layers.conv2d({
@@ -96,13 +184,6 @@ export class Actor_Critic_Agent {
     */
 		model.add(
 			layers.dense({
-				units: this.env.num_actions,
-				activation: 'relu',
-				kernelInitializer: 'glorotUniform'
-			})
-		);
-		model.add(
-			layers.dense({
 				units: this.env.num_actions * 4,
 				activation: 'relu',
 				kernelInitializer: 'glorotUniform'
@@ -116,10 +197,11 @@ export class Actor_Critic_Agent {
 			})
 		);
 		model.summary();
+		const { optimizer, learningRate } = opts;
 
-		const optimizer = train.adam(this.actor_learning_rate);
+		const optimizerUsed = this.optimizers[optimizer](learningRate);
 		model.compile({
-			optimizer: optimizer,
+			optimizer: optimizerUsed,
 			loss: losses.softmaxCrossEntropy
 		});
 
@@ -159,7 +241,7 @@ export class Actor_Critic_Agent {
 		return this.randAction(validActions);
 	};
 
-	public async getAction(input: number[]) {
+	public async getAction(input: number[], actor?: Sequential) {
 		/*
     if (seededRandom() < this.epsilon) {
 			const action = Math.floor(seededRandom() * this.env.num_actions);
@@ -169,7 +251,9 @@ export class Actor_Critic_Agent {
     */
 		const [dim1, dim2, dim3] = this.dims;
 		const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
-		const logits = <Tensor<Rank>>this.actor.predict(inputTensor);
+		const logits = actor
+			? <Tensor<Rank>>actor?.predict(inputTensor)
+			: <Tensor<Rank>>this.actor.predict(inputTensor);
 
 		/**
 		 * Source: the following @tensorflow/tfjs book,
@@ -200,7 +284,15 @@ export class Actor_Critic_Agent {
 		});
 	}
 
-	public createCriticNetwork(dim1: number, dim2: number, dim3: number) {
+	public createCriticNetwork(
+		dim1: number,
+		dim2: number,
+		dim3: number,
+		opts: { optimizer: RLOptimizers; learningRate: number } = {
+			optimizer: 'adam',
+			learningRate: this.critic_learning_rate
+		}
+	) {
 		const input_state = input({ shape: [dim1, dim2, dim3] });
 		const conv1 = layers
 			.conv2d({
@@ -254,13 +346,142 @@ export class Actor_Critic_Agent {
 		});
 		tempModel.summary();
 
-		const optimizer = train.adam(this.critic_learning_rate);
+		const { optimizer, learningRate } = opts;
+
+		const optimizerUsed = this.optimizers[optimizer](learningRate);
 		tempModel.compile({
-			optimizer: optimizer,
+			optimizer: optimizerUsed,
 			loss: losses.meanSquaredError
 		});
 
 		return tempModel;
+	}
+
+	/* TODO: optimize actor/critic independently */
+	public optimize_actor_hyperparams = async ({
+		optimizer,
+		learningRate
+	}: {
+		optimizer: RLOptimizers;
+		learningRate: number;
+	}) => {
+		const actor = this.createActorNetwork(this.dims[0], this.dims[1], this.dims[2], {
+			optimizer,
+			learningRate
+		});
+		const critic = this.createCriticNetwork(this.dims[0], this.dims[1], this.dims[2], {
+			optimizer,
+			learningRate: learningRate * 5
+		});
+
+		console.log('opt: ', optimizer, ', LR: ', learningRate);
+		let stepCount = 0;
+		const lossMovAvg = new MovingAverager(100);
+		let status: hpjs.STATUS_OK | hpjs.STATUS_FAIL = hpjs.STATUS_OK;
+		while (stepCount < 100) {
+			this.env.simulatePriorPicks(this.env.pickSlot);
+			const state = this.env.getState().e.flat();
+			try {
+				const action = await this.getAction(state, actor);
+				const [reward, done, nextTaskState] = await this.step(action);
+				const next_state = <number[]>nextTaskState?.e.flat();
+				const loss = await this.trainingTest(
+					state,
+					action,
+					reward,
+					next_state,
+					done,
+					actor,
+					critic
+				);
+				if (Number.isNaN(loss)) {
+					status = hpjs.STATUS_FAIL;
+					break;
+				}
+
+				lossMovAvg.append(loss);
+
+				if (done) {
+					this.env.reset();
+				} else {
+					this.env.simulateLaterPicks(this.env.pickSlot);
+				}
+			} catch (e) {
+				console.log(e);
+				status = hpjs.STATUS_FAIL;
+				break;
+			}
+			stepCount++;
+		}
+
+		this.hyperparams_loop_count++;
+		console.log('hyperparams_loop_count:', this.hyperparams_loop_count);
+		this.env.reset();
+		actor.dispose();
+		critic.dispose();
+		const loss = lossMovAvg.average();
+		console.log('opt: ', optimizer, ', LR: ', learningRate, ', loss: ', loss);
+		return { loss, status };
+	};
+
+	private async trainingTest(
+		state: number[],
+		action: number,
+		reward: number,
+		nextState: number[],
+		done: boolean,
+		actor: Sequential,
+		critic: LayersModel
+	) {
+		let target: number[] | Tensor1D = new Array(1).fill(0);
+		let advantages: number[] | Tensor2D = new Array(this.env.num_actions).fill(0);
+		const [dim1, dim2, dim3] = this.dims;
+
+		const input = tensor4d(state, [1, dim1, dim2, dim3]);
+		const next_input = tensor4d(nextState, [1, dim1, dim2, dim3]);
+
+		const value = <Tensor<Rank>>critic.predict(input);
+		const next_value = <Tensor<Rank>>critic.predict(next_input);
+
+		const value_v = value.dataSync()[0];
+		const next_value_v = next_value.dataSync()[0];
+
+		if (done) {
+			advantages[action] = reward - value_v;
+			target[0] = reward;
+		} else {
+			advantages[action] = reward + this.gamma * next_value_v - value_v;
+			target[0] = reward + this.gamma * next_value_v;
+		}
+
+		advantages = tensor2d(advantages, [1, this.env.num_actions], 'float32');
+		target = tensor1d(target, 'float32');
+
+		const actor_train = await actor
+			.fit(input, advantages, { batchSize: 1, epochs: 1 })
+			.then((val) => {
+				dispose(advantages);
+				return val;
+			});
+
+		const critic_train = await critic
+			.fit(input, target, { batchSize: 1, epochs: 1 })
+			.then((val) => {
+				dispose(input);
+				dispose(next_input);
+				dispose(value);
+				dispose(next_value);
+				dispose(target);
+				return val;
+			});
+
+		return tidy(() => {
+			return mean(
+				tensor([<number>critic_train.history.loss[0], <number>actor_train.history.loss[0]])
+			)
+				.flatten()
+				.dataSync()[0];
+		});
 	}
 
 	public async trainModel(
@@ -312,20 +533,22 @@ export class Actor_Critic_Agent {
 				return val;
 			});
 
-		return mean(
-			tensor([critic_train.history.loss[0] as number, actor_train.history.loss[0] as number])
-		)
-			.flatten()
-			.dataSync()[0];
+		return tidy(() => {
+			return mean(
+				tensor([<number>critic_train.history.loss[0], <number>actor_train.history.loss[0]])
+			)
+				.flatten()
+				.dataSync()[0];
+		});
 	}
 
-	public step(action: number): [number, boolean, TaskState | undefined] {
+	public async step(action: number): Promise<[number, boolean, TaskState | undefined]> {
 		this.epsilon =
 			this.frameCount >= this.epsilonDecayFrames
 				? this.epsilonFinal
 				: this.epsilonInit + this.epsilonIncrement * this.frameCount;
 		this.frameCount++;
-		const { state: nextState, reward, done, milestone } = this.env.step(action, true);
+		const { state: nextState, reward, done, milestone } = await this.env.step(action, true);
 		if (milestone) this.milestone++;
 
 		return [reward, done, nextState];
