@@ -250,10 +250,12 @@ export class Actor_Critic_Agent {
 		}
     */
 		const [dim1, dim2, dim3] = this.dims;
-		const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
-		const logits = actor
-			? <Tensor<Rank>>actor?.predict(inputTensor)
-			: <Tensor<Rank>>this.actor.predict(inputTensor);
+		const logits = tidy(() => {
+			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
+			return actor
+				? <Tensor<Rank>>actor?.predict(inputTensor)
+				: <Tensor<Rank>>this.actor.predict(inputTensor);
+		});
 
 		/**
 		 * Source: the following @tensorflow/tfjs book,
@@ -267,21 +269,18 @@ export class Actor_Critic_Agent {
 		for (const [key] of this.env.drafted_player_indices) {
 			masked[key] = 0;
 		}
-		// logits.print(true);
 		const boolMasked = tensor(masked, [1, 289], 'bool');
-		// boolMasked.print(true);
-
 		const policy = await booleanMaskAsync(logits, boolMasked);
-		// policy.print(true);
+
 		dispose(logits);
 		dispose(boolMasked);
-		return tidy(() => {
+		const action = tidy(() => {
 			const unnormalized_policy = <Tensor1D>log(policy);
-
 			const actions = multinomial(unnormalized_policy, 1, undefined, false);
-			const action = actions.dataSync()[0];
-			return action;
+			return actions.dataSync()[0];
 		});
+		dispose(policy);
+		return action;
 	}
 
 	public createCriticNetwork(
@@ -401,7 +400,7 @@ export class Actor_Critic_Agent {
 
 				lossMovAvg.append(loss);
 
-				if (done) {
+				if (done || this.milestone >= 13) {
 					this.env.reset();
 				} else {
 					this.env.simulateLaterPicks(this.env.pickSlot);

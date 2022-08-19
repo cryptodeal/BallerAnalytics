@@ -185,9 +185,10 @@ export class Roster {
 		this.resetRoster();
 	}
 
+	private newData: RosterDatum[] = [];
+
 	public saveDataSet = async (isValid: boolean) => {
 		const path = process.cwd() + '/data/rosterDataset.json';
-		const exists = await fileExists(path);
 		const inputs: RosterDatumInputs = <RosterDatumInputs>(
 			new Array(13).fill([1, 1, 1, 1, 1, 1, 1, 1, 1])
 		);
@@ -196,36 +197,41 @@ export class Roster {
 			inputs[i] = this.playerPool[i].getRosterEncoding();
 		}
 		const labels: [0 | 1] = [isValid ? 1 : 0];
-		if (inputs.length === 13) {
-			if (
-				exists &&
-				this.data_size <= 100000 &&
-				((labels[0] === 1 && seededRandom() < 0.25) || labels[0] === 0)
-			) {
+		/* only write dataset if 10000 new examples */
+		if (this.newData.length < 10000) {
+			if ((labels[0] === 1 && seededRandom() < 0.25) || labels[0] === 0)
+				this.newData.push({ inputs, labels });
+		} else {
+			const exists = await fileExists(path);
+			/* if file exists, append new data && reset newData */
+			if (exists) {
 				try {
 					const currentData = <RosterDataSet>JSON.parse(await readFile(path, 'utf8'));
 					if (this.data_size === 0) this.data_size = currentData.data.length;
-					if (currentData.data.length <= 100000 && inputs.length === 13) {
-						currentData.data.push({ inputs, labels });
-						this.data_size = currentData.data.length;
-						console.log('Dataset Size:', this.data_size);
-						this.data_size = currentData.data.length;
-						return writeFile(path, JSON.stringify(currentData, null, 2));
+					if (this.data_size <= 100000) {
+						const data = [...currentData.data, ...this.newData];
+						this.data_size = data.length;
+						console.log(`Dataset size: ${this.data_size}`);
+						await writeFile(path, JSON.stringify({ data }, null, 2));
+						this.newData = [];
+						return;
 					}
 					return;
 				} catch (e) {
 					console.log(e);
-					const data = [{ inputs, labels }];
-
-					return writeFile(path, JSON.stringify({ data }, null, 2));
+					this.data_size = this.newData.length;
+					await writeFile(path, JSON.stringify({ data: this.newData }, null, 2));
+					this.newData = [];
+					return;
 				}
-			} else if (!exists) {
-				const data = [{ inputs, labels }];
-				return writeFile(path, JSON.stringify({ data }, null, 2));
+				/* else, write new data */
+			} else {
+				this.data_size = this.newData.length;
+				await writeFile(path, JSON.stringify({ data: this.newData }, null, 2));
+				this.newData = [];
+				return;
 			}
 		}
-
-		return;
 	};
 
 	public resetRoster(opts?: TeamOpts) {
