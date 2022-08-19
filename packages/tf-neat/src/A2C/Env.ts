@@ -199,8 +199,13 @@ export class Roster {
 		const labels: [0 | 1] = [isValid ? 1 : 0];
 		/* only write dataset if 10000 new examples */
 		if (this.newData.length < 10000) {
-			if ((labels[0] === 1 && seededRandom() < 0.25) || labels[0] === 0)
+			if ((labels[0] === 1 && seededRandom() < 0.25) || labels[0] === 0) {
 				this.newData.push({ inputs, labels });
+				console.log(`newData size: ${(this.data_size += 1)}`);
+				return;
+			} else {
+				return;
+			}
 		} else {
 			const exists = await fileExists(path);
 			/* if file exists, append new data && reset newData */
