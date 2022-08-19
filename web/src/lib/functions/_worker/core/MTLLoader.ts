@@ -178,6 +178,7 @@ class MaterialCreator {
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const scope = this;
 		/* Create material */
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const mat: Record<string, any> = this.materialsInfo[materialName];
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const params: Record<string, any> & MeshPhongMaterialParameters = {

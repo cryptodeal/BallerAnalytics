@@ -199,13 +199,17 @@ export class Roster {
 		const labels: [0 | 1] = [isValid ? 1 : 0];
 		/* only write dataset if 10000 new examples */
 		if (this.newData.length < 10000) {
-			if ((labels[0] === 1 && seededRandom() < 0.25) || labels[0] === 0) {
+			if (labels[0] === 1 && seededRandom() < 0.25) {
 				this.newData.push({ inputs, labels });
 				console.log(`newData size: ${(this.data_size += 1)}`);
 				return;
-			} else {
+			}
+			if (labels[0] === 0) {
+				this.newData.push({ inputs, labels });
+				console.log(`newData size: ${(this.data_size += 1)}`);
 				return;
 			}
+			return;
 		} else {
 			const exists = await fileExists(path);
 			/* if file exists, append new data && reset newData */
@@ -255,10 +259,10 @@ export class Roster {
 		this.roster['be'] = new Array(be).fill(null);
 	}
 
-	public reset(opts?: TeamOpts) {
-		this.resetRoster(opts);
-		this.playerPool = [];
-		this.leanRosters = [];
+	public reset() {
+		const roster = new Roster(this.opts);
+		roster.refreshDataset(this.newData, this.data_size);
+		return roster;
 	}
 	private cloneLeanRoster(roster: DQNRosterLean) {
 		return JSON.parse(JSON.stringify(roster)) as DQNRosterLean;
@@ -351,6 +355,11 @@ export class Roster {
 			!roster['f'].includes(null) &&
 			!roster['util'].includes(null)
 		);
+	}
+
+	public refreshDataset(data: RosterDatum[], size: number) {
+		this.newData = data;
+		this.data_size = size;
 	}
 
 	private testPick(player: DQNPlayer) {
@@ -518,7 +527,7 @@ export class DraftTask {
 		this.init();
 		this.draftApi.reset();
 		this.drafted_player_indices = new Map();
-		this.teamRoster = new Roster(this.teamOpts);
+		this.teamRoster = this.teamRoster.reset();
 		this.initEnv();
 		return this.getState();
 	}

@@ -36,8 +36,10 @@ import { DraftTask } from './Env';
 import { MovingAverager, seededRandom } from '../utils';
 import { TaskState } from '../DQN/tasks/types';
 import { getRandomInt } from '../DQN/utils';
+import { RLLossFn } from './types';
 
 export type RLOptimizers = 'rmsprop' | 'sgd' | 'adam' | 'adagrad' | 'adamax';
+export type RLLossFns = 'mse' | 'huber' | 'sigmoidCrossEntropy' | 'softmaxCrossEntropy' | 'log';
 
 type RMSPropFn = (
 	learningRate: number,
@@ -87,6 +89,14 @@ export class Actor_Critic_Agent {
 		adam: train.adam
 	};
 
+	public lossFns: Record<RLLossFns, RLLossFn> = {
+		mse: losses.meanSquaredError,
+		huber: losses.huberLoss,
+		sigmoidCrossEntropy: losses.sigmoidCrossEntropy,
+		softmaxCrossEntropy: losses.softmaxCrossEntropy,
+		log: losses.logLoss
+	};
+
 	public learnStep = 10;
 	public batchSize = 64;
 	public gamma = 0.99;
@@ -115,30 +125,69 @@ export class Actor_Critic_Agent {
 	static async build(draft: DraftTask, dims: [number, number, number]) {
 		const agent = new Actor_Critic_Agent(draft, dims);
 		const space = {
-			optimizer: hpjs.choice(['adam', 'sgd', 'rmsprop', 'adagrad', 'adamax']),
-			learningRate: hpjs.loguniform(-8 * Math.log(10), -2 * Math.log(10))
+			actor_optimizer: hpjs.choice(['adam', 'sgd', 'rmsprop', 'adagrad', 'adamax']),
+			actor_learning_rate: hpjs.loguniform(-9 * Math.log(10), -3 * Math.log(10)),
+			actor_loss: hpjs.choice([
+				'mse',
+				'huber',
+				'sigmoidCrossEntropy',
+				'softmaxCrossEntropy',
+				'log'
+			]),
+			critic_optimizer: hpjs.choice(['adam', 'sgd', 'rmsprop', 'adagrad', 'adamax']),
+			critic_learning_rate: hpjs.loguniform(-9 * Math.log(10), -3 * Math.log(10)),
+			critic_loss: hpjs.choice(['mse', 'huber'])
 		};
-		const trials = <{ argmin: { optimizer: RLOptimizers; learningRate: number } }>await hpjs.fmin(
-			agent.optimize_actor_hyperparams,
-			space,
-			hpjs.search.randomSearch,
-			2500,
+		const trials = <
 			{
-				rng: new hpjs.RandomState(654321)
+				argmin: {
+					actor_optimizer: RLOptimizers;
+					actor_learning_rate: number;
+					actor_loss: RLLossFns;
+					critic_optimizer: RLOptimizers;
+					critic_learning_rate: number;
+					critic_loss: RLLossFns;
+				};
 			}
-		);
-		const { optimizer, learningRate } = trials.argmin;
+		>await hpjs.fmin(agent.optimize_actor_hyperparams, space, hpjs.search.randomSearch, 5000, {
+			rng: new hpjs.RandomState(654321)
+		});
+		const {
+			actor_optimizer,
+			actor_learning_rate,
+			actor_loss,
+			critic_optimizer,
+			critic_learning_rate,
+			critic_loss
+		} = trials.argmin;
 		console.log(trials.argmin);
-		await writeFile(
-			process.cwd() + `/data/optimizer.json`,
-			JSON.stringify({ optimizer, learningRate })
+		await writeFile(process.cwd() + `/data/optimizer.json`, JSON.stringify(trials.argmin));
+		console.log(
+			'Best agent_optimizer:',
+			actor_optimizer,
+			', Best agent_learning_rate:',
+			actor_learning_rate,
+			', Best actor_loss:',
+			actor_loss
 		);
-		console.log('Best optimizer:', optimizer, ', best learning rate:', learningRate);
+		console.log(
+			'Best critic_optimizer:',
+			critic_optimizer,
+			', Best critic_learning_rate:',
+			critic_learning_rate,
+			', Best critic_loss:',
+			critic_loss
+		);
 
-		agent.actor = agent.createActorNetwork(...agent.dims, { optimizer, learningRate });
+		agent.actor = agent.createActorNetwork(...agent.dims, {
+			optimizer: actor_optimizer,
+			learningRate: actor_learning_rate,
+			loss: actor_loss
+		});
 		agent.critic = agent.createCriticNetwork(...agent.dims, {
-			optimizer,
-			learningRate: learningRate * 5
+			optimizer: critic_optimizer,
+			learningRate: critic_learning_rate,
+			loss: critic_loss
 		});
 		return agent;
 	}
@@ -147,9 +196,10 @@ export class Actor_Critic_Agent {
 		dim1: number,
 		dim2: number,
 		dim3: number,
-		opts: { optimizer: RLOptimizers; learningRate: number } = {
+		opts: { optimizer: RLOptimizers; learningRate: number; loss: RLLossFns } = {
 			optimizer: 'adam',
-			learningRate: this.critic_learning_rate
+			learningRate: this.critic_learning_rate,
+			loss: 'softmaxCrossEntropy'
 		}
 	) {
 		const model = sequential();
@@ -197,12 +247,13 @@ export class Actor_Critic_Agent {
 			})
 		);
 		model.summary();
-		const { optimizer, learningRate } = opts;
+		const { optimizer: optimizerStr, learningRate, loss: lossStr } = opts;
 
-		const optimizerUsed = this.optimizers[optimizer](learningRate);
+		const optimizer = this.optimizers[optimizerStr](learningRate);
+		const loss = this.lossFns[lossStr];
 		model.compile({
-			optimizer: optimizerUsed,
-			loss: losses.softmaxCrossEntropy
+			optimizer,
+			loss
 		});
 
 		return model;
@@ -287,9 +338,10 @@ export class Actor_Critic_Agent {
 		dim1: number,
 		dim2: number,
 		dim3: number,
-		opts: { optimizer: RLOptimizers; learningRate: number } = {
+		opts: { optimizer: RLOptimizers; learningRate: number; loss: RLLossFns } = {
 			optimizer: 'adam',
-			learningRate: this.critic_learning_rate
+			learningRate: this.critic_learning_rate,
+			loss: 'mse'
 		}
 	) {
 		const input_state = input({ shape: [dim1, dim2, dim3] });
@@ -345,12 +397,13 @@ export class Actor_Critic_Agent {
 		});
 		tempModel.summary();
 
-		const { optimizer, learningRate } = opts;
+		const { optimizer: optimizerStr, learningRate, loss: lossStr } = opts;
 
-		const optimizerUsed = this.optimizers[optimizer](learningRate);
+		const optimizer = this.optimizers[optimizerStr](learningRate);
+		const loss = this.lossFns[lossStr];
 		tempModel.compile({
-			optimizer: optimizerUsed,
-			loss: losses.meanSquaredError
+			optimizer,
+			loss
 		});
 
 		return tempModel;
@@ -358,22 +411,46 @@ export class Actor_Critic_Agent {
 
 	/* TODO: optimize actor/critic independently */
 	public optimize_actor_hyperparams = async ({
-		optimizer,
-		learningRate
+		actor_optimizer,
+		actor_loss,
+		actor_learning_rate,
+		critic_optimizer,
+		critic_learning_rate,
+		critic_loss
 	}: {
-		optimizer: RLOptimizers;
-		learningRate: number;
+		actor_optimizer: RLOptimizers;
+		actor_learning_rate: number;
+		actor_loss: RLLossFns;
+		critic_optimizer: RLOptimizers;
+		critic_learning_rate: number;
+		critic_loss: RLLossFns;
 	}) => {
 		const actor = this.createActorNetwork(this.dims[0], this.dims[1], this.dims[2], {
-			optimizer,
-			learningRate
+			optimizer: actor_optimizer,
+			learningRate: actor_learning_rate,
+			loss: actor_loss
 		});
 		const critic = this.createCriticNetwork(this.dims[0], this.dims[1], this.dims[2], {
-			optimizer,
-			learningRate: learningRate * 5
+			optimizer: critic_optimizer,
+			learningRate: critic_learning_rate,
+			loss: critic_loss
 		});
 
-		console.log('opt: ', optimizer, ', LR: ', learningRate);
+		console.log(
+			'actor_optimizer: ',
+			actor_optimizer,
+			', actor_learning_rate: ',
+			actor_learning_rate,
+			', actor_loss:',
+			actor_loss,
+			'critic_optimizer: ',
+			critic_optimizer,
+			', critic_learning_rate: ',
+			critic_learning_rate,
+			', critic_loss:',
+			critic_loss
+		);
+
 		let stepCount = 0;
 		const lossMovAvg = new MovingAverager(100);
 		let status: hpjs.STATUS_OK | hpjs.STATUS_FAIL = hpjs.STATUS_OK;
@@ -419,7 +496,22 @@ export class Actor_Critic_Agent {
 		actor.dispose();
 		critic.dispose();
 		const loss = lossMovAvg.average();
-		console.log('opt: ', optimizer, ', LR: ', learningRate, ', loss: ', loss);
+		console.log(
+			'actor_optimizer: ',
+			actor_optimizer,
+			', actor_learning_rate: ',
+			actor_learning_rate,
+			', actor_loss: ',
+			actor_loss,
+			'critic_optimizer: ',
+			critic_optimizer,
+			', critic_learning_rate: ',
+			critic_learning_rate,
+			', critic_loss: ',
+			critic_loss,
+			', loss: ',
+			loss
+		);
 		return { loss, status };
 	};
 
