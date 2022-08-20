@@ -186,6 +186,7 @@ export class Roster {
 	}
 
 	private newData: RosterDatum[] = [];
+	private storeNewData = true;
 
 	public saveDataSet = async (isValid: boolean) => {
 		const path = process.cwd() + '/data/rosterDataset.json';
@@ -197,48 +198,60 @@ export class Roster {
 			inputs[i] = this.playerPool[i].getRosterEncoding();
 		}
 		const labels: [0 | 1] = [isValid ? 1 : 0];
-		/* only write dataset if 10000 new examples */
-		if (this.newData.length < 10000) {
-			if (labels[0] === 1 && seededRandom() < 0.25) {
-				this.newData.push({ inputs, labels });
-				console.log(`newData size: ${(this.data_size += 1)}`);
-				return;
-			}
-			if (labels[0] === 0) {
-				this.newData.push({ inputs, labels });
-				console.log(`newData size: ${(this.data_size += 1)}`);
-				return;
-			}
-			return;
-		} else {
-			const exists = await fileExists(path);
-			/* if file exists, append new data && reset newData */
-			if (exists) {
-				try {
-					const currentData = <RosterDataSet>JSON.parse(await readFile(path, 'utf8'));
-					if (this.data_size === 0) this.data_size = currentData.data.length;
-					if (this.data_size <= 100000) {
-						const data = [...currentData.data, ...this.newData];
-						this.data_size = data.length;
-						console.log(`Dataset size: ${this.data_size}`);
-						await writeFile(path, JSON.stringify({ data }, null, 2));
+		/**
+		 * if this.newData.length < 10000 AND
+		 * (inputs are valid AND seededRandom < 0.1) OR inputs are invalid,
+		 * add roster to newData
+		 */
+		if (this.storeNewData) {
+			if (this.newData.length < 10000) {
+				if ((labels[0] === 1 && seededRandom() < 0.1) || labels[0] === 0) {
+					this.newData.push({ inputs, labels });
+					console.log(
+						`${
+							labels[0] === 1 ? 'added valid roster' : 'added invalid roster'
+						} newData size: ${(this.data_size += 1)}`
+					);
+				}
+				/* if newData.length <= 10000, attempt to store data */
+			} else {
+				const exists = await fileExists(path);
+				/* if file exists, append new data && reset newData */
+				if (exists && this.data_size <= 100000) {
+					/* try parsing currentData & appending newData */
+					try {
+						const currentData = <RosterDataSet>JSON.parse(await readFile(path, 'utf8'));
+						if (currentData.data.length <= 100000) {
+							const data = [...currentData.data, ...this.newData];
+							this.data_size = data.length;
+							console.log(`Dataset size: ${this.data_size}`);
+							await writeFile(path, JSON.stringify({ data }, null, 2));
+							this.newData = [];
+						} else {
+							this.newData = [];
+							this.storeNewData = false;
+						}
+						/**
+						 * catch error if file exists, but has no currentData
+						 * OR if currentData is too large, causing JSON.parse to
+						 * fail and throw an error
+						 */
+					} catch (e) {
+						console.log(e);
+						this.data_size = this.newData.length;
+						await writeFile(path, JSON.stringify({ data: this.newData }, null, 2));
 						this.newData = [];
-						return;
 					}
-					return;
-				} catch (e) {
-					console.log(e);
+					/* if `!exists`, write new data */
+				} else if (!exists) {
 					this.data_size = this.newData.length;
 					await writeFile(path, JSON.stringify({ data: this.newData }, null, 2));
 					this.newData = [];
-					return;
+					/* if exists && data_size > 100000, do nothing */
+				} else {
+					this.newData = [];
+					this.storeNewData = false;
 				}
-				/* else, write new data */
-			} else {
-				this.data_size = this.newData.length;
-				await writeFile(path, JSON.stringify({ data: this.newData }, null, 2));
-				this.newData = [];
-				return;
 			}
 		}
 	};

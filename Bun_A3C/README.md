@@ -1,5 +1,9 @@
 # A3C ([Asynchronous Advantage Actor-Critic](https://naifmehanna.com/2019-02-27-scaling-a3c-multiple-machines-tensorflowjs/)) RL API (BUN Runtime w Hono Router)
 
+## Status
+
+Bun does not yet work with tensorflow.js; accordingly, this package is not currently being developed, but used to test Bun's compatibility with the logic contained in [packages/tf-neat](../packages/tf-neat/)
+
 ## Getting Started
 
 ### Install Bun CLI v0.1.4 (beta)

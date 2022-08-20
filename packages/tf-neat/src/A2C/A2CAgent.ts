@@ -149,7 +149,7 @@ export class Actor_Critic_Agent {
 					critic_loss: RLLossFns;
 				};
 			}
-		>await hpjs.fmin(agent.optimize_actor_hyperparams, space, hpjs.search.randomSearch, 5000, {
+		>await hpjs.fmin(agent.optimize_actor_hyperparams, space, hpjs.search.randomSearch, 2500, {
 			rng: new hpjs.RandomState(654321)
 		});
 		const {
@@ -293,13 +293,6 @@ export class Actor_Critic_Agent {
 	};
 
 	public async getAction(input: number[], actor?: Sequential) {
-		/*
-    if (seededRandom() < this.epsilon) {
-			const action = Math.floor(seededRandom() * this.env.num_actions);
-			console.log('Action (rand):', action);
-			return action;
-		}
-    */
 		const [dim1, dim2, dim3] = this.dims;
 		const logits = tidy(() => {
 			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
@@ -314,13 +307,12 @@ export class Actor_Critic_Agent {
 		 * in TensorFlow.js, we can use log fn to
 		 * unnormalize logits from actor pred.
 		 */
-		/* TODO: USE `booleanMaskAsync` method ?? */
-
 		const masked = new Array(this.env.num_actions).fill(1);
 		for (const [key] of this.env.drafted_player_indices) {
 			masked[key] = 0;
 		}
 		const boolMasked = tensor(masked, [1, 289], 'bool');
+		/* boolean masking; set invalid actions to 0 */
 		const policy = await booleanMaskAsync(logits, boolMasked);
 
 		dispose(logits);
