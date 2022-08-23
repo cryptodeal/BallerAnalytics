@@ -16,7 +16,7 @@ MatrixTest('create Matrix', () => {
 	}
 });
 
-MatrixTest.run();
+// MatrixTest.run();
 
 const ArrayTest = suite('ArrayTest');
 
@@ -41,4 +41,4 @@ ArrayTest('create Array; set values in resulting matrix', () => {
 	reverseAdjList.augment(tempReverse2.reshape(size, 1));
 });
 
-ArrayTest.run();
+// ArrayTest.run();

@@ -1,8 +1,8 @@
 import { DQNPlayer } from '@balleranalytics/nba-api-ts';
-import { util } from '@tensorflow/tfjs-node';
+import { Sequential, util } from '@tensorflow/tfjs-node';
 import { getRandomInt } from '.';
 import { TeamOpts } from '../tasks/types';
-import { DraftOpp } from './Opp';
+import { DraftOpp, DraftOppMl } from './Opp';
 
 export class Scaler {
 	private inMin: number;
@@ -40,11 +40,11 @@ export class DraftAPI {
 	public rewards: number[];
 	public teamCount = 0;
 	public draftOrder: number[];
-	public opps: DraftOpp[];
+	public opps: (DraftOppMl | DraftOpp)[];
 
 	private Scaler!: Scaler;
 
-	constructor(players: DQNPlayer[], oppCount = 0, rosterOpts: TeamOpts) {
+	constructor(players: DQNPlayer[], rosterOpts: TeamOpts, oppCount = 0, model?: Sequential) {
 		this.players = players;
 		this.teamCount = oppCount + 1;
 		this.draftOrder = this.genDraftOrder();
@@ -52,7 +52,11 @@ export class DraftAPI {
 		this.rewards = this.resetRewards();
 		this.opps = new Array(oppCount);
 		for (let i = 0; i < oppCount; i++) {
-			this.opps[i] = new DraftOpp(rosterOpts, i + 2);
+			if (model) {
+				this.opps[i] = new DraftOppMl(rosterOpts, i + 2, model);
+			} else {
+				this.opps[i] = new DraftOpp(rosterOpts, i + 2);
+			}
 		}
 	}
 
@@ -82,28 +86,55 @@ export class DraftAPI {
 		const oppIdx = this.opps.findIndex((opp) => opp.isPickSlot(teamNo));
 		if (oppIdx === -1) throw new Error(`Error: cannot find DraftOpp w pickSlot ${teamNo}`);
 		const opp = this.opps[oppIdx];
-		const needsPositions = opp.needsPositions();
 		let avail: DQNPlayer[] = [];
-		if (!needsPositions.length) {
-			// console.log(`any player valid`);
+		if (opp instanceof DraftOppMl) {
 			avail = this.players.filter((p) => p.inputs[67] === 0);
 		} else {
-			// console.log(`needs position players`);
-			avail = this.players.filter((p) => p.inputs[67] === 0 && p.inputs[needsPositions[0]] === 1);
-			if (avail.length === 0) avail = this.players.filter((p) => p.inputs[67] === 0);
+			const needsPositions = (opp as DraftOpp).needsPositions();
+			if (!needsPositions.length) {
+				// console.log(`any player valid`);
+				avail = this.players.filter((p) => p.inputs[67] === 0);
+			} else {
+				// console.log(`needs position players`);
+				avail = this.players.filter((p) => p.inputs[67] === 0 && p.inputs[needsPositions[0]] === 1);
+				if (avail.length === 0) avail = this.players.filter((p) => p.inputs[67] === 0);
+			}
 		}
 
 		// console.log('avail:', avail + '\n', 'avail count:', avail.length);
-		const pick = avail[getRandomInt(0, avail.length)];
+		let validPick: DQNPlayer | undefined;
+		while (!validPick) {
+			const pickIdx = getRandomInt(0, avail.length);
+			const pick = avail[pickIdx];
+			if (opp instanceof DraftOppMl) {
+				try {
+					const { isValid } = opp.testPick(pick);
+					if (isValid) {
+						validPick = pick;
+					}
+				} catch (e) {
+					console.log(e);
+				}
+			} else {
+				validPick = pick;
+			}
+		}
 
-		const pickIdx = this.players.findIndex((p) => p.getId() === pick?.getId());
+		const pickIdx = this.players.findIndex((p) => p.getId() === validPick?.getId());
 		if (pickIdx === -1) {
 			console.log(`failed to draft in final round`);
-			console.log(`TODO: optimize DraftOpp algo + Roster algo (cartesian prods??)`);
+			// console.log(`TODO: optimize DraftOpp algo + Roster algo (cartesian prods??)`);
 			return -1;
 		} else {
-			this.flagDrafted(pickIdx);
-			return pickIdx;
+			try {
+				this.flagDrafted(pickIdx, teamNo);
+				return pickIdx;
+			} catch (e) {
+				console.log(e);
+				console.log(`failed to draft; returning 0`);
+				console.log('pickIdx', pickIdx);
+				return 0;
+			}
 		}
 	}
 
@@ -115,6 +146,14 @@ export class DraftAPI {
 		this.players.map((p) => p.resetDrafted());
 		this.draftOrder = this.genDraftOrder();
 		util.shuffle(this.players);
+		const oppCount = this.opps.length;
+		for (let i = 0; i < oppCount; i++) {
+			const opp = this.opps[i];
+
+			if (opp instanceof DraftOppMl) {
+				opp.roster.reset();
+			}
+		}
 		this.rewards = this.resetRewards();
 	}
 
@@ -125,7 +164,7 @@ export class DraftAPI {
 			const inMin = Math.min(...rewardsArr);
 			const inMax = Math.max(...rewardsArr);
 			const outMin = 1;
-			const outMax = 2;
+			const outMax = 3;
 			this.Scaler = new Scaler(inMin, inMax, outMin, outMax);
 		}
 		return this.Scaler.scale(rewardsArr);

@@ -21,7 +21,7 @@ let players: DQNPlayer[], draft: DraftAPI;
 DraftApiTest('load Players; initialize Draft', async () => {
 	const tempPlayers = await loadDQNPlayers(2021, 100);
 	if (tempPlayers.length) players = tempPlayers;
-	draft = new DraftAPI(players);
+	draft = new DraftAPI(players, teamOpts);
 	assert.is(draft.players.length, 100);
 	draft.rewards.map((r) => assert.is(r >= 0 && r <= 1, true));
 });

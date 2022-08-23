@@ -5,10 +5,18 @@ import {
 	losses,
 	util,
 	type Sequential,
-	tensor
+	tensor,
+	dispose,
+	Tensor,
+	Rank,
+	tidy
 } from '@tensorflow/tfjs-node';
+import { com } from 'percom';
+import { PositionIdx, RosterEncd } from '@balleranalytics/nba-api-ts';
 import { readFile } from 'fs/promises';
-import { RosterDataSet, RosterDatumInputs } from '../A2C/Env';
+import combinate from 'combinate';
+
+import type { RosterDataSet, RosterDatumInputs } from '../A2C/Env/types';
 
 export class RosterML {
 	public model: Sequential;
@@ -34,6 +42,62 @@ export class RosterML {
 		});
 	}
 
+	static getAllEncodings() {
+		const values = {
+			0: [0, 1],
+			1: [0, 1],
+			2: [0, 1],
+			3: [0, 1],
+			4: [0, 1],
+			5: [0, 1],
+			6: [0, 1],
+			7: [1],
+			8: [1]
+		};
+
+		const combos = combinate(values).map(
+			(c) => <RosterEncd>[c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8]]
+		);
+		console.log(combos);
+		return combos;
+	}
+
+	public getAllRosters() {
+		const values = {
+			0: [0, 1],
+			1: [0, 1],
+			2: [0, 1],
+			3: [0, 1],
+			4: [0, 1],
+			5: [0, 1],
+			6: [0, 1],
+			7: [1],
+			8: [1]
+		};
+
+		const combinations = combinate(values);
+		const PG = combinations.filter((v) => v[PositionIdx.PG] === 1);
+		const SG = combinations.filter((v) => v[PositionIdx.SG] === 1);
+		const SF = combinations.filter((v) => v[PositionIdx.SF] === 1);
+		const PF = combinations.filter((v) => v[PositionIdx.PF] === 1);
+		const C = combinations.filter((v) => v[PositionIdx.C] === 1);
+		const G = combinations.filter((v) => v[PositionIdx.G] === 1);
+		const F = combinations.filter((v) => v[PositionIdx.F] === 1);
+		const rosterValues = {
+			PG,
+			SG,
+			SF,
+			PF,
+			C,
+			G,
+			F,
+			UTIL: com(combinations, 3),
+			BE: com(combinations, 3)
+		};
+		const allRosters = combinate(rosterValues);
+		console.log(allRosters.length);
+	}
+
 	public async trainModel() {
 		const xs = tensor(this.train_inputs);
 		const ys = tensor(this.train_labels);
@@ -43,10 +107,20 @@ export class RosterML {
 			shuffle: true,
 			validationSplit: 0.25
 		});
+		dispose(xs);
+		dispose(ys);
+	}
+
+	public predict(inputs: RosterDatumInputs) {
+		return tidy(() => {
+			const inputTensor = tensor([inputs], [1, 13, 9]);
+			const predTensor = <Tensor<Rank>>this.model.predict(inputTensor);
+			return predTensor.dataSync()[0];
+		});
 	}
 
 	public saveModel() {
-		const filePath = `${process.cwd()}/data/roster_validator_model.json`;
+		const filePath = `${process.cwd()}/data/roster_validator_model/model.json`;
 		return this.model
 			.save('file://' + filePath)
 			.then(() => `saved roster_validator_model to ${filePath}`);

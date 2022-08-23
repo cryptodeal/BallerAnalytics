@@ -4,7 +4,7 @@ import { Genome } from '../../../src/core/neat/Genome';
 import { TFGenome } from '../../../src/core/neat/TFGenome';
 import { Neat, type RandGenomeOpts } from '../../../src/core/neat';
 import type { Tensor, Rank } from '@tensorflow/tfjs-node';
-import { RosterDataSet, RosterDatum } from '../../A2C/Env';
+import { RosterDataSet, RosterDatum } from '../../A2C/Env/types';
 async function loadData() {
 	const path = process.cwd() + '/data/rosterDataset.json';
 	const { data } = <RosterDataSet>JSON.parse(await readFile(path, 'utf8'));

@@ -122,44 +122,34 @@ export class Actor_Critic_Agent {
 		this.epsilonIncrement = (this.epsilonFinal - this.epsilonInit) / this.epsilonDecayFrames;
 	}
 
+	/**
+	 * static fn, calls constructor & optimizes hyperparameters;
+	 * returns new instance Actor_Critic_Agent with actor/critic
+	 * constructed using the hyperparams resulting in lowest
+	 * moving avg loss over 256 episodes
+	 */
 	static async build(draft: DraftTask, dims: [number, number, number]) {
 		const agent = new Actor_Critic_Agent(draft, dims);
 		const space = {
 			actor_optimizer: hpjs.choice(['adam', 'sgd', 'rmsprop', 'adagrad', 'adamax']),
-			actor_learning_rate: hpjs.loguniform(-9 * Math.log(10), -3 * Math.log(10)),
-			actor_loss: hpjs.choice([
-				'mse',
-				'huber',
-				'sigmoidCrossEntropy',
-				'softmaxCrossEntropy',
-				'log'
-			]),
+			actor_learning_rate: hpjs.loguniform(-9 * Math.log(10), -4 * Math.log(10)),
 			critic_optimizer: hpjs.choice(['adam', 'sgd', 'rmsprop', 'adagrad', 'adamax']),
-			critic_learning_rate: hpjs.loguniform(-9 * Math.log(10), -3 * Math.log(10)),
-			critic_loss: hpjs.choice(['mse', 'huber'])
+			critic_learning_rate: hpjs.loguniform(-9 * Math.log(10), -4 * Math.log(10))
 		};
 		const trials = <
 			{
 				argmin: {
 					actor_optimizer: RLOptimizers;
 					actor_learning_rate: number;
-					actor_loss: RLLossFns;
 					critic_optimizer: RLOptimizers;
 					critic_learning_rate: number;
-					critic_loss: RLLossFns;
 				};
 			}
 		>await hpjs.fmin(agent.optimize_actor_hyperparams, space, hpjs.search.randomSearch, 2500, {
 			rng: new hpjs.RandomState(654321)
 		});
-		const {
-			actor_optimizer,
-			actor_learning_rate,
-			actor_loss,
-			critic_optimizer,
-			critic_learning_rate,
-			critic_loss
-		} = trials.argmin;
+		const { actor_optimizer, actor_learning_rate, critic_optimizer, critic_learning_rate } =
+			trials.argmin;
 		console.log(trials.argmin);
 		await writeFile(process.cwd() + `/data/optimizer.json`, JSON.stringify(trials.argmin));
 		console.log(
@@ -167,31 +157,131 @@ export class Actor_Critic_Agent {
 			actor_optimizer,
 			', Best agent_learning_rate:',
 			actor_learning_rate,
-			', Best actor_loss:',
-			actor_loss
-		);
-		console.log(
 			'Best critic_optimizer:',
 			critic_optimizer,
 			', Best critic_learning_rate:',
-			critic_learning_rate,
-			', Best critic_loss:',
-			critic_loss
+			critic_learning_rate
 		);
 
 		agent.actor = agent.createActorNetwork(...agent.dims, {
 			optimizer: actor_optimizer,
 			learningRate: actor_learning_rate,
-			loss: actor_loss
+			loss: 'softmaxCrossEntropy'
 		});
 		agent.critic = agent.createCriticNetwork(...agent.dims, {
 			optimizer: critic_optimizer,
 			learningRate: critic_learning_rate,
-			loss: critic_loss
+			loss: 'mse'
 		});
+		// agent.env.teamRoster.storeNewData = true;
 		return agent;
 	}
 
+	/**
+	 * automatically optimizes hyperparameters:
+	 *  - actor_optimizer
+	 *  - actor_learning_rate
+	 *  - critic_optimizer
+	 *  - critic_learning_rate
+	 */
+	public optimize_actor_hyperparams = async ({
+		actor_optimizer,
+		actor_learning_rate,
+		critic_optimizer,
+		critic_learning_rate
+	}: {
+		actor_optimizer: RLOptimizers;
+		actor_learning_rate: number;
+		critic_optimizer: RLOptimizers;
+		critic_learning_rate: number;
+	}) => {
+		const actor = this.createActorNetwork(this.dims[0], this.dims[1], this.dims[2], {
+			optimizer: actor_optimizer,
+			learningRate: actor_learning_rate,
+			loss: 'softmaxCrossEntropy'
+		});
+		const critic = this.createCriticNetwork(this.dims[0], this.dims[1], this.dims[2], {
+			optimizer: critic_optimizer,
+			learningRate: critic_learning_rate,
+			loss: 'mse'
+		});
+
+		console.log(
+			'actor_optimizer: ',
+			actor_optimizer,
+			', actor_learning_rate: ',
+			actor_learning_rate,
+			'critic_optimizer: ',
+			critic_optimizer,
+			', critic_learning_rate: ',
+			critic_learning_rate
+		);
+
+		let stepCount = 0;
+		const lossMovAvg = new MovingAverager(128);
+		let status: hpjs.STATUS_OK | hpjs.STATUS_FAIL = hpjs.STATUS_OK;
+		while (stepCount < 128) {
+			this.env.simulatePriorPicks(this.env.pickSlot);
+			const state = this.env.getState().e.flat();
+			try {
+				const action = await this.getAction(state, actor);
+				const [reward, done, nextTaskState] = await this.step(action);
+				const next_state = <number[]>nextTaskState?.e.flat();
+				const loss = await this.trainingTest(
+					state,
+					action,
+					reward,
+					next_state,
+					done,
+					actor,
+					critic
+				);
+				if (Number.isNaN(loss)) {
+					status = hpjs.STATUS_FAIL;
+					break;
+				}
+				if (loss === Number.NEGATIVE_INFINITY || loss === Number.POSITIVE_INFINITY) {
+					status = hpjs.STATUS_FAIL;
+					break;
+				}
+
+				/* track moving avg of absolute value of loss */
+				lossMovAvg.append(Math.abs(loss));
+
+				this.env.simulateLaterPicks(this.env.pickSlot);
+				if (done || this.milestone >= 13) {
+					this.reset();
+				}
+			} catch (e) {
+				console.log(e);
+				status = hpjs.STATUS_FAIL;
+				break;
+			}
+			stepCount++;
+		}
+
+		this.hyperparams_loop_count++;
+		console.log('hyperparams_loop_count:', this.hyperparams_loop_count);
+		this.reset();
+		actor.dispose();
+		critic.dispose();
+		const loss = lossMovAvg.average();
+		console.log(
+			'actor_optimizer: ',
+			actor_optimizer,
+			', actor_learning_rate: ',
+			actor_learning_rate,
+			'critic_optimizer: ',
+			critic_optimizer,
+			', critic_learning_rate: ',
+			critic_learning_rate,
+			', loss: ',
+			loss
+		);
+		return { loss, status };
+	};
+
+	/* constructs the actor network */
 	public createActorNetwork(
 		dim1: number,
 		dim2: number,
@@ -234,7 +324,7 @@ export class Actor_Critic_Agent {
     */
 		model.add(
 			layers.dense({
-				units: this.env.num_actions * 4,
+				units: this.env.num_actions * 3,
 				activation: 'relu',
 				kernelInitializer: 'glorotUniform'
 			})
@@ -259,73 +349,7 @@ export class Actor_Critic_Agent {
 		return model;
 	}
 
-	private randAction(actions: number[]) {
-		return actions[getRandomInt(0, actions.length)];
-	}
-
-	private weightedRandomItem = (
-		data: number[],
-		prob: Uint8Array | Float32Array | Int32Array | Array<number>
-	) => {
-		if (data.length !== prob.length) {
-			throw new Error('Data and probability arrays are not of same length');
-		}
-		const length = prob.length;
-		const validActions: number[] = [];
-
-		for (let i = 0; i < length; i++) {
-			if (!this.env.drafted_player_indices.has(data[i])) {
-				validActions.push(data[i]);
-			}
-		}
-
-		const rand = seededRandom();
-		let threshold = 0;
-		for (let i = 0; i < length; i++) {
-			threshold += prob[i];
-			if (threshold > rand) {
-				console.log('rand weighted prediction');
-				return data[i];
-			}
-		}
-		console.log('rand valid action');
-		return this.randAction(validActions);
-	};
-
-	public async getAction(input: number[], actor?: Sequential) {
-		const [dim1, dim2, dim3] = this.dims;
-		const logits = tidy(() => {
-			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
-			return actor
-				? <Tensor<Rank>>actor?.predict(inputTensor)
-				: <Tensor<Rank>>this.actor.predict(inputTensor);
-		});
-
-		/**
-		 * Source: the following @tensorflow/tfjs book,
-		 * Deep Learning with JavaScript - Neural Networks
-		 * in TensorFlow.js, we can use log fn to
-		 * unnormalize logits from actor pred.
-		 */
-		const masked = new Array(this.env.num_actions).fill(1);
-		for (const [key] of this.env.drafted_player_indices) {
-			masked[key] = 0;
-		}
-		const boolMasked = tensor(masked, [1, 289], 'bool');
-		/* boolean masking; set invalid actions to 0 */
-		const policy = await booleanMaskAsync(logits, boolMasked);
-
-		dispose(logits);
-		dispose(boolMasked);
-		const action = tidy(() => {
-			const unnormalized_policy = <Tensor1D>log(policy);
-			const actions = multinomial(unnormalized_policy, 1, undefined, false);
-			return actions.dataSync()[0];
-		});
-		dispose(policy);
-		return action;
-	}
-
+	/* constructs the actor network */
 	public createCriticNetwork(
 		dim1: number,
 		dim2: number,
@@ -366,14 +390,21 @@ export class Actor_Critic_Agent {
 			.apply(conv2);
 
 		const flat = layers.flatten({}).apply(conv3);
-
 		const dense1 = layers
 			.dense({
-				units: 16,
+				units: this.env.num_actions * 2,
 				activation: 'relu',
 				kernelInitializer: 'glorotUniform'
 			})
 			.apply(flat);
+
+		const dense2 = layers
+			.dense({
+				units: this.env.num_actions,
+				activation: 'relu',
+				kernelInitializer: 'glorotUniform'
+			})
+			.apply(dense1);
 
 		const output = <SymbolicTensor | SymbolicTensor[]>layers
 			.dense({
@@ -381,7 +412,7 @@ export class Actor_Critic_Agent {
 				activation: 'linear',
 				kernelInitializer: 'glorotUniform'
 			})
-			.apply(dense1);
+			.apply(dense2);
 
 		const tempModel = model({
 			inputs: input_state,
@@ -401,112 +432,93 @@ export class Actor_Critic_Agent {
 		return tempModel;
 	}
 
-	/* TODO: optimize actor/critic independently */
-	public optimize_actor_hyperparams = async ({
-		actor_optimizer,
-		actor_loss,
-		actor_learning_rate,
-		critic_optimizer,
-		critic_learning_rate,
-		critic_loss
-	}: {
-		actor_optimizer: RLOptimizers;
-		actor_learning_rate: number;
-		actor_loss: RLLossFns;
-		critic_optimizer: RLOptimizers;
-		critic_learning_rate: number;
-		critic_loss: RLLossFns;
-	}) => {
-		const actor = this.createActorNetwork(this.dims[0], this.dims[1], this.dims[2], {
-			optimizer: actor_optimizer,
-			learningRate: actor_learning_rate,
-			loss: actor_loss
-		});
-		const critic = this.createCriticNetwork(this.dims[0], this.dims[1], this.dims[2], {
-			optimizer: critic_optimizer,
-			learningRate: critic_learning_rate,
-			loss: critic_loss
+	/* gets best prediction from current state */
+	public async getAction(input: number[], actor?: Sequential) {
+		const [dim1, dim2, dim3] = this.dims;
+		const logits = tidy(() => {
+			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
+			return actor
+				? <Tensor<Rank>>actor?.predict(inputTensor)
+				: <Tensor<Rank>>this.actor.predict(inputTensor);
 		});
 
-		console.log(
-			'actor_optimizer: ',
-			actor_optimizer,
-			', actor_learning_rate: ',
-			actor_learning_rate,
-			', actor_loss:',
-			actor_loss,
-			'critic_optimizer: ',
-			critic_optimizer,
-			', critic_learning_rate: ',
-			critic_learning_rate,
-			', critic_loss:',
-			critic_loss
-		);
+		const masked = new Array(this.env.num_actions).fill(1);
+		for (const [key] of this.env.drafted_player_indices) {
+			masked[key] = 0;
+		}
+		const boolMasked = tensor(masked, [1, 289], 'bool');
+		/* boolean masking; set invalid actions to 0 */
+		const policy = await booleanMaskAsync(logits, boolMasked);
 
-		let stepCount = 0;
-		const lossMovAvg = new MovingAverager(100);
-		let status: hpjs.STATUS_OK | hpjs.STATUS_FAIL = hpjs.STATUS_OK;
-		while (stepCount < 100) {
-			this.env.simulatePriorPicks(this.env.pickSlot);
-			const state = this.env.getState().e.flat();
-			try {
-				const action = await this.getAction(state, actor);
-				const [reward, done, nextTaskState] = await this.step(action);
-				const next_state = <number[]>nextTaskState?.e.flat();
-				const loss = await this.trainingTest(
-					state,
-					action,
-					reward,
-					next_state,
-					done,
-					actor,
-					critic
-				);
-				if (Number.isNaN(loss)) {
-					status = hpjs.STATUS_FAIL;
-					break;
-				}
+		dispose(logits);
+		dispose(boolMasked);
+		/**
+		 * Source: the following @tensorflow/tfjs book,
+		 * Deep Learning with JavaScript - Neural Networks
+		 * in TensorFlow.js, we can use log fn to
+		 * unnormalize logits from actor pred.
+		 */
 
-				lossMovAvg.append(loss);
-
-				if (done || this.milestone >= 13) {
-					this.env.reset();
-				} else {
-					this.env.simulateLaterPicks(this.env.pickSlot);
-				}
-			} catch (e) {
-				console.log(e);
-				status = hpjs.STATUS_FAIL;
-				break;
-			}
-			stepCount++;
+		/**
+		 * TODO/IN PROGRESS:
+		 * - attempting to semi-efficiently filter out picks
+		 * that result in invalid roster state
+		 */
+		const unnormalized_policy = <Tensor1D>log(policy);
+		dispose(policy);
+		const actions = multinomial(unnormalized_policy, 1, undefined, false);
+		dispose(unnormalized_policy);
+		const actions_arr = actions.dataSync();
+		dispose(actions);
+		const predCount = actions_arr.length;
+		for (let i = 0; i < predCount; i++) {
+			if (
+				!this.env.drafted_player_indices.has(actions_arr[i]) &&
+				this.env.testActorPick(actions_arr[i])
+			)
+				return actions_arr[i];
 		}
 
-		this.hyperparams_loop_count++;
-		console.log('hyperparams_loop_count:', this.hyperparams_loop_count);
-		this.env.reset();
-		actor.dispose();
-		critic.dispose();
-		const loss = lossMovAvg.average();
-		console.log(
-			'actor_optimizer: ',
-			actor_optimizer,
-			', actor_learning_rate: ',
-			actor_learning_rate,
-			', actor_loss: ',
-			actor_loss,
-			'critic_optimizer: ',
-			critic_optimizer,
-			', critic_learning_rate: ',
-			critic_learning_rate,
-			', critic_loss: ',
-			critic_loss,
-			', loss: ',
-			loss
-		);
-		return { loss, status };
-	};
+		const valid_actions: number[] = [];
+		for (let i = 0; i < this.env.num_actions; i++) {
+			if (!this.env.drafted_player_indices.has(i)) valid_actions.push(i);
+		}
+		let random_valid_action: number | undefined = undefined,
+			count = 0;
 
+		/* TODO: Test to see whether better to test all valid actions
+    and randomly select from pool or randomly select and then test */
+
+		while (!random_valid_action && count < valid_actions.length) {
+			const tempAction = getRandomInt(0, valid_actions.length);
+			if (this.env.testActorPick(tempAction)) {
+				random_valid_action = valid_actions[tempAction];
+				break;
+			}
+			count++;
+		}
+		if (random_valid_action) {
+			return random_valid_action;
+		} else {
+			return valid_actions[getRandomInt(0, valid_actions.length)];
+		}
+
+		/* TODO: DELETE OLD CODE???? 
+		return tidy(() => {
+			const unnormalized_policy = <Tensor1D>log(policy);
+			dispose(policy);
+			const actions = multinomial(unnormalized_policy, 1, undefined, false);
+			return actions.dataSync()[0];
+		});
+    */
+	}
+
+	/**
+	 * private fn used in `optimize_actor_hyperparams`;
+	 * allows the hyperparameter optimization loop to
+	 * pass in new actor/critic at each iteration w/o
+	 * needing to set this.actor/this.critic
+	 */
 	private async trainingTest(
 		state: number[],
 		action: number,
@@ -567,6 +579,7 @@ export class Actor_Critic_Agent {
 		});
 	}
 
+	/* public training fn; returns loss; calls this.actor/this.critic */
 	public async trainModel(
 		state: number[],
 		action: number,
@@ -625,6 +638,7 @@ export class Actor_Critic_Agent {
 		});
 	}
 
+	/* agent performs step in RL Env using param, `action` */
 	public async step(action: number): Promise<[number, boolean, TaskState | undefined]> {
 		this.epsilon =
 			this.frameCount >= this.epsilonDecayFrames
@@ -637,6 +651,7 @@ export class Actor_Critic_Agent {
 		return [reward, done, nextState];
 	}
 
+	/* saves best copy of local model locally */
 	public saveLocally() {
 		const rootDir = process.cwd();
 		return Promise.all([
@@ -644,6 +659,40 @@ export class Actor_Critic_Agent {
 			this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic`)
 		]);
 	}
+
+	/* TODO: potentially make use of (or remove) these fns that were previously utilized? */
+	private randAction(actions: number[]) {
+		return actions[getRandomInt(0, actions.length)];
+	}
+
+	private weightedRandomItem = (
+		data: number[],
+		prob: Uint8Array | Float32Array | Int32Array | Array<number>
+	) => {
+		if (data.length !== prob.length) {
+			throw new Error('Data and probability arrays are not of same length');
+		}
+		const length = prob.length;
+		const validActions: number[] = [];
+
+		for (let i = 0; i < length; i++) {
+			if (!this.env.drafted_player_indices.has(data[i])) {
+				validActions.push(data[i]);
+			}
+		}
+
+		const rand = seededRandom();
+		let threshold = 0;
+		for (let i = 0; i < length; i++) {
+			threshold += prob[i];
+			if (threshold > rand) {
+				console.log('rand weighted prediction');
+				return data[i];
+			}
+		}
+		console.log('rand valid action');
+		return this.randAction(validActions);
+	};
 
 	public sample(population: number[], k: number) {
 		/**

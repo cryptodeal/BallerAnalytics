@@ -2,6 +2,7 @@ import { DQNPlayer, loadDQNPlayers, type SavedPlayerData } from '@balleranalytic
 import { readFile } from 'fs/promises';
 import { util } from '@tensorflow/tfjs-node';
 import { DraftTask } from '../../A2C/Env';
+import { LeanRoster } from '../../A2C/Env/LeanRoster';
 import { Actor_Critic_Agent } from '../../A2C/A2CAgent';
 import type { TeamOpts } from '../../DQN/tasks/types';
 import { MovingAverager } from '../../utils';
@@ -39,7 +40,7 @@ const getData = async () => {
 };
 
 const trainA2C = async () => {
-	const moving_avg = new MovingAverager(100);
+	const moving_avg = new MovingAverager(256);
 	let best_self_moving_avg = 0;
 	const players = await getData();
 	console.log(players.length);
@@ -48,7 +49,8 @@ const trainA2C = async () => {
 	util.shuffle(players);
 	const actionSqrt = Math.sqrt(players.length);
 	const dimensions: [number, number, number] = [actionSqrt, actionSqrt, players[0].inputs.length];
-	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 5 });
+	const model = await LeanRoster.loadModel();
+	const draft = new DraftTask({ dimensions, all_actions: players, teamOpts, oppCount: 5 }, model);
 	const agent = await Actor_Critic_Agent.build(draft, dimensions);
 	while (true) {
 		/* TODO: REMOVE?? --> const time_count = 0; */

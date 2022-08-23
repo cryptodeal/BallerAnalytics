@@ -19,18 +19,30 @@ DQNTest('createDeepQNetwork', () => {
 DQNTest('Invalid dim1, dim2, and/or dim3 leads to Error', () => {
 	assert.throws(() => createDeepQNetwork(0, 10, 10, 4), /dim1/);
 	assert.throws(() => createDeepQNetwork('10' as unknown as number, 10, 10, 4), /dim1/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(null, 10, 10, 4), /dim1/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(undefined, 10, 10, 4), /dim1/);
 	assert.throws(() => createDeepQNetwork(10.8, 10, 10, 4), /dim1/);
 	assert.throws(() => createDeepQNetwork(10, 0, 10, 4), /dim2/);
 	assert.throws(() => createDeepQNetwork(10, '10' as unknown as number, 10, 4), /dim2/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(10, null, 10, 4), /dim2/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(10, undefined, 10, 4), /dim2/);
 	assert.throws(() => createDeepQNetwork(10, 10.8, 10, 4), /dim2/);
 
 	assert.throws(() => createDeepQNetwork(10, 10, 0, 4), /dim3/);
 	assert.throws(() => createDeepQNetwork(10, 10, '10' as unknown as number, 4), /dim3/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(10, 10, null, 4), /dim3/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(10, 10, undefined, 4), /dim3/);
 	assert.throws(() => createDeepQNetwork(10, 10, 10.8, 4), /dim3/);
 });
@@ -39,7 +51,11 @@ DQNTest('Invalid numActions leads to Error', () => {
 	assert.throws(() => createDeepQNetwork(10, 10, 10, 0), /numActions/);
 	assert.throws(() => createDeepQNetwork(10, 10, 10, 1), /numActions/);
 	assert.throws(() => createDeepQNetwork(10, 10, 10, '4' as unknown as number), /numActions/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(10, 10, 10, null), /numActions/);
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - test that it throws an error
 	assert.throws(() => createDeepQNetwork(10, 10, 10, undefined), /numActions/);
 });
 
@@ -84,8 +100,8 @@ CopyWeightsTest('copyWeights', async () => {
 	}
 
 	/* Modifying source network weight should not change target network weight */
-	const xs = randomUniform([4].concat(onlineNetwork.inputs[0].shape.slice(1)));
-	const ys = randomUniform([4].concat(onlineNetwork.outputs[0].shape.slice(1)));
+	const xs = randomUniform([4].concat(<number[]>onlineNetwork.inputs[0].shape.slice(1)));
+	const ys = randomUniform([4].concat(<number[]>onlineNetwork.outputs[0].shape.slice(1)));
 	await onlineNetwork.fit(xs, ys, { epochs: 1 });
 
 	const onlineWeights2 = onlineNetwork.getWeights();

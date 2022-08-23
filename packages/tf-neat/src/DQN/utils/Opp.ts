@@ -1,5 +1,7 @@
 import type { TeamOpts } from '../tasks/types';
+import type { Sequential } from '@tensorflow/tfjs-node';
 import { DQNPlayer } from '@balleranalytics/nba-api-ts';
+import { LeanRoster } from '../../A2C/Env/LeanRoster';
 
 export type OppPositions = 'pg' | 'sg' | 'sf' | 'pf' | 'c' | 'g' | 'f';
 export type OppRosterSlots = OppPositions | ('util' | 'be');
@@ -13,9 +15,31 @@ export enum PositionsIdxs {
 	F
 }
 
+export class DraftOppMl {
+	public roster: LeanRoster;
+	public pickSlot: number;
+
+	constructor(opts: TeamOpts, pickSlot: number, model: Sequential) {
+		this.roster = new LeanRoster(model);
+		this.pickSlot = pickSlot;
+	}
+
+	public isPickSlot = (slot: number) => {
+		return this.pickSlot === slot;
+	};
+
+	public makeDraftPick(player: DQNPlayer) {
+		this.roster.addPick(player.getRosterEncoding());
+	}
+
+	public testPick(player: DQNPlayer) {
+		return this.roster.testPick(player.getRosterEncoding());
+	}
+}
+
 export class DraftOpp {
 	public roster: Record<OppRosterSlots, (DQNPlayer | null)[]>;
-	public pickSlot!: number;
+	public pickSlot: number;
 	public players: DQNPlayer[] = [];
 
 	constructor(opts: TeamOpts, pickSlot: number) {

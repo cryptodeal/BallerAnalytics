@@ -26,4 +26,4 @@ UtilsTest('getRandomIntegers(); max > min', () => {
 	});
 });
 
-UtilsTest.run();
+// UtilsTest.run();

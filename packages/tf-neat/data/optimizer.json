@@ -1,1 +1,1 @@
-{"optimizer":"rmsprop","learningRate":0.0000013518159921993584}
+{"actor_optimizer":"rmsprop","actor_learning_rate":5.504845288681147e-7,"critic_optimizer":"sgd","critic_learning_rate":0.000001211227846713192}
