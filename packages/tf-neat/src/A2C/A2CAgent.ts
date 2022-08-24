@@ -483,11 +483,11 @@ export class Actor_Critic_Agent {
 
 		const valid_actions: number[] = [];
 		for (let i = 0; i < this.env.num_actions; i++) {
-			if (!this.env.drafted_player_indices.has(i) && this.env.testActorPick(actions_arr[i]))
+			if (!this.env.drafted_player_indices.has(i) && this.env.testActorPick(i))
 				valid_actions.push(i);
 		}
 
-		if (valid_actions.length < 0) {
+		if (valid_actions.length > 0) {
 			return valid_actions[getRandomInt(0, valid_actions.length)];
 		} else {
 			return actions_arr[getRandomInt(0, actions_arr.length)];
