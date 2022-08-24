@@ -6,17 +6,12 @@ export const GET: RequestHandler = async (event) => {
 	// Log the user out and clear access/refresh token cookies
 	const { accessToken, refreshToken } = await logout(locals);
 	event.locals = {};
-
-	if (accessToken) {
-		return {
-			status: 302,
-			headers: {
-				'set-cookie': [accessToken, refreshToken],
-				location: '/'
-			}
-		};
-	}
-	return {
-		status: 205
-	};
+	const headers = new Headers();
+	headers.append('set-cookie', accessToken);
+	headers.append('set-cookie', refreshToken);
+	headers.append('location', '/');
+	return new Response(undefined, {
+		status: 302,
+		headers
+	});
 };

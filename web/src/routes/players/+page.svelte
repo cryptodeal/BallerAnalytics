@@ -1,35 +1,12 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import type { PlayersResponse } from './index.json';
-
-	export const load: Load = async ({ fetch }) => {
-		const url = `/players.json`;
-		const res = await fetch(url);
-
-		if (res.ok) {
-			const { players, seasons } = (await res.json()) as PlayersResponse;
-			return {
-				props: {
-					players,
-					seasons
-				}
-			};
-		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`)
-		};
-	};
-</script>
-
 <script lang="ts">
 	import VirtualList from 'svelte-tiny-virtual-list';
 	import { MetaTags } from 'svelte-meta-tags';
 	import InfiniteLoading, { type InfiniteEvent } from 'svelte-infinite-loading';
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
-	import type { Player2Document } from '@balleranalytics/nba-api-ts';
-	export let players: Player2Document[], seasons: number[];
+  import type { PageData } from './$types';
+  export let data: PageData;
+  let { players, seasons } = data;
+  $: ({ players, seasons } = data); // so it stays in sync when `data` changes
 
 	let page = 1,
 		listHeight = 500,

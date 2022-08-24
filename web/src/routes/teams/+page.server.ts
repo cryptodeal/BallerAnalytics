@@ -1,18 +1,14 @@
 import { getAllTeamsCommonInfo } from '$lib/data/_db/controllers/team';
-import type { RequestHandler } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export const GET: RequestHandler = async () => {
+export const load: PageServerLoad = async () => {
 	const teams = await getAllTeamsCommonInfo();
 
 	if (teams) {
 		return {
-			body: {
-				teams
-			}
+			teams
 		};
 	}
 
-	return {
-		status: 500
-	};
+	return new Response(undefined, { status: 500 });
 };

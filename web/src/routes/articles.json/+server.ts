@@ -1,6 +1,7 @@
+import { json } from '@sveltejs/kit';
 import { slugFromPath } from '$lib/functions/helpers';
 
-import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
 export type ArticleIdxData = {
 	slug: string;
@@ -19,9 +20,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	const limit = Number(url.searchParams.get('limit') ?? Infinity);
 
 	if (Number.isNaN(limit)) {
-		return {
-			status: 400
-		};
+		return new Response(undefined, { status: 400 });
 	}
 
 	for (const [path, resolver] of Object.entries(modules)) {
@@ -49,10 +48,8 @@ export const GET: RequestHandler = async ({ url }) => {
 		pages = Math.ceil(publishedPosts.length / limit);
 	}
 
-	return {
-		body: {
-			posts: publishedPosts,
-			pages
-		}
-	};
+	return json({
+		posts: publishedPosts,
+		pages
+	});
 };

@@ -1,25 +1,3 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import type { Player2Document } from '@balleranalytics/nba-api-ts';
-	export const load: Load = async ({ fetch, params }) => {
-		const url = `/players/${params.playerSlug}.json`;
-		const res = await fetch(url);
-		if (res.ok) {
-			const { playerData: player }: { playerData: Player2Document } = await res.json();
-			return {
-				props: {
-					player
-				}
-			};
-		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`)
-		};
-	};
-</script>
-
 <script lang="ts">
 	import Twitter from '$lib/ux/socials/Twitter.svelte';
 	import Insta from '$lib/ux/socials/Instagram.svelte';
@@ -28,7 +6,10 @@
 	import PlayerStats from '$lib/ux/tables/players/Stats.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import dayjs from 'dayjs';
-	export let player: Player2Document;
+import type { PageData } from './$types';
+  export let data: PageData
+  let {player} = data;
+  $: ({player} = data); // so it stays in sync when `data` changes
 	// $: console.log(player);
 </script>
 

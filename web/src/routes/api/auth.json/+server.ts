@@ -1,7 +1,7 @@
 import sendAuthLink from '$lib/functions/_api/auth/sendAuthLink';
 import uaParser from 'ua-parser-js';
 import dayjs from 'dayjs';
-import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 import type { PostAuthBody } from '$lib/types';
 
 export const POST: RequestHandler = async (event) => {
@@ -12,7 +12,5 @@ export const POST: RequestHandler = async (event) => {
 
 	const result = await sendAuthLink(email, ua, time, host);
 
-	return {
-		status: result == true ? 200 : 400
-	};
+	return new Response(undefined, { status: result == true ? 200 : 400 });
 };

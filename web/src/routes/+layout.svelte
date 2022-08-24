@@ -1,13 +1,5 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	export const load: Load = async ({ url }) => ({
-		props: {
-			path: url.pathname
-		}
-	});
-</script>
-
 <script lang="ts">
+
 	import { onMount } from 'svelte';
 	import { webVitals } from '$lib/webvitals';
 	import { afterNavigate } from '$app/navigation';
@@ -26,7 +18,11 @@
 	import Modal from '$lib/ux/Modal.svelte';
 	import { createTeamSubs, getTeamSubs } from '$lib/data/stores/teamSubs';
 	import Toast from '$lib/ux/Toast.svelte';
-	export let path: string;
+  import type { LayoutData } from './$types';
+  export let data: LayoutData;
+  let { path } = data;
+  $: ({ path } = data); // so it stays in sync when `data` changes
+
 	const modalId = 'auth-modal',
 		triggerTxt = 'login / register';
 

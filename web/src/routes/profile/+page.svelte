@@ -1,25 +1,3 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	export const load: Load = async ({ fetch, session }) => {
-		if (!session.user) {
-			return {
-				redirect: '/',
-				status: 302
-			};
-		}
-		const url = `/profile.json?userId=${session.user.id}`;
-		const res = await fetch(url);
-		const { userData } = await res.json();
-
-		//console.log(userData);
-		return {
-			props: {
-				user: userData
-			}
-		};
-	};
-</script>
-
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import { teams } from '$lib/data/teams';
@@ -31,10 +9,12 @@
 	import IconClipboard from '~icons/fluent/clipboard-text-ltr-24-regular';
 	import IconGradHat from '~icons/fluent/hat-graduation-24-regular';
 	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
-	import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
+	// import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
 	import type { ObjectOption } from 'svelte-multiselect';
-
-	export let user: PopulatedDocument<UserDocument, 'subscriptions.teams'>;
+  import type { PageData } from './$types';
+  export let data: PageData
+  let { user } = data;
+  $: ({ user } = data); // so it stays in sync when `data` changes
 	$: console.log(user);
 	const teamSubs = getTeamSubs(),
 		notifications = getNotificationsStore(),

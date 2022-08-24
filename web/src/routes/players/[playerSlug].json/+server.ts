@@ -1,5 +1,6 @@
+import { json } from '@sveltejs/kit';
 import { getPlayerBySlug } from '$lib/data/_db/controllers/player';
-import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ params }) => {
 	const { playerSlug } = params;
@@ -7,14 +8,10 @@ export const GET: RequestHandler = async ({ params }) => {
 	const playerData = await getPlayerBySlug(playerSlug);
 
 	if (playerData) {
-		return {
-			body: {
-				playerData
-			}
-		};
+		return json({
+			playerData
+		});
 	}
 
-	return {
-		status: 500
-	};
+	return new Response(undefined, { status: 500 });
 };

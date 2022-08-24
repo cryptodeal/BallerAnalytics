@@ -5,8 +5,7 @@ import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
 // import { minify } from 'html-minifier';
 // import { prerendering } from '$app/env';
-
-import type { Handle, GetSession } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit';
 import { expireTokens } from '$lib/functions/_api/auth/logout';
 
 /*
@@ -81,8 +80,4 @@ export const handle: Handle = async ({ event, resolve }) => {
   */
 
 	return response;
-};
-
-export const getSession: GetSession = async (event) => {
-	return event.locals.user ? { user: event.locals.user } : {};
 };

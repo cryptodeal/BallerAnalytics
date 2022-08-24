@@ -1,62 +1,20 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import type { Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
-	export const logoModules = import.meta.glob('../../lib/ux/teams/assets/logo-*.svelte', {
-		eager: true
-	});
-	export const load: Load = async ({ fetch, url }) => {
-		let apiUrl = `/games.json`;
-		if (url.searchParams.has('date')) {
-			const date = url.searchParams.get('date');
-			apiUrl += `?date=${date}`;
-		}
-
-		const res = await fetch(apiUrl);
-
-		if (res.ok) {
-			const {
-				games,
-				min,
-				max
-			}: {
-				games: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>[];
-				min: Date;
-				max: Date;
-			} = await res.json();
-			return {
-				props: {
-					games,
-					min,
-					max
-				}
-			};
-		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`)
-		};
-	};
-</script>
-
 <script lang="ts">
+
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import GameEvent from '$lib/ux/games/GameEvent.svelte';
 	import { DateInput } from 'date-picker-svelte';
 	import { MetaTags } from 'svelte-meta-tags';
+  import type { PageData } from './$types';
+  export let data: PageData
+  let { games, min, max} = data;
+  $: ({ games, min, max} = data) // so it stays in sync when `data` changes
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
 	dayjs.tz.setDefault('America/New_York');
 
-	export let games: PopulatedDocument<
-			PopulatedDocument<Game2Document, 'home.team'>,
-			'visitor.team'
-		>[],
-		min: Date,
-		max: Date;
 
 	let date = games.length ? dayjs(games[0].date).utc().tz().toDate() : dayjs().utc().tz().toDate();
 

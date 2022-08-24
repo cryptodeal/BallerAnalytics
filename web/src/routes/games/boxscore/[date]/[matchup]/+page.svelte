@@ -1,27 +1,3 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import type { BoxScoreLoadParams, BoxScoreBody } from '$lib/types';
-
-	export const load: Load<BoxScoreLoadParams, BoxScoreBody> = async ({ fetch, params }) => {
-		const { date, matchup } = params;
-		let apiUrl = `/games/boxscore/${date}/${matchup}.json`;
-		const res = await fetch(apiUrl);
-
-		if (res.ok) {
-			const { boxscore } = await res.json();
-			return {
-				props: {
-					boxscore
-				}
-			};
-		}
-
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${apiUrl}`)
-		};
-	};
-</script>
 
 <script lang="ts">
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
@@ -35,9 +11,10 @@
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
-	import type { BoxScoreData } from '$lib/types';
-
-	export let boxscore: BoxScoreData;
+  import type { PageData } from './$types'
+  export let data: PageData;
+  let { boxscore } = data
+  $: ({ boxscore } = data); // so it stays in sync when `data` changes
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);

@@ -1,12 +1,16 @@
+import { json } from '@sveltejs/kit';
+
 import { getSeasonPlayers } from '$lib/data/_db/controllers/player';
 import type { Player2Document } from '@balleranalytics/nba-api-ts';
-import type { RequestHandler } from '@sveltejs/kit';
+import type { RequestHandler } from './$types';
 
+/*
 type GetPlayerParams = Record<string, string> & {
 	page: string | undefined;
 	year: string | undefined;
 	name: string | undefined;
 };
+*/
 
 export type PlayersResponse = {
 	players: Player2Document[];
@@ -16,7 +20,7 @@ export type PlayersResponse = {
 	};
 	seasons: number[];
 };
-export const GET: RequestHandler<GetPlayerParams, PlayersResponse> = async ({ url }) => {
+export const GET: RequestHandler = async ({ url }) => {
 	const year = url.searchParams.has('year')
 		? parseInt(url.searchParams.get('year') as string)
 		: 2022;
@@ -29,16 +33,12 @@ export const GET: RequestHandler<GetPlayerParams, PlayersResponse> = async ({ ur
 		const [{ players, query }, { min, max }] = data;
 		const seasons: number[] = [];
 		for (let i = min; i <= max; i++) seasons.push(i);
-		return {
-			body: {
-				players,
-				query,
-				seasons
-			}
-		};
+		return json({
+			players,
+			query,
+			seasons
+		});
 	}
 
-	return {
-		status: 500
-	};
+	return new Response(undefined, { status: 500 });
 };

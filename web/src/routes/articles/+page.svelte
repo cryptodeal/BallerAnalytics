@@ -1,31 +1,11 @@
-<script lang="ts" context="module">
-	import type { Load } from '@sveltejs/kit';
-
-	export const load: Load = async ({ fetch }) => {
-		const url = `/articles.json`;
-		const res = await fetch(url);
-		const { posts, pages } = await res.json();
-		if (res.ok) {
-			return {
-				props: {
-					posts,
-					pages
-				}
-			};
-		}
-		return {
-			status: res.status,
-			error: new Error(`Could not load ${url}`)
-		};
-	};
-</script>
-
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
 	import Paginate from '$lib/ux/paginate/traditional.svelte';
-	import type { ArticleIdxData } from './index.json';
+  import type { PageData } from './$types';
+  export let data: PageData;
+  let { posts, pages } = data;
+  $: ({ posts, pages } = data); // so it stays in sync when `data` changes
 
-	export let posts: ArticleIdxData[], pages: number;
 </script>
 
 <MetaTags

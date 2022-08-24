@@ -1,82 +1,3 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-	import type { SeasonList } from '$lib/types';
-	import type { TeamSlugParams } from './types';
-	import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
-	import type { GET } from './index.json';
-
-	type TeamPageLoadProps = TeamPageInitData & {
-		seasonIdx: number;
-		seasons: SeasonList[];
-		seasonYear: number;
-	};
-
-	type InputProps = NonNullable<Awaited<ReturnType<typeof GET>>['body']>;
-
-	type OutputProps = TeamPageLoadProps & InputProps;
-
-	export const load: Load<TeamSlugParams, InputProps, OutputProps> = async ({
-		fetch,
-		params,
-		url
-	}) => {
-		if (url.searchParams.get('i')) {
-			const apiUrl = `/teams/${params.teamSlug}.json?i=${url.searchParams.get('i')}`;
-			const res = await fetch(apiUrl);
-			if (res.ok) {
-				const { team, players, games } = (await res.json()) as TeamPageInitData;
-				const seasonIdx = parseInt(url.searchParams.get('i') as string);
-				const seasons: SeasonList[] = [];
-				team.seasons.map((s) => {
-					const { season } = s;
-					seasons.push({ season });
-				});
-				seasons.sort((a, b) => a.season - b.season);
-				return {
-					props: {
-						team,
-						players,
-						games,
-						seasonIdx,
-						seasonYear: team.seasons[seasonIdx].season,
-						seasons
-					}
-				};
-			}
-			return {
-				status: res.status,
-				error: new Error(`Could not load ${apiUrl}`)
-			};
-		} else {
-			const apiUrl = `/teams/${params.teamSlug}.json`;
-			const res = await fetch(apiUrl);
-			if (res.ok) {
-				const { team, players, games } = (await res.json()) as TeamPageInitData;
-				const seasonIdx = 0;
-				const seasons: SeasonList[] = [];
-				team.seasons.map((s) => {
-					const { season } = s;
-					seasons.push({ season });
-				});
-				seasons.sort((a, b) => a.season - b.season);
-				return {
-					props: {
-						team,
-						players,
-						games,
-						seasonIdx,
-						seasonYear: team.seasons[seasonIdx].season,
-						seasons
-					}
-				};
-			}
-			return {
-				status: res.status,
-				error: new Error(`Could not load ${apiUrl}`)
-			};
-		}
-	};
-</script>
 
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
@@ -84,11 +5,15 @@
 	import PlayerRoster from '$lib/ux/tables/teams/PlayerRoster.svelte';
 	import PlayerStats from '$lib/ux/tables/teams/Stats.svelte';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import type {
-		Team2Document,
-		PopulatedDocument,
-		Player2StatsObject
-	} from '@balleranalytics/nba-api-ts';
+	/*
+    import type {
+      Team2Document,
+      PopulatedDocument,
+      Player2StatsObject
+    } from '@balleranalytics/nba-api-ts';
+  */
+  import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
+
 	import type { TeamColor } from '$lib/types';
 	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';
 	import TabList from '$lib/ux/tabs/TabList.svelte';
@@ -99,16 +24,19 @@
 	import darkMode from '$lib/data/stores/theme';
 	import { browser } from '$app/env';
 	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
-	import type { TeamPageGames } from '$lib/data/_db/controllers/team';
-	export let team: PopulatedDocument<
-		PopulatedDocument<Team2Document, `seasons.regularSeason.games`>,
-		'seasons.roster.players.player'
-	>;
-	export let games: TeamPageGames;
-	export let players: Player2StatsObject[];
-	export let seasonIdx: number;
-	export let seasonYear: number;
-	export let seasons: SeasonList[];
+	// import type { TeamPageGames } from '$lib/data/_db/controllers/team';
+  import type{ PageData } from './$types';
+  export let data: PageData;
+  let { team, games, players, seasonIdx, seasonYear, seasons }= data;
+  $: ({
+    team,
+    games,
+    players,
+    seasonIdx,
+    seasonYear,
+    seasons
+  } = data);
+	
 
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });

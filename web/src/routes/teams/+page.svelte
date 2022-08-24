@@ -3,13 +3,10 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-	import type { Team2Object } from '@balleranalytics/nba-api-ts';
-	type Team2ForceAbbrev = Team2Object & {
-		infoCommon: {
-			nbaAbbreviation: string;
-		};
-	};
-	export let teams: Team2ForceAbbrev[];
+  import type { PageData } from './$types';
+  export let data: PageData;
+  let { teams } = data;
+  $: ({ teams } = data); // so it stays in sync when `data` changes
 </script>
 
 <MetaTags

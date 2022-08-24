@@ -1,1 +1,1 @@
-{"actor_optimizer":"rmsprop","actor_learning_rate":5.504845288681147e-7,"critic_optimizer":"sgd","critic_learning_rate":0.000001211227846713192}
+{"actor_optimizer":"adam","actor_learning_rate":5.931539640172254e-7,"critic_optimizer":"rmsprop","critic_learning_rate":0.00000518946062123091}

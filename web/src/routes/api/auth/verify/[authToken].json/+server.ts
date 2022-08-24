@@ -1,15 +1,18 @@
+import { json } from '@sveltejs/kit';
 import crypto from 'crypto';
 import { User } from '@balleranalytics/nba-api-ts';
 import createToken from '$lib/functions/_api/auth/createToken';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
-import type { RequestHandler } from '@sveltejs/kit';
-import type { JWTPayload } from '$lib/types';
+import type { RequestHandler } from './$types';
+// import type { JWTPayload } from '$lib/types';
 
-type VerifyTokenParams = {
-	authToken: string;
-};
+/*
+  type VerifyTokenParams = {
+    authToken: string;
+  };
+*/
 
-export const GET: RequestHandler<VerifyTokenParams> = async (event) => {
+export const GET: RequestHandler = async (event) => {
 	const { authToken } = event.params;
 
 	const hashedToken = crypto.createHash('sha256').update(authToken).digest('hex');
@@ -20,12 +23,14 @@ export const GET: RequestHandler<VerifyTokenParams> = async (event) => {
 	});
 
 	if (!user) {
-		return {
-			status: 400,
-			body: {
+		return json(
+			{
 				error: 'Invalid authToken; Please try logging in again'
+			},
+			{
+				status: 400
 			}
-		};
+		);
 	}
 	// If the user exists and token isn't expired, remove token and send JWT token
 	user.authLoginToken = undefined;
@@ -37,23 +42,20 @@ export const GET: RequestHandler<VerifyTokenParams> = async (event) => {
 
 	const decoded = decodeToken(tokenPayload);
 	if (decoded == null) throw Error(`Error: could not decode token`);
-	event.locals.user = decoded.payload as JWTPayload;
 	//let cookie1 = `cookie1Test=testCookie1; Path=/; HttpOnly`
 	//let cookie2 = `cookie2Test=testCookie2; Path=/; HttpOnly`
 
 	if (accessToken) {
-		return {
+		const headers = new Headers();
+		headers.append('set-cookie', accessToken);
+		headers.append('set-cookie', refreshToken);
+		return new Response(undefined, {
 			status: 200,
-			headers: {
-				'set-cookie': [accessToken, refreshToken]
-			}
-		};
+			headers
+		});
 	}
 
-	return {
-		status: 302,
-		headers: {
-			location: '/'
-		}
-	};
+	return new Response(undefined, {
+		status: 205
+	});
 };
