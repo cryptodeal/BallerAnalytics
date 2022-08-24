@@ -1,25 +1,9 @@
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 import type { SeasonList } from '$lib/types';
-import type { TeamSlugParams } from './types';
 import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
-import type { GET } from './index.json';
 
-type TeamPageLoadProps = TeamPageInitData & {
-	seasonIdx: number;
-	seasons: SeasonList[];
-	seasonYear: number;
-};
-
-type InputProps = NonNullable<Awaited<ReturnType<typeof GET>>['body']>;
-
-type OutputProps = TeamPageLoadProps & InputProps;
-
-export const load: PageLoad<TeamSlugParams, InputProps, OutputProps> = async ({
-	fetch,
-	params,
-	url
-}) => {
+export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (url.searchParams.get('i')) {
 		const apiUrl = `/teams/${params.teamSlug}.json?i=${url.searchParams.get('i')}`;
 		const res = await fetch(apiUrl);

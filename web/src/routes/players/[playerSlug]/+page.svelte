@@ -6,7 +6,7 @@
 	import PlayerStats from '$lib/ux/tables/players/Stats.svelte';
 	import { MetaTags } from 'svelte-meta-tags';
 	import dayjs from 'dayjs';
-import type { PageData } from './$types';
+  import type { PageData } from './$types';
   export let data: PageData
   let {player} = data;
   $: ({player} = data); // so it stays in sync when `data` changes

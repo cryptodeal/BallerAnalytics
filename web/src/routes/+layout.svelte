@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { onMount } from 'svelte';
 	import { webVitals } from '$lib/webvitals';
 	import { afterNavigate } from '$app/navigation';

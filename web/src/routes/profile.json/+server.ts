@@ -1,5 +1,4 @@
-import { json as json$1 } from '@sveltejs/kit';
-
+import { json } from '@sveltejs/kit';
 import { findUserById, addNewUserFormData, updateUserData } from '$lib/data/_db/controllers/user';
 import protect from '$lib/functions/_api/auth/protect';
 import { validateUserForm } from '$lib/functions/helpers';
@@ -13,7 +12,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	const userData = await findUserById(userId);
 
 	if (userData) {
-		return json$1({
+		return json({
 			userData
 		});
 	}
@@ -29,7 +28,7 @@ export const POST: RequestHandler = async (event) => {
 		const { valid, errors } = validateUserForm(data);
 		if (!valid) {
 			console.log(errors);
-			return json$1(
+			return json(
 				{
 					error: `Error: ${errors.join(', ')}`
 				},

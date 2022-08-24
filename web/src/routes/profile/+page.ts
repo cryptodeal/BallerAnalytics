@@ -1,5 +1,7 @@
 import { redirect } from '@sveltejs/kit';
-import type { PageLoad } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
+
+/* TODO: REMOVE SESSION */
 export const load: PageLoad = async ({ fetch, session }) => {
 	if (!session.user) {
 		throw redirect(302, '/');

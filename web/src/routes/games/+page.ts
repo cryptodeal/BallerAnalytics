@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 import type { Game2Document, PopulatedDocument } from '@balleranalytics/nba-api-ts';
 export const logoModules = import.meta.glob('../../lib/ux/teams/assets/logo-*.svelte', {
 	eager: true

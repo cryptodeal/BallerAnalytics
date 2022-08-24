@@ -9,9 +9,10 @@ import type { DQNPlayer } from '@balleranalytics/nba-api-ts';
 
 /* TODO: tune parameters */
 /* TODO: Test variations of reward vals */
-export const INVALID_ROSTER_REWARD = -0.5;
-export const UNAVAIL_PLAYER_REWARD = -0.5;
-export const FAILED_DRAFT_REWARD = -1;
+export const INVALID_ROSTER_REWARD = -1.5;
+export const UNAVAIL_PLAYER_REWARD = -1.5;
+export const FAILED_DRAFT_REWARD = -1.5;
+export const COMPLETED_DRAFT_REWARD = 2;
 
 export class DraftTask {
 	public all_actions: number[];
@@ -171,6 +172,7 @@ export class DraftTask {
 		milestone = true;
 		reward += this.draftApi.getReward(action);
 		this.selfState.unshift(this.pick.inputs);
+		if (this.selfState.length === 13) reward += COMPLETED_DRAFT_REWARD;
 
 		/**
 		 * TaskStepOutput

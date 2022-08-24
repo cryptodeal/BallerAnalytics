@@ -35,8 +35,8 @@
 />
 
 {#each teams as { infoCommon, seasons }}
-	{@const mainColor = getMainColor(infoCommon.nbaAbbreviation).hex}
-	{@const secondaryColor = getSecondaryColor(infoCommon.nbaAbbreviation).hex}
+	{@const mainColor = getMainColor(infoCommon.nbaAbbreviation || infoCommon.abbreviation).hex}
+	{@const secondaryColor = getSecondaryColor(infoCommon.nbaAbbreviation || infoCommon.abbreviation).hex}
 	{@const invertedColor = invertColor(mainColor, true)}
 	{@const backdropBg = tinycolor(invertedColor).setAlpha(0.4).toRgbString()}
 	<div class="container mx-auto my-4">

@@ -475,42 +475,23 @@ export class Actor_Critic_Agent {
 			if (
 				!this.env.drafted_player_indices.has(actions_arr[i]) &&
 				this.env.testActorPick(actions_arr[i])
-			)
+			) {
+				console.log(`chose predicted action: ${actions_arr[i]}`);
 				return actions_arr[i];
+			}
 		}
 
 		const valid_actions: number[] = [];
 		for (let i = 0; i < this.env.num_actions; i++) {
-			if (!this.env.drafted_player_indices.has(i)) valid_actions.push(i);
+			if (!this.env.drafted_player_indices.has(i) && this.env.testActorPick(actions_arr[i]))
+				valid_actions.push(i);
 		}
-		let random_valid_action: number | undefined = undefined,
-			count = 0;
 
-		/* TODO: Test to see whether better to test all valid actions
-    and randomly select from pool or randomly select and then test */
-
-		while (!random_valid_action && count < valid_actions.length) {
-			const tempAction = getRandomInt(0, valid_actions.length);
-			if (this.env.testActorPick(tempAction)) {
-				random_valid_action = valid_actions[tempAction];
-				break;
-			}
-			count++;
-		}
-		if (random_valid_action) {
-			return random_valid_action;
-		} else {
+		if (valid_actions.length < 0) {
 			return valid_actions[getRandomInt(0, valid_actions.length)];
+		} else {
+			return actions_arr[getRandomInt(0, actions_arr.length)];
 		}
-
-		/* TODO: DELETE OLD CODE???? 
-		return tidy(() => {
-			const unnormalized_policy = <Tensor1D>log(policy);
-			dispose(policy);
-			const actions = multinomial(unnormalized_policy, 1, undefined, false);
-			return actions.dataSync()[0];
-		});
-    */
 	}
 
 	/**
@@ -655,8 +636,8 @@ export class Actor_Critic_Agent {
 	public saveLocally() {
 		const rootDir = process.cwd();
 		return Promise.all([
-			this.actor.save('file://' + rootDir + `/A3C_Data/local-model-actor}`),
-			this.critic.save('file://' + rootDir + `/A3C_Data/local-model-critic`)
+			this.actor.save('file://' + rootDir + `/data/local-model-actor`),
+			this.critic.save('file://' + rootDir + `/data/local-model-critic`)
 		]);
 	}
 

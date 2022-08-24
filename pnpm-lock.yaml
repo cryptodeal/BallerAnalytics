@@ -9660,7 +9660,7 @@ packages:
     dev: true
 
   github.com/stdlib-js/array/fd0c77e67fc4144efa41313b49dd003c81a739f4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/array/tar.gz/fd0c77e67fc4144efa41313b49dd003c81a739f4}
+    resolution: {commit: fd0c77e67fc4144efa41313b49dd003c81a739f4, repo: git+ssh://git@github.com/stdlib-js/array.git, type: git}
     name: '@stdlib/array'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9682,7 +9682,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/assert/ff95eff8a339d9fd90cb14e10fe02ba44de3abc9:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/assert/tar.gz/ff95eff8a339d9fd90cb14e10fe02ba44de3abc9}
+    resolution: {commit: ff95eff8a339d9fd90cb14e10fe02ba44de3abc9, repo: git+ssh://git@github.com/stdlib-js/assert.git, type: git}
     name: '@stdlib/assert'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9710,7 +9710,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/bench/ae58d3cf676c9a713b51eb746a3dc2c0156a2bec:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/bench/tar.gz/ae58d3cf676c9a713b51eb746a3dc2c0156a2bec}
+    resolution: {commit: ae58d3cf676c9a713b51eb746a3dc2c0156a2bec, repo: git+ssh://git@github.com/stdlib-js/bench.git, type: git}
     name: '@stdlib/bench'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9733,7 +9733,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/bigint/2f642da373ce1cde3d0bd325ec55e5b3090b0a39:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/bigint/tar.gz/2f642da373ce1cde3d0bd325ec55e5b3090b0a39}
+    resolution: {commit: 2f642da373ce1cde3d0bd325ec55e5b3090b0a39, repo: git+ssh://git@github.com/stdlib-js/bigint.git, type: git}
     name: '@stdlib/bigint'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9745,7 +9745,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/blas/03b88441152b15732ac57112c26c2038d7f6e0d4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/blas/tar.gz/03b88441152b15732ac57112c26c2038d7f6e0d4}
+    resolution: {commit: 03b88441152b15732ac57112c26c2038d7f6e0d4, repo: git+ssh://git@github.com/stdlib-js/blas.git, type: git}
     name: '@stdlib/blas'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9763,7 +9763,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/buffer/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/buffer/tar.gz/0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e}
+    resolution: {commit: 0151eec2d0f9fe51dbab48348dc5ae5c295d6e7e, repo: git+ssh://git@github.com/stdlib-js/buffer.git, type: git}
     name: '@stdlib/buffer'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9780,7 +9780,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/cli/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/cli/tar.gz/d868bf5b98b4765eae9bca6b4ad0b884a3b4e379}
+    resolution: {commit: d868bf5b98b4765eae9bca6b4ad0b884a3b4e379, repo: git+ssh://git@github.com/stdlib-js/cli.git, type: git}
     name: '@stdlib/cli'
     version: 0.0.10
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9794,7 +9794,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/complex/ff9fd8008f64ab7787ad1197e121be747a9d5c78:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/complex/tar.gz/ff9fd8008f64ab7787ad1197e121be747a9d5c78}
+    resolution: {commit: ff9fd8008f64ab7787ad1197e121be747a9d5c78, repo: git+ssh://git@github.com/stdlib-js/complex.git, type: git}
     name: '@stdlib/complex'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9811,7 +9811,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/constants/0f68688a7f4281e891352ccb27a3e774d0a93fd8:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/constants/tar.gz/0f68688a7f4281e891352ccb27a3e774d0a93fd8}
+    resolution: {commit: 0f68688a7f4281e891352ccb27a3e774d0a93fd8, repo: git+ssh://git@github.com/stdlib-js/constants.git, type: git}
     name: '@stdlib/constants'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9826,7 +9826,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/datasets/3730b64d9aa3e10711b1af1be398c77086518ffa:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/datasets/tar.gz/3730b64d9aa3e10711b1af1be398c77086518ffa}
+    resolution: {commit: 3730b64d9aa3e10711b1af1be398c77086518ffa, repo: git+ssh://git@github.com/stdlib-js/datasets.git, type: git}
     name: '@stdlib/datasets'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9845,7 +9845,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/error/44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/error/tar.gz/44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4}
+    resolution: {commit: 44e2ce1e3905d81c40c7d0a0eb5deead5868f2d4, repo: git+ssh://git@github.com/stdlib-js/error.git, type: git}
     name: '@stdlib/error'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9859,7 +9859,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/fs/a9103cd857d8bac7c94376815dcb4582dec1e927:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/fs/tar.gz/a9103cd857d8bac7c94376815dcb4582dec1e927}
+    resolution: {commit: a9103cd857d8bac7c94376815dcb4582dec1e927, repo: git+ssh://git@github.com/stdlib-js/fs.git, type: git}
     name: '@stdlib/fs'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9878,7 +9878,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/function/3e4f447f95acfe55cf1873940f1c4dbe995ed985:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/function/tar.gz/3e4f447f95acfe55cf1873940f1c4dbe995ed985}
+    resolution: {commit: 3e4f447f95acfe55cf1873940f1c4dbe995ed985, repo: git+ssh://git@github.com/stdlib-js/function.git, type: git}
     name: '@stdlib/function'
     version: 0.0.0
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9890,7 +9890,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/iter/23dbdd410da8d638eb732b51e79b58adc183a543:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/iter/tar.gz/23dbdd410da8d638eb732b51e79b58adc183a543}
+    resolution: {commit: 23dbdd410da8d638eb732b51e79b58adc183a543, repo: git+ssh://git@github.com/stdlib-js/iter.git, type: git}
     name: '@stdlib/iter'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9909,7 +9909,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/math/66404bb19c151ca9a8dc32cc94edec0a74293005:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/math/tar.gz/66404bb19c151ca9a8dc32cc94edec0a74293005}
+    resolution: {commit: 66404bb19c151ca9a8dc32cc94edec0a74293005, repo: git+ssh://git@github.com/stdlib-js/math.git, type: git}
     name: '@stdlib/math'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9933,7 +9933,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/ml/95a34fab42433d548ffe1670672022c65e76f17f:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/ml/tar.gz/95a34fab42433d548ffe1670672022c65e76f17f}
+    resolution: {commit: 95a34fab42433d548ffe1670672022c65e76f17f, repo: git+ssh://git@github.com/stdlib-js/ml.git, type: git}
     name: '@stdlib/ml'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -9955,7 +9955,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/namespace/018dc629afd3d23b06f641a193e3e66e78e8123a_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/namespace/tar.gz/018dc629afd3d23b06f641a193e3e66e78e8123a}
+    resolution: {commit: 018dc629afd3d23b06f641a193e3e66e78e8123a, repo: git+ssh://git@github.com/stdlib-js/namespace.git, type: git}
     id: github.com/stdlib-js/namespace/018dc629afd3d23b06f641a193e3e66e78e8123a
     name: '@stdlib/namespace'
     version: 0.0.12
@@ -10003,7 +10003,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/ndarray/00b6b49e3c14d279d5a5719312d061d155b189b3:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/ndarray/tar.gz/00b6b49e3c14d279d5a5719312d061d155b189b3}
+    resolution: {commit: 00b6b49e3c14d279d5a5719312d061d155b189b3, repo: git+ssh://git@github.com/stdlib-js/ndarray.git, type: git}
     name: '@stdlib/ndarray'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10026,7 +10026,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/net/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/net/tar.gz/bf587c424c834d2ddabdc68d73bf5af94bbbe6d0}
+    resolution: {commit: bf587c424c834d2ddabdc68d73bf5af94bbbe6d0, repo: git+ssh://git@github.com/stdlib-js/net.git, type: git}
     name: '@stdlib/net'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10045,7 +10045,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/nlp/c20bd5b96a0f4c349695bbd7038de7220dfba0cb:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/nlp/tar.gz/c20bd5b96a0f4c349695bbd7038de7220dfba0cb}
+    resolution: {commit: c20bd5b96a0f4c349695bbd7038de7220dfba0cb, repo: git+ssh://git@github.com/stdlib-js/nlp.git, type: git}
     name: '@stdlib/nlp'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10062,7 +10062,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/number/8affadba02fd46f27421ae4551842db61a0eb4a8:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/number/tar.gz/8affadba02fd46f27421ae4551842db61a0eb4a8}
+    resolution: {commit: 8affadba02fd46f27421ae4551842db61a0eb4a8, repo: git+ssh://git@github.com/stdlib-js/number.git, type: git}
     name: '@stdlib/number'
     version: 0.0.10
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10081,7 +10081,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/os/c00c1bad28f55b3f06da37a073794c1c43d459da:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/os/tar.gz/c00c1bad28f55b3f06da37a073794c1c43d459da}
+    resolution: {commit: c00c1bad28f55b3f06da37a073794c1c43d459da, repo: git+ssh://git@github.com/stdlib-js/os.git, type: git}
     name: '@stdlib/os'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10098,7 +10098,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/plot/b473b551e938365eb3e5f2d4a770d50294623244_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/plot/tar.gz/b473b551e938365eb3e5f2d4a770d50294623244}
+    resolution: {commit: b473b551e938365eb3e5f2d4a770d50294623244, repo: git+ssh://git@github.com/stdlib-js/plot.git, type: git}
     id: github.com/stdlib-js/plot/b473b551e938365eb3e5f2d4a770d50294623244
     name: '@stdlib/plot'
     version: 0.0.6
@@ -10124,7 +10124,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/process/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/process/tar.gz/c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38}
+    resolution: {commit: c3efe34a3f56c0e2f16b8dbe07dcdde0fd0f6f38, repo: git+ssh://git@github.com/stdlib-js/process.git, type: git}
     name: '@stdlib/process'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10142,7 +10142,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/proxy/09429ba81c77bf2fda6b97d90954c680a3824b6b:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/proxy/tar.gz/09429ba81c77bf2fda6b97d90954c680a3824b6b}
+    resolution: {commit: 09429ba81c77bf2fda6b97d90954c680a3824b6b, repo: git+ssh://git@github.com/stdlib-js/proxy.git, type: git}
     name: '@stdlib/proxy'
     version: 0.0.11
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10155,7 +10155,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/random/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/random/tar.gz/df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a}
+    resolution: {commit: df6f5d13dc8d126568c14b6ff73f5e1f6cc0525a, repo: git+ssh://git@github.com/stdlib-js/random.git, type: git}
     name: '@stdlib/random'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10183,7 +10183,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/regexp/d63c5c6e12780c84822a4c26c41095b6d76ed3cd:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/regexp/tar.gz/d63c5c6e12780c84822a4c26c41095b6d76ed3cd}
+    resolution: {commit: d63c5c6e12780c84822a4c26c41095b6d76ed3cd, repo: git+ssh://git@github.com/stdlib-js/regexp.git, type: git}
     name: '@stdlib/regexp'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10198,7 +10198,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/repl/b083760eff28fbd0749d0b3f87a05c91d0d2bdc3_virtual-dom@2.1.1:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/repl/tar.gz/b083760eff28fbd0749d0b3f87a05c91d0d2bdc3}
+    resolution: {commit: b083760eff28fbd0749d0b3f87a05c91d0d2bdc3, repo: git+ssh://git@github.com/stdlib-js/repl.git, type: git}
     id: github.com/stdlib-js/repl/b083760eff28fbd0749d0b3f87a05c91d0d2bdc3
     name: '@stdlib/repl'
     version: 0.0.11
@@ -10227,7 +10227,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/simulate/95b450873f8ac74b819cb1377c4c14e2b5c9e90e:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/simulate/tar.gz/95b450873f8ac74b819cb1377c4c14e2b5c9e90e}
+    resolution: {commit: 95b450873f8ac74b819cb1377c4c14e2b5c9e90e, repo: git+ssh://git@github.com/stdlib-js/simulate.git, type: git}
     name: '@stdlib/simulate'
     version: 0.0.10
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10246,7 +10246,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/stats/b5c901c5f2a94d3af8c2944c17a8bc1432861034:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/stats/tar.gz/b5c901c5f2a94d3af8c2944c17a8bc1432861034}
+    resolution: {commit: b5c901c5f2a94d3af8c2944c17a8bc1432861034, repo: git+ssh://git@github.com/stdlib-js/stats.git, type: git}
     name: '@stdlib/stats'
     version: 0.0.13
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10268,7 +10268,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/streams/9f45b20ca28509ba78a972262656508c45aceeaa:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/streams/tar.gz/9f45b20ca28509ba78a972262656508c45aceeaa}
+    resolution: {commit: 9f45b20ca28509ba78a972262656508c45aceeaa, repo: git+ssh://git@github.com/stdlib-js/streams.git, type: git}
     name: '@stdlib/streams'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10288,7 +10288,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/strided/e2927a2b708e5ee4cf95a16786fac80b45fd50d8:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/strided/tar.gz/e2927a2b708e5ee4cf95a16786fac80b45fd50d8}
+    resolution: {commit: e2927a2b708e5ee4cf95a16786fac80b45fd50d8, repo: git+ssh://git@github.com/stdlib-js/strided.git, type: git}
     name: '@stdlib/strided'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10307,7 +10307,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/string/b40ad550e745c69eff837fefefd5e0198ce9d0ff:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/string/tar.gz/b40ad550e745c69eff837fefefd5e0198ce9d0ff}
+    resolution: {commit: b40ad550e745c69eff837fefefd5e0198ce9d0ff, repo: git+ssh://git@github.com/stdlib-js/string.git, type: git}
     name: '@stdlib/string'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10330,7 +10330,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/symbol/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/symbol/tar.gz/324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4}
+    resolution: {commit: 324cd8ab696236b4103c23e7c2a2bf7e2d16f6f4, repo: git+ssh://git@github.com/stdlib-js/symbol.git, type: git}
     name: '@stdlib/symbol'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10343,7 +10343,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/time/b8f5029c3af05e815c6f44c119acc388296c101c:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/time/tar.gz/b8f5029c3af05e815c6f44c119acc388296c101c}
+    resolution: {commit: b8f5029c3af05e815c6f44c119acc388296c101c, repo: git+ssh://git@github.com/stdlib-js/time.git, type: git}
     name: '@stdlib/time'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10361,7 +10361,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/types/4f209609f0a0cd066be675665b67458c45d47479:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/types/tar.gz/4f209609f0a0cd066be675665b67458c45d47479}
+    resolution: {commit: 4f209609f0a0cd066be675665b67458c45d47479, repo: git+ssh://git@github.com/stdlib-js/types.git, type: git}
     name: '@stdlib/types'
     version: 0.0.14
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10369,7 +10369,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/utils/2a6d1e2bb3e33950ce00a9692d8be57470ecd9ca:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/utils/tar.gz/2a6d1e2bb3e33950ce00a9692d8be57470ecd9ca}
+    resolution: {commit: 2a6d1e2bb3e33950ce00a9692d8be57470ecd9ca, repo: git+ssh://git@github.com/stdlib-js/utils.git, type: git}
     name: '@stdlib/utils'
     version: 0.0.12
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10400,7 +10400,7 @@ packages:
     dev: false
 
   github.com/uNetworking/uWebSockets.js/806df48c9da86af7b3341f3e443388c7cd15c3de:
-    resolution: {tarball: https://codeload.github.com/uNetworking/uWebSockets.js/tar.gz/806df48c9da86af7b3341f3e443388c7cd15c3de}
+    resolution: {commit: 806df48c9da86af7b3341f3e443388c7cd15c3de, repo: git+ssh://git@github.com/uNetworking/uWebSockets.js.git, type: git}
     name: uWebSockets.js
     version: 20.10.0
     dev: false

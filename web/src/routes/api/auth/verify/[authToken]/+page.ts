@@ -1,4 +1,4 @@
-import type { PageLoad } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
 	const url = `/api/auth/verify/${params.authToken}.json`;
