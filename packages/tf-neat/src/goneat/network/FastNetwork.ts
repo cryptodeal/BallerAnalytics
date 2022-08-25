@@ -1,5 +1,4 @@
 import { ActivationType, NodeActivators } from '../math';
-import abs from '@stdlib/math/base/special/abs';
 import { array, matrix, type NDArray } from 'vectorious';
 import { boolToInt } from '../utils';
 
@@ -379,7 +378,7 @@ export class FastModularNetworkSolver {
 				/* check if any point in network has changed more than small amt */
 				isRelaxed =
 					isRelaxed &&
-					abs(this.neuronSignals.get(i) - this.neuronSignalsBeingProcessed.get(i)) >
+					Math.abs(this.neuronSignals.get(i) - this.neuronSignalsBeingProcessed.get(i)) >
 						maxAllowedSignalDelta;
 
 				this.neuronSignals.set(i, this.neuronSignalsBeingProcessed.get(i));
