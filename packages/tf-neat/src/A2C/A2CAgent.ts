@@ -14,12 +14,7 @@ import {
 	log,
 	multinomial,
 	tensor,
-	tidy,
-	RMSPropOptimizer,
-	SGDOptimizer,
-	AdamOptimizer,
-	AdamaxOptimizer,
-	AdagradOptimizer
+	tidy
 } from '@tensorflow/tfjs-node';
 import { writeFile } from 'fs/promises';
 import * as hpjs from 'hyperparameters';
@@ -29,49 +24,14 @@ import type {
 	SymbolicTensor,
 	Sequential,
 	Tensor,
-	Tensor1D,
-	Tensor2D
+	Tensor1D
 } from '@tensorflow/tfjs-node';
 import { DraftTask } from './Env';
 import { MovingAverager, seededRandom } from '../utils';
 import { TaskState } from '../DQN/tasks/types';
 import { getRandomInt } from '../DQN/utils';
-import { RLLossFn } from './types';
 
 export type RLOptimizers = 'rmsprop' | 'sgd' | 'adam' | 'adagrad' | 'adamax';
-export type RLLossFns = 'mse' | 'huber' | 'sigmoidCrossEntropy' | 'softmaxCrossEntropy' | 'log';
-
-type RMSPropFn = (
-	learningRate: number,
-	decay?: number | undefined,
-	momentum?: number | undefined,
-	epsilon?: number | undefined,
-	centered?: boolean | undefined
-) => RMSPropOptimizer;
-
-type SGDFn = (learningRate: number) => SGDOptimizer;
-
-type AdamFn = (
-	learningRate?: number | undefined,
-	beta1?: number | undefined,
-	beta2?: number | undefined,
-	epsilon?: number | undefined
-) => AdamOptimizer;
-
-type AdamaxFn = (
-	learningRate?: number | undefined,
-	beta1?: number | undefined,
-	beta2?: number | undefined,
-	epsilon?: number | undefined,
-	decay?: number | undefined
-) => AdamaxOptimizer;
-
-type AdagradFn = (
-	learningRate: number,
-	initialAccumulatorValue?: number | undefined
-) => AdagradOptimizer;
-
-type RLOptimizerFn = RMSPropFn | SGDFn | AdamFn | AdamaxFn | AdagradFn;
 
 export class Actor_Critic_Agent {
 	public env: DraftTask;
@@ -79,23 +39,6 @@ export class Actor_Critic_Agent {
 	public action: null | number = null;
 	public reward = 0;
 	public milestone = 0;
-
-	/* hyperparameter auto tuning */
-	public optimizers: Record<RLOptimizers, RLOptimizerFn> = {
-		rmsprop: train.rmsprop,
-		adagrad: train.adagrad,
-		adamax: train.adamax,
-		sgd: train.sgd,
-		adam: train.adam
-	};
-
-	public lossFns: Record<RLLossFns, RLLossFn> = {
-		mse: losses.meanSquaredError,
-		huber: losses.huberLoss,
-		sigmoidCrossEntropy: losses.sigmoidCrossEntropy,
-		softmaxCrossEntropy: losses.softmaxCrossEntropy,
-		log: losses.logLoss
-	};
 
 	public learnStep = 10;
 	public batchSize = 64;
@@ -165,13 +108,11 @@ export class Actor_Critic_Agent {
 
 		agent.actor = agent.createActorNetwork(...agent.dims, {
 			optimizer: actor_optimizer,
-			learningRate: actor_learning_rate,
-			loss: 'softmaxCrossEntropy'
+			learningRate: actor_learning_rate
 		});
 		agent.critic = agent.createCriticNetwork(...agent.dims, {
 			optimizer: critic_optimizer,
-			learningRate: critic_learning_rate,
-			loss: 'mse'
+			learningRate: critic_learning_rate
 		});
 		// agent.env.teamRoster.storeNewData = true;
 		return agent;
@@ -195,15 +136,15 @@ export class Actor_Critic_Agent {
 		critic_optimizer: RLOptimizers;
 		critic_learning_rate: number;
 	}) => {
+		// console.log('Memory:optimize_actor_hyperparams @ loop start', memory());
+
 		const actor = this.createActorNetwork(this.dims[0], this.dims[1], this.dims[2], {
 			optimizer: actor_optimizer,
-			learningRate: actor_learning_rate,
-			loss: 'softmaxCrossEntropy'
+			learningRate: actor_learning_rate
 		});
 		const critic = this.createCriticNetwork(this.dims[0], this.dims[1], this.dims[2], {
 			optimizer: critic_optimizer,
-			learningRate: critic_learning_rate,
-			loss: 'mse'
+			learningRate: critic_learning_rate
 		});
 
 		console.log(
@@ -265,6 +206,7 @@ export class Actor_Critic_Agent {
 		this.reset();
 		actor.dispose();
 		critic.dispose();
+
 		const loss = lossMovAvg.average();
 		console.log(
 			'actor_optimizer: ',
@@ -278,6 +220,7 @@ export class Actor_Critic_Agent {
 			', loss: ',
 			loss
 		);
+		// console.log('Memory:optimize_actor_hyperparams @ loop end', memory());
 		return { loss, status };
 	};
 
@@ -286,10 +229,9 @@ export class Actor_Critic_Agent {
 		dim1: number,
 		dim2: number,
 		dim3: number,
-		opts: { optimizer: RLOptimizers; learningRate: number; loss: RLLossFns } = {
+		opts: { optimizer: RLOptimizers; learningRate: number } = {
 			optimizer: 'adam',
-			learningRate: this.critic_learning_rate,
-			loss: 'softmaxCrossEntropy'
+			learningRate: this.critic_learning_rate
 		}
 	) {
 		const model = sequential();
@@ -336,14 +278,13 @@ export class Actor_Critic_Agent {
 				kernelInitializer: 'glorotUniform'
 			})
 		);
-		model.summary();
-		const { optimizer: optimizerStr, learningRate, loss: lossStr } = opts;
+		// model.summary();
+		const { optimizer: optimizerStr, learningRate } = opts;
 
-		const optimizer = this.optimizers[optimizerStr](learningRate);
-		const loss = this.lossFns[lossStr];
+		const optimizer = this.optimizerSwitch(optimizerStr)(learningRate);
 		model.compile({
 			optimizer,
-			loss
+			loss: losses.softmaxCrossEntropy
 		});
 
 		return model;
@@ -354,10 +295,9 @@ export class Actor_Critic_Agent {
 		dim1: number,
 		dim2: number,
 		dim3: number,
-		opts: { optimizer: RLOptimizers; learningRate: number; loss: RLLossFns } = {
+		opts: { optimizer: RLOptimizers; learningRate: number } = {
 			optimizer: 'adam',
-			learningRate: this.critic_learning_rate,
-			loss: 'mse'
+			learningRate: this.critic_learning_rate
 		}
 	) {
 		const input_state = input({ shape: [dim1, dim2, dim3] });
@@ -418,14 +358,14 @@ export class Actor_Critic_Agent {
 			inputs: input_state,
 			outputs: output
 		});
-		tempModel.summary();
+		// tempModel.summary();
 
-		const { optimizer: optimizerStr, learningRate, loss: lossStr } = opts;
+		const { optimizer: optimizerStr, learningRate } = opts;
 
-		const optimizer = this.optimizers[optimizerStr](learningRate);
+		const optimizer = this.optimizerSwitch(optimizerStr)(learningRate);
 		tempModel.compile({
 			optimizer,
-			loss: losses.softmaxCrossEntropy
+			loss: losses.meanSquaredError
 		});
 
 		return tempModel;
@@ -449,44 +389,38 @@ export class Actor_Critic_Agent {
 	/* gets best prediction from current state */
 	public async getAction(input: number[], actor?: Sequential) {
 		const [dim1, dim2, dim3] = this.dims;
-		const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
 
-		let logits: Tensor<Rank>;
-		if (actor) {
-			logits = <Tensor<Rank>>actor.predict(inputTensor);
-		} else {
-			logits = <Tensor<Rank>>this.actor.predict(inputTensor);
-		}
-		dispose(inputTensor);
+		const logits = tidy(() => {
+			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
+			if (actor) {
+				return <Tensor<Rank>>actor.predict(inputTensor);
+			} else {
+				return <Tensor<Rank>>this.actor.predict(inputTensor);
+			}
+		});
 
 		const masked = new Array(this.env.num_actions).fill(1);
 		for (const [key] of this.env.drafted_player_indices) {
 			masked[key] = 0;
 		}
 		const boolMasked = tensor(masked, [1, 289], 'bool');
+
 		/* boolean masking; set invalid actions to 0 */
 		const policy = await booleanMaskAsync(logits, boolMasked);
+		dispose([logits, boolMasked]);
 
-		dispose(logits);
-		dispose(boolMasked);
 		/**
 		 * Source: the following @tensorflow/tfjs book,
 		 * Deep Learning with JavaScript - Neural Networks
 		 * in TensorFlow.js, we can use log fn to
 		 * unnormalize logits from actor pred.
 		 */
+		const actions_arr = tidy(() => {
+			const unnormalized_policy = <Tensor1D>log(policy);
+			const actions = multinomial(unnormalized_policy, 1, undefined, false);
+			return actions.dataSync();
+		});
 
-		/**
-		 * TODO/IN PROGRESS:
-		 * - attempting to semi-efficiently filter out picks
-		 * that result in invalid roster state
-		 */
-		const unnormalized_policy = <Tensor1D>log(policy);
-		dispose(policy);
-		const actions = multinomial(unnormalized_policy, 1, undefined, false);
-		dispose(unnormalized_policy);
-		const actions_arr = actions.dataSync();
-		dispose(actions);
 		const predCount = actions_arr.length;
 		for (let i = 0; i < predCount; i++) {
 			if (
@@ -526,18 +460,22 @@ export class Actor_Critic_Agent {
 		actor: Sequential,
 		critic: LayersModel
 	) {
-		let target: number[] | Tensor1D = new Array(1).fill(0);
-		let advantages: number[] | Tensor2D = new Array(this.env.num_actions).fill(0);
+		const target: number[] = new Array(1).fill(0);
+		const advantages: number[] = new Array(this.env.num_actions).fill(0);
 		const [dim1, dim2, dim3] = this.dims;
 
 		const input = tensor4d(state, [1, dim1, dim2, dim3]);
-		const next_input = tensor4d(nextState, [1, dim1, dim2, dim3]);
 
-		const value = <Tensor<Rank>>critic.predict(input);
-		const next_value = <Tensor<Rank>>critic.predict(next_input);
+		const value_v = tidy(() => {
+			const value = <Tensor<Rank>>critic.predict(input);
+			return value.dataSync()[0];
+		});
 
-		const value_v = value.dataSync()[0];
-		const next_value_v = next_value.dataSync()[0];
+		const next_value_v = tidy(() => {
+			const next_input = tensor4d(nextState, [1, dim1, dim2, dim3]);
+			const next_value = <Tensor<Rank>>critic.predict(next_input);
+			return next_value.dataSync()[0];
+		});
 
 		if (done) {
 			advantages[action] = reward - value_v;
@@ -547,24 +485,20 @@ export class Actor_Critic_Agent {
 			target[0] = reward + this.gamma * next_value_v;
 		}
 
-		advantages = tensor2d(advantages, [1, this.env.num_actions], 'float32');
-		target = tensor1d(target, 'float32');
+		const advantageTensor = tensor2d(advantages, [1, this.env.num_actions], 'float32');
+		const targetTensor = tensor1d(target, 'float32');
 
 		const actor_train = await actor
-			.fit(input, advantages, { batchSize: 1, epochs: 1 })
+			.fit(input, advantageTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose(advantages);
+				dispose(advantageTensor);
 				return val;
 			});
 
 		const critic_train = await critic
-			.fit(input, target, { batchSize: 1, epochs: 1 })
+			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose(input);
-				dispose(next_input);
-				dispose(value);
-				dispose(next_value);
-				dispose(target);
+				dispose([input, targetTensor]);
 				return val;
 			});
 
@@ -583,18 +517,22 @@ export class Actor_Critic_Agent {
 		nextState: number[],
 		done: boolean
 	) {
-		let target: number[] | Tensor1D = new Array(1).fill(0);
-		let advantages: number[] | Tensor2D = new Array(this.env.num_actions).fill(0);
+		const target: number[] = new Array(1).fill(0);
+		const advantages: number[] = new Array(this.env.num_actions).fill(0);
 		const [dim1, dim2, dim3] = this.dims;
 
 		const input = tensor4d(state, [1, dim1, dim2, dim3]);
-		const next_input = tensor4d(nextState, [1, dim1, dim2, dim3]);
 
-		const value = <Tensor<Rank>>this.critic.predict(input);
-		const next_value = <Tensor<Rank>>this.critic.predict(next_input);
+		const value_v = tidy(() => {
+			const value = <Tensor<Rank>>this.critic.predict(input);
+			return value.dataSync()[0];
+		});
 
-		const value_v = value.dataSync()[0];
-		const next_value_v = next_value.dataSync()[0];
+		const next_value_v = tidy(() => {
+			const next_input = tensor4d(nextState, [1, dim1, dim2, dim3]);
+			const next_value = <Tensor<Rank>>this.critic.predict(next_input);
+			return next_value.dataSync()[0];
+		});
 
 		if (done) {
 			advantages[action] = reward - value_v;
@@ -604,24 +542,20 @@ export class Actor_Critic_Agent {
 			target[0] = reward + this.gamma * next_value_v;
 		}
 
-		advantages = tensor2d(advantages, [1, this.env.num_actions], 'float32');
-		target = tensor1d(target, 'float32');
+		const advantageTensor = tensor2d(advantages, [1, this.env.num_actions], 'float32');
+		const targetTensor = tensor1d(target, 'float32');
 
 		const actor_train = await this.actor
-			.fit(input, advantages, { batchSize: 1, epochs: 1 })
+			.fit(input, advantageTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose(advantages);
+				dispose(advantageTensor);
 				return val;
 			});
 
 		const critic_train = await this.critic
-			.fit(input, target, { batchSize: 1, epochs: 1 })
+			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose(input);
-				dispose(next_input);
-				dispose(value);
-				dispose(next_value);
-				dispose(target);
+				dispose([input, targetTensor]);
 				return val;
 			});
 

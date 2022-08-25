@@ -85,7 +85,7 @@ export class DraftTask {
 	}
 
 	simulatePriorPicks(teamNo: number) {
-		console.log(`simulating prior picks in round`);
+		// console.log(`simulating prior picks in round`);
 		const endIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
 		/* if no picks prior, return */
 		if (endIdx === 0) return;
@@ -102,7 +102,7 @@ export class DraftTask {
 	}
 
 	simulateLaterPicks(teamNo: number) {
-		console.log(`simulating remaining picks in round`);
+		// console.log(`simulating remaining picks in round`);
 		const startIdx = this.draftApi.draftOrder.findIndex((x) => x === teamNo);
 		/* if no picks after, reverse order & return */
 		if (startIdx === this.draftApi.draftOrder.length - 1) {

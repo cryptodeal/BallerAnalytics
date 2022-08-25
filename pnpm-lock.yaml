@@ -3474,7 +3474,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.3
-      caniuse-lite: 1.0.30001382
+      caniuse-lite: 1.0.30001383
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -3579,7 +3579,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001382
+      caniuse-lite: 1.0.30001383
       electron-to-chromium: 1.4.230
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.3
@@ -3704,8 +3704,8 @@ packages:
     resolution: {integrity: sha512-W2lPwkBkMZwFlPCXhIlYgxu+7gC/NUlCtdK652DAJ1JdgV0sTrvuPFshNPrFa1TY2JOkLhgdeEBplB4ezEa+xg==}
     dev: false
 
-  /caniuse-lite/1.0.30001382:
-    resolution: {integrity: sha512-2rtJwDmSZ716Pxm1wCtbPvHtbDWAreTPxXbkc5RkKglow3Ig/4GNGazDI9/BVnXbG/wnv6r3B5FEbkfg9OcTGg==}
+  /caniuse-lite/1.0.30001383:
+    resolution: {integrity: sha512-swMpEoTp5vDoGBZsYZX7L7nXHe6dsHxi9o6/LKf/f0LukVtnrxly5GVb/fWdCDTqi/yw6Km6tiJ0pmBacm0gbg==}
     dev: true
 
   /cardinal/2.1.1:
@@ -8065,7 +8065,7 @@ packages:
     resolution: {integrity: sha512-U/LBDW2gNmVa07sz/D229XigSdDQ5CLFwVB1Vb32MJbAHHhWe/6pOc721faI17tqw4pZ49i1xfY/jEZ9tbIhPg==}
     dependencies:
       prosemirror-model: 1.18.1
-      prosemirror-transform: 1.6.0
+      prosemirror-transform: 1.7.0
     dev: true
 
   /prosemirror-transform/1.6.0:
@@ -8085,7 +8085,7 @@ packages:
     dependencies:
       prosemirror-model: 1.18.1
       prosemirror-state: 1.4.1
-      prosemirror-transform: 1.6.0
+      prosemirror-transform: 1.7.0
     dev: true
 
   /prosemirror-view/1.27.2:
@@ -10163,7 +10163,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/boolean/6bfbeaa99484f7065c0d82d87caaaa70d8a46d5c:
-    resolution: {tarball: https://codeload.github.com/stdlib-js/boolean/tar.gz/6bfbeaa99484f7065c0d82d87caaaa70d8a46d5c}
+    resolution: {commit: 6bfbeaa99484f7065c0d82d87caaaa70d8a46d5c, repo: git+ssh://git@github.com/stdlib-js/boolean.git, type: git}
     name: '@stdlib/boolean'
     version: 0.0.0
     engines: {node: '>=0.10.0', npm: '>2.7.0'}
@@ -10290,7 +10290,7 @@ packages:
     dev: false
 
   github.com/stdlib-js/function/5ad928e67e9a258b4e3ea27c7d0612507321b160:
-    resolution: {commit: 5ad928e67e9a258b4e3ea27c7d0612507321b160, repo: git+ssh://git@github.com/stdlib-js/function.git, type: git}
+    resolution: {tarball: https://codeload.github.com/stdlib-js/function/tar.gz/5ad928e67e9a258b4e3ea27c7d0612507321b160}
     name: '@stdlib/function'
     version: 0.0.0
     engines: {node: '>=0.10.0', npm: '>2.7.0'}

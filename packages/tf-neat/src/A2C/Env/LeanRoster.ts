@@ -4,7 +4,7 @@ import {
 	type Sequential,
 	type Tensor,
 	type Rank,
-	dispose
+	tidy
 } from '@tensorflow/tfjs-node';
 import type { RosterDatumInputs, RosterEncd } from './types';
 
@@ -57,13 +57,14 @@ export class LeanRoster {
 	}
 
 	public testPick(pstnEncd: RosterEncd) {
-		const testRoster = <RosterDatumInputs>JSON.parse(JSON.stringify(this.playerPool));
+		const testRoster = <RosterDatumInputs>structuredClone(this.playerPool);
 		testRoster[this.pickCount] = pstnEncd;
-		const inputs = tensor([this.playerPool], [1, 13, 9]);
-		const predTensor = <Tensor<Rank>>this.model.predict(inputs);
-		dispose(inputs);
-		const value = predTensor.dataSync()[0];
-		dispose(predTensor);
+
+		const value = tidy(() => {
+			const inputs = tensor([this.playerPool], [1, 13, 9]);
+			const predTensor = <Tensor<Rank>>this.model.predict(inputs);
+			return predTensor.dataSync()[0];
+		});
 
 		return {
 			value,
