@@ -1,4 +1,4 @@
-import zeros from '@stdlib/array/base/zeros';
+import { array } from 'vectorious';
 import { seededRandom } from '../utils';
 import equal from 'deep-equal';
 
@@ -34,8 +34,7 @@ export class Genome {
 		const matrixDim = totalNodes * totalNodes;
 
 		/* randomized cxn matrix */
-		const cxnMat = zeros(matrixDim);
-
+		const cxnMat = array(new Array(matrixDim).fill(0));
 		/* no nodes greater than this number */
 		const maxNode = input + n;
 		const firstOutput = totalNodes - out + 1;

@@ -76,6 +76,7 @@
   "dependencies": {
     "@balleranalytics/nba-api-ts": "workspace:0.1.0",
     "@polka/send-type": "^0.5.2",
+    "@stdlib/math": "^0.0.11",
     "@stdlib/stdlib": "^0.0.96",
     "@tensorflow/tfjs": "^3.20.0",
     "@tensorflow/tfjs-backend-wasm": "^3.20.0",
@@ -98,6 +99,7 @@
     "number-allocator": "^1.0.10",
     "percom": "^1.1.3",
     "polka": "^0.5.2",
+    "random": "^3.0.6",
     "redis": "^4.3.0",
     "rfdc": "^1.3.0",
     "seedrandom": "^3.0.5",

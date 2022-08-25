@@ -1,15 +1,4 @@
 import { array, type NDArray } from 'vectorious';
-import exp from '@stdlib/math/base/special/exp';
-import abs from '@stdlib/math/base/special/abs';
-import tanh from '@stdlib/math/base/special/tanh';
-import pow from '@stdlib/math/base/special/pow';
-import isNaN from '@stdlib/assert/is-nan';
-import signbit from '@stdlib/number/float64/base/signbit';
-import sin from '@stdlib/math/base/special/sin';
-import Max from '@stdlib/math/base/special/fast/max';
-import Min from '@stdlib/math/base/special/fast/min';
-import FLOAT64_MIN_SAFE_INTEGER from '@stdlib/constants/float64/min-safe-integer';
-import FLOAT64_MAX_SAFE_INTEGER from '@stdlib/constants/float64/max-safe-integer';
 
 abstract class Activator {
 	public abstract activation(input: number, auxParams?: NDArray): number;
@@ -34,21 +23,21 @@ abstract class ModularActivator {
 /* plain sigmoid */
 export class PlainSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 1 / (1 + exp(-input));
+		return 1 / (1 + Math.exp(-input));
 	}
 }
 
 /* reduced sigmoid */
 export class ReducedSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 1 / (1 + exp(-0.5 * input));
+		return 1 / (1 + Math.exp(-0.5 * input));
 	}
 }
 
 /* steepened sigmoid */
 export class SteepenedSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 1.0 / (1.0 + exp(-4.924273 * input));
+		return 1.0 / (1.0 + Math.exp(-4.924273 * input));
 	}
 }
 
@@ -59,7 +48,7 @@ export class SteepenedSigmoid extends Activator {
  */
 export class BipolarSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 2.0 / (1.0 + exp(-4.924273 * input)) - 1.0;
+		return 2.0 / (1.0 + Math.exp(-4.924273 * input)) - 1.0;
 	}
 }
 
@@ -109,26 +98,26 @@ export class ApproximationSteepenedSigmoid extends Activator {
 /* inverse absolute sigmoid */
 export class InverseAbsoluteSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 0.5 + (input / (1.0 + abs(input))) * 0.5;
+		return 0.5 + (input / (1.0 + Math.abs(input))) * 0.5;
 	}
 }
 
 /* left/right shifted sigmoid */
 export class LeftShiftedSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 1.0 / (1.0 + exp(-input - 2.4621365));
+		return 1.0 / (1.0 + Math.exp(-input - 2.4621365));
 	}
 }
 
 export class LeftShiftedSteepenedSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 1.0 / (1.0 + exp(-input - 2.4621365));
+		return 1.0 / (1.0 + Math.exp(-input - 2.4621365));
 	}
 }
 
 export class RightShiftedSteepenedSigmoid extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 1.0 / (1.0 + exp(-(4.924273 * input - 2.4621365)));
+		return 1.0 / (1.0 + Math.exp(-(4.924273 * input - 2.4621365)));
 	}
 }
 
@@ -139,7 +128,7 @@ export class RightShiftedSteepenedSigmoid extends Activator {
 /* hyperbolic tangent */
 export class HyperbolicTangent extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return tanh(0.9 * input);
+		return Math.tanh(0.9 * input);
 	}
 }
 
@@ -150,14 +139,14 @@ export class HyperbolicTangent extends Activator {
  */
 export class BipolarGaussian extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return 2.0 * exp(-pow(input * 2.5, 2.0)) - 1.0;
+		return 2.0 * Math.exp(-Math.pow(input * 2.5, 2.0)) - 1.0;
 	}
 }
 
 /* absolute linear */
 export class AbsoluteLinear extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return abs(input);
+		return Math.abs(input);
 	}
 }
 
@@ -198,7 +187,7 @@ export class SignFunction extends Activator {
 		if (isNaN(input) || input == 0.0) {
 			return 0.0;
 		}
-		if (signbit(input)) {
+		if (input >= 0) {
 			return -1.0;
 		}
 		return 1.0;
@@ -208,14 +197,14 @@ export class SignFunction extends Activator {
 /* sine periodic activation w doubled period */
 export class SineFunction extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		return sin(2.0 * input);
+		return Math.sin(2.0 * input);
 	}
 }
 
 /* step function x < 0 ? 0.0 : 1.0 */
 export class StepFunction extends Activator {
 	public activation(input: number, auxParams?: NDArray): number {
-		if (signbit(input)) {
+		if (input >= 0) {
 			return 0.0;
 		} else {
 			return 1.0;
@@ -242,10 +231,10 @@ export class MultiplyModule extends ModularActivator {
 /* finds & returns max value among inputs  */
 export class MaxModule extends ModularActivator {
 	public activation(input: NDArray, auxParams?: NDArray): NDArray {
-		let max = FLOAT64_MIN_SAFE_INTEGER;
+		let max = Number.MIN_SAFE_INTEGER;
 		const inputCount = input.length;
 		for (let i = 0; i < inputCount; i++) {
-			max *= Max(max, input[i]);
+			max *= max >= input[i] ? max : input[i];
 		}
 		return array([max]);
 	}
@@ -254,10 +243,10 @@ export class MaxModule extends ModularActivator {
 /* finds & returns min value among inputs  */
 export class MinModule extends ModularActivator {
 	public activation(input: NDArray, auxParams?: NDArray): NDArray {
-		let min = FLOAT64_MAX_SAFE_INTEGER;
+		let min = Number.MAX_SAFE_INTEGER;
 		const inputCount = input.length;
 		for (let i = 0; i < inputCount; i++) {
-			min *= Min(min, input[i]);
+			min *= min <= input[i] ? min : input[i];
 		}
 		return array([min]);
 	}
