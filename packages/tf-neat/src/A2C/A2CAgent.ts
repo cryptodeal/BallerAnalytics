@@ -1,6 +1,5 @@
 import {
 	booleanMaskAsync,
-	dispose,
 	sequential,
 	layers,
 	train,
@@ -9,6 +8,7 @@ import {
 	model,
 	tensor4d,
 	tensor2d,
+	memory,
 	tensor1d,
 	mean,
 	log,
@@ -161,6 +161,7 @@ export class Actor_Critic_Agent {
 		let stepCount = 0;
 		const lossMovAvg = new MovingAverager(128);
 		let status: hpjs.STATUS_OK | hpjs.STATUS_FAIL = hpjs.STATUS_OK;
+		// console.log('Memory:optimize_actor_hyperparams @ loop start', memory());
 		while (stepCount < 128) {
 			this.env.simulatePriorPicks(this.env.pickSlot);
 			const state = this.env.getState().e.flat();
@@ -204,7 +205,9 @@ export class Actor_Critic_Agent {
 		this.hyperparams_loop_count++;
 		console.log('hyperparams_loop_count:', this.hyperparams_loop_count);
 		this.reset();
+		actor.optimizer.dispose();
 		actor.dispose();
+		critic.optimizer.dispose();
 		critic.dispose();
 
 		const loss = lossMovAvg.average();
@@ -407,7 +410,8 @@ export class Actor_Critic_Agent {
 
 		/* boolean masking; set invalid actions to 0 */
 		const policy = await booleanMaskAsync(logits, boolMasked);
-		dispose([logits, boolMasked]);
+		boolMasked.dispose();
+		logits.dispose();
 
 		/**
 		 * Source: the following @tensorflow/tfjs book,
@@ -417,6 +421,7 @@ export class Actor_Critic_Agent {
 		 */
 		const actions_arr = tidy(() => {
 			const unnormalized_policy = <Tensor1D>log(policy);
+			policy.dispose();
 			const actions = multinomial(unnormalized_policy, 1, undefined, false);
 			return actions.dataSync();
 		});
@@ -491,14 +496,15 @@ export class Actor_Critic_Agent {
 		const actor_train = await actor
 			.fit(input, advantageTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose(advantageTensor);
+				advantageTensor.dispose();
 				return val;
 			});
 
 		const critic_train = await critic
 			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose([input, targetTensor]);
+				input.dispose();
+				targetTensor.dispose();
 				return val;
 			});
 
@@ -548,14 +554,15 @@ export class Actor_Critic_Agent {
 		const actor_train = await this.actor
 			.fit(input, advantageTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose(advantageTensor);
+				advantageTensor.dispose();
 				return val;
 			});
 
 		const critic_train = await this.critic
 			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose([input, targetTensor]);
+				input.dispose();
+				targetTensor.dispose();
 				return val;
 			});
 

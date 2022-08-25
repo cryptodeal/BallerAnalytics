@@ -16,7 +16,8 @@ export class LeanRoster {
 	public rosterVariants: RosterEncd[] = [];
 
 	public disposeModel() {
-		return this.model.dispose();
+		this.model.optimizer.dispose();
+		this.model.dispose();
 	}
 
 	public getRosterInputs(): RosterDatumInputs {
@@ -61,7 +62,7 @@ export class LeanRoster {
 		testRoster[this.pickCount] = pstnEncd;
 
 		const value = tidy(() => {
-			const inputs = tensor([this.playerPool], [1, 13, 9]);
+			const inputs = tensor([testRoster], [1, 13, 9]);
 			const predTensor = <Tensor<Rank>>this.model.predict(inputs);
 			return predTensor.dataSync()[0];
 		});
