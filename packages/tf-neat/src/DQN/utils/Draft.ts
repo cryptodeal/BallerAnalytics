@@ -149,7 +149,6 @@ export class DraftAPI {
 		const oppCount = this.opps.length;
 		for (let i = 0; i < oppCount; i++) {
 			const opp = this.opps[i];
-
 			if (opp instanceof DraftOppMl) {
 				opp.roster.reset();
 			}

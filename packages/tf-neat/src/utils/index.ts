@@ -164,11 +164,11 @@ export const getDateStr = () => {
 };
 
 export class MovingAverager {
-	private buffer: (number | null)[] = [];
+	private buffer: number[] = [];
+	private bufferLength = 0;
+
 	constructor(bufferLength: number) {
-		for (let i = 0; i < bufferLength; i++) {
-			this.buffer.push(null);
-		}
+		this.bufferLength = bufferLength;
 	}
 
 	size() {
@@ -176,15 +176,24 @@ export class MovingAverager {
 	}
 
 	append(x: number) {
-		this.buffer.shift();
-		this.buffer.push(x);
+		if (this.buffer.length === this.bufferLength) {
+			this.buffer.shift();
+			this.buffer.push(x);
+		} else {
+			this.buffer.push(x);
+		}
 	}
 
-	average(least = -20) {
-		return (
-			this.buffer.map((v) => (v === null ? least : v)).reduce((x, prev) => x + prev) /
-			this.buffer.length
-		);
+	average(least = 0) {
+		let value = 0;
+		for (let i = 0; i < this.buffer.length; i++) {
+			if (this.buffer[i]) {
+				value += this.buffer[i];
+			} else {
+				value += least;
+			}
+		}
+		return value / this.bufferLength;
 	}
 }
 

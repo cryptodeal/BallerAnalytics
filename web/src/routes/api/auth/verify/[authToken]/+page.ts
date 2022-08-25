@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ params }) => {
-	const url = `/api/auth/verify/${params.authToken}.json`;
+	const url = `/api/auth/verify/${params.authToken}`;
 
 	/*const res = await fetch(url);
 	if (res.ok) {

@@ -1,10 +1,10 @@
 import {
 	loadLayersModel,
-	tidy,
 	tensor,
 	type Sequential,
 	type Tensor,
-	type Rank
+	type Rank,
+	dispose
 } from '@tensorflow/tfjs-node';
 import type { RosterDatumInputs, RosterEncd } from './types';
 
@@ -27,7 +27,6 @@ export class LeanRoster {
 
 	constructor(model: Sequential) {
 		this.model = model;
-
 		this.playerPool = <RosterDatumInputs>new Array(13).fill(this.genRoster(1));
 	}
 
@@ -58,13 +57,14 @@ export class LeanRoster {
 	}
 
 	public testPick(pstnEncd: RosterEncd) {
-		const testRoster = structuredClone(this.playerPool);
+		const testRoster = <RosterDatumInputs>JSON.parse(JSON.stringify(this.playerPool));
 		testRoster[this.pickCount] = pstnEncd;
-		const value = tidy(() => {
-			return (<Tensor<Rank>>(
-				this.model.predict(tensor([this.playerPool], [1, 13, 9]))
-			)).dataSync()[0];
-		});
+		const inputs = tensor([this.playerPool], [1, 13, 9]);
+		const predTensor = <Tensor<Rank>>this.model.predict(inputs);
+		dispose(inputs);
+		const value = predTensor.dataSync()[0];
+		dispose(predTensor);
+
 		return {
 			value,
 			isValid: value > 0.5 ? true : false

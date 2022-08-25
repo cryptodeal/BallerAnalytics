@@ -423,24 +423,41 @@ export class Actor_Critic_Agent {
 		const { optimizer: optimizerStr, learningRate, loss: lossStr } = opts;
 
 		const optimizer = this.optimizers[optimizerStr](learningRate);
-		const loss = this.lossFns[lossStr];
 		tempModel.compile({
 			optimizer,
-			loss
+			loss: losses.softmaxCrossEntropy
 		});
 
 		return tempModel;
 	}
 
+	public optimizerSwitch(optStr: RLOptimizers) {
+		switch (optStr) {
+			case 'adagrad':
+				return train.adagrad;
+			case 'adam':
+				return train.adam;
+			case 'adamax':
+				return train.adamax;
+			case 'rmsprop':
+				return train.rmsprop;
+			default:
+				return train.sgd;
+		}
+	}
+
 	/* gets best prediction from current state */
 	public async getAction(input: number[], actor?: Sequential) {
 		const [dim1, dim2, dim3] = this.dims;
-		const logits = tidy(() => {
-			const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
-			return actor
-				? <Tensor<Rank>>actor?.predict(inputTensor)
-				: <Tensor<Rank>>this.actor.predict(inputTensor);
-		});
+		const inputTensor = tensor4d(input, [1, dim1, dim2, dim3]);
+
+		let logits: Tensor<Rank>;
+		if (actor) {
+			logits = <Tensor<Rank>>actor.predict(inputTensor);
+		} else {
+			logits = <Tensor<Rank>>this.actor.predict(inputTensor);
+		}
+		dispose(inputTensor);
 
 		const masked = new Array(this.env.num_actions).fill(1);
 		for (const [key] of this.env.drafted_player_indices) {
@@ -490,7 +507,7 @@ export class Actor_Critic_Agent {
 		if (valid_actions.length > 0) {
 			return valid_actions[getRandomInt(0, valid_actions.length)];
 		} else {
-			return actions_arr[getRandomInt(0, actions_arr.length)];
+			return actions_arr[0];
 		}
 	}
 
@@ -553,10 +570,8 @@ export class Actor_Critic_Agent {
 
 		return tidy(() => {
 			return mean(
-				tensor([<number>critic_train.history.loss[0], <number>actor_train.history.loss[0]])
-			)
-				.flatten()
-				.dataSync()[0];
+				tensor1d([<number>critic_train.history.loss[0], <number>actor_train.history.loss[0]])
+			).dataSync()[0];
 		});
 	}
 
@@ -612,10 +627,8 @@ export class Actor_Critic_Agent {
 
 		return tidy(() => {
 			return mean(
-				tensor([<number>critic_train.history.loss[0], <number>actor_train.history.loss[0]])
-			)
-				.flatten()
-				.dataSync()[0];
+				tensor1d([<number>critic_train.history.loss[0], <number>actor_train.history.loss[0]])
+			).dataSync()[0];
 		});
 	}
 

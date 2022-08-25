@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { User } from '@balleranalytics/nba-api-ts';
 import createToken from '$lib/functions/_api/auth/createToken';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
-import type { RequestHandler } from './$types';
+import type { RequestHandler } from '../../../../../../.svelte-kit/types/src/routes/api/auth/verify/[authToken].json/$types';
 // import type { JWTPayload } from '$lib/types';
 
 /*

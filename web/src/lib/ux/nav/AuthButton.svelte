@@ -1,6 +1,6 @@
 <script lang="ts">
 	import IconPerson from '~icons/fluent/person-24-regular';
-	import { session } from '$app/stores';
+	import { session } from '$lib/data/stores';
 
 	export let modalId: string, triggerTxt: string, closeDrawer: () => void;
 </script>
