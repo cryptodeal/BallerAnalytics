@@ -14,7 +14,8 @@ import {
 	log,
 	multinomial,
 	tensor,
-	tidy
+	tidy,
+	dispose
 } from '@tensorflow/tfjs-node';
 import { writeFile } from 'fs/promises';
 import * as hpjs from 'hyperparameters';
@@ -410,8 +411,7 @@ export class Actor_Critic_Agent {
 
 		/* boolean masking; set invalid actions to 0 */
 		const policy = await booleanMaskAsync(logits, boolMasked);
-		boolMasked.dispose();
-		logits.dispose();
+		dispose([boolMasked, logits]);
 
 		/**
 		 * Source: the following @tensorflow/tfjs book,
@@ -503,8 +503,7 @@ export class Actor_Critic_Agent {
 		const critic_train = await critic
 			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				input.dispose();
-				targetTensor.dispose();
+				dispose([input, targetTensor]);
 				return val;
 			});
 
@@ -561,8 +560,7 @@ export class Actor_Critic_Agent {
 		const critic_train = await this.critic
 			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				input.dispose();
-				targetTensor.dispose();
+				dispose([input, targetTensor]);
 				return val;
 			});
 
