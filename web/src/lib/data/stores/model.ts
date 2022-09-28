@@ -1,6 +1,6 @@
 import { readable } from 'svelte/store';
 import { trainingData } from './trainingData';
-import { browser } from '$app/env';
+import { browser } from '$app/environment';
 import { NeuralNetwork } from '@balleranalytics/tf-neat';
 import wasmSimdPath from '@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm-simd.wasm?url';
 import wasmSimdThreadedPath from '@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm-threaded-simd.wasm?url';

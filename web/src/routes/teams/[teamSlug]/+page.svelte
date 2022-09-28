@@ -22,7 +22,7 @@
 	import { tweened } from 'svelte/motion';
 	import { interpolateLab as interpolate } from 'd3-interpolate';
 	import darkMode from '$lib/data/stores/theme';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
 	// import type { TeamPageGames } from '$lib/data/_db/controllers/team';
   import type{ PageData } from './$types';

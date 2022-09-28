@@ -1,6 +1,6 @@
 import { DQNPlayer, loadDQNPlayers, type SavedPlayerData } from '@balleranalytics/nba-api-ts';
 import { readFile } from 'fs/promises';
-import { util } from '@tensorflow/tfjs-node';
+import { util, memory } from '@tensorflow/tfjs-node';
 import { DraftTask } from '../../A2C/Env';
 import { LeanRoster } from '../../A2C/Env/LeanRoster';
 import { Actor_Critic_Agent } from '../../A2C/A2CAgent';
@@ -54,7 +54,7 @@ const trainA2C = async () => {
 	const agent = await Actor_Critic_Agent.build(draft, dimensions);
 	while (true) {
 		/* TODO: REMOVE?? --> const time_count = 0; */
-		// console.log('Memory:trainA2C @ loop start', memory());
+		console.log('Memory:trainA2C @ loop start', memory());
 
 		while (true) {
 			console.log(
@@ -90,7 +90,7 @@ const trainA2C = async () => {
 						`Reward Moving Avg (100 Eps): ${current_moving_avg.toFixed(4)}`
 					//`(epsilon=${agent.epsilon.toFixed(3)})\n`
 				);
-				// console.log('Memory:trainA2C @ loop end', memory());
+				console.log('Memory:trainA2C @ loop end', memory());
 
 				if (current_moving_avg > best_self_moving_avg) {
 					best_self_moving_avg = current_moving_avg;

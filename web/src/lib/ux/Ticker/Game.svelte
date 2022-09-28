@@ -5,7 +5,7 @@
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor } from 'nba-color';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 
 	import type { DailyGame } from '$lib/data/stores/types';
 

@@ -1,7 +1,7 @@
 
 <script lang="ts">
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { dailyGames } from '$lib/data/stores/games';
 	import BoxScoreTable from '$lib/ux/tables/games/Boxscore.svelte';
 	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';

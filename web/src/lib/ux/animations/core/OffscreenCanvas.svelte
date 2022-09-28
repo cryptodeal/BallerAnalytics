@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
 	import Worker from '$lib/functions/_worker/testWorker?worker';
 	import { mtl } from '$models/Basketball_size6_SF.mtl';

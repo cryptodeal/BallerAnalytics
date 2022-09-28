@@ -1,5 +1,5 @@
 import { readable } from 'svelte/store';
-import { browser } from '$app/env';
+import { browser } from '$app/environment';
 import type { DailyGames } from './types';
 
 export const dailyGames = readable<DailyGames>({}, (set) => {

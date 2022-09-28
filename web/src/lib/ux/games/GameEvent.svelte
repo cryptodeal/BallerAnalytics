@@ -6,7 +6,7 @@
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
 	import { dailyGames } from '$lib/data/stores/games';
 	import type { PopulatedDocument, Game2Document } from '@balleranalytics/nba-api-ts';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);

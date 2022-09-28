@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let option: string | number | ObjectOption;
 	import { teams } from '$lib/data/teams';
-	import { browser } from '$app/env';
+	import { browser } from '$app/environment';
 	import type { ObjectOption } from 'svelte-multiselect';
 	$: teamData = teams[teams.findIndex((t) => t.name === (option as ObjectOption).label)];
 	$: abbrev = teamData.abbrev;

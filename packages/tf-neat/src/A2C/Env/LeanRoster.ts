@@ -4,7 +4,8 @@ import {
 	type Sequential,
 	type Tensor,
 	type Rank,
-	tidy
+	tidy,
+	zeros
 } from '@tensorflow/tfjs-node';
 import type { RosterDatumInputs, RosterEncd } from './types';
 
@@ -28,7 +29,15 @@ export class LeanRoster {
 
 	constructor(model: Sequential) {
 		this.model = model;
+		this.warmUp();
 		this.playerPool = <RosterDatumInputs>new Array(13).fill(this.genRoster(1));
+	}
+
+	public warmUp() {
+		tidy(() => {
+			const input = zeros([1, 13, 9]);
+			this.model.predict(input);
+		});
 	}
 
 	static async loadModel() {

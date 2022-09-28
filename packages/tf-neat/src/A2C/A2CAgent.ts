@@ -8,14 +8,14 @@ import {
 	model,
 	tensor4d,
 	tensor2d,
-	memory,
 	tensor1d,
 	mean,
 	log,
 	multinomial,
 	tensor,
 	tidy,
-	dispose
+	memory,
+	zeros
 } from '@tensorflow/tfjs-node';
 import { writeFile } from 'fs/promises';
 import * as hpjs from 'hyperparameters';
@@ -115,8 +115,26 @@ export class Actor_Critic_Agent {
 			optimizer: critic_optimizer,
 			learningRate: critic_learning_rate
 		});
+		agent.warmUp();
 		// agent.env.teamRoster.storeNewData = true;
 		return agent;
+	}
+
+	public warmUp(actor?: Sequential, critic?: LayersModel) {
+		tidy(() => {
+			const input = zeros([1, ...this.dims]);
+			if (actor) {
+				actor.predict(input);
+			} else {
+				this.actor.predict(input);
+			}
+
+			if (critic) {
+				critic.predict(input);
+			} else {
+				this.critic.predict(input);
+			}
+		});
 	}
 
 	/**
@@ -147,6 +165,7 @@ export class Actor_Critic_Agent {
 			optimizer: critic_optimizer,
 			learningRate: critic_learning_rate
 		});
+		this.warmUp(actor, critic);
 
 		console.log(
 			'actor_optimizer: ',
@@ -162,7 +181,7 @@ export class Actor_Critic_Agent {
 		let stepCount = 0;
 		const lossMovAvg = new MovingAverager(128);
 		let status: hpjs.STATUS_OK | hpjs.STATUS_FAIL = hpjs.STATUS_OK;
-		// console.log('Memory:optimize_actor_hyperparams @ loop start', memory());
+		console.log('Memory:optimize_actor_hyperparams @ loop start', memory());
 		while (stepCount < 128) {
 			this.env.simulatePriorPicks(this.env.pickSlot);
 			const state = this.env.getState().e.flat();
@@ -224,7 +243,7 @@ export class Actor_Critic_Agent {
 			', loss: ',
 			loss
 		);
-		// console.log('Memory:optimize_actor_hyperparams @ loop end', memory());
+		console.log('Memory:optimize_actor_hyperparams @ loop end', memory());
 		return { loss, status };
 	};
 
@@ -411,7 +430,8 @@ export class Actor_Critic_Agent {
 
 		/* boolean masking; set invalid actions to 0 */
 		const policy = await booleanMaskAsync(logits, boolMasked);
-		dispose([boolMasked, logits]);
+		boolMasked.dispose();
+		logits.dispose();
 
 		/**
 		 * Source: the following @tensorflow/tfjs book,
@@ -426,21 +446,35 @@ export class Actor_Critic_Agent {
 			return actions.dataSync();
 		});
 
+		const testPickMap: Map<number, boolean> = new Map();
 		const predCount = actions_arr.length;
 		for (let i = 0; i < predCount; i++) {
 			if (
 				!this.env.drafted_player_indices.has(actions_arr[i]) &&
 				this.env.testActorPick(actions_arr[i])
 			) {
+				testPickMap.set(actions_arr[i], true);
 				console.log(`chose predicted action: ${actions_arr[i]}`);
 				return actions_arr[i];
+			} else {
+				testPickMap.set(actions_arr[i], false);
 			}
 		}
 
 		const valid_actions: number[] = [];
 		for (let i = 0; i < this.env.num_actions; i++) {
-			if (!this.env.drafted_player_indices.has(i) && this.env.testActorPick(i))
-				valid_actions.push(i);
+			if (!this.env.drafted_player_indices.has(i)) {
+				if (testPickMap.has(i)) {
+					if (testPickMap.get(i) === true) valid_actions.push(i);
+				} else {
+					if (this.env.testActorPick(i)) {
+						testPickMap.set(i, true);
+						valid_actions.push(i);
+					} else {
+						testPickMap.set(i, false);
+					}
+				}
+			}
 		}
 
 		if (valid_actions.length > 0) {
@@ -503,7 +537,8 @@ export class Actor_Critic_Agent {
 		const critic_train = await critic
 			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose([input, targetTensor]);
+				input.dispose();
+				targetTensor.dispose();
 				return val;
 			});
 
@@ -560,7 +595,8 @@ export class Actor_Critic_Agent {
 		const critic_train = await this.critic
 			.fit(input, targetTensor, { batchSize: 1, epochs: 1 })
 			.then((val) => {
-				dispose([input, targetTensor]);
+				input.dispose();
+				targetTensor.dispose();
 				return val;
 			});
 
