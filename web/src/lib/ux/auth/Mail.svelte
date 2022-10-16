@@ -13,8 +13,8 @@
 	style="background-color:#ffffff;backgroundtable-layout:fixed;vertical-align:top;min-width:320px;Margin:0 auto;border-spacing:0;border-collapse:collapse;width:100%"
 >
 	<tbody>
-		<tr vertical-align="top" style="vertical-align:top">
-			<td vertical-align="top" style="word-break:break-word;vertical-align:top">
+		<tr style="vertical-align:top">
+			<td style="word-break:break-word;vertical-align:top">
 				<div>
 					<div
 						style="Margin:0 auto;min-width:320px;max-width:500px;word-wrap:break-word;word-break:break-word"
@@ -93,6 +93,7 @@
 												href={authLink}
 												style="text-decoration:none;display:inline-block;background:#6851ff;background-color:#6851ff;border-radius:7px;width:auto;width:auto;border-top:1px solid #6851ff;border-right:1px solid #6851ff;border-bottom:1px solid #6851ff;border-left:1px solid #6851ff;padding-top:15px;padding-bottom:15px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-align:center;color:white;word-break:keep-all;font-size:18px;line-height:1.5;padding-left:30px;padding-right:30px;font-size:18px"
 												target="_blank"
+												rel="noreferrer"
 												data-saferedirecturl="https://www.google.com/url?q={authLink}"
 											>
 												<strong>Log in to Baller Analytics</strong></a

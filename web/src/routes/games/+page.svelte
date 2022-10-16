@@ -13,10 +13,6 @@
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
 	dayjs.tz.setDefault('America/New_York');
-	const logoModules = import.meta.glob('../../lib/ux/assets/teams/logo-*.svelte', {
-		eager: true
-	});
-
 	let date = games.length ? dayjs(games[0].date).utc().tz().toDate() : dayjs().utc().tz().toDate();
 
 	const closeOnSelection = true;

@@ -47,7 +47,7 @@
 
 	async function loadRosterData() {
 		let tempIdx = (team.seasons as SeasonList[]).findIndex((s) => s.season === year);
-		const res = await fetch(`/teams/${team.infoCommon.slug}.json?i=${tempIdx}&year=${year}`);
+		const res = await fetch(`/teams/${team.infoCommon.slug}?i=${tempIdx}&year=${year}`);
 		const {
 			team: teamData,
 			players: playerData,

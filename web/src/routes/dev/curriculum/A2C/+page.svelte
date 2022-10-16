@@ -364,7 +364,9 @@
 	<div class="flex gap-4 w-full flex-col">
 		<h2 class="text-center">Advantage Actor Critic (A2C)</h2>
 		<h4 class="text-center">
-			Utilizing <a target="_blank" href="https://arxiv.org/abs/2003.04960">Curriculum Learning</a>
+			Utilizing <a target="_blank" rel="noreferrer" href="https://arxiv.org/abs/2003.04960"
+				>Curriculum Learning</a
+			>
 		</h4>
 		<div class="flex w-full flex-col gap-4 mb-10 items-center">
 			<h4 class="text-center">Controls:</h4>

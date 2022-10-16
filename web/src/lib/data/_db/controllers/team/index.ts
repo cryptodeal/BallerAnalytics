@@ -1,10 +1,11 @@
-import { Team2, type Game2Document } from '@balleranalytics/nba-api-ts';
+import { Team2 } from '@balleranalytics/nba-api-ts';
 import type {
 	Team2Document,
 	Player2StatsObject,
 	Player2Object,
 	Player2Stats,
 	PopulatedDocument,
+	Game2Document,
 	Team2Object,
 	Player2SeasonPostseasonStatDocument,
 	Player2SeasonDocument,
@@ -13,7 +14,7 @@ import type {
 import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
-	return Team2.getAllTeams().then((teams: Team2[]) => {
+	return Team2.getAllTeams().then((teams: Team2Object[]) => {
 		teams.map((t) => t.seasons.sort((a, b) => b.season - a.season));
 		return teams;
 	});
@@ -21,7 +22,7 @@ export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
 
 export const loadHelperData = (): Promise<Team2Object[]> => {
 	return Team2.getHelperData().then((teams: Team2Object[]) => {
-		teams.sort((a, b) => (a.infoCommon.name as any) - (b.infoCommon.name as any));
+		teams.sort((a, b) => a.infoCommon.name.localeCompare(b.infoCommon.name));
 		return teams;
 	});
 };

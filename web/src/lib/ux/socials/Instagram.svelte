@@ -3,6 +3,6 @@
 	export let handle: string;
 </script>
 
-<a href="https://www.instagram.com/{handle}" target="_blank">
+<a href="https://www.instagram.com/{handle}" target="_blank" rel="noreferrer">
 	<Insta class="h-7 w-7 fill-current" />
 </a>
