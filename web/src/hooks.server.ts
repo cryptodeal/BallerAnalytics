@@ -1,14 +1,14 @@
 import cookie from 'cookie';
 import { serverlessConnect } from '@balleranalytics/nba-api-ts';
+import { prerendering } from '$app/environment';
 import config from '$lib/_config';
 import decodeToken from '$lib/functions/_api/auth/decodeToken';
 import refreshAuth from '$lib/functions/_api/auth/refreshAuth';
-// import { minify } from 'html-minifier';
-// import { prerendering } from '$app/env';
+import { minify } from 'html-minifier';
 import type { Handle } from '@sveltejs/kit';
 import { expireTokens } from '$lib/functions/_api/auth/logout';
 
-/*
+
   const minification_options = {
     collapseBooleanAttributes: true,
     collapseWhitespace: true,
@@ -27,7 +27,7 @@ import { expireTokens } from '$lib/functions/_api/auth/logout';
     sortAttributes: true,
     sortClassName: true
   };
-*/
+
 
 export const handle: Handle = async ({ event, resolve }) => {
 	await serverlessConnect(config.MONGO_URI);
@@ -70,14 +70,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 		response.headers.set('set-cookie', refreshToken);
 	}
 
-	/* TODO: pending see: https://github.com/sveltejs/kit/issues/4247
     if (prerendering && response.headers.get('content-type') === 'text/html') {
       return new Response(minify(await response.text(), minification_options), {
         status: response.status,
         headers: response.headers
       });
     }
-  */
 
 	return response;
 };

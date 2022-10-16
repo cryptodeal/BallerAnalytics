@@ -233,6 +233,7 @@ importers:
       '@types/d3-scale': ^4.0.2
       '@types/d3-selection': ^3.0.3
       '@types/d3-zoom': ^3.0.1
+      '@types/html-minifier': ^4.0.2
       '@types/jsonwebtoken': ^8.5.9
       '@types/node': ^18.11.0
       '@types/nodemailer': ^6.4.6
@@ -321,6 +322,7 @@ importers:
       '@types/d3-scale': 4.0.2
       '@types/d3-selection': 3.0.3
       '@types/d3-zoom': 3.0.1
+      '@types/html-minifier': 4.0.2
       '@types/jsonwebtoken': 8.5.9
       '@types/node': 18.11.0
       '@types/nodemailer': 6.4.6
@@ -2363,6 +2365,13 @@ packages:
       '@types/node': 18.11.0
     dev: true
 
+  /@types/clean-css/4.2.6:
+    resolution: {integrity: sha512-Ze1tf+LnGPmG6hBFMi0B4TEB0mhF7EiMM5oyjLDNPE9hxrPU0W+5+bHvO+eFPA+bt0iC1zkQMoU/iGdRVjcRbw==}
+    dependencies:
+      '@types/node': 18.11.0
+      source-map: 0.6.1
+    dev: true
+
   /@types/color-convert/2.0.0:
     resolution: {integrity: sha512-m7GG7IKKGuJUXvkZ1qqG3ChccdIM/qBBo913z+Xft0nKCX4hAU/IxKwZBU4cpRZ7GS5kV4vOblUkILtSShCPXQ==}
     dependencies:
@@ -2471,6 +2480,14 @@ packages:
       '@types/unist': 2.0.6
     dev: true
 
+  /@types/html-minifier/4.0.2:
+    resolution: {integrity: sha512-4IkmkXJP/25R2fZsCHDX2abztXuQRzUAZq39PfCMz2loLFj8vS9y7aF6vDl58koXSTpsF+eL4Lc5Y4Aww/GCTQ==}
+    dependencies:
+      '@types/clean-css': 4.2.6
+      '@types/relateurl': 0.2.29
+      '@types/uglify-js': 3.17.0
+    dev: true
+
   /@types/http-cache-semantics/4.0.1:
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
     dev: false
@@ -2556,6 +2573,10 @@ packages:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
     dev: false
 
+  /@types/relateurl/0.2.29:
+    resolution: {integrity: sha512-QSvevZ+IRww2ldtfv1QskYsqVVVwCKQf1XbwtcyyoRvLIQzfyPhj/C+3+PKzSDRdiyejaiLgnq//XTkleorpLg==}
+    dev: true
+
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
@@ -2596,6 +2617,12 @@ packages:
 
   /@types/ua-parser-js/0.7.36:
     resolution: {integrity: sha512-N1rW+njavs70y2cApeIw1vLMYXRwfBy+7trgavGuuTfOd7j1Yh7QTRc/yqsPl6ncokt72ZXuxEU0PiCp9bSwNQ==}
+    dev: true
+
+  /@types/uglify-js/3.17.0:
+    resolution: {integrity: sha512-3HO6rm0y+/cqvOyA8xcYLweF0TKXlAxmQASjbOi49Co51A1N4nR4bEwBgRoD9kNM+rqFGArjKr654SLp2CoGmQ==}
+    dependencies:
+      source-map: 0.6.1
     dev: true
 
   /@types/unist/2.0.6:
