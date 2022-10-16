@@ -12,7 +12,9 @@
 	$: data = isHome ? boxscore.home.players : boxscore.visitor.players;
 
 	let sortBy: ISortBy = { col: 'stats.totals.minutes', ascending: true };
-	$: if (boxscore !== null) sortBy = { col: 'stats.totals.minutes', ascending: true };
+	$: if (boxscore !== null) {
+		sortBy = { col: 'stats.totals.minutes', ascending: true };
+	}
 
 	const colHeaders: IColHeader[] = [
 		{ title: 'Name', key: 'player.name.full' },

@@ -3,10 +3,10 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import InfiniteLoading, { type InfiniteEvent } from 'svelte-infinite-loading';
 	import PlayerListItem from '$lib/ux/players/PlayerListItem.svelte';
-  import type { PageData } from './$types';
-  export let data: PageData;
-  let { players, seasons } = data;
-  $: ({ players, seasons } = data); // so it stays in sync when `data` changes
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let { players, seasons } = data;
+	$: ({ players, seasons } = data); // so it stays in sync when `data` changes
 
 	let page = 1,
 		listHeight = 500,
@@ -15,7 +15,7 @@
 
 	function loadPlayers({ detail: { loaded, complete, error } }: InfiniteEvent) {
 		if (!name || name.length < 2) {
-			fetch(`players.json?page=${page}&year=${seasonYear}`)
+			fetch(`players?page=${page}&year=${seasonYear}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
@@ -30,7 +30,7 @@
 				})
 				.catch(() => error());
 		} else {
-			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
+			fetch(`players?page=${page}&year=${seasonYear}&name=${name}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
@@ -50,7 +50,7 @@
 	function loadSeason() {
 		page = 0;
 		if (!name || name === '' || name.length < 2) {
-			fetch(`players.json?page=${page}&year=${seasonYear}`)
+			fetch(`players?page=${page}&year=${seasonYear}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
@@ -61,7 +61,7 @@
 				})
 				.catch(Error);
 		} else {
-			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
+			fetch(`players?page=${page}&year=${seasonYear}&name=${name}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
@@ -77,7 +77,7 @@
 	function nameQuery() {
 		page = 0;
 		if (name === '') {
-			fetch(`players.json?page=${page}&year=${seasonYear}`)
+			fetch(`players?page=${page}&year=${seasonYear}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
@@ -88,7 +88,7 @@
 				})
 				.catch(Error);
 		} else if (name.length > 2) {
-			fetch(`players.json?page=${page}&year=${seasonYear}&name=${name}`)
+			fetch(`players?page=${page}&year=${seasonYear}&name=${name}`)
 				.then((response) => response.json())
 				.then((data) => {
 					const { players: newPlayers } = data;
