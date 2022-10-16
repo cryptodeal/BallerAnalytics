@@ -3,10 +3,10 @@
 	import { MetaTags } from 'svelte-meta-tags';
 	import { invertColor } from '$lib/functions/helpers';
 	import { getMainColor, getSecondaryColor } from 'nba-color';
-  import type { PageData } from './$types';
-  export let data: PageData;
-  let { teams } = data;
-  $: ({ teams } = data); // so it stays in sync when `data` changes
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let { teams } = data;
+	$: ({ teams } = data); // so it stays in sync when `data` changes
 </script>
 
 <MetaTags
@@ -36,11 +36,13 @@
 
 {#each teams as { infoCommon, seasons }}
 	{@const mainColor = getMainColor(infoCommon.nbaAbbreviation || infoCommon.abbreviation).hex}
-	{@const secondaryColor = getSecondaryColor(infoCommon.nbaAbbreviation || infoCommon.abbreviation).hex}
+	{@const secondaryColor = getSecondaryColor(
+		infoCommon.nbaAbbreviation || infoCommon.abbreviation
+	).hex}
 	{@const invertedColor = invertColor(mainColor, true)}
 	{@const backdropBg = tinycolor(invertedColor).setAlpha(0.4).toRgbString()}
 	<div class="container mx-auto my-4">
-		<a class="w-full" sveltekit:prefetch href="teams/{infoCommon.slug}">
+		<a class="w-full" data-sveltekit-prefetch href="teams/{infoCommon.slug}">
 			<div
 				style:--teamBg={mainColor}
 				style:--teamBorder={secondaryColor}
@@ -49,7 +51,7 @@
 				<div style:--logoBg={backdropBg} class="logoBackdrop rounded-lg mx-auto w-48 h-48">
 					<img
 						class="h-48 w-48"
-						src="teams/assets/logo-{infoCommon.slug}.svg"
+						src="assets/teams/logo-{infoCommon.slug}.svg"
 						alt="{infoCommon.name}'s' logo"
 					/>
 				</div>

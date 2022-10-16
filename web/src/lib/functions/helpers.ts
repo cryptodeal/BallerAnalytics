@@ -1,7 +1,6 @@
 import type { ValidatedFormData, NewUserFormData } from '$lib/types';
 
-export const slugFromPath = (path: string) =>
-	path.match(/([\w-]+)\.(svelte\.md|md|svx)/i)?.[1] ?? null;
+export const slugFromPath = (path: string) => path.split('/')[2];
 
 export const getAge = (dateString: string, today = new Date()): number => {
 	const birthDate = new Date(dateString);

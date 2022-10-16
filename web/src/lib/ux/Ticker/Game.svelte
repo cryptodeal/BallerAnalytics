@@ -43,7 +43,7 @@
 		<div class="glassmorphicBg inline-block h-10 w-10 px-1">
 			<img
 				class="h-10 w-10 inline-block"
-				src="/teams/assets/logo-{game.visitor.infoCommon.slug}.svg"
+				src="/assets/teams/logo-{game.visitor.infoCommon.slug}.svg"
 				alt="{game.visitor.infoCommon.name}'s' logo"
 			/>
 		</div>
@@ -73,7 +73,7 @@
 		<div class="glassmorphicBg inline-block h-10 w-10 px-1">
 			<img
 				class="h-10 w-10 inline-block"
-				src="/teams/assets/logo-{game.home.infoCommon.slug}.svg"
+				src="/assets/teams/logo-{game.home.infoCommon.slug}.svg"
 				alt="{game.home.infoCommon.name}'s' logo"
 			/>
 		</div>

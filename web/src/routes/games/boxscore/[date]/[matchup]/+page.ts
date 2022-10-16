@@ -4,7 +4,7 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, params }) => {
 	const { date, matchup } = params;
-	const apiUrl = `/games/boxscore/${date}/${matchup}.json`;
+	const apiUrl = `/games/boxscore/${date}/${matchup}`;
 	const res = await fetch(apiUrl);
 
 	if (res.ok) {

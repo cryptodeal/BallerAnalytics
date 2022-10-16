@@ -17,7 +17,7 @@
 			class="dropdown-content menu p-2 shadow bg-base-300 rounded-box w-52"
 		>
 			<li>
-				<a sveltekit:prefetch class="uppercase" href="/profile"> profile </a>
+				<a data-sveltekit-prefetch class="uppercase" href="/profile"> profile </a>
 			</li>
 			<li>
 				<a class="uppercase" href="/logout"> logout </a>
@@ -35,7 +35,7 @@
 				class="dropdown-content menu p-2 shadow bg-base-300 rounded-box w-32"
 			>
 				<li>
-					<a on:click={closeDrawer} sveltekit:prefetch class="uppercase" href="/profile">
+					<a on:click={closeDrawer} data-sveltekit-prefetch class="uppercase" href="/profile">
 						profile
 					</a>
 				</li>

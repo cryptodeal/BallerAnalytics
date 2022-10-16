@@ -12,7 +12,7 @@
 			class="antialiased mx-auto"
 			height="48px"
 			width="48px"
-			src="/teams/assets/min-{game.visitor.infoCommon.slug}.svg"
+			src="/assets/teams/min-{game.visitor.infoCommon.slug}.svg"
 			alt="{game.visitor.infoCommon.slug} logo"
 		/>
 		<div class="text-sm text-center leading-5">

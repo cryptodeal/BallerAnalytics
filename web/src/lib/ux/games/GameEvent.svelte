@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
-	import dayjs from 'dayjs';
+	import dayjs, { Dayjs } from 'dayjs';
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
@@ -13,7 +13,7 @@
 	dayjs.extend(advancedFormat);
 
 	export let game: PopulatedDocument<PopulatedDocument<Game2Document, 'home.team'>, 'visitor.team'>;
-	let localTz, estDate;
+	let localTz: string, estDate: Dayjs;
 	$: if (browser) localTz = dayjs.tz.guess();
 	$: if (game) estDate = dayjs(game.date).utc().tz();
 </script>
@@ -26,7 +26,7 @@
 			>
 				<img
 					class="h-3/5 w-full"
-					src="/teams/assets/logo-{game.visitor.team.infoCommon.slug}.svg"
+					src="/assets/teams/logo-{game.visitor.team.infoCommon.slug}.svg"
 					alt="{game.visitor.team.infoCommon.name}'s' logo"
 				/>
 			</div>
@@ -98,7 +98,7 @@
 			>
 				<img
 					class="h-3/5 w-full"
-					src="/teams/assets/logo-{game.home.team.infoCommon.slug}.svg"
+					src="/assets/teams/logo-{game.home.team.infoCommon.slug}.svg"
 					alt="{game.home.team.infoCommon.name}'s' logo"
 				/>
 			</div>
@@ -114,7 +114,7 @@
 	>
 		<a
 			class=""
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			href="/games/boxscore/{estDate.format('YYYYMMDD')}/{game.visitor.team.seasons.find(
 				(s) => s.season === game.meta.helpers.bballRef.year
 			).infoCommon.abbreviation}@{game.home.team.seasons.find(

@@ -18,7 +18,7 @@
 	<!-- Sidebar content here -->
 	<li>
 		<a
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			on:click={closeDrawer}
 			href="/games"
 			class="uppercase"
@@ -29,7 +29,7 @@
 	</li>
 	<li>
 		<a
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			on:click={closeDrawer}
 			href="/players"
 			class="uppercase"
@@ -41,7 +41,7 @@
 
 	<li>
 		<a
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			on:click={closeDrawer}
 			href="/teams"
 			class="uppercase"
@@ -53,7 +53,7 @@
 
 	<li>
 		<a
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			on:click={closeDrawer}
 			href="/articles"
 			class="uppercase"
@@ -65,7 +65,7 @@
 
 	<li>
 		<a
-			sveltekit:prefetch
+			data-sveltekit-prefetch
 			on:click={closeDrawer}
 			href="/dev/neat"
 			class="uppercase"

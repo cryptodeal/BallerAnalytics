@@ -1,20 +1,21 @@
 <script lang="ts">
-
 	import dayjs from 'dayjs';
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import GameEvent from '$lib/ux/games/GameEvent.svelte';
 	import { DateInput } from 'date-picker-svelte';
 	import { MetaTags } from 'svelte-meta-tags';
-  import type { PageData } from './$types';
-  export let data: PageData
-  let { games, min, max} = data;
-  $: ({ games, min, max} = data) // so it stays in sync when `data` changes
-
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let { games, min, max } = data;
+	$: ({ games, min, max } = data); // so it stays in sync when `data` changes
+	let usedGames = games;
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
 	dayjs.tz.setDefault('America/New_York');
-
+	const logoModules = import.meta.glob('../../lib/ux/assets/teams/logo-*.svelte', {
+		eager: true
+	});
 
 	let date = games.length ? dayjs(games[0].date).utc().tz().toDate() : dayjs().utc().tz().toDate();
 
@@ -27,12 +28,12 @@
 	function loadGames() {
 		const strDate = dayjs(date).utc().tz().format('YYYY-MM-DD');
 		// console.log('client', strDate);
-		const url = `/games.json?date=${strDate}`;
+		const url = `/games?date=${strDate}`;
 		return fetch(url)
 			.then((res) => res.json())
 			.then((data) => {
 				const { games: updatedGames } = data;
-				games = updatedGames;
+				usedGames = updatedGames;
 			});
 	}
 </script>
@@ -58,7 +59,7 @@
 		/>
 	</div>
 	<div class="w-full gap-5 flex-grow mb-10">
-		{#each games as game}
+		{#each usedGames as game}
 			<GameEvent {game} />
 		{:else}
 			<div class="flex justify-center">

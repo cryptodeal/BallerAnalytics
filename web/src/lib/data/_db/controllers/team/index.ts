@@ -13,15 +13,15 @@ import type {
 import dayjs from 'dayjs';
 
 export const getAllTeamsCommonInfo = (): Promise<Team2Object[]> => {
-	return Team2.getAllTeams().then((teams) => {
+	return Team2.getAllTeams().then((teams: Team2[]) => {
 		teams.map((t) => t.seasons.sort((a, b) => b.season - a.season));
 		return teams;
 	});
 };
 
 export const loadHelperData = (): Promise<Team2Object[]> => {
-	return Team2.getHelperData().then((teams) => {
-		teams.sort((a, b) => a.infoCommon.name - b.infoCommon.name);
+	return Team2.getHelperData().then((teams: Team2Object[]) => {
+		teams.sort((a, b) => (a.infoCommon.name as any) - (b.infoCommon.name as any));
 		return teams;
 	});
 };
@@ -63,13 +63,10 @@ export const getTeamBySlug = (
 	const query = season
 		? { 'infoCommon.slug': slug, seasons: { $elemMatch: { season: season } } }
 		: { 'infoCommon.slug': slug };
-	return Team2.findOne(query, [
-		'infoCommon',
-		'seasons.season',
-		'seasons.regularSeason',
-		'seasons.postseason',
-		'seasons.roster.players'
-	])
+	return Team2.findOne(
+		query,
+		'infoCommon seasons.season seasons.regularSeason seasons.postseason seasons.roster.players'
+	)
 		.populateSznPlayers(seasonIdx)
 		.populateSznGames(seasonIdx)
 		.lean()
@@ -214,5 +211,5 @@ export const getTeamBySlug = (
 };
 
 export const getTeamById = (id: string): Promise<Team2Document> => {
-	return Team2.findById(id).exec();
+	return Team2.findById(id).exec() as Promise<Team2Document>;
 };

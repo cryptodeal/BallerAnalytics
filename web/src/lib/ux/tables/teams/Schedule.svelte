@@ -73,7 +73,7 @@
 								<div class="h-14 w-14">
 									<img
 										class="h-14 w-14"
-										src="/teams/assets/logo-{visitor.team.infoCommon.slug}.svg"
+										src="/assets/teams/logo-{visitor.team.infoCommon.slug}.svg"
 										alt="{visitor.team.infoCommon.name}'s' logo"
 									/>
 								</div>
@@ -87,7 +87,7 @@
 								<div class="h-14 w-14">
 									<img
 										class="h-14 w-14"
-										src="/teams/assets/logo-{home.team.infoCommon.slug}.svg"
+										src="/assets/teams/logo-{home.team.infoCommon.slug}.svg"
 										alt="{home.team.infoCommon.name}'s' logo"
 									/>
 								</div>

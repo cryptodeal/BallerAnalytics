@@ -14,7 +14,7 @@ export type ArticleIdxData = {
 };
 
 export const GET: RequestHandler = async ({ url }) => {
-	const modules = import.meta.glob('./read/*.{md,svx,svelte.md}');
+	const modules = import.meta.glob('./read/**/*.{md,svx,svelte.md}');
 
 	const postPromises: Promise<ArticleIdxData>[] = [];
 	const limit = Number(url.searchParams.get('limit') ?? Infinity);

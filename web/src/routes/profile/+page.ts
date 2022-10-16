@@ -7,7 +7,7 @@ export const load: PageLoad = async ({ fetch }) => {
 	if (!session.subscribe((v) => v.user)) {
 		throw redirect(302, '/');
 	}
-	const url = `/profile.json?userId=${session.subscribe(({ user }) => user.id)}`;
+	const url = `/profile?userId=${session.subscribe(({ user }) => user.id)}`;
 	const res = await fetch(url);
 	const { userData } = await res.json();
 

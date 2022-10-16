@@ -1,4 +1,3 @@
-
 <script lang="ts">
 	import { MetaTags } from 'svelte-meta-tags';
 	import ScheduleTable from '$lib/ux/tables/teams/Schedule.svelte';
@@ -12,9 +11,9 @@
       Player2StatsObject
     } from '@balleranalytics/nba-api-ts';
   */
-  import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
+	import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
 
-	import type { TeamColor } from '$lib/types';
+	import type { SeasonList, TeamColor } from '$lib/types';
 	import TabPanel from '$lib/ux/tabs/TabPanel.svelte';
 	import TabList from '$lib/ux/tabs/TabList.svelte';
 	import Tabs from '$lib/ux/tabs/Tabs.svelte';
@@ -25,18 +24,11 @@
 	import { browser } from '$app/environment';
 	import { genPalette, getBackgroundColors } from '$lib/ux/svg/core/colors';
 	// import type { TeamPageGames } from '$lib/data/_db/controllers/team';
-  import type{ PageData } from './$types';
-  export let data: PageData;
-  let { team, games, players, seasonIdx, seasonYear, seasons }= data;
-  $: ({
-    team,
-    games,
-    players,
-    seasonIdx,
-    seasonYear,
-    seasons
-  } = data);
-	
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let { team, games, players, seasonIdx, seasonYear, seasons } = data;
+	$: ({ team, games, players, seasonIdx, seasonYear, seasons } = data);
+	let year = seasonYear;
 
 	let bgInner = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate }),
 		bgOuter = tweened(darkMode ? '#000' : '#fff', { duration: 200, interpolate });
@@ -54,8 +46,8 @@
 	}
 
 	async function loadRosterData() {
-		let tempIdx = team.seasons.findIndex((s) => s.season === seasonYear);
-		const res = await fetch(`/teams/${team.infoCommon.slug}.json?i=${tempIdx}&year=${seasonYear}`);
+		let tempIdx = (team.seasons as SeasonList[]).findIndex((s) => s.season === year);
+		const res = await fetch(`/teams/${team.infoCommon.slug}.json?i=${tempIdx}&year=${year}`);
 		const {
 			team: teamData,
 			players: playerData,
@@ -69,9 +61,9 @@
 </script>
 
 <MetaTags
-	title="{seasonYear} {team.infoCommon.name} Season Basic Info"
+	title="{year} {team.infoCommon.name} Season Basic Info"
 	description="Team Schedule, Roster, and Statistics for the {team.infoCommon
-		.name}'s {seasonYear} season."
+		.name}'s {year} season."
 />
 <div
 	class="glassmorphicCard mx-auto flex flex-wrap gap-6 py-6 justify-center mb-6 items-center px-2 md:container md:mx-auto"
@@ -79,7 +71,7 @@
 	<div class="h-44 rounded-lg dark:bg-white/10 dark:backdrop-filter dark:backdrop-blur-sm">
 		<img
 			class="h-44 w-44"
-			src="/teams/assets/logo-{team.infoCommon.slug}.svg"
+			src="/assets/teams/logo-{team.infoCommon.slug}.svg"
 			alt="{team.infoCommon.name}'s' logo"
 		/>
 	</div>
@@ -95,7 +87,7 @@
 			class="select select-bordered select-primary"
 			type="select"
 			id="season-select"
-			bind:value={seasonYear}
+			bind:value={year}
 			on:change={loadRosterData}
 		>
 			{#each seasons as { season }}
@@ -143,7 +135,7 @@
 					{team.seasons[seasonIdx].season} Roster:
 				</h2>
 			</div>
-			<PlayerRoster roster={players} season={seasonYear} />
+			<PlayerRoster roster={players} season={year} />
 		</TabPanel>
 
 		<!-- Stats Data Tab -->
@@ -153,7 +145,7 @@
 					{team.seasons[seasonIdx].season} Team Stats:
 				</h2>
 			</div>
-			<PlayerStats roster={players} season={seasonYear} />
+			<PlayerStats roster={players} season={year} />
 		</TabPanel>
 	</Tabs>
 </div>

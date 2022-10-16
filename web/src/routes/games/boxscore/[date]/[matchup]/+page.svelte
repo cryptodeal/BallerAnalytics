@@ -1,4 +1,3 @@
-
 <script lang="ts">
 	import { capitalizeFirstLetter } from '$lib/functions/helpers';
 	import { browser } from '$app/environment';
@@ -11,10 +10,10 @@
 	import utc from 'dayjs/plugin/utc.js';
 	import timezone from 'dayjs/plugin/timezone.js';
 	import advancedFormat from 'dayjs/plugin/advancedFormat.js';
-  import type { PageData } from './$types'
-  export let data: PageData;
-  let { boxscore } = data
-  $: ({ boxscore } = data); // so it stays in sync when `data` changes
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let { boxscore } = data;
+	$: ({ boxscore } = data); // so it stays in sync when `data` changes
 
 	dayjs.extend(utc);
 	dayjs.extend(timezone);
@@ -34,7 +33,7 @@
 			>
 				<img
 					class="h-3/5 w-full"
-					src="/teams/assets/logo-{boxscore.visitor.team.infoCommon.slug}.svg"
+					src="/assets/teams/logo-{boxscore.visitor.team.infoCommon.slug}.svg"
 					alt="{boxscore.visitor.team.infoCommon.name}'s' logo"
 				/>
 			</div>
@@ -104,7 +103,7 @@
 			>
 				<img
 					class="h-3/5 w-full"
-					src="/teams/assets/logo-{boxscore.home.team.infoCommon.slug}.svg"
+					src="/assets/teams/logo-{boxscore.home.team.infoCommon.slug}.svg"
 					alt="{boxscore.home.team.infoCommon.name}'s' logo"
 				/>
 			</div>

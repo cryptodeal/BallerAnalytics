@@ -5,7 +5,7 @@ import type { TeamPageInitData } from '$lib/data/_db/controllers/team';
 
 export const load: PageLoad = async ({ fetch, params, url }) => {
 	if (url.searchParams.get('i')) {
-		const apiUrl = `/teams/${params.teamSlug}.json?i=${url.searchParams.get('i')}`;
+		const apiUrl = `/teams/${params.teamSlug}?i=${url.searchParams.get('i')}`;
 		const res = await fetch(apiUrl);
 		if (res.ok) {
 			const { team, players, games } = (await res.json()) as TeamPageInitData;
@@ -27,7 +27,7 @@ export const load: PageLoad = async ({ fetch, params, url }) => {
 		}
 		throw error(500, `Could not load ${apiUrl}`);
 	} else {
-		const apiUrl = `/teams/${params.teamSlug}.json`;
+		const apiUrl = `/teams/${params.teamSlug}`;
 		const res = await fetch(apiUrl);
 		if (res.ok) {
 			const { team, players, games } = (await res.json()) as TeamPageInitData;

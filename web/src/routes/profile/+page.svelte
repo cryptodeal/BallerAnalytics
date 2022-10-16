@@ -11,10 +11,10 @@
 	import MultiStepForm from '$lib/ux/forms/MultiStep/Template.svelte';
 	// import type { PopulatedDocument, UserDocument } from '@balleranalytics/nba-api-ts';
 	import type { ObjectOption } from 'svelte-multiselect';
-  import type { PageData } from './$types';
-  export let data: PageData
-  let { user } = data;
-  $: ({ user } = data); // so it stays in sync when `data` changes
+	import type { PageData } from './$types';
+	export let data: PageData;
+	let { user } = data;
+	$: ({ user } = data); // so it stays in sync when `data` changes
 	$: console.log(user);
 	const teamSubs = getTeamSubs(),
 		notifications = getNotificationsStore(),
@@ -109,7 +109,7 @@
 					<div class="p-2 grid grid-cols-4">
 						{#each sortedTeamSubs as { value }}
 							{@const { name, abbrev, slug } = teams[teams.findIndex((t) => t.id === value)]}
-							{@const src = `/teams/assets/logo-${slug}.svg`}
+							{@const src = `/assets/teams/logo-${slug}.svg`}
 							<div class="flex flex-col gap-1 items-center text-sm">
 								<img
 									class="h-10 w-10 md:h-12 md:w-12 2xl:w-16 2xl:h-16"

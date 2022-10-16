@@ -20,7 +20,7 @@
 			{#each posts as { slug, title, author, prefetch }}
 				<div class="flex flex-col gap-1">
 					{#if prefetch}
-						<a class="no-underline  md:pl-6" sveltekit:prefetch href="articles/read/{slug}">
+						<a class="no-underline  md:pl-6" data-sveltekit-prefetch href="articles/read/{slug}">
 							<h2 class="font-extralight font-sans">
 								{title}
 							</h2>

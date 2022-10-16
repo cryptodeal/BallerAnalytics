@@ -42,7 +42,7 @@
 				<!-- Navbar menu content here -->
 				<li>
 					<a
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/games"
 						class="uppercase"
 						class:active={segment === 'games' ? true : false}
@@ -52,7 +52,7 @@
 				</li>
 				<li>
 					<a
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/players"
 						class="uppercase"
 						class:active={segment === 'players' ? true : false}
@@ -63,7 +63,7 @@
 
 				<li>
 					<a
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/teams"
 						class="uppercase"
 						class:active={segment === 'teams' ? true : false}
@@ -74,7 +74,7 @@
 
 				<li>
 					<a
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/articles"
 						class="uppercase"
 						class:active={segment === 'articles' ? true : false}
@@ -85,7 +85,7 @@
 
 				<li>
 					<a
-						sveltekit:prefetch
+						data-sveltekit-prefetch
 						href="/dev/neat"
 						class="uppercase"
 						class:active={segment === 'dev' ? true : false}

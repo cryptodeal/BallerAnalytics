@@ -10,7 +10,7 @@
 	const height = '20px',
 		width = '20px';
 
-	$: src = `/teams/assets/logo-${slug}.svg`;
+	$: src = `/assets/teams/logo-${slug}.svg`;
 	$: alt = `${name}'s logo`;
 
 	let hidden = false;
