@@ -17,10 +17,10 @@
 	import Modal from '$lib/ux/Modal.svelte';
 	import { createTeamSubs, getTeamSubs } from '$lib/data/stores/teamSubs';
 	import Toast from '$lib/ux/Toast.svelte';
-  import type { LayoutData } from './$types';
-  export let data: LayoutData;
-  let { path } = data;
-  $: ({ path } = data); // so it stays in sync when `data` changes
+	import type { LayoutData } from './$types';
+	export let data: LayoutData;
+	let { path } = data;
+	$: ({ path } = data); // so it stays in sync when `data` changes
 
 	const modalId = 'auth-modal',
 		triggerTxt = 'login / register';
@@ -135,7 +135,9 @@
 				</Ticker>
 			</div>
 		{/if}
-		<footer class="fixed bottom-0 footer footer-center p-2 lg:p-4 bg-base-300 text-base-content">
+		<footer
+			class="fixed z-20 bottom-0 footer footer-center p-2 lg:p-4 bg-base-300 text-base-content"
+		>
 			<div>
 				<p>Copyright © 2022 - All right reserved by BallerAnalytics</p>
 			</div>
